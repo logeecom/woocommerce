@@ -1,0 +1,5 @@
+*.sublime-workspace
+.hg/
+.svn/
+vendor/
+*.zip

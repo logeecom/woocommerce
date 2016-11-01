@@ -1,0 +1,43 @@
+.woocommerce_options_panel .channel-engine-refresh-button{
+	float: right;
+	margin:15px;
+}
+
+.order_actions .returned {
+	content: url('../images/returned_order.png');
+	width: 2em;
+	height: 2em !important;
+}
+
+.channel_engine_product_column_image{
+	content: url('../images/channel-engine-logo.png');
+	width: auto;
+	height: 1.5em !important;
+}
+
+.channel_engine_product_complete{
+	content: url('../images/checkmark.png');
+	width: auto;
+	height: 2.2em !important;
+	display: block;
+	margin:auto;
+}
+.channel_engine_product_incomplete{
+	content: url('../images/wrong_cross.png');
+	width: auto;
+	height: 2.2em !important;
+	display: block;
+	margin:auto;
+}
+
+#channel_engine_validation_column{
+	width: 90px;
+}
+
+input.channel_engine_input[value=""] { 
+    border: 2px solid red;
+}
+
+textarea.channel_engine_textarea[value=""] {
+	border: 2px solid red;
+}
