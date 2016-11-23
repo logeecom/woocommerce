@@ -112,28 +112,32 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
      */
     public function import_orders(){
 
+        $results = array(
+            'Success' => array(),
+            'Failed' => array(),
+            'Exception' => null
+        );
+
         try{
             //Get all orders
             $orders = $this->client->getOrders(
                 array(
-                    OrderStatus:: IN_PROGRESS,
-                    OrderStatus:: SHIPPED,
-                    OrderStatus:: IN_BACKORDER,
-                    OrderStatus:: CANCELED,
-                    OrderStatus:: MANCO,
-                    OrderStatus:: IN_COMBI,
-                    OrderStatus:: CLOSED,
-                    OrderStatus:: NEW_ORDER
+                    OrderStatus::IN_PROGRESS,
+                    OrderStatus::NEW_ORDER
                 )
             );
         }catch(Exception $e){
             //Write exception to error log
             error_log( print_r( $e, true ) );
+            $results['Exception'] = $e->getMessage();
         }
 
+        
 		$ordersImported = array();
 		$ordersNotImported = array();
-        foreach($orders as $order){
+
+        foreach($orders as $order)
+        {
         	$currentChannelOrderId = $order->getId();
             $args = array(
                 'post_type'     => 'shop_order',
@@ -157,10 +161,10 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 					$order_exists = true;
 				}
 				
-				$ordersNotImported[] = array(
-					'Succes'=>false,
-					'OrderId'=>$currentChannelOrderId,
-					'Message'=>'Order with OrderId ' . $order->getId() . ' already exists, order has not been imported!'
+				$results['Failed'][] = array(
+					'Succes' => false,
+					'OrderId' => $currentChannelOrderId,
+					'Message' => 'Order with OrderId ' . $order->getId() . ' already exists, order has not been imported!'
 				);
 			}
             wp_reset_postdata();
@@ -170,24 +174,20 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 $result = $this->create_order($order);
 				if($result['Success']){
 					// order imported, increment successfull import counter
-					$ordersImported[] = $result;
+					$results['Success'][] = $result;
 				}else{
-					$ordersNotImported[] = $result;
+					$results['Failed'][] = $result;
 				}
             }
         }
-		$result = array(
-			'Success'=>count($ordersImported),
-			'Failed'=>count($ordersNotImported),
-			'Results'=>array('Success'=>$ordersImported,'Failed'=>$ordersNotImported)
-		);
-		echo(json_encode($result));
+		echo(json_encode($results));
     }
 
     /**
      * Parse order object to woocommerce specific data
      */
-    public function create_order(Order $order){
+    public function create_order(Order $order)
+    {
 
         //Check if the order is valid by checking if the products exist.
         $productExists = true;
