@@ -20,7 +20,10 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
         add_action( 'woocommerce_product_write_panel_tabs', array( $this, 'woo_add_custom_admin_product_tab' ) , 1);
         add_action( 'woocommerce_product_data_panels',      array( $this, 'woo_add_custom_general_fields' ) );
         add_action( 'woocommerce_process_product_meta',     array( $this, 'woo_add_custom_general_fields_save' ));
-		add_action( 'admin_notices',     					array( $this, 'add_admin_notice' )); 
+		//add_action( 'admin_notices',     					array( $this, 'add_admin_notice' )); 
+
+        add_action('woocommerce_product_after_variable_attributes', array($this, 'woo_add_custom_variation_fields'), 10, 3);
+        add_action('woocommerce_save_product_variation', array($this, 'woo_add_custom_variation_fields_save'), 10, 2);
     }
 
 	function add_admin_notice(){
@@ -71,6 +74,43 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
     }
 
     /**
+     * Add custom channel engine fields to variations
+     */
+    function woo_add_custom_variation_fields($loop, $variation_data, $variation) {
+        $pr = parent::PREFIX;
+
+        echo '<div>';
+                // Text input
+                woocommerce_wp_text_input(
+                    array(
+                        'id'          => $pr.'_gtin['.$variation->ID.']',
+                        'label'       => __( 'GTIN', 'woocommerce' ),
+                        'placeholder' => '',
+                        'class'       => 'short channel_engine_input',
+                        'style'       => 'width:100%;',
+                        'description' => __( 'Product GTIN (EAN, ISBN, UPC), e.g. 8710400311140', 'woocommerce' ),
+                        'value'       => get_post_meta($variation->ID, $pr.'_gtin', true)
+                    )
+                );
+            echo '</div>';
+    }
+
+    /**
+     * Add custom channel engine fields to variations
+     */
+    function woo_add_custom_variation_fields_save($variation_id, $i) {
+
+        $pr = parent::PREFIX;
+
+        $field = $_POST[$pr.'_gtin'][$variation_id];
+        if (!empty($field)) {
+            update_post_meta($variation_id, $pr.'_gtin', esc_textarea(strip_tags($field)));
+        } else {
+            delete_post_meta($variation_id, $pr.'_gtin');
+        }
+    }
+
+    /**
      * Add custom channel engine fields
      */
     function woo_add_custom_general_fields() {
@@ -80,114 +120,17 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
         $product = wc_get_product($post->ID);
 
         echo '<div id="channel_engine_display_data" class="panel woocommerce_options_panel">';
-            echo'<h2>&nbsp;&nbsp;Required attributes</h2>';
-			echo '<div class="options_group">';
-                // Text input readonly
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_name',
-                        'label'       => __( 'Name', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'Product name' ),
-                        'custom_attributes'	  => array('readonly'=>'readonly', 'title'=>__('Copied from WooCommerce \'Product Name\'')),
-                        'value'       => parent::get_product_name($post->ID)
-                    )
-                );
-            echo '</div>';
-            echo '<div class="options_group">';
-            // Refresh button
-            $this->refresh_description_button();
-            // Textarea
-            woocommerce_wp_textarea_input(
-                array(
-                    'id'          => parent::PREFIX.'_description',
-                    'label'       => __( 'Description', 'woocommerce' ),
-                    'placeholder' => '',
-                    'class'		  => 'short channel_engine_textarea',
-                    'description' => __( 'Plaintext Product Description (No HTML)' ),
-                    'custom_attributes'	  => array('title'=>__('Can be copied from WooCommerce \'Product Content\'')),
-                    'style'       => 'height:100px;',
-                    'value'       => parent::get_product_description($post->ID)
-                )
-            );
-			
-            echo '</div>';
-			
-			echo '<div class="options_group">';
-                // Text input 
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_price',
-                        'label'       => __( 'Price', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'Price (Including VAT)' ),
-                        'custom_attributes'	  => array('readonly'=>'readonly', 'title'=>__('Copied from WooCommerce \'Active Price\'')),
-                        'value'       => parent::get_product_price_formatted($product)
-                    )
-                );
-            echo '</div>';
-			
-            echo '<div class="options_group">';
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_list_price',
-                        'label'       => __( 'List Price', 'woocommerce' ),
-                        'data_type'	  => 'price',
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'Manufacturer Suggested Retail Price (Including VAT)', 'woocommerce' ),
-                        'custom_attributes'	  => array('title'=>__('Copied from WooCommerce \'Regular Price\'')),
-                        'value'       => parent::get_product_list_price($product)
-                    )
-                );
-            echo '</div>';
 
             echo '<div class="options_group">';
-                // Textarea
+                // Text input
                 woocommerce_wp_text_input(
                     array(
-                        'id'          => parent::PREFIX.'_purchase_price',
-                        'label'       => __( 'Purchase Price', 'woocommerce' ),
-                        'data_type'	  => 'price',
+                        'id'          => parent::PREFIX.'_gtin',
+                        'label'       => __( 'GTIN', 'woocommerce' ),
                         'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'Product Purchase Price (Excluding VAT)', 'woocommerce' ),
-                        'custom_attributes'	  => array('title'=>__('Copied from WooCommerce \'Regular Price\' (Excluding VAT)')),
-                        'value'       => parent::get_product_purchase_price($product)
-                    )
-                );
-            echo '</div>';
-
-            echo '<div class="options_group">';
-                // Textarea
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_vat',
-                        'label'       => __( 'VAT', 'woocommerce' ),
-                        'data_type'	  => 'decimal',
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'VAT Percentage', 'woocommerce' ),
-                        'custom_attributes'	  => array('readonly'=>'readonly','title'=>__('Copied from WooCommerce Product Tax')),
-                        'value'       => parent::get_product_vat_formatted($product)
-                    )
-                );
-            echo '</div>';
-			echo '<div class="options_group">';
-                // Textarea
-                $custom_attr = $product->managing_stock()?array('readonly'=>'readonly','title'=>__('Copied from WooCommerce Stock Qty')):array('title'=>__('Stock not managed by WooCommerce, set stock manually'));
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_stock',
-                        'label'       => __( 'Stock', 'woocommerce' ),
-                        'data_type'	  => 'stock',
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'Product Stock', 'woocommerce' ),
-                        'custom_attributes'	  => $custom_attr,
-                        'value'       => parent::get_product_stock($product)
+                        'class'       => 'short channel_engine_input',
+                        'custom_attributes'   => array(),
+                        'description' => __( 'Product GTIN (EAN, ISBN, UPC), e.g. 8710400311140', 'woocommerce' )
                     )
                 );
             echo '</div>';
@@ -204,50 +147,6 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
                     )
                 );
             echo '</div>';
- 			
- 			echo '<div class="options_group">';
-                // Text input
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_merchant_product_no',
-                        'label'       => __( 'Merchant Product No', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'Your Unique Product Number', 'woocommerce' ),
-                        'custom_attributes'	  => array('readonly'=>'readonly','title'=>__('Copied from WooCommerce SKU')),
-                        'value'       => parent::get_product_merchant_no($product)
-                    )
-                );
-            echo '</div>';
-            
-            echo '<div class="options_group">';
-                // Text input
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_vendor_product_no',
-                        'label'       => __( 'Vendor Product No', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'custom_attributes'	  => array(),
-                        'description' => __( 'Manufacturer / Supplier Product Number, e.g. FTI-BLK-XL', 'woocommerce' )
-                    )
-                );
-            echo '</div>';
-			
-			echo '<div class="options_group">';
-                // Text input
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_gtin',
-                        'label'       => __( 'GTIN', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'custom_attributes'	  => array(),
-                        'description' => __( 'Product GTIN (EAN, ISBN, UPC), e.g. 8710400311140', 'woocommerce' )
-                    )
-                );
-            echo '</div>';
-
             echo '<div class="options_group">';
                 // Textarea
                 woocommerce_wp_text_input(
@@ -277,75 +176,6 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
                     )
                 );
             echo '</div>';
- 			echo '<div class="options_group">';
-                // Text input
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_product_url',
-                        'label'       => __( 'Product URL', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'custom_attributes'	  => array('readonly'=>'readonly'),
-                        'description' => __( 'Deep link to the product\'s details page', 'woocommerce' ),
-                        'value'		  => parent::get_product_URL($product)
-                    )
-                );
-            echo '</div>';
-			echo '<div class="options_group">';
-                // Text input
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_product_image_url',
-                        'label'       => __( 'Image URL', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'custom_attributes'	  => array('readonly'=>'readonly'),
-                        'description' => __( 'Deeplink to the product\'s image', 'woocommerce' ),
-                        'value'		  => parent::get_product_image_URL($post->ID)
-                    )
-                );
-            echo '</div>';
-			echo '<div class="options_group">';
-                // Text input
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_category',
-                        'label'       => __( 'Category', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'custom_attributes'	  => array('readonly'=>'readonly'),
-                        'description' => __( 'The product\'s full category path (each category separated by  > )', 'woocommerce' ),
-                        'value'		  => parent::get_product_category($post->ID)
-                    )
-                );
-            echo '</div>';
-            echo'<h2>&nbsp;&nbsp;Optional attributes</h2>';
-
-            echo '<div class="options_group">';
-            // Textarea
-            woocommerce_wp_hidden_input(
-                array(
-                    'id'          => parent::PREFIX.'_channel_product_no',
-                    'label'       => __( 'Channel Product No', 'woocommerce' ),
-                    'placeholder' => '',
-                    'class'		  => 'short channel_engine_input',
-                    'description' => __( 'Channel Engine identifier', 'woocommerce' ),
-                )
-            );
-            echo '</div>';
-
-            echo '<div class="options_group">';
-                // Textarea
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => parent::PREFIX.'_merchant_group_no',
-                        'label'       => __( 'Merchant Group No', 'woocommerce' ),
-                        'placeholder' => '',
-                        'class'		  => 'short channel_engine_input',
-                        'description' => __( 'The number that groups product variants together', 'woocommerce' ),
-                    )
-                );
-            echo '</div>';
 
             echo '<div class="options_group">';
                 // Textarea
@@ -359,7 +189,6 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
                     )
                 );
             echo '</div>';
-
             echo '<div class="options_group">';
                 // Textarea
                 woocommerce_wp_text_input(
@@ -381,46 +210,18 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
      */
     function woo_add_custom_general_fields_save($post_id) {
 
-        if( !empty( $_POST[ parent::PREFIX.'_description' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_description', esc_textarea( strip_tags($_POST[ parent::PREFIX.'_description' ]) ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_description');
-        }
+        $pr = parent::PREFIX;
 
-        if( !empty( $_POST[ parent::PREFIX.'_list_price' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_list_price', esc_attr( $_POST[ parent::PREFIX.'_list_price' ] ) );
+        if( !empty( $_POST[ parent::PREFIX.'_gtin' ] ) ) {
+            update_post_meta( $post_id, parent::PREFIX.'_gtin', esc_attr( $_POST[parent::PREFIX.'_gtin' ] ) );
         }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_list_price');
-        }
-
-        if( !empty( $_POST[ parent::PREFIX.'_purchase_price' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_purchase_price', esc_attr( $_POST[ parent::PREFIX.'_purchase_price' ] ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_purchase_price');
-        }
-
-        if( !empty( $_POST[ parent::PREFIX.'_stock' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_stock', esc_attr( $_POST[ parent::PREFIX.'_stock' ] ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_stock');
+            delete_post_meta($post_id, parent::PREFIX.'_gtin');
         }
 
         if( !empty( $_POST[ parent::PREFIX.'_brand' ] ) ) {
             update_post_meta( $post_id, parent::PREFIX.'_brand', esc_attr( $_POST[parent::PREFIX.'_brand' ] ) );
         }else{
         	delete_post_meta($post_id, parent::PREFIX.'_brand');
-        }
- 		
- 		if( !empty( $_POST[ parent::PREFIX.'_gtin' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_gtin', esc_attr( $_POST[parent::PREFIX.'_gtin' ] ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_gtin');
-        }
-
-        if( !empty( $_POST[ parent::PREFIX.'_vendor_product_no' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_vendor_product_no', esc_attr( $_POST[ parent::PREFIX.'_vendor_product_no' ] ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_vendor_product_no');
         }
 
         if( !empty( $_POST[ parent::PREFIX.'_shipping_costs' ] ) ) {
@@ -435,18 +236,6 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
         	delete_post_meta($post_id, parent::PREFIX.'_shipping_time');
         }
 
-        if( !empty( $_POST[ parent::PREFIX.'_channel_product_no' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_channel_product_no', esc_attr( $_POST[ parent::PREFIX.'_channel_product_no' ] ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_channel_product_no');
-        }
-
-        if( !empty( $_POST[ parent::PREFIX.'_merchant_group_no' ] ) ) {
-            update_post_meta( $post_id, parent::PREFIX.'_merchant_group_no', esc_attr( $_POST[ parent::PREFIX.'_merchant_group_no' ] ) );
-        }else{
-        	delete_post_meta($post_id, parent::PREFIX.'_merchant_group_no');
-        }
-
         if( !empty( $_POST[ parent::PREFIX.'_size'] ) ) {
             update_post_meta( $post_id, parent::PREFIX.'_size', esc_attr( $_POST[ parent::PREFIX.'_size' ] ) );
         }else{
@@ -459,8 +248,4 @@ class Channel_Engine_Product_Tab extends Channel_Engine_Base_Class{
         	delete_post_meta($post_id, parent::PREFIX.'_color');
         }
     }
-
-	function refresh_description_button(){
-		echo '<input id="ce-admin-refresh-description-button" type="button" class="button channel-engine-refresh-button" value="' . __( 'Copy from content') . '">';
-	}
 }

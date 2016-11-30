@@ -39,83 +39,153 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		global $wpdb;
 		$xml = new SimpleXMLExtended('<products></products>');
 		$products = $this->getProducts();
+		$vars_lookup = $this->getProductVariationsLookup();
 		$attrs_lookup = $this->getAttributeLookup();
 		$meta_lookup = $this->getMetaLookup();
+
+		/*
+		$tax = WC_TAX::get_base_tax_rates();
+        $tax_rate = isset($tax[1]['rate']) ? $tax[1]['rate'] : null;
+
+        return $tax_rate;*/
 
 		foreach($products as $item) {
 			$id = $item->ID;
 			//Skip products with incomplete data
 			// if(! $this->product_validation->validate_channel_engine_product($id)) continue;
+			$vars = $this->getOrEmpty($vars_lookup, $id);
+			$meta = $this->getOrEmpty($meta_lookup, $id);
+			$attrs = $this->getOrEmpty($attrs_lookup, $id);
+			$pr = parent::PREFIX;
 
-			//Get product information
-			$product = wc_get_product($id);
-			$attributes = $product->get_attributes();
-			$meta = $meta_lookup[$id];
-			$attrs = $attrs_lookup[$id];
+			$wcProduct = wc_get_product($id);
+			$imageId = get_post_thumbnail_id($id);
 
-			$img_id = get_post_thumbnail_id($id);
-			$product_image = wp_get_attachment_url($img_id);
+			$product = array();
 
-			$product_category = parent::get_product_category($id); //Get product category name
-			$description = parent::get_product_description($id); //Get description without html
+			$price = 
 
-			$post_title             = isset($item->post_title) ?  $item->post_title : null;
-			$stock                  = parent::get_product_stock($product);
-			$gtin                   = isset($meta[parent::PREFIX.'_gtin']) ? $meta[parent::PREFIX.'_gtin'] : null;
-			$product_id             = isset($product->id) ?  $product->id : null;
-			$product_url            = $product->get_permalink();
+			$product['id'] = $id;
+			$product['meta'] = $meta;
+			$product['attrs'] = $attrs;
+			$product['image_url'] = wp_get_attachment_url($imageId);
+			$product['category'] = parent::get_product_category($id);
+			$product['url'] = $wcProduct->get_permalink();
+			$product['name'] = $item->post_title;
+			$product['description'] = strip_tags($item->post_content);
+			$product['stock'] = $wcProduct->get_stock_quantity();
+			$product['gtin'] = $this->get($meta, $pr.'_gtin');
+			$product['price'] = $wcProduct->get_price_including_tax();
+			$product['purchase_price'] = $wcProduct->get_price_excluding_tax(1, $wcProduct->get_regular_price());
+			$product['list_price'] = $wcProduct->get_price_including_tax(1, $wcProduct->get_regular_price());
+			$product['vat'] = $this->calcVat($product['price'], $product['purchase_price']);
+			$product['brand'] = $this->get($meta, $pr.'_brand');
+			$product['sku'] = $this->get($meta, '_sku');
+			$product['shipping_costs'] = $this->get($meta, $pr.'_shipping_costs');
+			$product['shipping_time'] = $this->get($meta, $pr.'_shipping_time');
+			$product['parent_id'] = null;
+			$product['size'] = $this->get($meta, $pr.'_size');
+			$product['color'] = $this->get($meta, $pr.'_color');
+			$product['type'] = $wcProduct->product_type;
 
-			$price                  = parent::get_product_price($product);
-			$purchase_price         = parent::get_product_purchase_price($product);
-			$list_price             = parent::get_product_list_price($product);
-			$vat                    = parent::get_product_vat($product);
-			$brand                  = isset($meta[parent::PREFIX.'_brand']) ? $meta[parent::PREFIX.'_brand'] : null;
-			$vendor_product_no      = isset($meta[parent::PREFIX.'_vendor_product_no']) ?  $meta[parent::PREFIX.'_vendor_product_no'] : null;
-			$shipping_costs         = isset($meta[parent::PREFIX.'_shipping_costs']) ?  $meta[parent::PREFIX.'_shipping_costs'] : null;
-			$shipping_time          = isset($meta[parent::PREFIX.'_shipping_time']) ?  $meta[parent::PREFIX.'_shipping_time'] : null;
-			$merchant_group_no      = parent::get_product_merchant_no($product);
-			$size                   = isset($meta[parent::PREFIX.'_size']) ?  $meta[parent::PREFIX.'_size'] : null;
-			$color                  = isset($meta[parent::PREFIX.'_color']) ?  $meta[parent::PREFIX.'_color'] : null;
+			$this->createProductNode($xml, $product, null);
 
-			//Generate XML entities
-			$product_xml = $xml->addChild('product');
-			//Required attributes
-			$product_xml->addChildCData('Name',              $post_title);
-			$product_xml->addChildCData('Description', $description);
-			$product_xml->addChild('Price',             $price);
-			$product_xml->addChild('PurchasePrice',     $purchase_price);
-			$product_xml->addChild('ListPrice',         $list_price);
-			$product_xml->addChild('VAT',               $vat);
-			$product_xml->addChild('Stock',             $stock);
-			$product_xml->addChild('Brand',             $brand);
-			$product_xml->addChild('MerchantProductNo', $product_id);
-			$product_xml->addChild('VendorProductNo',   $vendor_product_no);
-			$product_xml->addChild('GTIN',              $gtin);
-			$product_xml->addChild('ShippingCosts',     $shipping_costs);
-			$product_xml->addChild('ShippingTime',      $shipping_time);
-			$product_xml->addChild('ProductUrl',        $product_url);
-			$product_xml->addChild('ImageUrl',          $product_image);
-			$product_xml->addChild('Category',          $product_category);
-			//Optional attributes
-			$product_xml->addChild('MerchantGroupNo',   $merchant_group_no);
-			$product_xml->addChild('Size',              $size);
-			$product_xml->addChild('Color',             $color);
+			foreach($vars as $variant) {
+				$varId = $variant->ID;
+				$meta = $this->getOrEmpty($meta_lookup, $varId);
+				$attrs = $this->getOrEmpty($attrs_lookup, $varId);
 
-			$specs = $product_xml->addChild('Specs');
+				$imageId = get_post_thumbnail_id($varId);
+				if($imageId != 0) {
+					$product['image_url'] = wp_get_attachment_url($imageId);
+				}
 
-			foreach($attrs as $slug => $values) {
-				$specs->addChildCData($slug, implode(',', $values));
+				$wcProductVar = wc_get_product($varId);
+				$product['id'] = $variant->ID;
+				$product['parent_id'] = $id;
+				$product['stock'] = $wcProductVar->get_stock_quantity();
+				$product['attrs'] = $attrs;
+				$product['meta'] = $meta;
+				$product['type'] = $wcProductVar->product_type;
+				$product['sku'] = $this->get($meta, '_sku');
+				$product['gtin'] = $this->get($meta, $pr.'_gtin');
+
+				$product['price'] = $wcProductVar->get_price_including_tax();
+				$product['purchase_price'] = $wcProductVar->get_price_excluding_tax(1, $wcProductVar->get_regular_price());
+				$product['list_price'] = $wcProductVar->get_price_including_tax(1, $wcProductVar->get_regular_price());
+				$product['vat'] = $this->calcVat($product['price'], $product['purchase_price']);
+
+				$this->createProductNode($xml, $product);
 			}
+		}
+		$this->writeXML($xml);
+	}
 
-			$specs->addChild('Weight', $meta['_weight']);
-			$specs->addChild('Width', $meta['_width']);
-			$specs->addChild('Length', $meta['_length']);
-			$specs->addChild('Height', $meta['_height']);
-			
+	private function calcVat($price, $priceExVat) {
+		if($price == 0) return 0;
+		$vat = (($price - $priceExVat) / $priceExVat) * 100;
+		return round($vat);
+	}
 
+	private function getGtin($meta) {
+		$ceGtin = $this->get($meta, parent::PREFIX.'_gtin');
+		if(!empty($ceGtin)) return $ceGtin;
+
+		/*$gpfData = $this->get($meta, '_woocommerce_gpf_data');
+		if(is_null($gpfData)) return null;
+
+		$gpfArr = unserialize($gpfData);	
+		$gpfGtin = $this->get($gpfArr, 'gtin');*/
+		
+		return $gpfGtin;
+	}
+
+	private function createProductNode($xml, $product) {
+
+		//Generate XML entities
+		$pXml = $xml->addChild('Product');
+		//Required attributes
+		$pXml->addChildCData('Name', $product['name']);
+		$pXml->addChildCData('Description', $product['description']);
+		$pXml->addChild('Price', $product['price']);
+		$pXml->addChild('PurchasePrice', $product['purchase_price']);
+		$pXml->addChild('ListPrice', $product['list_price']);
+		$pXml->addChild('VAT', $product['vat']);
+		$pXml->addChild('Stock', $product['stock']);
+		$pXml->addChild('Brand', $product['brand']);
+		$pXml->addChild('MerchantProductNo', $product['id']);
+		$pXml->addChild('VendorProductNo', $product['sku']);
+		$pXml->addChild('GTIN', $product['gtin']);
+		$pXml->addChild('ShippingCosts', $product['shipping_costs']);
+		$pXml->addChild('ShippingTime', $product['shipping_time']);
+		$pXml->addChild('ProductUrl', $product['url']);
+		$pXml->addChild('ImageUrl', $product['image_url']);
+		$pXml->addChild('Category', $product['category']);
+		//Optional attributes
+		$pXml->addChild('MerchantGroupNo', $product['parent_id']);
+		$pXml->addChild('Size', $product['size']);
+		$pXml->addChild('Color', $product['color']);
+		$pXml->addChild('Type', $product['type']);
+
+		$specsNode = $pXml->addChild('Specs');
+		$meta = $product['meta'];
+		foreach($product['attrs'] as $slug => $values) {
+			$specsNode->addChildCData($slug, implode(',', $values));
 		}
 
-		$this->writeXML($xml);
+		$specsNode->addChild('Weight', $this->get($meta, '_weight'));
+		$specsNode->addChild('Width', $this->get($meta, '_width'));
+		$specsNode->addChild('Length', $this->get($meta, '_length'));
+		$specsNode->addChild('Height', $this->get($meta, '_height'));
+		
+	}
+
+	private function get($arr, $key) {
+		return isset($arr[$key]) ? $arr[$key] : null;
+	}
+
+	private function getOrEmpty($arr, $key) {
+		return isset($arr[$key]) ? $arr[$key] : [];
 	}
 
 	private function writeXML($xml) {
@@ -167,12 +237,11 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			FROM $pm
 			INNER JOIN $p ON $p.id = $pm.post_id
 			WHERE $p.post_status = 'publish' 
-			AND $p.post_type = 'product'
+			AND $p.post_type IN ('product', 'product_variation')
 			AND (
 				$pm.meta_key LIKE '" . parent::PREFIX . "%'
-				OR $pm.meta_key IN('_weight', '_length', '_height', '_width', '_sku')
+				OR $pm.meta_key IN('_woocommerce_gpf_data', '_weight', '_length', '_height', '_width', '_sku')
 			)
-
 		";
 
 		$lookup = array();
@@ -200,6 +269,30 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		";
 
 		return $wpdb->get_results($query, OBJECT);
+	}
+
+	private function getProductVariationsLookup() {
+		global $wpdb;
+
+		$p = $wpdb->posts;
+		
+		$query = "
+			SELECT $p.* 
+			FROM $p
+			WHERE $p.post_status = 'publish' 
+			AND $p.post_type = 'product_variation'
+		";
+
+		$lookup = array();
+
+		$variations = $wpdb->get_results($query, OBJECT);
+
+		foreach($variations as $item) {
+			if(!isset($lookup[$item->post_parent])) $lookup[$item->post_parent] = array();
+			$lookup[$item->post_parent][] = $item;
+		}
+
+		return $lookup;
 	}
 
 	private function dd($any) {
