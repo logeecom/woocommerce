@@ -15,8 +15,12 @@ class Channel_Engine_Admin extends Channel_Engine_Base_Class {
 			echo '<p class="form-field form-field-wide"><strong>Channel name:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_channel_name', true ) . '</p>';
 			echo '<p class="form-field form-field-wide"><strong>Channel Order No:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_channel_order_no', true ) . '</p>';
 			echo '<p class="form-field form-field-wide"><strong>Payment method:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_payment_method', true ) . '</p>';
-			if(strlen(get_post_meta( $order->id, '_shipping_ce_track_and_trace', true ))){
-				$trackTraceValue = get_post_meta( $order->id, '_shipping_ce_track_and_trace', true );
+			
+			$trackTrace = get_post_meta($order->id, '_shipping_ce_track_and_trace', true);
+			if(empty($trackTrace)) $trackTrace = get_post_meta($order->id, 'TrackAndTraceBarCode', true);
+
+			if(!empty($trackTrace)) {
+				$trackTraceValue = $trackTrace;
 			}else{
 				$trackTraceValue = 'No Track & Trace set<br>Enter Track & Trace information at "Shipping Details"';
 			}

@@ -78,8 +78,11 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         //TODO:: Set track and trace number : $shipment->setTrackTraceNo()
         $shipment = new Shipment();
         $shipment->setOrderId(intval($orderId[0]));
-		$shipmentTrackAndTrace = get_post_meta($order->id, '_shipping_ce_track_and_trace');
-        $shipment->setMerchantShipmentNo($shipmentTrackAndTrace[0]);
+
+		$trackTrace = get_post_meta($order->id, '_shipping_ce_track_and_trace', true);
+        if(empty($trackTrace)) $trackTrace = get_post_meta($order->id, 'TrackAndTraceBarCode', true);
+
+        $shipment->setMerchantShipmentNo($trackTrace);
         $shipment->setMethod('postNL');
 
         $shipmentLines = $shipment->getLines();
