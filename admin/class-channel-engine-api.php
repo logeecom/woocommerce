@@ -73,17 +73,15 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
     public function post_shipment_complete_status($wc_order_id) {
 
         $order = new WC_Order($wc_order_id);
-        $orderId = get_post_meta($order->id, parent::PREFIX . '_order_id') ? get_post_meta($order->id, parent::PREFIX . '_order_id') : null;
+        $ceOrderId = get_post_meta($order->id, parent::PREFIX . '_order_id', true);
 
-        //TODO:: Set track and trace number : $shipment->setTrackTraceNo()
         $shipment = new Shipment();
-        $shipment->setOrderId(intval($orderId[0]));
+        $shipment->setOrderId(intval($ceOrderId));
 
 		$trackTrace = get_post_meta($order->id, '_shipping_ce_track_and_trace', true);
         if(empty($trackTrace)) $trackTrace = get_post_meta($order->id, 'TrackAndTraceBarCode', true);
-
-        $shipment->setMerchantShipmentNo($trackTrace);
-        $shipment->setMethod('postNL');
+        $shipment->setTrackTraceNo($trackTrace);
+        $shipment->setMerchantShipmentNo($order->id);
 
         $shipmentLines = $shipment->getLines();
         foreach ($order->get_items() as $wc_line_item_id => $lineItem) {
@@ -91,7 +89,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             $shipmentLine = new ShipmentLine();
 
             $productId = $lineItem['product_id'];
-            $order_line_id = wc_get_order_item_meta( $wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
+            $order_line_id = wc_get_order_item_meta($wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
             $qty = $lineItem['qty'];
             $shipmentLine->setOrderLineId(intval($order_line_id));
             $shipmentLine->setStatus(ShipmentLineStatus::SHIPPED);
