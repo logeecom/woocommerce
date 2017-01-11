@@ -63,8 +63,6 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
 			$product = array();
 
-			$price = 
-
 			$product['id'] = $id;
 			$product['meta'] = $meta;
 			$product['attrs'] = $attrs;
@@ -93,7 +91,8 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			foreach($vars as $variant) {
 				$varId = $variant->ID;
 				$meta = $this->getOrEmpty($meta_lookup, $varId);
-				$attrs = $this->getOrEmpty($attrs_lookup, $varId);
+
+				//$attrs = $this->getOrEmpty($attrs_lookup, $varId);
 
 				$imageId = get_post_thumbnail_id($varId);
 				if($imageId != 0) {
@@ -169,8 +168,20 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
 		$specsNode = $pXml->addChild('Specs');
 		$meta = $product['meta'];
-		foreach($product['attrs'] as $slug => $values) {
+		$attrs = $product['attrs'];
+
+		foreach($attrs as $slug => $values) {
+			// Ignore group specs.
+			if(isset($meta['attribute_pa_' . $slug])) continue;
+
 			$specsNode->addChildCData($slug, implode(',', $values));
+		}
+
+		foreach($meta as $key => $value) {
+			if(!$this->startsWith($key, 'attribute_pa_')) continue;
+			$key = str_replace('attribute_pa_', '', $key);
+
+			$specsNode->addChild($key, $value);
 		}
 
 		$specsNode->addChild('Weight', $this->get($meta, '_weight'));
@@ -178,6 +189,10 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$specsNode->addChild('Length', $this->get($meta, '_length'));
 		$specsNode->addChild('Height', $this->get($meta, '_height'));
 		
+	}
+
+	private function startsWith($input, $query) {
+		return substr($input, 0, strlen($query)) === $query;
 	}
 
 	private function get($arr, $key) {
@@ -240,6 +255,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			AND $p.post_type IN ('product', 'product_variation')
 			AND (
 				$pm.meta_key LIKE '" . parent::PREFIX . "%'
+				OR $pm.meta_key LIKE 'attribute_pa_%'
 				OR $pm.meta_key IN('_woocommerce_gpf_data', '_weight', '_length', '_height', '_width', '_sku')
 			)
 		";
