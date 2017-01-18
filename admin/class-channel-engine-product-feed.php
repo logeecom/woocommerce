@@ -78,6 +78,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['list_price'] = $wcProduct->get_price_including_tax(1, $wcProduct->get_regular_price());
 			$product['vat'] = $this->calcVat($product['price'], $product['purchase_price']);
 			$product['brand'] = $this->get($meta, $pr.'_brand');
+			$product['custom_attributes'] = $this->get($meta, '_product_attributes');
 			$product['sku'] = $this->get($meta, '_sku');
 			$product['shipping_costs'] = $this->get($meta, $pr.'_shipping_costs');
 			$product['shipping_time'] = $this->get($meta, $pr.'_shipping_time');
@@ -170,6 +171,15 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$meta = $product['meta'];
 		$attrs = $product['attrs'];
 
+		if(isset($product['custom_attributes']) && $product['custom_attributes'] != null) {
+			$custAttrs = unserialize($product['custom_attributes']);
+			foreach($custAttrs as $slug => $info) {
+				if($this->startsWith($slug, 'pa_') || $info['is_visible'] == 0 || $info['is_variation'] == 1) continue;
+				
+				$specsNode->addChildCData(str_replace(' ', '_', $slug), $info['value']);
+			}
+		}
+
 		foreach($attrs as $slug => $values) {
 			// Ignore group specs.
 			if(isset($meta['attribute_pa_' . $slug])) continue;
@@ -256,7 +266,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			AND (
 				$pm.meta_key LIKE '" . parent::PREFIX . "%'
 				OR $pm.meta_key LIKE 'attribute_pa_%'
-				OR $pm.meta_key IN('_woocommerce_gpf_data', '_weight', '_length', '_height', '_width', '_sku')
+				OR $pm.meta_key IN('_product_attributes', '_weight', '_length', '_height', '_width', '_sku')
 			)
 		";
 
@@ -317,4 +327,3 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		echo('</pre>');
 	}
 }
-
