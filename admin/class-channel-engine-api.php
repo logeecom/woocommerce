@@ -118,6 +118,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             'Failed' => array(),
             'Exception' => null
         );
+        $orders = [];
 
         try{
             //Get all orders
@@ -261,10 +262,10 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 $wc_product = wc_get_product($orderLine->getMerchantProductNo());
 				$productLineArgs = array('totals'=>
 					array(
-				/*		'subtotal'=>($orderLine->getLineTotalInclVat()),
-						'total'=>($orderLine->getLineTotalInclVat()),
-						'subtotal_tax'=>$orderLine->getLineVat(),
-						'total_tax'=>$orderLine->getLineVat() */
+						'subtotal' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
+						'total' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
+						'subtotal_tax' => $orderLine->getLineVat(),
+						'total_tax' => $orderLine->getLineVat()
 					)
 				);
                 $lineItemId = $wc_order->add_product($wc_product, $orderLine->getQuantity(), $productLineArgs);
