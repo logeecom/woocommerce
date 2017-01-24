@@ -35,6 +35,10 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$this->product_validation = $product_validation;
 	}
 
+	private function br2nl($string) {
+		return preg_replace('/<br\s*?\/?>|<\/p>/i', "\r\n", $string); 
+	}
+
 	public function generate_product_feed() {
 		global $wpdb;
 		$xml = new SimpleXMLExtended('<products></products>');
@@ -70,7 +74,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['category'] = parent::get_product_category($id);
 			$product['url'] = $wcProduct->get_permalink();
 			$product['name'] = $item->post_title;
-			$product['description'] = strip_tags($item->post_content);
+			$product['description'] = strip_tags($this->br2nl($item->post_content));
 			$product['stock'] = $wcProduct->get_stock_quantity();
 			$product['gtin'] = $this->get($meta, $pr.'_gtin');
 			$product['price'] = $wcProduct->get_price_including_tax();
