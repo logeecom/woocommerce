@@ -177,6 +177,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
 		if(isset($product['custom_attributes']) && $product['custom_attributes'] != null) {
 			$custAttrs = unserialize($product['custom_attributes']);
+
 			foreach($custAttrs as $slug => $info) {
 				if($this->startsWith($slug, 'pa_') || $info['is_visible'] == 0 || $info['is_variation'] == 1) continue;
 				
@@ -194,9 +195,14 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		foreach($meta as $key => $value) {
 			if(!$this->startsWith($key, 'attribute_pa_')) continue;
 			$key = str_replace('attribute_pa_', '', $key);
+			if(!isset($attrs[$key][$value])) continue;
 
-			$specsNode->addChild($key, $value);
+			$formattedValue = $attrs[$key][$value];
+
+			$specsNode->addChild($key, $formattedValue);
 		}
+
+
 
 		$specsNode->addChild('Weight', $this->get($meta, '_weight'));
 		$specsNode->addChild('Width', $this->get($meta, '_width'));
@@ -234,6 +240,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			SELECT
 				$tr.object_id AS product_id,
 				$tx.taxonomy AS slug,
+				$tm.slug AS value_slug,
 				$tm.name AS value
 			FROM $tr
 			INNER JOIN $tx ON $tr.term_taxonomy_id = $tx.term_taxonomy_id
@@ -249,7 +256,8 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$a->slug = str_replace('pa_', '', $a->slug);
 			if(!isset($lookup[$a->product_id])) $lookup[$a->product_id] = array();
 			if(!isset($lookup[$a->product_id][$a->slug])) $lookup[$a->product_id][$a->slug] = array();
-			$lookup[$a->product_id][$a->slug][] = $a->value;
+			if(!isset($lookup[$a->product_id][$a->slug][$a->value_slug])) $lookup[$a->product_id][$a->slug][$a->value_slug] = array();
+			$lookup[$a->product_id][$a->slug][$a->value_slug] = $a->value;
 		}
 
 		return $lookup;
