@@ -39,6 +39,18 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		return preg_replace('/<br\s*?\/?>|<\/p>/i', "\r\n", $string); 
 	}
 
+	private function getStock($product) {
+		
+		// Product out of stock, return 0
+		if(!$product->is_in_stock()) return 0;
+		
+		// Stock amount is managed, return stock amount
+		if($product->managing_stock()) return $product->get_stock_quantity();
+		
+		// Product is in stock, but no amount is managed, return 100 as a placeholder
+		return 100;
+    }
+
 	public function generate_product_feed() {
 		global $wpdb;
 		$xml = new SimpleXMLExtended('<products></products>');
@@ -75,7 +87,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['url'] = $wcProduct->get_permalink();
 			$product['name'] = $item->post_title;
 			$product['description'] = strip_tags($this->br2nl($item->post_content));
-			$product['stock'] = $wcProduct->get_stock_quantity();
+			$product['stock'] = $this->getStock($wcProduct);
 			$product['gtin'] = $this->get($meta, $pr.'_gtin');
 			$product['price'] = $wcProduct->get_price_including_tax();
 			$product['purchase_price'] = $wcProduct->get_price_excluding_tax(1, $wcProduct->get_regular_price());
@@ -107,7 +119,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 				$wcProductVar = wc_get_product($varId);
 				$product['id'] = $variant->ID;
 				$product['parent_id'] = $id;
-				$product['stock'] = $wcProductVar->get_stock_quantity();
+				$product['stock'] = $this->getStock($wcProductVar);
 				$product['attrs'] = $attrs;
 				$product['meta'] = $meta;
 				$product['type'] = $wcProductVar->product_type;
