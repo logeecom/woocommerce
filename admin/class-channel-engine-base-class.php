@@ -51,7 +51,7 @@ class Channel_Engine_Base_Class{
                 foreach ($parent_categories as $parent_category) {
                     //Concatenate product categories seperated by '>'
                     $category = get_term($parent_category, 'product_cat');
-                    $product_category = $category->name.'>'.$product_category;
+                    $product_category = $category->name.' > '.$product_category;
                 }
             }
         }

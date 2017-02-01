@@ -168,7 +168,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$pXml->addChild('ListPrice', $product['list_price']);
 		$pXml->addChild('VAT', $product['vat']);
 		$pXml->addChild('Stock', $product['stock']);
-		$pXml->addChild('Brand', $product['brand']);
+		$pXml->addChildCData('Brand', $product['brand']);
 		$pXml->addChild('MerchantProductNo', $product['id']);
 		$pXml->addChild('VendorProductNo', $product['sku']);
 		$pXml->addChild('GTIN', $product['gtin']);
@@ -176,7 +176,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$pXml->addChild('ShippingTime', $product['shipping_time']);
 		$pXml->addChild('ProductUrl', $product['url']);
 		$pXml->addChild('ImageUrl', $product['image_url']);
-		$pXml->addChild('Category', $product['category']);
+		$pXml->addChildCData('Category', $product['category']);
 		//Optional attributes
 		$pXml->addChild('MerchantGroupNo', $product['parent_id']);
 		$pXml->addChild('Size', $product['size']);
