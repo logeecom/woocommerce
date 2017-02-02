@@ -236,7 +236,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 	}
 
 	private function writeXML($xml) {
-		ob_clean();
+		if(ob_get_length()) ob_clean();
 		header('Content-Type: text/xml');
 		echo($xml->asXML());
 	}
