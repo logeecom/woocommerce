@@ -193,7 +193,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			foreach($custAttrs as $slug => $info) {
 				if($this->startsWith($slug, 'pa_') || $info['is_visible'] == 0 || $info['is_variation'] == 1) continue;
 				
-				$specsNode->addChildCData(str_replace(' ', '_', $slug), $info['value']);
+				$specsNode->addChildCData($this->cleanTag($slug), $info['value']);
 			}
 		}
 
@@ -201,7 +201,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			// Ignore group specs.
 			if(isset($meta['attribute_pa_' . $slug])) continue;
 
-			$specsNode->addChildCData($slug, implode(',', $values));
+			$specsNode->addChildCData($this->cleanTag($slug), implode(',', $values));
 		}
 
 		foreach($meta as $key => $value) {
@@ -211,7 +211,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
 			$formattedValue = $attrs[$key][$value];
 
-			$specsNode->addChild($key, $formattedValue);
+			$specsNode->addChildCData($this->cleanTag($key), $formattedValue);
 		}
 
 
@@ -221,6 +221,12 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$specsNode->addChild('Length', $this->get($meta, '_length'));
 		$specsNode->addChild('Height', $this->get($meta, '_height'));
 		
+	}
+
+	private function cleanTag($tag) {
+		$tag = str_replace(' ', '_', $tag);
+		if(is_numeric(substr($tag, 0, 1))) $tag = '_' . $tag;
+		return $tag;
 	}
 
 	private function startsWith($input, $query) {
