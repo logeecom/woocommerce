@@ -206,6 +206,9 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         //TODO:: Write order failure to error log?
         if($productExists) {
 
+            //Create billing address
+            $ba = $order->getBillingAddress();
+
             //Create initial order data
             $order_data = array(
                 'post_name' => 'order-' . $order->getOrderDate(),
@@ -213,37 +216,37 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 'post_title' => 'Order &ndash; ' . $order->getOrderDate(),
                 'post_status' => $order->getStatus(),
                 'ping_status' => 'closed',
-                'post_author' => $order->getBillingAddress()->getFirstName(),
+                'post_author' => $ba->getFirstName(),
                 'post_date' => $order->getOrderDate(),
                 'comment_status' => 'open'
             );
 
-            //Create billing address
             $billingAddress = array(
-                'first_name' => $order->getBillingAddress()->getFirstName(),
-                'last_name' => $order->getBillingAddress()->getLastName(),
-                'company' => $order->getBillingAddress()->getCompanyName(),
-                'address_1' => $this->create_address($order->getBillingAddress()->getStreetName(),$order->getBillingAddress()->getHouseNr(),$order->getBillingAddress()->getHouseNrAddition()),
+                'first_name' => $ba->getFirstName(),
+                'last_name' => $ba->getLastName(),
+                'company' => $ba->getCompanyName(),
+                'address_1' => $this->create_address($ba->getStreetName(), $ba->getHouseNr(), $ba->getHouseNrAddition()),
                 'address_2' => '',
-                'city' => $order->getBillingAddress()->getCity(),
+                'city' => $ba->getCity(),
                 'state' => '',
-                'postcode' => $order->getBillingAddress()->getZipCode(),
-                'country' => $order->getBillingAddress()->getCountryIso(),
+                'postcode' => $ba->getZipCode(),
+                'country' => $ba->getCountryIso(),
                 'email' => $order->getEmail(),
                 'phone' => $order->getPhone()
             );
 
             //Create shipping address
+            $sa = $order->getShippingAddress();
             $shippingAddress = array(
-                'first_name' => $order->getShippingAddress()->getFirstName(),
-                'last_name' => $order->getShippingAddress()->getLastName(),
-                'company' => $order->getShippingAddress()->getCompanyName(),
-                'address_1' => $this->create_address($order->getShippingAddress()->getStreetName(),$order->getShippingAddress()->getHouseNr(),$order->getShippingAddress()->getHouseNrAddition()),
+                'first_name' => $sa->getFirstName(),
+                'last_name' => $sa->getLastName(),
+                'company' => $sa->getCompanyName(),
+                'address_1' => $this->create_address($sa->getStreetName(), $sa->getHouseNr(), $sa->getHouseNrAddition()),
                 'address_2' => '',
-                'city' => $order->getShippingAddress()->getCity(),
+                'city' => $sa->getCity(),
                 'state' => '',
-                'postcode' => $order->getShippingAddress()->getZipCode(),
-                'country' => $order->getShippingAddress()->getCountryIso(),
+                'postcode' => $sa->getZipCode(),
+                'country' => $sa->getCountryIso(),
                 'email' => $order->getEmail(),
                 'phone' => $order->getPhone()
             );
@@ -252,6 +255,13 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             $wc_order = wc_create_order($order_data);
             $wc_order->set_address($billingAddress, 'billing');
             $wc_order->set_address($shippingAddress, 'shipping');
+
+            if($this->is_plugin_active('/woocommerce_wuunder/woocommerce-wuunder.php'))
+            {
+                update_post_meta($wc_order->id, '_shipping_street_name', $sa->getStreetName());
+                update_post_meta($wc_order->id, '_shipping_house_number', $sa->getHouseNr());
+                update_post_meta($wc_order->id, '_shipping_house_number_suffix', $sa->getHouseNrAddition());
+            }
             
             //Woocommerce Payment method can only be set if payment method is active and matches string from ChannelEngine 
             //$wc_order->set_payment_method($order->getPaymentMethod());
@@ -340,6 +350,10 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 				'Message'=>$errorMessage
 			);
         }
+    }
+
+    function is_plugin_active( $plugin ) {
+        return in_array( $plugin, (array) get_option( 'active_plugins', array() ) );
     }
 
 	// function to concatenate streetname, housenr and addition, seperated by spaces
