@@ -88,7 +88,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['name'] = $item->post_title;
 			$product['description'] = strip_tags($this->br2nl($item->post_content));
 			$product['stock'] = $this->getStock($wcProduct);
-			$product['gtin'] = $this->get($meta, $pr.'_gtin');
+			$product['gtin'] = $this->getGtin($meta);
 			$product['price'] = $wcProduct->get_price_including_tax();
 			$product['purchase_price'] = $wcProduct->get_price_excluding_tax(1, $wcProduct->get_regular_price());
 			$product['list_price'] = $wcProduct->get_price_including_tax(1, $wcProduct->get_regular_price());
@@ -124,8 +124,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 				$product['meta'] = $meta;
 				$product['type'] = $wcProductVar->product_type;
 				$product['sku'] = $this->get($meta, '_sku');
-				$product['gtin'] = $this->get($meta, $pr.'_gtin');
-
+				$product['gtin'] = $this->getGtin($meta);
 				$product['price'] = $wcProductVar->get_price_including_tax();
 				$product['purchase_price'] = $wcProductVar->get_price_excluding_tax(1, $wcProductVar->get_regular_price());
 				$product['list_price'] = $wcProductVar->get_price_including_tax(1, $wcProductVar->get_regular_price());
@@ -146,14 +145,10 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 	private function getGtin($meta) {
 		$ceGtin = $this->get($meta, parent::PREFIX.'_gtin');
 		if(!empty($ceGtin)) return $ceGtin;
-
-		/*$gpfData = $this->get($meta, '_woocommerce_gpf_data');
-		if(is_null($gpfData)) return null;
-
-		$gpfArr = unserialize($gpfData);	
-		$gpfGtin = $this->get($gpfArr, 'gtin');*/
 		
-		return $gpfGtin;
+		$ceGtin = $this->get($meta, '_ean');
+		
+		return $ceGtin;
 	}
 
 	private function createProductNode($xml, $product) {
@@ -296,7 +291,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			AND (
 				$pm.meta_key LIKE '" . parent::PREFIX . "%'
 				OR $pm.meta_key LIKE 'attribute_pa_%'
-				OR $pm.meta_key IN('_product_attributes', '_weight', '_length', '_height', '_width', '_sku')
+				OR $pm.meta_key IN('_product_attributes', '_weight', '_length', '_height', '_width', '_sku', '_ean')
 			)
 		";
 
