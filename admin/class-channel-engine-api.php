@@ -75,6 +75,8 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         $order = new WC_Order($wc_order_id);
         $ceOrderId = get_post_meta($order->id, parent::PREFIX . '_order_id', true);
 
+        if(!$ceOrderId) return;
+
         $shipment = new Shipment();
         $shipment->setOrderId(intval($ceOrderId));
 
