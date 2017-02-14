@@ -114,7 +114,6 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
      * Fetch orders from channel engine
      */
     public function import_orders(){
-
         $results = array(
             'Success' => array(),
             'Failed' => array(),
@@ -354,8 +353,9 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         }
     }
 
-    function is_plugin_active( $plugin ) {
-        return in_array( $plugin, (array) get_option( 'active_plugins', array() ) );
+    function is_plugin_active($plugin) {
+        $plugins = (array) get_option('active_plugins', array());
+        return in_array($plugin, $plugins);
     }
 
 	// function to concatenate streetname, housenr and addition, seperated by spaces

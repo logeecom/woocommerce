@@ -88,11 +88,11 @@ class Channel_Engine_API_Endpoint{
 			switch($type) {
 				case 'orders':
 					$channel_engine_api_client = new Channel_Engine_API($this->client);
-            		$channel_engine_api_client -> import_orders();
+            		$channel_engine_api_client->import_orders();
 					break;
 				case 'returns':
 					$channel_engine_api_client = new Channel_Engine_API($this->client);
-            		$channel_engine_api_client -> fetch_returns();
+            		$channel_engine_api_client->fetch_returns();
 					break;
 			}
             
