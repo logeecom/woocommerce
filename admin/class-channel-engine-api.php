@@ -257,13 +257,6 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             $wc_order->set_address($billingAddress, 'billing');
             $wc_order->set_address($shippingAddress, 'shipping');
 
-            if($this->is_plugin_active('/woocommerce_wuunder/woocommerce-wuunder.php'))
-            {
-                update_post_meta($wc_order->id, '_shipping_street_name', $sa->getStreetName());
-                update_post_meta($wc_order->id, '_shipping_house_number', $sa->getHouseNr());
-                update_post_meta($wc_order->id, '_shipping_house_number_suffix', $sa->getHouseNrAddition());
-            }
-            
             //Woocommerce Payment method can only be set if payment method is active and matches string from ChannelEngine 
             //$wc_order->set_payment_method($order->getPaymentMethod());
 
@@ -319,6 +312,15 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 			// Woocommerce data
 			update_post_meta($wc_order->id, '_customer_ip_address', '');
 			update_post_meta($wc_order->id, '_shipping_ce_track_and_trace', '');
+
+            if($this->is_plugin_active('woocommerce_wuunder/woocommerce-wuunder.php'))
+            {
+                update_post_meta($wc_order->id, '_shipping_street_name', $sa->getStreetName());
+                update_post_meta($wc_order->id, '_shipping_house_number', $sa->getHouseNr());
+                update_post_meta($wc_order->id, '_shipping_house_number_suffix', $sa->getHouseNrAddition());
+            }
+
+
 			$wc_order->order_date = $order->getOrderDate();
 			$wc_order->payment_complete();
 
