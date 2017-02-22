@@ -90,9 +90,9 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['stock'] = $this->getStock($wcProduct);
 			$product['gtin'] = $this->getGtin($meta);
 			$product['price'] = $wcProduct->get_price_including_tax();
-			$product['purchase_price'] = $wcProduct->get_price_excluding_tax(1, $wcProduct->get_regular_price());
+			$product['price_ex_vat'] = $wcProduct->get_price_excluding_tax();
 			$product['list_price'] = $wcProduct->get_price_including_tax(1, $wcProduct->get_regular_price());
-			$product['vat'] = $this->calcVat($product['price'], $product['purchase_price']);
+			$product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 			$product['brand'] = $this->get($meta, $pr.'_brand');
 			$product['custom_attributes'] = $this->get($meta, '_product_attributes');
 			$product['sku'] = $this->get($meta, '_sku');
@@ -126,9 +126,9 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 				$product['sku'] = $this->get($meta, '_sku');
 				$product['gtin'] = $this->getGtin($meta);
 				$product['price'] = $wcProductVar->get_price_including_tax();
-				$product['purchase_price'] = $wcProductVar->get_price_excluding_tax(1, $wcProductVar->get_regular_price());
+				$product['price_ex_vat'] = $wcProductVar->get_price_excluding_tax(1, $wcProductVar->get_price());
 				$product['list_price'] = $wcProductVar->get_price_including_tax(1, $wcProductVar->get_regular_price());
-				$product['vat'] = $this->calcVat($product['price'], $product['purchase_price']);
+				$product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 
 				$this->createProductNode($xml, $product);
 			}
@@ -159,7 +159,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$pXml->addChildCData('Name', $product['name']);
 		$pXml->addChildCData('Description', $product['description']);
 		$pXml->addChild('Price', $product['price']);
-		$pXml->addChild('PurchasePrice', $product['purchase_price']);
+		$pXml->addChild('PriceExVat', $product['price_ex_vat']);
 		$pXml->addChild('ListPrice', $product['list_price']);
 		$pXml->addChild('VAT', $product['vat']);
 		$pXml->addChild('Stock', $product['stock']);

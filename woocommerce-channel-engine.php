@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce ChannelEngine
 Plugin URI: http://channelengine.net
 Description: ChannelEngine plugin for WooCommerce
-Version: 1.5.7
+Version: 1.5.8
 Author: ChannelEngine
 Author URI: http://channelengine.net
 */
