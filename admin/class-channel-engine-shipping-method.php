@@ -86,11 +86,11 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 		}
 	}
-	add_action( 'woocommerce_shipping_init', 'channel_engine_shipping_method_init' );
+	//add_action( 'woocommerce_shipping_init', 'channel_engine_shipping_method_init' );
 	function add_channel_engine_shipping_method( $methods ) {
 		$methods[] = 'Channel_Engine_Shipping_Method';
 		return $methods;
 	}
 
-	add_filter( 'woocommerce_shipping_methods', 'add_channel_engine_shipping_method' );
+	//add_filter( 'woocommerce_shipping_methods', 'add_channel_engine_shipping_method' );
 }
