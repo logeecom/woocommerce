@@ -8,6 +8,12 @@
 
 require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-base-class.php' );
 
+use ChannelEngine\ApiClient\Configuration;
+use ChannelEngine\ApiClient\Api\OrderApi;
+use ChannelEngine\ApiClient\Api\ReturnApi;
+use ChannelEngine\ApiClient\Api\ShipmentApi;
+use ChannelEngine\ApiClient\Api\CancellationApi;
+
 class Channel_Engine {
 
     private $tracker;
@@ -58,29 +64,33 @@ class Channel_Engine {
      */
     public function init_classes(){
 		$this->product_validation = new Channel_Engine_Product_Validation();
+
     	new Channel_Engine_Admin();
         new Channel_Engine_Product_Tab($this->product_validation);
         new Channel_Engine_Custom_Order_Status();
+
         $this->settings = new Channel_Engine_Settings();
         $this->tracker  = new Channel_Engine_Tracking($this->settings->account_name);
-        ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setHost('https://' . $this->settings->account_name . '.channelengine.net/api');
-        ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setApiKey('apikey', $this->settings->api_key);
-        $guzzle = new \GuzzleHttp\Client();
-        $this->orderClient = new ChannelEngine\ApiClient\Api\OrderApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
-        $this->returnClient = new ChannelEngine\ApiClient\Api\ReturnApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
-        $this->shipmentClient = new ChannelEngine\ApiClient\Api\ShipmentApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
-        $this->cancellationClient = new ChannelEngine\ApiClient\Api\CancellationApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
+
+        $apiConfig = Configuration::getDefaultConfiguration();
+        $apiConfig->setHost('https://' . $this->settings->account_name . '.channelengine.net/api');
+        $apiConfig->setApiKey('apikey', $this->settings->api_key);
+
+        $this->orderClient = new OrderApi();
+        $this->returnClient = new ReturnApi();
+        $this->shipmentClient = new ShipmentApi();
+        $this->cancellationClient = new CancellationApi();
+
         new Channel_Engine_Order_Complete($this->shipmentClient);
         new Channel_Engine_Order_Cancelled($this->cancellationClient);
         new Channel_Engine_API_Endpoint($this->orderClient, $this->returnClient, $this->shipmentClient, $this->pluginPath, $this->product_validation);
     }
 
-    public function include_scripts(){
+    public function include_scripts() {
         wp_enqueue_script('channel-engine-admin-edit-script', plugins_url('/js/channel-engine-admin-edit.js', __FILE__));
     }
 
-    public function include_styles(){
-
+    public function include_styles() {
         //Global channel engine css file
         wp_enqueue_style( 'channel-engine-admin-style', plugins_url( '/css/channel-engine-admin.css', __FILE__ ) );
     }
