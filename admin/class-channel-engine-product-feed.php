@@ -106,7 +106,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['gtin'] = $this->getGtin($meta);
 			$product['price'] = wc_get_price_including_tax($wcProduct);
 			$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProduct);
-			$product['list_price'] = wc_get_price_including_tax($wcProduct, 1, $wcProduct->get_regular_price());
+			$product['list_price'] = wc_get_price_including_tax($wcProduct, array('qty' => 1, 'price' => $wcProduct->get_regular_price()));
 			$product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 			$product['brand'] = $this->get($meta, $pr.'_brand');
 			$product['custom_attributes'] = $this->get($meta, '_product_attributes');
@@ -160,8 +160,8 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
                     $product['sku'] = $this->get($meta, '_sku');
                     $product['gtin'] = $this->getGtin($meta);
                     $product['price'] = wc_get_price_including_tax($wcProductVar);
-					$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProductVar, 1, $wcProductVar->get_price());
-					$product['list_price'] = wc_get_price_including_tax($wcProductVar, 1, $wcProduct->get_regular_price());
+					$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProductVar, array('qty' => 1, 'price' => $wcProductVar->get_price()));
+					$product['list_price'] = wc_get_price_including_tax($wcProductVar, array('qty' => 1, 'price' => $wcProduct->get_regular_price()));
                     $product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 
                     $this->createProductNode($xml, $product);
@@ -222,7 +222,6 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 		$specsNode = $pXml->addChild('Specs');
 		$meta = $product['meta'];
 		$attrs = $product['attrs'];
-
 		if(isset($product['custom_attributes']) && $product['custom_attributes'] != null) {
 			$custAttrs = unserialize($product['custom_attributes']);
 
