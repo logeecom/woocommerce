@@ -1,6 +1,5 @@
 <?php
 
-use ChannelEngineApiClient\Client\ApiClient;
 
 class Channel_Engine_Settings extends Channel_Engine_Base_Class{
 
@@ -66,7 +65,7 @@ class Channel_Engine_Settings extends Channel_Engine_Base_Class{
                         width: 80%;"/></td>
                     </tr>
 
-                    <tr valign="top">
+                    <tr valign="top" style="display: none">
                         <th scope="row">API Secret Key</th>
                         <td><input type="text" name="<?php echo $this->key_api_secret ?>" value="<?php echo esc_attr( get_option($this->key_api_secret) ); ?>" style="
                         width: 80%;"/></td>
@@ -151,18 +150,17 @@ class Channel_Engine_Settings extends Channel_Engine_Base_Class{
             //Check if all values are present before doing the API call
             if(strlen($value_account_name) && strlen($value_api_key) && strlen($value_api_secret)) {
                 //Create client with given credentials
-                $this->client = new ApiClient($value_api_key, $value_api_secret, $value_account_name);
+                ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setHost('https://' . $value_account_name . '.channelengine.net/api');
+                ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setApiKey('apikey', $value_api_key);
+                $this->client = new ChannelEngine\ApiClient\Api\OrderApi(new \GuzzleHttp\Client(), ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
 
                 try{
                     //Test credentials by doing an api call with a non existing order status.
-                    $orders = $this->client->getOrders(
-                        array(
-                            -1
-                        )
-                    );
+                    $orders = $this->client->orderGetByFilter(-1);
                 }catch(Exception $e){
                     //Write exception to error log
                     error_log( print_r( $e, true ) );
+                    update_option($this->key_valid_credentials, 'false');
                 }
 
                 //API Call succeeded, set valid credentials to true.

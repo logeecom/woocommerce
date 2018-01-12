@@ -1,6 +1,6 @@
 {
- 	"name": "channelegine/woocommerce-channel-engine",
+ 	"name": "channelengine/woocommerce-channel-engine",
     "require": {
-        "channelengine/api-client": "dev-master"
+      "channelengine/api-client-php": "dev-master"
     }
 }

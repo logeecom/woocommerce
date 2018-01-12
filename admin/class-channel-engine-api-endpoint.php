@@ -7,7 +7,9 @@
  */
 
 // Import the required namespaces
-use ChannelEngineApiClient\Client\ApiClient;
+use ChannelEngine\ApiClient\Api\OrderApi;
+use ChannelEngine\ApiClient\Api\ReturnApi;
+use ChannelEngine\ApiClient\Api\ShipmentApi;
 
 class Channel_Engine_API_Endpoint{
 
@@ -16,7 +18,7 @@ class Channel_Engine_API_Endpoint{
 
     /** Hook WordPress
      */
-    public function __construct(ApiClient $client, $pluginPath, $product_validation){
+    public function __construct(OrderApi $orderClient, ReturnApi $returnClient, ShipmentApi $shipmentClient, $pluginPath, $product_validation){
 
         add_filter('query_vars', array($this, 'add_query_vars'), 0);
         add_action('parse_request', array($this, 'sniff_requests'), 0);
@@ -25,7 +27,9 @@ class Channel_Engine_API_Endpoint{
         register_activation_hook($pluginPath, array($this, 'add_endpoints_and_flush'));
         register_deactivation_hook($pluginPath, array($this, 'remove_endpoints'));
 
-        $this->client = $client;
+        $this->orderClient = $orderClient;
+        $this->returnClient = $returnClient;
+        $this->shipmentClient = $shipmentClient;
         $this->product_validation = $product_validation;
     }
 
@@ -80,20 +84,32 @@ class Channel_Engine_API_Endpoint{
 			// check if callback is fired by channel engine
 			$type = isset($_GET['type']) ? $_GET['type'] : '';
 			try { 
-				$this->client->validateCallbackHash();
+				//$this->client->validateCallbackHash();
 			} catch(Exception $e) {
 				http_response_code(403);
 				exit($e->getMessage());
 			}
+            header('Content-Type: application/json');
 			switch($type) {
 				case 'orders':
-					$channel_engine_api_client = new Channel_Engine_API($this->client);
+					$channel_engine_api_client = new Channel_Engine_API($this->orderClient);
             		$channel_engine_api_client->import_orders();
 					break;
 				case 'returns':
-					$channel_engine_api_client = new Channel_Engine_API($this->client);
+					$channel_engine_api_client = new Channel_Engine_API($this->returnClient);
             		$channel_engine_api_client->fetch_returns();
 					break;
+                case 'shipments':
+                    $order_id = isset($_GET['id']) ? $_GET['id'] : '';
+                    $apikey = isset($_GET['apikey']) ? $_GET['apikey'] : '';
+                    if($order_id) {
+                        $channel_engine_api_client = new Channel_Engine_API($this->shipmentClient);
+                        if($apikey != $this->shipmentClient->getConfig()->getApiKey("apikey")){
+                            http_response_code(403);
+                            exit();
+                        }
+                        $channel_engine_api_client->post_shipment_complete_status($order_id);
+                    }
 			}
             
 

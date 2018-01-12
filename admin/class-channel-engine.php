@@ -6,16 +6,16 @@
  * Time: 12:07
  */
 
-// Import the required namespaces
-use ChannelEngineApiClient\Client\ApiClient;
-
 require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-base-class.php' );
 
 class Channel_Engine {
 
     private $tracker;
     private $settings;
-    private $client;
+    private $orderClient;
+    private $returnClient;
+    private $shipmentClient;
+    private $cancellationClient;
 	private $pluginPath;
     private $product_validation;
 
@@ -29,7 +29,8 @@ class Channel_Engine {
 		 **/
 		if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 			// Run plugin code
-			add_action('admin_enqueue_scripts', array($this, 'include_styles'));
+            add_action('admin_enqueue_scripts', array($this, 'include_styles'));
+            add_action('admin_enqueue_scripts', array($this, 'include_scripts'));
 	        $this->includes();
 	        $this->init_classes();
 		}
@@ -43,6 +44,7 @@ class Channel_Engine {
         require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-custom-order-status.php' );
         require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-product-tab.php' );
         require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-order-complete.php' );
+        require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-order-cancelled.php' );
         require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-settings.php' );
         require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-tracking.php' );
         require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-api-endpoint.php' );
@@ -61,12 +63,20 @@ class Channel_Engine {
         new Channel_Engine_Custom_Order_Status();
         $this->settings = new Channel_Engine_Settings();
         $this->tracker  = new Channel_Engine_Tracking($this->settings->account_name);
-        $this->client   = new ApiClient($this->settings->api_key, $this->settings->api_secret, $this->settings->account_name);
-        new Channel_Engine_Order_Complete($this->client);
-        new Channel_Engine_API_Endpoint($this->client, $this->pluginPath, $this->product_validation);
+        ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setHost('https://' . $this->settings->account_name . '.channelengine.net/api');
+        ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setApiKey('apikey', $this->settings->api_key);
+        $guzzle = new \GuzzleHttp\Client();
+        $this->orderClient = new ChannelEngine\ApiClient\Api\OrderApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
+        $this->returnClient = new ChannelEngine\ApiClient\Api\ReturnApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
+        $this->shipmentClient = new ChannelEngine\ApiClient\Api\ShipmentApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
+        $this->cancellationClient = new ChannelEngine\ApiClient\Api\CancellationApi($guzzle, ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
+        new Channel_Engine_Order_Complete($this->shipmentClient);
+        new Channel_Engine_Order_Cancelled($this->cancellationClient);
+        new Channel_Engine_API_Endpoint($this->orderClient, $this->returnClient, $this->shipmentClient, $this->pluginPath, $this->product_validation);
     }
 
     public function include_scripts(){
+        wp_enqueue_script('channel-engine-admin-edit-script', plugins_url('/js/channel-engine-admin-edit.js', __FILE__));
     }
 
     public function include_styles(){
