@@ -104,9 +104,9 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['description'] = strip_tags($this->br2nl($item->get_description()));
 			$product['stock'] = $this->getStock($wcProduct);
 			$product['gtin'] = $this->getGtin($meta);
-			$product['price'] = $wcProduct->get_price_including_tax();
-			$product['price_ex_vat'] =$wcProduct->get_price_excluding_tax();
-			$product['list_price'] = $wcProduct->get_price_including_tax(1, $wcProduct->get_regular_price());
+			$product['price'] = wc_get_price_including_tax($wcProduct);
+			$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProduct);
+			$product['list_price'] = wc_get_price_including_tax($wcProduct, 1, $wcProduct->get_regular_price());
 			$product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 			$product['brand'] = $this->get($meta, $pr.'_brand');
 			$product['custom_attributes'] = $this->get($meta, '_product_attributes');
@@ -116,7 +116,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			$product['parent_id'] = null;
 			$product['size'] = $this->get($meta, $pr.'_size');
 			$product['color'] = $this->get($meta, $pr.'_color');
-			$product['type'] = $wcProduct->product_type;
+			$product['type'] = $wcProduct->get_type();
 
             $this->createProductNode($xml, $product);
 
@@ -156,12 +156,12 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
                     $product['stock'] = $this->getStock($wcProductVar);
                     $product['attrs'] = $attrs;
                     $product['meta'] = $meta;
-                    $product['type'] = $wcProductVar->product_type;
+                    $product['type'] = $wcProductVar->get_type();
                     $product['sku'] = $this->get($meta, '_sku');
                     $product['gtin'] = $this->getGtin($meta);
-                    $product['price'] = $wcProductVar->get_price_including_tax();
-                    $product['price_ex_vat'] = $wcProductVar->get_price_excluding_tax(1, $wcProductVar->get_price());
-                    $product['list_price'] = $wcProductVar->get_price_including_tax(1, $wcProductVar->get_regular_price());
+                    $product['price'] = wc_get_price_including_tax($wcProductVar);
+					$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProductVar, 1, $wcProductVar->get_price());
+					$product['list_price'] = wc_get_price_including_tax($wcProductVar, 1, $wcProduct->get_regular_price());
                     $product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 
                     $this->createProductNode($xml, $product);
