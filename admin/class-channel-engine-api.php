@@ -269,7 +269,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 'post_name' => 'order-' . $order->getOrderDate()->format("Y-m-d H:i:s"),
                 'post_type' => 'shop_order',
                 'post_title' => 'Order &ndash; ' . $order->getOrderDate()->format("Y-m-d H:i:s"),
-                'post_status' => $order->getStatus(),
+                //'post_status' => $order->getStatus(),
                 'ping_status' => 'closed',
                 'post_author' => $ba->getFirstName(),
                 'post_date' => $order->getOrderDate(),
@@ -386,19 +386,20 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 //            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipments', serialize($order->getShipments()));
 //            update_post_meta($wc_order->get_id(), parent::PREFIX . '_cancellations', serialize($order->getCancellations()));
 			return array(
-				'success'=>true,
+				'success' => true,
 				'orderId'=>$order->getId(),
 				'merchantOrderNo'=>$wc_order->get_order_number()
 			);
         }
-        else{
+        else
+        {
         	// products mismatch
         	$errorMessage = 'Products with ID [' . implode($productMismatches,',') . '] in order ' . $order->getId() . ' do not exist anymore, order has not been imported!';
         	error_log($errorMessage);
 			return array(
-				'Success'=>false,
-				'OrderId'=>$order->getId(),
-				'Message'=>$errorMessage
+				'success' => false,
+				'orderId'=>$order->getId(),
+				'message'=>$errorMessage
 			);
         }
     }
