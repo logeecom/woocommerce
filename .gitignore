@@ -4,3 +4,4 @@
 vendor/
 *.zip
 *.lock
+.idea/

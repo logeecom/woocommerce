@@ -7,57 +7,57 @@
  */
 
 class SimpleXMLExtended extends SimpleXMLElement {
-	public function addCData($cdata_text) {
-		$node = dom_import_simplexml($this); 
-		$no = $node->ownerDocument; 
-		$node->appendChild($no->createCDATASection($cdata_text)); 
-	} 
+    public function addCData($cdata_text) {
+        $node = dom_import_simplexml($this);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($cdata_text));
+    }
 
-	public function addChildCData($element_name, $cdata) {
-		$this->$element_name = NULL;
-		$this->$element_name->addCData($cdata);
-	}
+    public function addChildCData($element_name, $cdata) {
+        $this->$element_name = NULL;
+        $this->$element_name->addCData($cdata);
+    }
 }
 
 class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
-	private $product_validation;
-	
+    private $product_validation;
 
-	public function __construct($product_validation) {
-		// Enable errors
-		error_reporting(-1);
-		set_time_limit(60 * 5);
-		ini_set('display_errors', 'On');
-		ini_set('memory_limit', '2048M');
 
-		$this->product_validation = $product_validation;
-	}
+    public function __construct($product_validation) {
+        // Enable errors
+        error_reporting(-1);
+        set_time_limit(60 * 5);
+        ini_set('display_errors', 'On');
+        ini_set('memory_limit', '2048M');
 
-	private function br2nl($string) {
-		return preg_replace('/<br\s*?\/?>|<\/p>/i', "\r\n", $string); 
-	}
-
-	private function getStock($product) {
-		
-		// Product out of stock, return 0
-		if(!$product->is_in_stock()) return 0;
-		
-		// Stock amount is managed, return stock amount
-		if($product->managing_stock()) return $product->get_stock_quantity();
-		
-		// Product is in stock, but no amount is managed, return 100 as a placeholder
-		return 100;
+        $this->product_validation = $product_validation;
     }
 
-	public function generate_product_feed() {
-		global $wpdb;
-		$xml = new SimpleXMLExtended('<products></products>');
-		$attrs_lookup = $this->getAttributeLookup();
-		$meta_lookup = $this->getMetaLookup();
+    private function br2nl($string) {
+        return preg_replace('/<br\s*?\/?>|<\/p>/i', "\r\n", $string);
+    }
 
-		/*
-		$tax = WC_TAX::get_base_tax_rates();
+    private function getStock($product) {
+
+        // Product out of stock, return 0
+        if(!$product->is_in_stock()) return 0;
+
+        // Stock amount is managed, return stock amount
+        if($product->managing_stock()) return $product->get_stock_quantity();
+
+        // Product is in stock, but no amount is managed, return 100 as a placeholder
+        return 100;
+    }
+
+    public function generate_product_feed() {
+        global $wpdb;
+        $xml = new SimpleXMLExtended('<products></products>');
+        $attrs_lookup = $this->getAttributeLookup();
+        $meta_lookup = $this->getMetaLookup();
+
+        /*
+        $tax = WC_TAX::get_base_tax_rates();
         $tax_rate = isset($tax[1]['rate']) ? $tax[1]['rate'] : null;
 
         return $tax_rate;*/
@@ -66,9 +66,9 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
             'return' => 'objects',
             'posts_per_page' => -1
         );
-		$newProducts = wc_get_products($args);
+        $newProducts = wc_get_products($args);
 
-		foreach($newProducts as $item) {
+        foreach($newProducts as $item) {
             $id = $item->get_id();
             //Skip products with incomplete data
             // if(! $this->product_validation->validate_channel_engine_product($id)) continue;
@@ -86,44 +86,45 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
             // featured image
             $product['image_url'] = '';
-            $images = $this->get($meta, '_wp_attached_file');
-            if (count($images) && isset($images[$item->get_image_id()])) {
-                $product['image_url'] = $this->getUrlForFilename($images[$item->get_image_id()]);
+            $featuredImageMeta = $this->getOrEmpty($meta_lookup, $item->get_image_id());
+            if (count($featuredImageMeta) && array_key_exists('_wp_attached_file', $featuredImageMeta)) {
+                $product['image_url'] = $this->getUrlForFilename($featuredImageMeta['_wp_attached_file']);
             }
 
             // gallery images
             $product['gallery_url'] = array();
             foreach($wcProduct->get_gallery_image_ids() as $imgId){
-                if(count($images) && isset($images[$imgId])) {
-                    $product['gallery_url'][] = $this->getUrlForFilename($images[$imgId]);
+                $imageMeta =  $this->getOrEmpty($meta_lookup, $imgId);
+                if (count($imageMeta) && array_key_exists('_wp_attached_file', $imageMeta)) {
+                    $product['gallery_url'][] = $this->getUrlForFilename($imageMeta['_wp_attached_file']);
                 }
             }
-			$product['category'] = parent::get_product_category($id);
-			$product['url'] = $wcProduct->get_permalink();
-			$product['name'] = $item->get_title();
-			$product['description'] = strip_tags($this->br2nl($item->get_description()));
-			$product['stock'] = $this->getStock($wcProduct);
-			$product['gtin'] = $this->getGtin($meta);
-			$product['price'] = wc_get_price_including_tax($wcProduct);
-			$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProduct);
-			$product['list_price'] = wc_get_price_including_tax($wcProduct, array('qty' => 1, 'price' => $wcProduct->get_regular_price()));
-			$product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
-			$product['brand'] = $this->get($meta, $pr.'_brand');
-			$product['custom_attributes'] = $this->get($meta, '_product_attributes');
-			$product['sku'] = $this->get($meta, '_sku');
-			$product['shipping_costs'] = $this->get($meta, $pr.'_shipping_costs');
-			$product['shipping_time'] = $this->get($meta, $pr.'_shipping_time');
-			$product['parent_id'] = null;
-			$product['size'] = $this->get($meta, $pr.'_size');
-			$product['color'] = $this->get($meta, $pr.'_color');
-			$product['type'] = $wcProduct->get_type();
+            $product['category'] = parent::get_product_category($id);
+            $product['url'] = $wcProduct->get_permalink();
+            $product['name'] = $item->get_title();
+            $product['description'] = strip_tags($this->br2nl($item->get_description()));
+            $product['stock'] = $this->getStock($wcProduct);
+            $product['gtin'] = $this->getGtin($meta);
+            $product['price'] = $wcProduct->get_price_including_tax();
+            $product['price_ex_vat'] =$wcProduct->get_price_excluding_tax();
+            $product['list_price'] = $wcProduct->get_price_including_tax(1, $wcProduct->get_regular_price());
+            $product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
+            $product['brand'] = $this->get($meta, $pr.'_brand');
+            $product['custom_attributes'] = $this->get($meta, '_product_attributes');
+            $product['sku'] = $this->get($meta, '_sku');
+            $product['shipping_costs'] = $this->get($meta, $pr.'_shipping_costs');
+            $product['shipping_time'] = $this->get($meta, $pr.'_shipping_time');
+            $product['parent_id'] = null;
+            $product['size'] = $this->get($meta, $pr.'_size');
+            $product['color'] = $this->get($meta, $pr.'_color');
+            $product['type'] = $wcProduct->product_type;
 
             $this->createProductNode($xml, $product);
 
 
-			$vars =  $item->get_children();
+            $vars =  $item->get_children();
 
-			if(count($vars)) {
+            if(count($vars)) {
 
                 foreach ($vars as $variant_id) {
 
@@ -132,164 +133,166 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
                     $varId = $variant->get_id();
                     $wcProductVar = $variant;
 
-                    $meta = $this->getOrEmpty($meta_lookup, $varId);
+                    $varmeta = $this->getOrEmpty($meta_lookup, $varId);
 
-                    $attrs = $this->getOrEmpty($attrs_lookup, $varId);
+                    $varattrs = $this->getOrEmpty($attrs_lookup, $varId);
 
                     // featured image
                     $product['image_url'] = '';
-                    $images = $this->get($meta, '_wp_attached_file');
-                    if (count($images) && isset($images[$variant->get_image_id()])) {
-                        $product['image_url'] = $this->getUrlForFilename($images[$variant->get_image_id()]);
+                    $featuredImageMeta = $this->getOrEmpty($meta_lookup, $variant->get_image_id());
+                    if (count($featuredImageMeta) && array_key_exists('_wp_attached_file', $featuredImageMeta)) {
+                        $product['image_url'] = $this->getUrlForFilename($featuredImageMeta['_wp_attached_file']);
                     }
 
                     // gallery images
                     $product['gallery_url'] = array();
                     foreach ($wcProduct->get_gallery_image_ids() as $imgId) {
-                        if (count($images) && isset($images[$imgId])) {
-                            $product['gallery_url'][] = $this->getUrlForFilename($images[$imgId]);
+                        $imageMeta =  $this->getOrEmpty($meta_lookup, $imgId);
+                        if (count($imageMeta) && array_key_exists('_wp_attached_file', $imageMeta)) {
+                            $product['gallery_url'][] = $this->getUrlForFilename($imageMeta['_wp_attached_file']);
                         }
                     }
 
                     $product['id'] = $variant->get_id();
                     $product['parent_id'] = $id;
                     $product['stock'] = $this->getStock($wcProductVar);
-                    $product['attrs'] = $attrs;
-                    $product['meta'] = $meta;
-                    $product['type'] = $wcProductVar->get_type();
-                    $product['sku'] = $this->get($meta, '_sku');
-                    $product['gtin'] = $this->getGtin($meta);
-                    $product['price'] = wc_get_price_including_tax($wcProductVar);
-					$product['price_ex_vat'] = wc_get_price_excluding_tax($wcProductVar, array('qty' => 1, 'price' => $wcProductVar->get_price()));
-					$product['list_price'] = wc_get_price_including_tax($wcProductVar, array('qty' => 1, 'price' => $wcProduct->get_regular_price()));
+                    $product['attrs'] = $varattrs;
+                    $product['meta'] = $varmeta;
+                    $product['type'] = $wcProductVar->product_type;
+                    $product['sku'] = $this->get($varmeta, '_sku');
+                    $product['gtin'] = $this->getGtin($varmeta);
+                    $product['price'] = $wcProductVar->get_price_including_tax();
+                    $product['price_ex_vat'] = $wcProductVar->get_price_excluding_tax(1, $wcProductVar->get_price());
+                    $product['list_price'] = $wcProductVar->get_price_including_tax(1, $wcProductVar->get_regular_price());
                     $product['vat'] = $this->calcVat($product['price'], $product['price_ex_vat']);
 
                     $this->createProductNode($xml, $product);
                 }
             }
-		}
-		$this->writeXML($xml);
-	}
+        }
+        $this->writeXML($xml);
+    }
 
-	private function calcVat($price, $priceExVat) {
-		if($price == 0) return 0;
-		$vat = (($price - $priceExVat) / $priceExVat) * 100;
-		return round($vat);
-	}
+    private function calcVat($price, $priceExVat) {
+        if($price == 0) return 0;
+        $vat = (($price - $priceExVat) / $priceExVat) * 100;
+        return round($vat);
+    }
 
-	private function getGtin($meta) {
-		$ceGtin = $this->get($meta, parent::PREFIX.'_gtin');
-		if(!empty($ceGtin)) return $ceGtin;
-		
-		$ceGtin = $this->get($meta, '_ean');
-		
-		return $ceGtin;
-	}
+    private function getGtin($meta) {
+        $ceGtin = $this->get($meta, parent::PREFIX.'_gtin');
+        if(!empty($ceGtin)) return $ceGtin;
 
-	private function createProductNode(SimpleXMLExtended $xml, $product) {
+        $ceGtin = $this->get($meta, '_ean');
 
-		//Generate XML entities
-		$pXml = $xml->addChild('Product');
-		//Required attributes
-		$pXml->addChildCData('Name', $product['name']);
-		$pXml->addChildCData('Description', $product['description']);
-		$pXml->addChild('Price', $product['price']);
-		$pXml->addChild('PriceExVat', $product['price_ex_vat']);
-		$pXml->addChild('ListPrice', $product['list_price']);
-		$pXml->addChild('VAT', $product['vat']);
-		$pXml->addChild('Stock', $product['stock']);
-		$pXml->addChildCData('Brand', $product['brand']);
-		$pXml->addChild('MerchantProductNo', $product['id']);
-		$pXml->addChild('VendorProductNo', $product['sku']);
-		$pXml->addChild('GTIN', $product['gtin']);
-		$pXml->addChild('ShippingCosts', $product['shipping_costs']);
-		$pXml->addChild('ShippingTime', $product['shipping_time']);
-		$pXml->addChild('ProductUrl', $product['url']);
-		$pXml->addChild('ImageUrl', $product['image_url']);
-		if(isset($product['gallery_url'])){
+        return $ceGtin;
+    }
+
+    private function createProductNode(SimpleXMLExtended $xml, $product) {
+
+        //Generate XML entities
+        $pXml = $xml->addChild('Product');
+        //Required attributes
+        $pXml->addChildCData('Name', $product['name']);
+        $pXml->addChildCData('Description', $product['description']);
+        $pXml->addChild('Price', $product['price']);
+        $pXml->addChild('PriceExVat', $product['price_ex_vat']);
+        $pXml->addChild('ListPrice', $product['list_price']);
+        $pXml->addChild('VAT', $product['vat']);
+        $pXml->addChild('Stock', $product['stock']);
+        $pXml->addChildCData('Brand', $product['brand']);
+        $pXml->addChild('MerchantProductNo', $product['id']);
+        $pXml->addChild('VendorProductNo', $product['sku']);
+        $pXml->addChild('GTIN', $product['gtin']);
+        $pXml->addChild('ShippingCosts', $product['shipping_costs']);
+        $pXml->addChild('ShippingTime', $product['shipping_time']);
+        $pXml->addChild('ProductUrl', $product['url']);
+        $pXml->addChild('ImageUrl', $product['image_url']);
+        if(isset($product['gallery_url'])){
             foreach($product['gallery_url'] as $gal_url){
                 $pXml->addChild('GalleryUrl', $gal_url);
             }
         }
 
-		$pXml->addChildCData('Category', $product['category']);
-		//Optional attributes
-		$pXml->addChild('MerchantGroupNo', $product['parent_id']);
-		$pXml->addChild('Size', $product['size']);
-		$pXml->addChild('Color', $product['color']);
-		$pXml->addChild('Type', $product['type']);
+        $pXml->addChildCData('Category', $product['category']);
+        //Optional attributes
+        $pXml->addChild('MerchantGroupNo', $product['parent_id']);
+        $pXml->addChild('Size', $product['size']);
+        $pXml->addChild('Color', $product['color']);
+        $pXml->addChild('Type', $product['type']);
 
-		$specsNode = $pXml->addChild('Specs');
-		$meta = $product['meta'];
-		$attrs = $product['attrs'];
-		if(isset($product['custom_attributes']) && $product['custom_attributes'] != null) {
-			$custAttrs = unserialize($product['custom_attributes']);
+        $specsNode = $pXml->addChild('Specs');
+        $meta = $product['meta'];
+        $attrs = $product['attrs'];
 
-			foreach($custAttrs as $slug => $info) {
-				if($this->startsWith($slug, 'pa_') || $info['is_visible'] == 0 || $info['is_variation'] == 1) continue;
-				
-				$specsNode->addChildCData($this->cleanTag($slug), $info['value']);
-			}
-		}
+        if(isset($product['custom_attributes']) && $product['custom_attributes'] != null) {
+            $custAttrs = unserialize($product['custom_attributes']);
 
-		foreach($attrs as $slug => $values) {
-			// Ignore group specs.
-			if(isset($meta['attribute_pa_' . $slug])) continue;
+            foreach($custAttrs as $slug => $info) {
+                if($this->startsWith($slug, 'pa_') || $info['is_visible'] == 0 || $info['is_variation'] == 1) continue;
 
-			$specsNode->addChildCData($this->cleanTag($slug), implode(',', $values));
-		}
+                $specsNode->addChildCData($this->cleanTag($slug), $info['value']);
+            }
+        }
 
-		foreach($meta as $key => $value) {
-			if(!$this->startsWith($key, 'attribute_pa_')) continue;
-			$key = str_replace('attribute_pa_', '', $key);
-			if(!isset($attrs[$key][$value])) continue;
+        foreach($attrs as $slug => $values) {
+            // Ignore group specs.
+            if(isset($meta['attribute_pa_' . $slug])) continue;
 
-			$formattedValue = $attrs[$key][$value];
+            $specsNode->addChildCData($this->cleanTag($slug), implode(',', $values));
+        }
 
-			$specsNode->addChildCData($this->cleanTag($key), $formattedValue);
-		}
+        foreach($meta as $key => $value) {
+            if(!$this->startsWith($key, 'attribute_pa_')) continue;
+            $key = str_replace('attribute_pa_', '', $key);
+            if(!isset($attrs[$key][$value])) continue;
+
+            $formattedValue = $attrs[$key][$value];
+
+            $specsNode->addChildCData($this->cleanTag($key), $formattedValue);
+        }
 
 
 
-		$specsNode->addChild('Weight', $this->get($meta, '_weight'));
-		$specsNode->addChild('Width', $this->get($meta, '_width'));
-		$specsNode->addChild('Length', $this->get($meta, '_length'));
-		$specsNode->addChild('Height', $this->get($meta, '_height'));
-		
-	}
+        $specsNode->addChild('Weight', $this->get($meta, '_weight'));
+        $specsNode->addChild('Width', $this->get($meta, '_width'));
+        $specsNode->addChild('Length', $this->get($meta, '_length'));
+        $specsNode->addChild('Height', $this->get($meta, '_height'));
 
-	private function cleanTag($tag) {
-		$tag = str_replace(' ', '_', $tag);
-		if(is_numeric(substr($tag, 0, 1))) $tag = '_' . $tag;
-		return $tag;
-	}
+    }
 
-	private function startsWith($input, $query) {
-		return substr($input, 0, strlen($query)) === $query;
-	}
+    private function cleanTag($tag) {
+        $tag = str_replace(' ', '_', $tag);
+        if(is_numeric(substr($tag, 0, 1))) $tag = '_' . $tag;
+        return $tag;
+    }
 
-	private function get($arr, $key) {
-		return isset($arr[$key]) ? $arr[$key] : null;
-	}
+    private function startsWith($input, $query) {
+        return substr($input, 0, strlen($query)) === $query;
+    }
 
-	private function getOrEmpty($arr, $key) {
-		return isset($arr[$key]) ? $arr[$key] : [];
-	}
+    private function get($arr, $key) {
+        return isset($arr[$key]) ? $arr[$key] : null;
+    }
 
-	private function writeXML($xml) {
-		if(ob_get_length()) ob_clean();
-		header('Content-Type: text/xml');
-		echo($xml->asXML());
-	}
+    private function getOrEmpty($arr, $key) {
+        return isset($arr[$key]) ? $arr[$key] : [];
+    }
 
-	private function getAttributeLookup() {
-		global $wpdb;
+    private function writeXML($xml) {
+        if(ob_get_length()) ob_clean();
+        header('Content-Type: text/xml');
+        echo($xml->asXML());
+    }
 
-		$tr = $wpdb->term_relationships;
-		$tx = $wpdb->term_taxonomy;
-		$tm = $wpdb->terms;
+    private function getAttributeLookup() {
+        global $wpdb;
 
-		$query = "
+        $tr = $wpdb->term_relationships;
+        $tx = $wpdb->term_taxonomy;
+        $tm = $wpdb->terms;
+
+        $query = "
 			SELECT
 				$tr.object_id AS product_id,
 				$tx.taxonomy AS slug,
@@ -301,28 +304,28 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			WHERE $tx.taxonomy LIKE 'pa_%'
 		";
 
-		$attributes = $wpdb->get_results($query, OBJECT);
+        $attributes = $wpdb->get_results($query, OBJECT);
 
-		$lookup = array();
-	
-		foreach($attributes as $a) {
-			$a->slug = str_replace('pa_', '', $a->slug);
-			if(!isset($lookup[$a->product_id])) $lookup[$a->product_id] = array();
-			if(!isset($lookup[$a->product_id][$a->slug])) $lookup[$a->product_id][$a->slug] = array();
-			if(!isset($lookup[$a->product_id][$a->slug][$a->value_slug])) $lookup[$a->product_id][$a->slug][$a->value_slug] = array();
-			$lookup[$a->product_id][$a->slug][$a->value_slug] = $a->value;
-		}
+        $lookup = array();
 
-		return $lookup;
-	}
+        foreach($attributes as $a) {
+            $a->slug = str_replace('pa_', '', $a->slug);
+            if(!isset($lookup[$a->product_id])) $lookup[$a->product_id] = array();
+            if(!isset($lookup[$a->product_id][$a->slug])) $lookup[$a->product_id][$a->slug] = array();
+            if(!isset($lookup[$a->product_id][$a->slug][$a->value_slug])) $lookup[$a->product_id][$a->slug][$a->value_slug] = array();
+            $lookup[$a->product_id][$a->slug][$a->value_slug] = $a->value;
+        }
 
-	private function getMetaLookup() {
-		global $wpdb;
+        return $lookup;
+    }
 
-		$p = $wpdb->posts;
-		$pm = $wpdb->postmeta;
+    private function getMetaLookup() {
+        global $wpdb;
 
-		$query = "
+        $p = $wpdb->posts;
+        $pm = $wpdb->postmeta;
+
+        $query = "
 			SELECT $pm.*, $p.post_parent 
 			FROM $pm
 			INNER JOIN $p ON $p.id = $pm.post_id
@@ -333,34 +336,24 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 			AND (
 				$pm.meta_key LIKE '" . parent::PREFIX . "%'
 				OR $pm.meta_key LIKE 'attribute_pa_%'
-				OR $pm.meta_key IN('_product_attributes', '_weight', '_length', '_height', '_width', '_sku', '_ean', '_wp_attached_file')
+				OR $pm.meta_key IN('_product_attributes', '_weight', '_length', '_height', '_width', '_sku', '_ean', '_wp_attached_file', '_thumbnail_id')
 			)
 		";
 
-		$lookup = array();
+        $lookup = array();
 
-		$meta = $wpdb->get_results($query, OBJECT);
+        $meta = $wpdb->get_results($query, OBJECT);
 
-		foreach($meta as $item) {
-            if($item->meta_key == '_wp_attached_file' && $item->post_parent > 0){
-                $post_id = $item->post_parent;
-                if(!isset($lookup[$post_id])) {
-                    $lookup[$post_id] = array();
-                    $lookup[$post_id][$item->meta_key] = array();
-                }
-                $lookup[$post_id][$item->meta_key][$item->post_id] = $item->meta_value;
-            }else{
-                $post_id = $item->post_id;
-                if(!isset($lookup[$post_id])) $lookup[$post_id] = array();
-                $lookup[$post_id][$item->meta_key] = $item->meta_value;
-            }
+        foreach($meta as $item) {
+            $post_id = $item->post_id;
+            if(!isset($lookup[$post_id])) $lookup[$post_id] = array();
+            $lookup[$post_id][$item->meta_key] = $item->meta_value;
+        }
 
-		}
+        return $lookup;
+    }
 
-		return $lookup;
-	}
-
-	private function getUrlForFilename($file){
+    private function getUrlForFilename($file){
         if ( ( $uploads = wp_get_upload_dir() ) && false === $uploads['error'] ) {
             // Check that the upload base exists in the file location.
             if ( 0 === strpos( $file, $uploads['basedir'] ) ) {
@@ -385,9 +378,9 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
 
     }
 
-	private function dd($any) {
-		echo('<pre>');
-		var_dump($any);
-		echo('</pre>');
-	}
+    private function dd($any) {
+        echo('<pre>');
+        var_dump($any);
+        echo('</pre>');
+    }
 }
