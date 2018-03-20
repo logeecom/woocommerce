@@ -20,9 +20,9 @@ class Channel_Engine_Custom_Order_Status extends Channel_Engine_Base_Class
 
     public function add_returned_order_action($actions, $the_order){
 
-        if($the_order->post_status == 'wc-returned') {
+        if(get_post_status($the_order->get_id()) == 'wc-returned') {
         	$accountName = get_option(parent::PREFIX.'_account_name');
-			$channelEngineOrderId = get_post_meta( $the_order->id, parent::PREFIX . '_order_id', true );
+			$channelEngineOrderId = get_post_meta( $the_order->get_id(), parent::PREFIX . '_order_id', true );
             $actions['returned'] = array(
                 'url'       => 'https://' . $accountName . '.channelengine.net/orders/view/' . $channelEngineOrderId,
                 'name'      => 'Returned',

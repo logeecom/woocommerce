@@ -9,15 +9,15 @@ class Channel_Engine_Admin extends Channel_Engine_Base_Class {
     }
 	
 	function add_ce_fields_after_order_details($order){
-		if(get_post_meta( $order->id, parent::PREFIX . '_order_id', true ) > 0){
+		if(get_post_meta( $order->get_id(), parent::PREFIX . '_order_id', true ) > 0){
 			echo '<h4 style="float:left">ChannelEngine</h4>';
-			echo '<p class="form-field form-field-wide"><strong>Order id:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_order_id', true ) . '</p>';
-			echo '<p class="form-field form-field-wide"><strong>Channel name:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_channel_name', true ) . '</p>';
-			echo '<p class="form-field form-field-wide"><strong>Channel Order No:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_channel_order_no', true ) . '</p>';
-			echo '<p class="form-field form-field-wide"><strong>Payment method:</strong><br>' . get_post_meta( $order->id, parent::PREFIX . '_payment_method', true ) . '</p>';
+			echo '<p class="form-field form-field-wide"><strong>Order id:</strong><br>' . get_post_meta( $order->get_id(), parent::PREFIX . '_order_id', true ) . '</p>';
+			echo '<p class="form-field form-field-wide"><strong>Channel name:</strong><br>' . get_post_meta( $order->get_id(), parent::PREFIX . '_channel_name', true ) . '</p>';
+			echo '<p class="form-field form-field-wide"><strong>Channel Order No:</strong><br>' . get_post_meta( $order->get_id(), parent::PREFIX . '_channel_order_no', true ) . '</p>';
+			echo '<p class="form-field form-field-wide"><strong>Payment method:</strong><br>' . get_post_meta( $order->get_id(), parent::PREFIX . '_payment_method', true ) . '</p>';
 			
-			$trackTrace = get_post_meta($order->id, '_shipping_ce_track_and_trace', true);
-			if(empty($trackTrace)) $trackTrace = get_post_meta($order->id, 'TrackAndTraceBarCode', true);
+			$trackTrace = get_post_meta($order->get_id(), '_shipping_ce_track_and_trace', true);
+			if(empty($trackTrace)) $trackTrace = get_post_meta($order->get_id(), 'TrackAndTraceBarCode', true);
 
 			if(!empty($trackTrace)) {
 				$trackTraceValue = $trackTrace;
