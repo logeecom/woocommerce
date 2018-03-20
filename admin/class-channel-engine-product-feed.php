@@ -134,8 +134,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
                     $wcProductVar = $variant;
 
                     $varmeta = $this->getOrEmpty($meta_lookup, $varId);
-
-                    $varattrs = $this->getOrEmpty($attrs_lookup, $varId);
+                    //$varattrs = $this->getOrEmpty($attrs_lookup, $varId);
 
                     // featured image
                     $product['image_url'] = '';
@@ -156,7 +155,7 @@ class Channel_Engine_Product_Feed extends Channel_Engine_Base_Class{
                     $product['id'] = $variant->get_id();
                     $product['parent_id'] = $id;
                     $product['stock'] = $this->getStock($wcProductVar);
-                    $product['attrs'] = $varattrs;
+                    $product['attrs'] = $attrs;
                     $product['meta'] = $varmeta;
                     $product['type'] = $wcProductVar->get_type();
                     $product['sku'] = $this->get($varmeta, '_sku');
