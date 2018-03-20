@@ -11,6 +11,7 @@ class Channel_Engine_Base_Class{
     const PREFIX = '_channel_engine';
     const PREFIX_ORDER_ERROR = 'ChannelEngine Plugin - An unexpected error occured : ';
     const ORDER_COMPLETE_SUCCESS = 'ChannelEngine Plugin - Order moved to Completed status  successfully';
+    const ORDER_CANCELLED_SUCCESS = 'ChannelEngine Plugin - Order moved to Cancelled status  successfully';
     /**
      * Fetch product 'category chain'
      */

@@ -7,101 +7,145 @@
  */
 
 // Import the required namespaces
-use ChannelEngineApiClient\Client\ApiClient;
-use ChannelEngineApiClient\Enums\OrderStatus;
-use ChannelEngineApiClient\Enums\MancoReason;
-use ChannelEngineApiClient\Enums\ShipmentStatus;
-use ChannelEngineApiClient\Enums\ShipmentLineStatus;
-use ChannelEngineApiClient\Models\Order;
-use ChannelEngineApiClient\Models\OrderLine;
-use ChannelEngineApiClient\Models\Shipment;
-use ChannelEngineApiClient\Models\ShipmentLine;
-use ChannelEngineApiClient\Helpers\Collection;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantOrderResponse;
+use ChannelEngine\Merchant\ApiClient\Api\OrderApi;
+use ChannelEngine\Merchant\ApiClient\Api\ReturnApi;
+use ChannelEngine\Merchant\ApiClient\Api\ShipmentApi;
+use ChannelEngine\Merchant\ApiClient\Api\CancellationApi;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantReturnResponse;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantShipmentRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantShipmentTrackingRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantShipmentLineRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantCancellationRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantCancellationLineRequest;
 
 
 class Channel_Engine_API extends Channel_Engine_Base_Class{
 
     private $client;
+    private $last_returned;
 
-    public function __construct(ApiClient $client){
+    /* @var OrderApi|ReturnApi|ShipmentApi|CancellationApi $client */
+    public function __construct($client){
         $this->client = $client;
+        $this->last_returned = parent::PREFIX.'_returns_last_modified';
     }
 
     public function fetch_returns(){
-
-        try{
-            $result = $this->client->getReturns();
-        }catch(Exception $e){
-            error_log( print_r( $e, true ) );
+        $modified_since = get_option($this->last_returned);
+        if($modified_since == ""){
+            $modified_since = "2000-01-01T00:00:00+01:00";
         }
 
+        try{
+            $result = $this->client->returnGetDeclaredByChannel(new \DateTime($modified_since))->getContent();
+        }catch(Exception $e){
+            error_log( print_r( $e, true ) );
+            return;
+        }
+        /* @var MerchantReturnResponse $returnOrder */
         foreach($result as $returnOrder){
+            //Get wc_order based on orderID
+            $orderID = $returnOrder->getMerchantOrderNo(); // $orderID = get_the_ID();
+            $wc_order = new WC_Order($orderID);
 
-            $args = array(
-                'post_type'     => 'shop_order',
-                'posts_per_page' => -1,
-                'post_status'   => 'any',
-                'meta_query'    => array(
-                    array(
-                        'key' => parent::PREFIX . '_order_id',
-                        'value' => $returnOrder->getOrderId()
-                    )
-                )
-            );
-
-            $query = new WP_Query( $args );
-
-            while ( $query->have_posts() ) {
-                $query->the_post();
-
-                //Get wc_order based on orderID
-                $orderID = $query->post->ID; // $orderID = get_the_ID();
-                $wc_order = new WC_Order($orderID);
-
-                $wc_order->update_status('wc-returned', '', false);
-                if( $returnOrder->getReason() )  {
-                    $wc_order->add_order_note('Channel Engine - The order has been returned, reason: ' . $returnOrder->getReason());
-                }else{
-                    $wc_order->add_order_note('Channel Engine - The order has been returned');
-                }
-                echo 'Setting order with order_id '.$orderID.' to order status returned';
+            $wc_order->update_status('wc-returned', '', false);
+            if( $returnOrder->getReason() )  {
+                $wc_order->add_order_note('Channel Engine - The order has been returned, reason: ' . $returnOrder->getReason());
+            }else{
+                $wc_order->add_order_note('Channel Engine - The order has been returned');
             }
             wp_reset_postdata();
+        }
+
+        update_option($this->last_returned, (new \DateTime())->format("Y-m-d\TH:i:sP"));
+    }
+
+    public function post_order_cancelled_status($wc_order_id) {
+
+        $order = new WC_Order($wc_order_id);
+        $ceOrderId = get_post_meta($order->get_id(), parent::PREFIX . '_order_id', true);
+
+        if(!$ceOrderId) return;
+
+        $cancellation = new MerchantCancellationRequest();
+        $cancellation->setMerchantOrderNo($order->get_id());
+        $cancellation->setMerchantCancellationNo($order->get_id());
+
+        $cancellationLines = $cancellation->getLines();
+        foreach ($order->get_items() as $wc_line_item_id => $lineItem) {
+            //Create shipment lines
+            $cancellationLine = new MerchantCancellationLineRequest();
+
+            $productId = $lineItem['product_id'];
+            $order_line_id = wc_get_order_item_meta($wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
+            $qty = $lineItem['qty'];
+            $cancellationLine->setMerchantProductNo($productId);
+            $cancellationLine->setQuantity(intval($qty));
+            $cancellationLines[] =  $cancellationLine;
+        }
+        $cancellation->setLines($cancellationLines);
+        $cancellation->setReason(1);
+
+        try{
+            //Post shipment status to channel engine
+            $this->client->cancellationCreate($cancellation);
+            $order->add_order_note( parent::ORDER_CANCELLED_SUCCESS );
+        }catch(Exception $e){
+            //Add note to order that specifies the exception
+            $order->add_order_note( parent::PREFIX_ORDER_ERROR.$e->getMessage() );
+            error_log( print_r( $e, true ) );
         }
     }
 
     public function post_shipment_complete_status($wc_order_id) {
 
         $order = new WC_Order($wc_order_id);
-        $ceOrderId = get_post_meta($order->id, parent::PREFIX . '_order_id', true);
+        $ceOrderId = get_post_meta($order->get_id(), parent::PREFIX . '_order_id', true);
+        $update = (boolean) get_post_meta($order->get_id(), parent::PREFIX . '_shipment_created', true);
 
         if(!$ceOrderId) return;
 
-        $shipment = new Shipment();
-        $shipment->setOrderId(intval($ceOrderId));
+        if(!$update) {
+            $shipment = new MerchantShipmentRequest();
 
-		$trackTrace = get_post_meta($order->id, '_shipping_ce_track_and_trace', true);
-        if(empty($trackTrace)) $trackTrace = get_post_meta($order->id, 'TrackAndTraceBarCode', true);
-        $shipment->setTrackTraceNo($trackTrace);
-        $shipment->setMerchantShipmentNo($order->id);
+            $shipment->setMerchantOrderNo($order->get_id());
+            $shipmentLines = $shipment->getLines();
+            foreach ($order->get_items() as $wc_line_item_id => $lineItem) {
+                //Create shipment lines
+                $shipmentLine = new MerchantShipmentLineRequest();
 
-        $shipmentLines = $shipment->getLines();
-        foreach ($order->get_items() as $wc_line_item_id => $lineItem) {
-            //Create shipment lines
-            $shipmentLine = new ShipmentLine();
+                $productId = $lineItem['product_id'];
+                $order_line_id = wc_get_order_item_meta($wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
+                $qty = $lineItem['qty'];
+                $shipmentLine->setMerchantProductNo($productId);
+                $shipmentLine->setQuantity(intval($qty));
+                $shipmentLines[] =  $shipmentLine;
+            }
+            $shipment->setLines($shipmentLines);
+            $shipment->setMerchantShipmentNo($order->get_id());
 
-            $productId = $lineItem['product_id'];
-            $order_line_id = wc_get_order_item_meta($wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
-            $qty = $lineItem['qty'];
-            $shipmentLine->setOrderLineId(intval($order_line_id));
-            $shipmentLine->setStatus(ShipmentLineStatus::SHIPPED);
-            $shipmentLine->setQuantity(intval($qty));
-            $shipmentLines->append( $shipmentLine );
+            update_post_meta($order->get_id(),parent::PREFIX . '_shipment_created', true);
         }
+        else
+            $shipment = new MerchantShipmentTrackingRequest();
+
+		$trackTrace = get_post_meta($order->get_id(), '_shipping_ce_track_and_trace', true);
+		if($trackTrace == "") //Don't send if no T&T is given
+		    return;
+        if(empty($trackTrace)) $trackTrace = get_post_meta($order->get_id(), 'TrackAndTraceBarCode', true);
+        $shippingMethod = get_post_meta($order->get_id(), '_shipping_ce_shipping_method', true);
+        if(empty($shippingMethod) || $shippingMethod == "Other")
+            $shippingMethod = get_post_meta($order->get_id(), '_shipping_ce_shipping_method_other', true);
+        $shipment->setTrackTraceNo($trackTrace);
+        $shipment->setMethod($shippingMethod);
 
         try{
             //Post shipment status to channel engine
-            $this->client->postShipment($shipment);
+            if(!$update)
+                $this->client->shipmentCreate($shipment);
+            else
+                $this->client->shipmentUpdate($wc_order_id, $shipment);
             $order->add_order_note( parent::ORDER_COMPLETE_SUCCESS );
         }catch(Exception $e){
             //Add note to order that specifies the exception
@@ -122,26 +166,28 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         $orders = [];
 
         try{
+            $api_instance = $this->client;
             //Get all orders
-            $orders = $this->client->getOrders(
-                array(
-                    OrderStatus::IN_PROGRESS,
-                    OrderStatus::NEW_ORDER
-                )
-            );
+//            $orders = $this->client->getOrders(
+//                array(
+//                    OrderStatus::IN_PROGRESS,
+//                    OrderStatus::NEW_ORDER
+//                )
+//            );
+            $orders = $api_instance->orderGetNew()->getContent();
         }catch(Exception $e){
             //Write exception to error log
             error_log( print_r( $e, true ) );
             $results['Exception'] = $e->getMessage();
+            $api_instance = null;
         }
 
-        
+
 		$ordersImported = array();
 		$ordersNotImported = array();
-
         foreach($orders as $order)
         {
-        	$currentChannelOrderId = $order->getId();
+            $currentChannelOrderId = $order->getId();
             $args = array(
                 'post_type'     => 'shop_order',
                 'posts_per_page' => -1,
@@ -157,39 +203,47 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             //Check if the order already exist by fetching the order by the channel engine order number
             $order_exists = false;
             $query = new WP_Query( $args );
-			while ( $query->have_posts() ) {
-				$query->the_post();
-				$orderID = $query->post->ID; // $orderID = get_the_ID();
-				if($orderID){
-					$order_exists = true;
-				}
-				
-				$results['Failed'][] = array(
-					'Succes' => false,
-					'OrderId' => $currentChannelOrderId,
-					'Message' => 'Order with OrderId ' . $order->getId() . ' already exists, order has not been imported!'
-				);
-			}
+            while ( $query->have_posts() ) {
+                $query->the_post();
+                $orderID = $query->post->ID; // $orderID = get_the_ID();
+                if($orderID){
+                    $order_exists = true;
+
+                    $results['Failed'][] = array(
+                        'Succes' => false,
+                        'OrderId' => $currentChannelOrderId,
+                        'Message' => 'Order with OrderId ' . $order->getId() . ' already exists, order has not been imported!'
+                    );
+                }
+            }
             wp_reset_postdata();
-           
-		    //Only create order when it does not exist yet
+
+            //Only create order when it does not exist yet
             if(!$order_exists) {
                 $result = $this->create_order($order);
-				if($result['Success']){
-					// order imported, increment successfull import counter
-					$results['Success'][] = $result;
-				}else{
-					$results['Failed'][] = $result;
-				}
+                if($result['success']){
+                    // order imported, increment successfull import counter
+                    $results['Success'][] = $result;
+                    try {
+                        $api_instance->orderAcknowledge(new \ChannelEngine\Merchant\ApiClient\Model\OrderAcknowledgement($result));
+                    }
+                    catch(Exception $e){
+                        //Write exception to error log
+                        error_log( print_r( $e, true ) );
+                        $results['Exception'] = $e->getMessage();
+                    }
+                }else{
+                    $results['Failed'][] = $result;
+                }
             }
         }
-		echo(json_encode($results));
+		echo(json_encode($results, JSON_PRETTY_PRINT));
     }
 
     /**
      * Parse order object to woocommerce specific data
      */
-    public function create_order(Order $order)
+    public function create_order(MerchantOrderResponse $order)
     {
 
         //Check if the order is valid by checking if the products exist.
@@ -212,10 +266,10 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 
             //Create initial order data
             $order_data = array(
-                'post_name' => 'order-' . $order->getOrderDate(),
+                'post_name' => 'order-' . $order->getOrderDate()->format("Y-m-d H:i:s"),
                 'post_type' => 'shop_order',
-                'post_title' => 'Order &ndash; ' . $order->getOrderDate(),
-                'post_status' => $order->getStatus(),
+                'post_title' => 'Order &ndash; ' . $order->getOrderDate()->format("Y-m-d H:i:s"),
+                //'post_status' => $order->getStatus(),
                 'ping_status' => 'closed',
                 'post_author' => $ba->getFirstName(),
                 'post_date' => $order->getOrderDate(),
@@ -260,97 +314,92 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             //Woocommerce Payment method can only be set if payment method is active and matches string from ChannelEngine 
             //$wc_order->set_payment_method($order->getPaymentMethod());
 
+            $total = 0.0;
+            $total_vat = 0.0;
             //Add the product lines to our wc_order
             foreach ($order->getLines() as $orderLine) {
                 //TODO:: Lower the product stock rate
                 $wc_product = wc_get_product($orderLine->getMerchantProductNo());
 				$productLineArgs = array('totals'=>
 					array(
-						'subtotal' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
-						'total' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
-						'subtotal_tax' => $orderLine->getLineVat(),
-						'total_tax' => $orderLine->getLineVat()
+						'subtotal' => $orderLine->getUnitPriceInclVat() - $orderLine->getFeeFixed(),
+						'total' => $orderLine->getUnitPriceInclVat() - $orderLine->getFeeFixed(),
+						'subtotal_tax' => $orderLine->getFeeFixed(),
+						'total_tax' => $orderLine->getFeeFixed()
 					)
 				);
-                $lineItemId = $wc_order->add_product($wc_product, $orderLine->getQuantity(), $productLineArgs);
+                $total += $orderLine->getUnitPriceInclVat();
+                $total_vat += $orderLine->getFeeFixed();
+                $wc_order->add_product($wc_product, $orderLine->getQuantity(), $productLineArgs);
 
                 //Set channel engine product number on the fetch wc_product
-                update_post_meta($wc_product->id, parent::PREFIX.'_channel_product_no', $orderLine->getChannelProductNo());
-                //Set order line id on the wc_order
-                //TODO::update_post_meta on $lineItemId bugs out in some occasions, what is happening here?
-                wc_add_order_item_meta( $lineItemId, parent::PREFIX.'_channel_order_line_id', $orderLine->getId(), true );
+                update_post_meta($wc_product->get_id(), parent::PREFIX.'_channel_product_no', $orderLine->getChannelProductNo());
             }
 
             //Order meta
-            update_post_meta($wc_order->id, parent::PREFIX . '_order_id', $order->getId());
-            update_post_meta($wc_order->id, parent::PREFIX . '_coc_no', $order->getCocNo());
-            update_post_meta($wc_order->id, parent::PREFIX . '_vat_no', $order->getVatNo());
-            update_post_meta($wc_order->id, parent::PREFIX . '_order_date', $order->getOrderDate());
-            update_post_meta($wc_order->id, parent::PREFIX . '_created_at', $order->getCreatedAt());
-            update_post_meta($wc_order->id, parent::PREFIX . '_updated_at', $order->getUpdatedAt());
-            update_post_meta($wc_order->id, parent::PREFIX . '_channel_id', $order->getChannelId());
-            update_post_meta($wc_order->id, parent::PREFIX . '_channel_order_no', $order->getChannelOrderNo());
-            update_post_meta($wc_order->id, parent::PREFIX . '_channel_customer_no', $order->getChannelCustomerNo());
-            update_post_meta($wc_order->id, parent::PREFIX . '_channel_name', $order->getChannelName());
-            update_post_meta($wc_order->id, parent::PREFIX . '_do_send_mails', $order->getDoSendMails());
-            update_post_meta($wc_order->id, parent::PREFIX . '_can_ship_partial_order_lines', $order->getCanShipPartialOrderLines());
-            update_post_meta($wc_order->id, parent::PREFIX . '_merchant_id', $order->getMerchantId());
-            update_post_meta($wc_order->id, parent::PREFIX . '_merchant_order_no', $order->getMerchantOrderNo());
-            update_post_meta($wc_order->id, parent::PREFIX . '_shipping_costs_incl_vat', $order->getShippingCostsInclVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_shipping_costs_vat', $order->getShippingCostsVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_sub_total_vat', $order->getSubTotalVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_sub_total_incl_vat', $order->getSubTotalInclVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_total_incl_vat', $order->getTotalInclVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_total_vat', $order->getTotalVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_refund_incl_vat', $order->getRefundInclVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_refund_excl_vat', $order->getRefundExclVat());
-            update_post_meta($wc_order->id, parent::PREFIX . '_status', $order->getStatus());
-            update_post_meta($wc_order->id, parent::PREFIX . '_closed_date', $order->getClosedDate());
-            update_post_meta($wc_order->id, parent::PREFIX . '_max_vat_rate', $order->getMaxVatRate());
-			update_post_meta($wc_order->id, parent::PREFIX . '_payment_method', $order->getPaymentMethod());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_order_id', $order->getId());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_vat_no', $order->getVatNo());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_order_date', $order->getOrderDate()->format("Y-m-d\TH:i:s"));
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_created_at', $order->getOrderDate()->format("Y-m-d\TH:i:s"));
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_updated_at', (new DateTime())->format("Y-m-d\TH:i:s"));
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_channel_order_no', $order->getChannelOrderNo());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_channel_customer_no', $order->getChannelCustomerNo());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_channel_name', $order->getChannelName());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_incl_vat', $order->getShippingCostsInclVat());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_vat', $order->getShippingCostsInclVat());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_sub_total_vat', $order->getVatNo());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_sub_total_incl_vat', $order->getSubTotalInclVat());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_total_incl_vat', $order->getTotalInclVat());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_total_vat', $order->getTotalVat());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_refund_incl_vat', $order->getRefundInclVat());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_refund_excl_vat', $order->getRefundExclVat());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_status', $order->getStatus());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_closed_date', $order->getClosedDate());
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_max_vat_rate', $order->getMaxVatRate());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_payment_method', $order->getPaymentMethod());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipment_created', false);
 
 			// Woocommerce data
-			update_post_meta($wc_order->id, '_customer_ip_address', '');
-			update_post_meta($wc_order->id, '_shipping_ce_track_and_trace', '');
+			update_post_meta($wc_order->get_id(), '_customer_ip_address', '');
+			update_post_meta($wc_order->get_id(), '_shipping_ce_track_and_trace', '');
 
             if($this->is_plugin_active('woocommerce_wuunder/woocommerce-wuunder.php'))
             {
-                update_post_meta($wc_order->id, '_shipping_street_name', $sa->getStreetName());
-                update_post_meta($wc_order->id, '_shipping_house_number', $sa->getHouseNr());
-                update_post_meta($wc_order->id, '_shipping_house_number_suffix', $sa->getHouseNrAddition());
+                update_post_meta($wc_order->get_id(), '_shipping_street_name', $sa->getStreetName());
+                update_post_meta($wc_order->get_id(), '_shipping_house_number', $sa->getHouseNr());
+                update_post_meta($wc_order->get_id(), '_shipping_house_number_suffix', $sa->getHouseNrAddition());
             }
 
 
 			$wc_order->order_date = $order->getOrderDate();
-			$wc_order->payment_complete();
 
 			$wc_order->calculate_taxes();
 
-			$wc_order->set_total($order->getShippingCostsInclVat(),'shipping');
-			$wc_order->set_total($order->getShippingCostsVat(),'shipping_tax');
-			$wc_order->set_total($order->getTotalVat(),'tax');
-			$wc_order->set_total($order->getTotalInclVat(),'total');
+			$wc_order->set_shipping_total($order->getShippingCostsInclVat());
+			$wc_order->set_total($total);
+            $wc_order->payment_complete();
 			
-			
-            //Extra data
-            //TODO: Should these be parsed to other objects?
-            update_post_meta($wc_order->id, parent::PREFIX . '_extra_data', serialize($order->getExtraData()));
-            update_post_meta($wc_order->id, parent::PREFIX . '_shipments', serialize($order->getShipments()));
-            update_post_meta($wc_order->id, parent::PREFIX . '_cancellations', serialize($order->getCancellations()));
+//
+//            //Extra data
+//            //TODO: Should these be parsed to other objects?
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_extra_data', serialize($order->getExtraData()));
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipments', serialize($order->getShipments()));
+//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_cancellations', serialize($order->getCancellations()));
 			return array(
-				'Success'=>true,
-				'OrderId'=>$order->getId(),
-				'MerchantOrderNo'=>$wc_order->get_order_number()
+				'success' => true,
+				'orderId'=>$order->getId(),
+				'merchantOrderNo'=>$wc_order->get_order_number()
 			);
         }
-        else{
+        else
+        {
         	// products mismatch
-        	$errorMessage = 'Products with ID [' . implode($productMismatches,',') . '] in order ' . $order->getId() . ' do not exist anymore, order has not been imported!';
+        	$errorMessage = 'Products with ID [' . implode($productMismatches,',') . '] in order ' . $order->getId() . ' does not exist, order has not been imported!';
         	error_log($errorMessage);
 			return array(
-				'Success'=>false,
-				'OrderId'=>$order->getId(),
-				'Message'=>$errorMessage
+				'success' => false,
+				'orderId'=>$order->getId(),
+				'message'=>$errorMessage
 			);
         }
     }

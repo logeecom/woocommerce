@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce ChannelEngine
 Plugin URI: http://channelengine.net
 Description: ChannelEngine plugin for WooCommerce
-Version: 1.5.9
+Version: 2.0.0
 Author: ChannelEngine
 Author URI: http://channelengine.net
 */
@@ -15,6 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 //Autoload all channel engine classes
 require plugin_dir_path( __FILE__ ) .  'vendor/autoload.php';
+require_once(__DIR__ . "/vendor/autoload.php");
 require_once plugin_dir_path( __FILE__ ) . 'admin/class-channel-engine.php' ;
 
 //Add channel engine settings button to the WooCommerce menu

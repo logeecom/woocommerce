@@ -1,7 +1,5 @@
 <?php
 
-use ChannelEngineApiClient\Models\Order;
-
 class Channel_Engine_Tracking extends Channel_Engine_Base_Class{
 
 
@@ -51,10 +49,10 @@ class Channel_Engine_Tracking extends Channel_Engine_Base_Class{
         }
 
         $orderArray = array(
-            'merchantOrderNo' => "$wc_order->id",
+            'merchantOrderNo' => $wc_order->get_id(),
             'total' => $wc_order->get_total(),
             'vat' => $wc_order->get_total_tax(),
-            'shippingCost' => $wc_order->get_total_shipping(),
+            'shippingCost' => $wc_order->get_shipping_total(),
             'city' => $wc_order->billing_city,
             'country' => $wc_order->billing_country,
             'orderLines' => $orderLinesArray,

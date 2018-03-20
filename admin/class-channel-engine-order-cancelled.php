@@ -7,7 +7,7 @@
  */
 
 
-class Channel_Engine_Order_Complete {
+class Channel_Engine_Order_Cancelled {
 
 
     private $client;
@@ -18,15 +18,15 @@ class Channel_Engine_Order_Complete {
     public function __construct($client) {
 
         $this->client = $client;
-        add_action('woocommerce_order_status_completed', array($this,'post_shipment_complete_status') , 0, 1 );
+        add_action('woocommerce_order_status_cancelled', array($this,'post_shipment_cancelled_status') , 0, 1 );
     }
 
-    public function post_shipment_complete_status($wc_order_id){
+    public function post_shipment_cancelled_status($wc_order_id){
 
         require_once(plugin_dir_path(__FILE__) . 'class-channel-engine-api.php');
 
         $channel_engine_api_client = new Channel_Engine_API($this->client);
-        $channel_engine_api_client->post_shipment_complete_status($wc_order_id);
+        $channel_engine_api_client->post_order_cancelled_status($wc_order_id);
     }
 
 }

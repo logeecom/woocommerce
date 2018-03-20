@@ -1,6 +1,16 @@
 {
- 	"name": "channelegine/woocommerce-channel-engine",
-    "require": {
-        "channelengine/api-client": "dev-master"
-    }
+  "name": "channelengine/woocommerce-channel-engine",
+  "description": "ChannelEngine WooCommerce",
+  "license": "proprietary",
+  "authors": [
+      {
+          "name": "Christiaan de Ridder",
+          "email": "christiaan@channelengine.com"
+      }
+  ],
+  "require": {
+    "composer/installers": "^1.5",
+    "channelengine/merchant-api-client-php": "^2.6"
+  },
+  "type": "wordpress-plugin"
 }
