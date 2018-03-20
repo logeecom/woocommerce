@@ -7,9 +7,9 @@
  */
 
 // Import the required namespaces
-use ChannelEngine\ApiClient\Api\OrderApi;
-use ChannelEngine\ApiClient\Api\ReturnApi;
-use ChannelEngine\ApiClient\Api\ShipmentApi;
+use ChannelEngine\Merchant\ApiClient\Api\OrderApi;
+use ChannelEngine\Merchant\ApiClient\Api\ReturnApi;
+use ChannelEngine\Merchant\ApiClient\Api\ShipmentApi;
 
 class Channel_Engine_API_Endpoint{
 

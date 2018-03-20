@@ -9,8 +9,8 @@
       }
   ],
   "require": {
-    "channelengine/api-client-php": "~2.3.0",
-    "composer/installers": "^1.5"
+    "composer/installers": "^1.5",
+    "channelengine/merchant-api-client-php": "^2.6"
   },
   "type": "wordpress-plugin"
 }

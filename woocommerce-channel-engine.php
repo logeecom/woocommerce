@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 //Autoload all channel engine classes
 require plugin_dir_path( __FILE__ ) .  'vendor/autoload.php';
-require_once(__DIR__ . "/vendor/channelengine/api-client-php/autoload.php");
+require_once(__DIR__ . "/vendor/autoload.php");
 require_once plugin_dir_path( __FILE__ ) . 'admin/class-channel-engine.php' ;
 
 //Add channel engine settings button to the WooCommerce menu

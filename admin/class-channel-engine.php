@@ -8,11 +8,11 @@
 
 require_once( plugin_dir_path( __FILE__ ) . 'class-channel-engine-base-class.php' );
 
-use ChannelEngine\ApiClient\Configuration;
-use ChannelEngine\ApiClient\Api\OrderApi;
-use ChannelEngine\ApiClient\Api\ReturnApi;
-use ChannelEngine\ApiClient\Api\ShipmentApi;
-use ChannelEngine\ApiClient\Api\CancellationApi;
+use ChannelEngine\Merchant\ApiClient\Configuration;
+use ChannelEngine\Merchant\ApiClient\Api\OrderApi;
+use ChannelEngine\Merchant\ApiClient\Api\ReturnApi;
+use ChannelEngine\Merchant\ApiClient\Api\ShipmentApi;
+use ChannelEngine\Merchant\ApiClient\Api\CancellationApi;
 
 class Channel_Engine {
 
@@ -76,10 +76,10 @@ class Channel_Engine {
         $apiConfig->setHost('https://' . $this->settings->account_name . '.channelengine.net/api');
         $apiConfig->setApiKey('apikey', $this->settings->api_key);
 
-        $this->orderClient = new OrderApi();
-        $this->returnClient = new ReturnApi();
-        $this->shipmentClient = new ShipmentApi();
-        $this->cancellationClient = new CancellationApi();
+        $this->orderClient = new OrderApi(null, $apiConfig);
+        $this->returnClient = new ReturnApi(null, $apiConfig);
+        $this->shipmentClient = new ShipmentApi(null, $apiConfig);
+        $this->cancellationClient = new CancellationApi(null, $apiConfig);
 
         new Channel_Engine_Order_Complete($this->shipmentClient);
         new Channel_Engine_Order_Cancelled($this->cancellationClient);

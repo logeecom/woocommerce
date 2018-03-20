@@ -7,17 +7,17 @@
  */
 
 // Import the required namespaces
-use ChannelEngine\ApiClient\Model\MerchantOrderResponse;
-use ChannelEngine\ApiClient\Api\OrderApi;
-use ChannelEngine\ApiClient\Api\ReturnApi;
-use ChannelEngine\ApiClient\Api\ShipmentApi;
-use ChannelEngine\ApiClient\Api\CancellationApi;
-use ChannelEngine\ApiClient\Model\MerchantReturnResponse;
-use ChannelEngine\ApiClient\Model\MerchantShipmentRequest;
-use ChannelEngine\ApiClient\Model\MerchantShipmentTrackingRequest;
-use ChannelEngine\ApiClient\Model\MerchantShipmentLineRequest;
-use ChannelEngine\ApiClient\Model\MerchantCancellationRequest;
-use ChannelEngine\ApiClient\Model\MerchantCancellationLineRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantOrderResponse;
+use ChannelEngine\Merchant\ApiClient\Api\OrderApi;
+use ChannelEngine\Merchant\ApiClient\Api\ReturnApi;
+use ChannelEngine\Merchant\ApiClient\Api\ShipmentApi;
+use ChannelEngine\Merchant\ApiClient\Api\CancellationApi;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantReturnResponse;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantShipmentRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantShipmentTrackingRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantShipmentLineRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantCancellationRequest;
+use ChannelEngine\Merchant\ApiClient\Model\MerchantCancellationLineRequest;
 
 
 class Channel_Engine_API extends Channel_Engine_Base_Class{
@@ -225,7 +225,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                     // order imported, increment successfull import counter
                     $results['Success'][] = $result;
                     try {
-                        $api_instance->orderAcknowledge(new \ChannelEngine\ApiClient\Model\OrderAcknowledgement($result));
+                        $api_instance->orderAcknowledge(new \ChannelEngine\Merchant\ApiClient\Model\OrderAcknowledgement($result));
                     }
                     catch(Exception $e){
                         //Write exception to error log
@@ -394,7 +394,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         else
         {
         	// products mismatch
-        	$errorMessage = 'Products with ID [' . implode($productMismatches,',') . '] in order ' . $order->getId() . ' do not exist anymore, order has not been imported!';
+        	$errorMessage = 'Products with ID [' . implode($productMismatches,',') . '] in order ' . $order->getId() . ' does not exist, order has not been imported!';
         	error_log($errorMessage);
 			return array(
 				'success' => false,

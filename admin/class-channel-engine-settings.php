@@ -150,9 +150,9 @@ class Channel_Engine_Settings extends Channel_Engine_Base_Class{
             //Check if all values are present before doing the API call
             if(strlen($value_account_name) && strlen($value_api_key) && strlen($value_api_secret)) {
                 //Create client with given credentials
-                ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setHost('https://' . $value_account_name . '.channelengine.net/api');
-                ChannelEngine\ApiClient\Configuration::getDefaultConfiguration()->setApiKey('apikey', $value_api_key);
-                $this->client = new ChannelEngine\ApiClient\Api\OrderApi(new \GuzzleHttp\Client(), ChannelEngine\ApiClient\Configuration::getDefaultConfiguration());
+                ChannelEngine\Merchant\ApiClient\Configuration::getDefaultConfiguration()->setHost('https://' . $value_account_name . '.channelengine.net/api');
+                ChannelEngine\Merchant\ApiClient\Configuration::getDefaultConfiguration()->setApiKey('apikey', $value_api_key);
+                $this->client = new ChannelEngine\Merchant\ApiClient\Api\OrderApi(new \GuzzleHttp\Client(), ChannelEngine\Merchant\ApiClient\Configuration::getDefaultConfiguration());
 
                 try{
                     //Test credentials by doing an api call with a non existing order status.
