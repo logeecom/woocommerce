@@ -314,22 +314,18 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             //Woocommerce Payment method can only be set if payment method is active and matches string from ChannelEngine 
             //$wc_order->set_payment_method($order->getPaymentMethod());
 
-            $total = 0.0;
-            $total_vat = 0.0;
             //Add the product lines to our wc_order
             foreach ($order->getLines() as $orderLine) {
                 //TODO:: Lower the product stock rate
                 $wc_product = wc_get_product($orderLine->getMerchantProductNo());
 				$productLineArgs = array('totals'=>
 					array(
-						'subtotal' => $orderLine->getUnitPriceInclVat() - $orderLine->getFeeFixed(),
-						'total' => $orderLine->getUnitPriceInclVat() - $orderLine->getFeeFixed(),
-						'subtotal_tax' => $orderLine->getFeeFixed(),
-						'total_tax' => $orderLine->getFeeFixed()
+						'subtotal' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
+                        'total' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
+                        'subtotal_tax' => $orderLine->getLineVat(),
+                        'total_tax' => $orderLine->getLineVat()
 					)
 				);
-                $total += $orderLine->getUnitPriceInclVat();
-                $total_vat += $orderLine->getFeeFixed();
                 $wc_order->add_product($wc_product, $orderLine->getQuantity(), $productLineArgs);
 
                 //Set channel engine product number on the fetch wc_product
@@ -348,14 +344,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_incl_vat', $order->getShippingCostsInclVat());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_vat', $order->getShippingCostsInclVat());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_sub_total_vat', $order->getVatNo());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_sub_total_incl_vat', $order->getSubTotalInclVat());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_total_incl_vat', $order->getTotalInclVat());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_total_vat', $order->getTotalVat());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_refund_incl_vat', $order->getRefundInclVat());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_refund_excl_vat', $order->getRefundExclVat());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_status', $order->getStatus());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_closed_date', $order->getClosedDate());
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_max_vat_rate', $order->getMaxVatRate());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_payment_method', $order->getPaymentMethod());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipment_created', false);
 
@@ -370,13 +359,15 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 update_post_meta($wc_order->get_id(), '_shipping_house_number_suffix', $sa->getHouseNrAddition());
             }
 
-
 			$wc_order->order_date = $order->getOrderDate();
 
 			$wc_order->calculate_taxes();
 
 			$wc_order->set_shipping_total($order->getShippingCostsInclVat());
-			$wc_order->set_total($total);
+            $wc_order->set_shipping_tax($order->getShippingCostsVat());
+            $wc_order->set_total($order->getTotalInclVat());
+            //$wc_order->set_total_tax($order->getTotalVat());
+
             $wc_order->payment_complete();
 			
 //
