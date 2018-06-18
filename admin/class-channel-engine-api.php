@@ -320,9 +320,9 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 $wc_product = wc_get_product($orderLine->getMerchantProductNo());
 				$productLineArgs = array('totals'=>
 					array(
-						'subtotal' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
+						'subtotal' => $orderLine->getUnitPriceInclVat() - $orderLine->getUnitVat(),
                         'total' => $orderLine->getLineTotalInclVat() - $orderLine->getLineVat(),
-                        'subtotal_tax' => $orderLine->getLineVat(),
+                        'subtotal_tax' => $orderLine->getUnitVat(),
                         'total_tax' => $orderLine->getLineVat()
 					)
 				);
@@ -342,8 +342,8 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_channel_customer_no', $order->getChannelCustomerNo());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_channel_name', $order->getChannelName());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_incl_vat', $order->getShippingCostsInclVat());
-            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_vat', $order->getShippingCostsInclVat());
-            update_post_meta($wc_order->get_id(), parent::PREFIX . '_sub_total_vat', $order->getVatNo());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipping_costs_vat', $order->getShippingCostsVat());
+            update_post_meta($wc_order->get_id(), parent::PREFIX . '_sub_total_vat', $order->getSubTotalVat());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_status', $order->getStatus());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_payment_method', $order->getPaymentMethod());
             update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipment_created', false);
@@ -361,16 +361,22 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 
 			$wc_order->order_date = $order->getOrderDate();
 
-			$wc_order->calculate_taxes();
+			// shipping
+            $shippingItem = new WC_Order_Item_Shipping();
+            $shippingItem->set_total($order->getShippingCostsInclVat());
+//
+            $wc_order->add_item($shippingItem);
 
-			$wc_order->set_shipping_total($order->getShippingCostsInclVat());
-            $wc_order->set_shipping_tax($order->getShippingCostsVat());
+            // totals
             $wc_order->set_total($order->getTotalInclVat());
-            //$wc_order->set_total_tax($order->getTotalVat());
+
+            $wc_order->set_shipping_total($order->getShippingCostsInclVat());
+
+            $wc_order->calculate_taxes();
 
             $wc_order->payment_complete();
-			
-//
+
+            $wc_order->save();
 //            //Extra data
 //            //TODO: Should these be parsed to other objects?
 //            update_post_meta($wc_order->get_id(), parent::PREFIX . '_extra_data', serialize($order->getExtraData()));
