@@ -18,7 +18,7 @@ class Channel_Engine_Order_Complete {
     public function __construct($client) {
 
         $this->client = $client;
-        add_action('woocommerce_order_status_completed', array($this,'post_shipment_complete_status') , 0, 1 );
+        add_action('woocommerce_order_status_completed', array($this,'post_shipment_complete_status'), 5, 1);
     }
 
     public function post_shipment_complete_status($wc_order_id){
