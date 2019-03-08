@@ -106,12 +106,15 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 
         if(!$ceOrderId) return;
 
-        if(!$update) {
+        if(!$update)
+        {
             $shipment = new MerchantShipmentRequest();
 
             $shipment->setMerchantOrderNo($order->get_id());
+            $shipment->setMerchantShipmentNo($order->get_id());
             $shipmentLines = $shipment->getLines();
-            foreach ($order->get_items() as $wc_line_item_id => $lineItem) {
+            foreach ($order->get_items() as $wc_line_item_id => $lineItem)
+            {
                 //Create shipment lines
                 $shipmentLine = new MerchantShipmentLineRequest();
 
@@ -123,31 +126,42 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 $shipmentLines[] =  $shipmentLine;
             }
             $shipment->setLines($shipmentLines);
-            $shipment->setMerchantShipmentNo($order->get_id());
-
-            update_post_meta($order->get_id(),parent::PREFIX . '_shipment_created', true);
         }
         else
+        {
             $shipment = new MerchantShipmentTrackingRequest();
+        }
 
 		$trackTrace = get_post_meta($order->get_id(), '_shipping_ce_track_and_trace', true);
-		if($trackTrace == "") //Don't send if no T&T is given
-		    return;
+		
+        //Don't send if no T&T is given
+        if($trackTrace == "") return;
+
         if(empty($trackTrace)) $trackTrace = get_post_meta($order->get_id(), 'TrackAndTraceBarCode', true);
         $shippingMethod = get_post_meta($order->get_id(), '_shipping_ce_shipping_method', true);
+
         if(empty($shippingMethod) || $shippingMethod == "Other")
             $shippingMethod = get_post_meta($order->get_id(), '_shipping_ce_shipping_method_other', true);
         $shipment->setTrackTraceNo($trackTrace);
         $shipment->setMethod($shippingMethod);
 
-        try{
+        try
+        {
             //Post shipment status to channel engine
             if(!$update)
+            {
                 $this->client->shipmentCreate($shipment);
+                update_post_meta($order->get_id(),parent::PREFIX . '_shipment_created', true);
+            }
             else
+            {
                 $this->client->shipmentUpdate($wc_order_id, $shipment);
+            }
+
             $order->add_order_note( parent::ORDER_COMPLETE_SUCCESS );
-        }catch(Exception $e){
+        }
+        catch(Exception $e)
+        {
             //Add note to order that specifies the exception
             $order->add_order_note( parent::PREFIX_ORDER_ERROR.$e->getMessage() );
             error_log( print_r( $e, true ) );
