@@ -133,15 +133,20 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
         }
 
 		$trackTrace = get_post_meta($order->get_id(), '_shipping_ce_track_and_trace', true);
-		
-        //Don't send if no T&T is given
-        if($trackTrace == "") return;
-
         if(empty($trackTrace)) $trackTrace = get_post_meta($order->get_id(), 'TrackAndTraceBarCode', true);
+
         $shippingMethod = get_post_meta($order->get_id(), '_shipping_ce_shipping_method', true);
 
         if(empty($shippingMethod) || $shippingMethod == "Other")
             $shippingMethod = get_post_meta($order->get_id(), '_shipping_ce_shipping_method_other', true);
+
+        // Track / trace cannot be empty for non mail box parcels
+        if(empty($trackTrace) && $shippingMethod != 'Briefpost')
+        {
+            $order->add_order_note(parent::PREFIX_ORDER_MESSAGE . 'Shipping method ' . $shippingMethod . ' requires a tracking code.');
+            return;
+        }
+
         $shipment->setTrackTraceNo($trackTrace);
         $shipment->setMethod($shippingMethod);
 
@@ -151,13 +156,12 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             if(!$update)
             {
                 $this->client->shipmentCreate($shipment);
-                update_post_meta($order->get_id(),parent::PREFIX . '_shipment_created', true);
+                update_post_meta($order->get_id(), parent::PREFIX . '_shipment_created', true);
             }
             else
             {
                 $this->client->shipmentUpdate($wc_order_id, $shipment);
             }
-
             $order->add_order_note( parent::ORDER_COMPLETE_SUCCESS );
         }
         catch(Exception $e)
