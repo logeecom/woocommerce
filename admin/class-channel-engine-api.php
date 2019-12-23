@@ -381,14 +381,14 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 
 			// shipping
             $shippingItem = new WC_Order_Item_Shipping();
-            $shippingItem->set_total($order->getShippingCostsInclVat());
+            $shippingItem->set_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
 //
             $wc_order->add_item($shippingItem);
 
             // totals
             $wc_order->set_total($order->getTotalInclVat());
 
-            $wc_order->set_shipping_total($order->getShippingCostsInclVat());
+            $wc_order->set_shipping_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
 
             $wc_order->calculate_taxes();
 
