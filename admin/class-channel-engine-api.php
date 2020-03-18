@@ -78,6 +78,10 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             $cancellationLine = new MerchantCancellationLineRequest();
 
             $productId = $lineItem['product_id'];
+            if($lineItem->is_type('variable')) {
+                $productId = $lineItem->get_variation_id();
+            }
+
             $order_line_id = wc_get_order_item_meta($wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
             $qty = $lineItem['qty'];
             $cancellationLine->setMerchantProductNo($productId);
@@ -119,6 +123,10 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 $shipmentLine = new MerchantShipmentLineRequest();
 
                 $productId = $lineItem['product_id'];
+                if($lineItem->is_type('variable')) {
+                    $productId = $lineItem->get_variation_id();
+                }
+
                 $order_line_id = wc_get_order_item_meta($wc_line_item_id, parent::PREFIX.'_channel_order_line_id');
                 $qty = $lineItem['qty'];
                 $shipmentLine->setMerchantProductNo($productId);
