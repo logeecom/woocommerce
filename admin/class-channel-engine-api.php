@@ -405,15 +405,11 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
             $wc_order->payment_complete();
 
             $wc_order->save();
-//            //Extra data
-//            //TODO: Should these be parsed to other objects?
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_extra_data', serialize($order->getExtraData()));
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_shipments', serialize($order->getShipments()));
-//            update_post_meta($wc_order->get_id(), parent::PREFIX . '_cancellations', serialize($order->getCancellations()));
+
 			return array(
 				'success' => true,
-				'orderId'=>$order->getId(),
-				'merchantOrderNo'=>$wc_order->get_order_number()
+				'orderId' => $order->getId(),
+				'merchantOrderNo' => $wc_order->get_id()
 			);
         }
         else
