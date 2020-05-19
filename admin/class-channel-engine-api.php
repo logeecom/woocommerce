@@ -265,6 +265,11 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
                 }
             }
         }
+
+        if (!empty($results['Failed'])) {
+            http_response_code(500);
+        }
+
 		echo(json_encode($results, JSON_PRETTY_PRINT));
     }
 
