@@ -79,7 +79,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 
             $productId = $lineItem['product_id'];
             $variationId = $lineItem->get_variation_id();
-            if(!is_null($variationId)) {
+            if(!is_null($variationId) && $variationId > 0) {
                 $productId = $variationId;
             }
 
@@ -125,7 +125,7 @@ class Channel_Engine_API extends Channel_Engine_Base_Class{
 
                 $productId = $lineItem['product_id'];
                 $variationId = $lineItem->get_variation_id();
-                if(!is_null($variationId)) {
+                if(!is_null($variationId) && $variationId > 0) {
                     $productId = $variationId;
                 }
 
