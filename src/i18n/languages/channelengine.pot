@@ -1,0 +1,409 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ChannelEngine WooCommerce Integration\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-06 11:31+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.2; wp-5.7.2\n"
+"X-Domain: channelengine"
+
+#: resources/views/meta-post-box.php:18
+msgid "Order ID:"
+msgstr ""
+
+#. Name of the plugin
+msgid "ChannelEngine WooCommerce Integration"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Product synchronization"
+msgstr ""
+
+msgid "Order status mapping"
+msgstr ""
+
+msgid "Initial sync"
+msgstr ""
+
+msgid "Connect and continue"
+msgstr ""
+
+msgid "Account data"
+msgstr ""
+
+msgid "API Key"
+msgstr ""
+
+msgid "Account name"
+msgstr ""
+
+msgid ""
+"You can generate merchant API key inside ChannelEngine under Settings > "
+"Merchant API keys."
+msgstr ""
+
+msgid ""
+"The account name is a subdomain of your ChannelEngine instance (subdomain."
+"channelengine.net). For example, the account name for ChannelEngine instance "
+"myshop.channelengine.net is myshop."
+msgstr ""
+
+msgid "ChannelEngine"
+msgstr ""
+
+msgid "Welcome to ChannelEngine"
+msgstr ""
+
+msgid "It will only take 5 minutes of your time to configure the integration."
+msgstr ""
+
+msgid "Configure"
+msgstr ""
+
+msgid "Connect the shop with your ChannelEngine account"
+msgstr ""
+
+msgid "API key and Account name fields are required."
+msgstr ""
+
+msgid "Invalid API key or Account name."
+msgstr ""
+
+msgid "Default stock quantity is required field."
+msgstr ""
+
+msgid "Save and continue"
+msgstr ""
+
+msgid "Product synchronization settings"
+msgstr ""
+
+msgid "Stock synchronization"
+msgstr ""
+
+msgid "Set default stock quantity"
+msgstr ""
+
+msgid ""
+"Set the default stock level for the cases when stock is not being tracked in "
+"the shop or when information about the stock is missing for specific "
+"product(s)."
+msgstr ""
+
+msgid "psc"
+msgstr ""
+
+msgid ""
+"Currency mismatch detected. Please make sure that store currency matches "
+msgstr ""
+
+msgid ""
+"Map WooCommerce shop order statuses to the ChannelEngine order statuses."
+msgstr ""
+
+msgid "Status of incoming orders"
+msgstr ""
+
+msgid "Select the status of orders that are not processed yet."
+msgstr ""
+
+msgid "Status that defines a shipped order"
+msgstr ""
+
+msgid "Select the status of orders that are shipped."
+msgstr ""
+
+msgid "Status of the orders fulfilled by a marketplace"
+msgstr ""
+
+msgid ""
+"Select the status of orders that are already fulfilled by a marketplace."
+msgstr ""
+
+msgid "wc-processing"
+msgstr ""
+
+msgid "wc-completed"
+msgstr ""
+
+msgid "wc-pending"
+msgstr ""
+
+msgid "wc-on-hold"
+msgstr ""
+
+msgid "wc-cancelled"
+msgstr ""
+
+msgid "wc-refunded"
+msgstr ""
+
+msgid "wc-failed"
+msgstr ""
+
+msgid "You are just one step away"
+msgstr ""
+
+msgid ""
+"By enabling integration, it will trigger the initial synchronization in the "
+"background. The integration will synchronize all published shop products to "
+"ChannelEngine in the background. Also, the integration will synchronize new "
+"and closed orders (fulfilled by the merchant and fulfilled by the "
+"marketplace) from ChannelEngine into the shop."
+msgstr ""
+
+msgid "Enable the integration and start the initial synchronization"
+msgstr ""
+
+msgid "Enable and start sync"
+msgstr ""
+
+msgid "Failed to start initial sync because %s"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "Transaction log"
+msgstr ""
+
+msgid "Full synchronization in progress"
+msgstr ""
+
+msgid "Product synchronization:"
+msgstr ""
+
+msgid "of"
+msgstr ""
+
+msgid "products uploaded"
+msgstr ""
+
+msgid "Order synchronization:"
+msgstr ""
+
+msgid "orders downloaded"
+msgstr ""
+
+msgid "All is up and running."
+msgstr ""
+
+msgid "Integration status"
+msgstr ""
+
+msgid ""
+"Integration between WooCommerce and ChannelEngine is disabled. "
+"Synchronization is not performed in the background."
+msgstr ""
+
+msgid "Enable the integration"
+msgstr ""
+
+msgid ""
+"By enabling integration, you will be asked whether you want to perform full "
+"synchronization (products and orders) again since synchronization was "
+"disabled for some time."
+msgstr ""
+
+msgid "Disable integration"
+msgstr ""
+
+msgid "Manually trigger synchronization"
+msgstr ""
+
+msgid "Start sync now"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Choose what you would like to synchronize:"
+msgstr ""
+
+msgid "Synchronize products"
+msgstr ""
+
+msgid ""
+"The integration will synchronize all published shop products to "
+"ChannelEngine in the background."
+msgstr ""
+
+msgid ""
+"The integration will synchronize new and closed orders (fulfilled by the "
+"merchant and fulfilled by the marketplace) from ChannelEngine into the shop."
+msgstr ""
+
+msgid "Synchronize orders"
+msgstr ""
+
+msgid "Skip sync"
+msgstr ""
+
+msgid "Transactions history log"
+msgstr ""
+
+msgid "Product sync"
+msgstr ""
+
+msgid "Order sync"
+msgstr ""
+
+msgid "Shipment sync"
+msgstr ""
+
+msgid "Errors"
+msgstr ""
+
+msgid "Task Type"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Start Time"
+msgstr ""
+
+msgid "Time Completed"
+msgstr ""
+
+msgid "View details"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Page size:"
+msgstr ""
+
+msgid "Go to the previous page"
+msgstr ""
+
+msgid "Go to the next page"
+msgstr ""
+
+msgid "Displayed"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "ProductSync"
+msgstr ""
+
+msgid "OrderSync"
+msgstr ""
+
+msgid "in_progress"
+msgstr ""
+
+msgid "completed"
+msgstr ""
+
+msgid "queued"
+msgstr ""
+
+msgid "created"
+msgstr ""
+
+msgid "failed"
+msgstr ""
+
+msgid "Disconnect account"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "You are about to disconnect your ChannelEngine account."
+msgstr ""
+
+msgid ""
+"If you disable integration, synchronization between WooCommerce and "
+"ChannelEngine will be disabled."
+msgstr ""
+
+msgid "Identifier"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Configuration saved successfully."
+msgstr ""
+
+msgid "No results"
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Load more"
+msgstr ""
+
+msgid "Show details"
+msgstr ""
+
+msgid "info"
+msgstr ""
+
+msgid "warning"
+msgstr ""
+
+msgid "error"
+msgstr ""
+
+msgid "success"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "ProductsUpsertTask"
+msgstr ""
+
+msgid "ProductsDeleteTask"
+msgstr ""
+
+msgid "partially_completed"
+msgstr ""
+
+msgid "Cancellation request successfully sent to ChannelEngine."
+msgstr ""
+
+msgid "Order cancellation failed. Reason: "
+msgstr ""
+
+msgid "Shipment create failed. Reason: "
+msgstr ""
+
+msgid "Shipment update failed. Reason: "
+msgstr ""
+
+msgid "Shipment request successfully sent to ChannelEngine."
+msgstr ""

@@ -1,16 +1,20 @@
 {
-  "name": "channelengine/woocommerce-channel-engine",
-  "description": "ChannelEngine WooCommerce",
-  "license": "proprietary",
-  "authors": [
-      {
-          "name": "Christiaan de Ridder",
-          "email": "christiaan@channelengine.com"
-      }
-  ],
+  "name": "channelengine/woocommerce",
+  "description": "Channel Engine WooCommerce Integration",
+  "version": "3.0.0",
+  "type": "library",
   "require": {
-    "composer/installers": "^1.5",
-    "channelengine/merchant-api-client-php": "^2.6"
+    "symfony/console": "^5.2",
+    "ext-zip": "*",
+    "symfony/process": "^5.2",
+    "wp-cli/wp-cli-bundle": "*",
+    "php": ">=7.2",
+    "wp-coding-standards/wpcs": "2.3.*",
+    "ext-json": "*"
   },
-  "type": "wordpress-plugin"
+  "autoload": {
+    "psr-4": {
+      "ChannelEngine\\Console\\Commands\\": "bin/console/commands"
+    }
+  }
 }
