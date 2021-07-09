@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f3b06fef806e458443fec210a0ea784",
+    "content-hash": "1aced937071b41c24259e1dc55f6ffe2",
     "packages": [
         {
             "name": "channelengine/integration-core",
-            "version": "dev-main",
+            "version": "dev-dev",
             "source": {
                 "type": "git",
                 "url": "git@github.com:channelengine/logeecom-core.git",
-                "reference": "bb36e18a0e6e1aff23a8b0393af68e34361c65a3"
+                "reference": "9a9efe875485a4e806aeacace7b28d7f6d7a587b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/bb36e18a0e6e1aff23a8b0393af68e34361c65a3",
-                "reference": "bb36e18a0e6e1aff23a8b0393af68e34361c65a3",
+                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/9a9efe875485a4e806aeacace7b28d7f6d7a587b",
+                "reference": "9a9efe875485a4e806aeacace7b28d7f6d7a587b",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "proprietary"
             ],
             "description": "ChannelEngine integrations core library",
-            "time": "2021-07-08T15:25:48+00:00"
+            "time": "2021-07-09T13:47:36+00:00"
         }
     ],
     "packages-dev": [
@@ -97,20 +97,6 @@
                 "constructor",
                 "instantiate"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finstantiator",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-11-10T18:47:58+00:00"
         },
         {
@@ -158,12 +144,6 @@
                 "duplicate",
                 "object",
                 "object graph"
-            ],
-            "funding": [
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-11-13T09:40:50+00:00"
         },
@@ -811,12 +791,6 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "funding": [
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                }
-            ],
             "time": "2020-11-30T08:15:22+00:00"
         },
         {
@@ -1347,20 +1321,6 @@
                 "polyfill",
                 "portable"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-02-19T12:13:01+00:00"
         },
         {
@@ -1415,20 +1375,6 @@
             ],
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-06-23T19:06:53+00:00"
         },
         {
@@ -1497,6 +1443,5 @@
         "php": ">=5.6",
         "ext-json": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
