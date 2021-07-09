@@ -6,6 +6,7 @@ use ChannelEngine\BusinessLogic\API\Orders\Http\Proxy;
 use ChannelEngine\BusinessLogic\Authorization\Contracts\AuthorizationService;
 use ChannelEngine\BusinessLogic\Authorization\DTO\AuthInfo;
 use ChannelEngine\BusinessLogic\Webhooks\Contracts\WebhooksService;
+use ChannelEngine\Components\Exceptions\Webhook_Creation_Failed_Exception;
 use ChannelEngine\Components\Services\State_Service;
 use ChannelEngine\Infrastructure\Http\HttpClient;
 use ChannelEngine\Infrastructure\ServiceRegister;
@@ -36,17 +37,19 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 		}
 
 		try {
-			$this->get_auth_service()->validateAccountInfo($api_key, $account_name, get_woocommerce_currency());
+			$this->get_auth_service()->validateAccountInfo( $api_key, $account_name, get_woocommerce_currency() );
 
 			// @todo Delete when account endpoint is available
-            $orderProxy = new Proxy(ServiceRegister::getService(HttpClient::class), $account_name, $api_key);
-            $orderProxy->getNew();
+			$orderProxy = new Proxy( ServiceRegister::getService( HttpClient::class ), $account_name, $api_key );
+			$orderProxy->getNew();
 
 			$auth_info = AuthInfo::fromArray( [ 'account_name' => $account_name, 'api_key' => $api_key ] );
 			$this->get_auth_service()->setAuthInfo( $auth_info );
 			$this->get_state_service()->set_account_configured( true );
 			$this->register_webhooks();
 			$this->return_json( [ 'success' => true ] );
+		} catch ( Webhook_Creation_Failed_Exception $e ) {
+			$this->return_error( __( $e->getMessage(), 'channelengine' ) );
 		} catch ( Exception $e ) {
 			$this->return_error( __( 'Invalid API key or Account name.', 'channelengine' ) );
 		}
@@ -54,11 +57,17 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 
 	/**
 	 * Registers webhooks.
+	 *
+	 * @throws Webhook_Creation_Failed_Exception
 	 */
 	protected function register_webhooks() {
-		$this->get_webhooks_service()->createWebhookToken();
-		$this->get_webhooks_service()->createWebhookUniqueId();
-		$this->get_webhooks_service()->create();
+		try {
+			$this->get_webhooks_service()->createWebhookToken();
+			$this->get_webhooks_service()->createWebhookUniqueId();
+			$this->get_webhooks_service()->create();
+		} catch ( Exception $e ) {
+			throw new Webhook_Creation_Failed_Exception( 'Failed to create webhook.' );
+		}
 	}
 
 	/**
@@ -107,6 +116,6 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 	 * @return WebhooksService
 	 */
 	protected function get_webhooks_service() {
-		return ServiceRegister::getService(WebhooksService::class);
+		return ServiceRegister::getService( WebhooksService::class );
 	}
 }
