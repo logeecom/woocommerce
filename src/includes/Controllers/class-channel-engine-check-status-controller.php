@@ -52,22 +52,6 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 	}
 
 	/**
-	 * Retrieves total number of products and orders.
-	 *
-	 * @throws HttpCommunicationException
-	 * @throws HttpRequestException
-	 * @throws QueryFilterInvalidParamException
-	 * @throws RepositoryNotRegisteredException
-	 * @throws RequestNotSuccessfulException
-	 */
-	public function get_count() {
-		$this->return_json( [
-			'products_total' => $this->get_products_service()->count(),
-			'orders_total'   => $this->get_orders_service()->getOrdersCount(),
-		] );
-	}
-
-	/**
 	 * Retrieves task data.
 	 *
 	 * @param string $task_type
@@ -115,6 +99,7 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 			'status'   => $queueItem->getStatus(),
 			'progress' => (int) $status,
 			'synced'   => ( $log && $log->getSynchronizedEntities() ) ? $log->getSynchronizedEntities() : 0,
+			'total'    => $count,
 		];
 	}
 
