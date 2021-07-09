@@ -19,6 +19,7 @@ use ChannelEngine\Components\Exceptions\Stock_Quantity_Invalid;
 use ChannelEngine\Components\Services\Order_Config_Service;
 use ChannelEngine\Infrastructure\Exceptions\BaseException;
 use ChannelEngine\Infrastructure\Http\HttpClient;
+use ChannelEngine\Infrastructure\Logger\Logger;
 use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Infrastructure\TaskExecution\Exceptions\QueueStorageUnavailableException;
@@ -79,8 +80,14 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 * Disconnects user.
 	 */
 	public function disconnect() {
-		$webhook_service = ServiceRegister::getService(WebhooksService::class);
-		$webhook_service->delete();
+		try {
+			/** @var WebhooksService $webhook_service */
+			$webhook_service = ServiceRegister::getService( WebhooksService::class );
+			$webhook_service->delete();
+		} catch ( Exception $e ) {
+			Logger::logError( 'Failed to delete webhook because: ' . $e->getMessage() );
+		}
+
 		$database = new Database( new Plugin_Options_Repository() );
 		$database->remove_data();
 
@@ -97,12 +104,12 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		try {
 			if ( $order_sync ) {
 				$this->get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
-				$this->get_state_service()->set_manual_order_sync_in_progress(true);
+				$this->get_state_service()->set_manual_order_sync_in_progress( true );
 			}
 
 			if ( $product_sync ) {
 				$this->get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );
-				$this->get_state_service()->set_manual_product_sync_in_progress(true);
+				$this->get_state_service()->set_manual_product_sync_in_progress( true );
 			}
 		} catch ( QueueStorageUnavailableException $e ) {
 			$this->return_json( [
@@ -137,35 +144,35 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		}
 
 		$this->return_json( [
-		    'success' => true,
-            'message' => __('Configuration saved successfully.')
-        ] );
+			'success' => true,
+			'message' => __( 'Configuration saved successfully.' )
+		] );
 	}
 
-    /**
-     * Saves account data.
-     *
-     * @param $api_key
-     * @param $account_name
-     *
-     * @throws QueryFilterInvalidParamException
-     * @throws CurrencyMismatchException
-     * @throws BaseException
-     */
+	/**
+	 * Saves account data.
+	 *
+	 * @param $api_key
+	 * @param $account_name
+	 *
+	 * @throws QueryFilterInvalidParamException
+	 * @throws CurrencyMismatchException
+	 * @throws BaseException
+	 */
 	protected function save_account_data( $api_key, $account_name ) {
 
-        try {
-            $this->get_auth_service()->validateAccountInfo( $api_key, $account_name, get_woocommerce_currency() );
+		try {
+			$this->get_auth_service()->validateAccountInfo( $api_key, $account_name, get_woocommerce_currency() );
 
-            // @todo Delete when account endpoint is available
-            $orderProxy = new Proxy(ServiceRegister::getService(HttpClient::class), $account_name, $api_key);
-            $orderProxy->getNew();
+			// @todo Delete when account endpoint is available
+			$orderProxy = new Proxy( ServiceRegister::getService( HttpClient::class ), $account_name, $api_key );
+			$orderProxy->getNew();
 
-            $auth_info = AuthInfo::fromArray( [ 'account_name' => $account_name, 'api_key' => $api_key ] );
-            $this->get_auth_service()->setAuthInfo( $auth_info );
-        } catch ( Exception $e ) {
-            throw new BaseException(__( 'Invalid API key or Account name.', 'channelengine' ));
-        }
+			$auth_info = AuthInfo::fromArray( [ 'account_name' => $account_name, 'api_key' => $api_key ] );
+			$this->get_auth_service()->setAuthInfo( $auth_info );
+		} catch ( Exception $e ) {
+			throw new BaseException( __( 'Invalid API key or Account name.', 'channelengine' ) );
+		}
 	}
 
 	/**

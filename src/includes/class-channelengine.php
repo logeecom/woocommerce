@@ -560,9 +560,14 @@ class ChannelEngine {
 	 * Removes plugin tables and configuration from the current site.
 	 */
 	private function uninstall_plugin_from_site() {
-		/** @var WebhooksService $webhooks_service */
-		$webhooks_service = ServiceRegister::getService(WebhooksService::class);
-		$webhooks_service->delete();
+		try {
+			/** @var WebhooksService $webhooks_service */
+			$webhooks_service = ServiceRegister::getService(WebhooksService::class);
+			$webhooks_service->delete();
+		} catch (Exception $e) {
+			Logger::logError('Failed to delete webhook because: ' . $e->getMessage());
+		}
+
 		$installer = new Database( new Plugin_Options_Repository() );
 		$installer->uninstall();
 	}
