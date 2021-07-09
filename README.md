@@ -56,7 +56,7 @@ Then, either setup PHPStorm to run tests based on the `/src/phpunit.xml` configu
 or go to the root directory and run:
 
 ```bash
-./run-tests.sh
+./bin/install-wp-tests.sh
 ```
 
 This command will run unit tests on all supported PHP versions from 5.6 to 7.3.
