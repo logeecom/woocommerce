@@ -20,7 +20,7 @@ class Product_Hooks {
 		static::get_task_runner_wakeup()->wakeup();
 		$post = get_post( $id );
 
-		if ( $post->post_status === 'published' ) {
+		if ( $post->post_status === 'publish' ) {
             $handler = new ProductUpsertEventHandler();
             $handler->handle( new ProductUpsert( $id ) );
 		} else {
