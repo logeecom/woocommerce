@@ -4,29 +4,35 @@ if (!window.ChannelEngine) {
 
 (function () {
     function TriggerSyncService() {
+        this.areEventsBinded = false;
         this.showModal = function (url) {
             let triggerModal = document.getElementById('ce-trigger-modal'),
                 modal = triggerModal.children[0];
 
             triggerModal.style.display = "block";
-            modal.querySelectorAll('.ce-button__secondary').forEach(closeButton => {
-                closeButton.addEventListener('click', () => {
-                    triggerModal.style.display = "none";
-                });
-            });
 
-            modal.querySelectorAll('.ce-button__primary').forEach(syncButton => {
-                syncButton.addEventListener('click', () => {
-                    triggerModal.style.display = "none";
-                    this.triggerSync(url);
+            if (!this.areEventsBinded) {
+                modal.querySelectorAll('.ce-button__secondary').forEach(closeButton => {
+                    closeButton.addEventListener('click', () => {
+                        triggerModal.style.display = "none";
+                    });
                 });
-            });
 
-            modal.querySelectorAll('.ce-close-button').forEach(closeBtn => {
-                closeBtn.addEventListener('click', () => {
-                    triggerModal.style.display = "none";
+                modal.querySelectorAll('.ce-button__primary').forEach(syncButton => {
+                    syncButton.addEventListener('click', () => {
+                        triggerModal.style.display = "none";
+                        this.triggerSync(url);
+                    });
                 });
-            })
+
+                modal.querySelectorAll('.ce-close-button').forEach(closeBtn => {
+                    closeBtn.addEventListener('click', () => {
+                        triggerModal.style.display = "none";
+                    });
+                })
+
+                this.areEventsBinded = true;
+            }
 
             ceSetHelp(".ce-modal-content");
         };
