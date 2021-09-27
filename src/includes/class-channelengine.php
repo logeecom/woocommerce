@@ -410,6 +410,10 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function before_order_object_save( WC_Order $order ) {
+        if ( ! $this->get_plugin_status_service()->is_enabled() ) {
+            return;
+        }
+
 		$ce_order_id = get_post_meta( $order->get_id(), '_channel_engine_order_id', true );
 
 		if ( ! $ce_order_id ) {
@@ -504,6 +508,10 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function before_order_cancel_status_transition() {
+        if ( ! $this->get_plugin_status_service()->is_enabled() ) {
+            return;
+        }
+
 		$this->prevent_order_save();
 	}
 
@@ -511,6 +519,10 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function before_order_shipped_status_transition() {
+        if ( ! $this->get_plugin_status_service()->is_enabled() ) {
+            return;
+        }
+
 		$this->prevent_order_save();
 	}
 
