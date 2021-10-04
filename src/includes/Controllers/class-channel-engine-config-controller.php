@@ -7,8 +7,6 @@ use ChannelEngine\BusinessLogic\Authorization\Contracts\AuthorizationService;
 use ChannelEngine\BusinessLogic\Authorization\DTO\AuthInfo;
 use ChannelEngine\BusinessLogic\Authorization\Exceptions\CurrencyMismatchException;
 use ChannelEngine\BusinessLogic\Authorization\Exceptions\FailedToRetrieveAuthInfoException;
-use ChannelEngine\BusinessLogic\InitialSync\OrderSync;
-use ChannelEngine\BusinessLogic\InitialSync\ProductSync;
 use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\BusinessLogic\Orders\Configuration\OrderSyncConfig;
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsSyncConfigService;
@@ -17,6 +15,7 @@ use ChannelEngine\BusinessLogic\Webhooks\Contracts\WebhooksService;
 use ChannelEngine\Components\Exceptions\Order_Statuses_Invalid;
 use ChannelEngine\Components\Exceptions\Stock_Quantity_Invalid;
 use ChannelEngine\Components\Services\Order_Config_Service;
+use ChannelEngine\Components\Services\Trigger_Sync_Service;
 use ChannelEngine\Infrastructure\Exceptions\BaseException;
 use ChannelEngine\Infrastructure\Http\HttpClient;
 use ChannelEngine\Infrastructure\Logger\Logger;
@@ -98,19 +97,10 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 * Triggers sync.
 	 */
 	public function trigger_sync() {
-		$post         = json_decode( $this->get_raw_input(), true );
-		$order_sync   = $post['order_sync'];
-		$product_sync = $post['product_sync'];
-		try {
-			if ( $order_sync ) {
-				$this->get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
-				$this->get_state_service()->set_manual_order_sync_in_progress( true );
-			}
+		$post = json_decode( $this->get_raw_input(), true );
 
-			if ( $product_sync ) {
-				$this->get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );
-				$this->get_state_service()->set_manual_product_sync_in_progress( true );
-			}
+		try {
+			Trigger_Sync_Service::trigger( $post );
 		} catch ( QueueStorageUnavailableException $e ) {
 			$this->return_json( [
 				'success' => false,

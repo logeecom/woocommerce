@@ -105,9 +105,9 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 			case State_Service::ENABLE_AND_SYNC:
 				return Channel_Engine_Enable_Controller::class;
 			case State_Service::DASHBOARD:
-                return Channel_Engine_Dashboard_Controller::class;
+				return Channel_Engine_Dashboard_Controller::class;
 			case State_Service::CONFIG:
-			    return Channel_Engine_Config_Controller::class;
+				return Channel_Engine_Config_Controller::class;
 			case State_Service::TRANSACTIONS:
 				return Channel_Engine_Transactions_Controller::class;
 		}
@@ -144,5 +144,19 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 		}
 
 		return $this->task_runner_wakeup;
+	}
+
+	/**
+	 * Returns json response with error message.
+	 *
+	 * @param string $message
+	 */
+	protected function return_error( $message ) {
+		$this->return_json(
+			[
+				'success' => false,
+				'message' => $message,
+			]
+		);
 	}
 }

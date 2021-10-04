@@ -2,7 +2,6 @@
 
 namespace ChannelEngine;
 
-use ChannelEngine\BusinessLogic\API\Authorization\Http\Proxy;
 use ChannelEngine\BusinessLogic\Authorization\Contracts\AuthorizationService;
 use ChannelEngine\BusinessLogic\Cancellation\Domain\CancellationItem;
 use ChannelEngine\BusinessLogic\Cancellation\Domain\CancellationRequest;
@@ -26,6 +25,7 @@ use ChannelEngine\Infrastructure\Logger\Logger;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Migrations\Exceptions\Migration_Exception;
 use ChannelEngine\Repositories\Plugin_Options_Repository;
+use ChannelEngine\Utility\Currency_Check;
 use ChannelEngine\Utility\Database;
 use ChannelEngine\Utility\Logging_Callable;
 use ChannelEngine\Utility\Shop_Helper;
@@ -169,7 +169,7 @@ class ChannelEngine {
 		return $messages;
 	}
 
-	public function update_database( ) {
+	public function update_database() {
 		try {
 			$this->database->update( is_multisite() );
 		} catch ( Migration_Exception $e ) {
@@ -336,11 +336,7 @@ class ChannelEngine {
 	 * @param $new_value
 	 */
 	public function check_currency( $old_value, $new_value ) {
-		/** @var Proxy $authProxy */
-		$authProxy   = ServiceRegister::getService( Proxy::class );
-		$accountInfo = $authProxy->getAccountInfo();
-
-		if ( $new_value !== $accountInfo->getCurrencyCode() ) {
+		if ( ! Currency_Check::match( $new_value ) ) {
 			$this->get_plugin_status_service()->disable();
 		}
 	}
@@ -410,9 +406,9 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function before_order_object_save( WC_Order $order ) {
-        if ( ! $this->get_plugin_status_service()->is_enabled() ) {
-            return;
-        }
+		if ( ! $this->get_plugin_status_service()->is_enabled() ) {
+			return;
+		}
 
 		$ce_order_id = get_post_meta( $order->get_id(), '_channel_engine_order_id', true );
 
@@ -508,9 +504,9 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function before_order_cancel_status_transition() {
-        if ( ! $this->get_plugin_status_service()->is_enabled() ) {
-            return;
-        }
+		if ( ! $this->get_plugin_status_service()->is_enabled() ) {
+			return;
+		}
 
 		$this->prevent_order_save();
 	}
@@ -519,9 +515,9 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function before_order_shipped_status_transition() {
-        if ( ! $this->get_plugin_status_service()->is_enabled() ) {
-            return;
-        }
+		if ( ! $this->get_plugin_status_service()->is_enabled() ) {
+			return;
+		}
 
 		$this->prevent_order_save();
 	}
@@ -574,10 +570,10 @@ class ChannelEngine {
 	private function uninstall_plugin_from_site() {
 		try {
 			/** @var WebhooksService $webhooks_service */
-			$webhooks_service = ServiceRegister::getService(WebhooksService::class);
+			$webhooks_service = ServiceRegister::getService( WebhooksService::class );
 			$webhooks_service->delete();
-		} catch (Exception $e) {
-			Logger::logError('Failed to delete webhook because: ' . $e->getMessage());
+		} catch ( Exception $e ) {
+			Logger::logError( 'Failed to delete webhook because: ' . $e->getMessage() );
 		}
 
 		$installer = new Database( new Plugin_Options_Repository() );
