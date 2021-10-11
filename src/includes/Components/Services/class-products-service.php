@@ -21,6 +21,12 @@ use WC_Product_Variation;
  * @package ChannelEngine\Components\Services
  */
 class Products_Service implements ProductsService {
+	protected static $tax_class_map = [
+		''             => 'STANDARD',
+		'reduced-rate' => 'REDUCED',
+		'zero-rate'    => 'EXEMPT',
+	];
+
 	/**
 	 * @var array
 	 */
@@ -265,7 +271,7 @@ class Products_Service implements ProductsService {
 			[ 'msrp', 'manufacturer_price', 'vendor_price' ]
 		);
 
-		$attributes['vat_rate_type']               = 'STANDARD';
+		$attributes['vat_rate_type']               = $this->get_product_tax_rate( $wc_product );
 		$attributes['shipping_costs']              = $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
@@ -397,7 +403,7 @@ class Products_Service implements ProductsService {
 	protected function get_custom_attributes( array $product_attributes ) {
 		$custom_attributes = [];
 		foreach ( $product_attributes as $key => $attribute ) {
-			if ( in_array($key, $this->product_attributes, true) || $attribute->get_variation() ) {
+			if ( in_array( $key, $this->product_attributes, true ) || $attribute->get_variation() ) {
 				continue;
 			}
 
@@ -513,5 +519,12 @@ class Products_Service implements ProductsService {
 
 	protected function get_product_repository() {
 		return new Product_Repository();
+	}
+
+	/**
+	 * @param WC_Product $product
+	 */
+	protected function get_product_tax_rate( $product ) {
+		return ! empty( static::$tax_class_map[ $product->get_tax_class() ] ) ? static::$tax_class_map[ $product->get_tax_class() ] : 'STANDARD';
 	}
 }
