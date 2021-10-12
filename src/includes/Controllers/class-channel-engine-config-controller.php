@@ -154,10 +154,6 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		try {
 			$this->get_auth_service()->validateAccountInfo( $api_key, $account_name, get_woocommerce_currency() );
 
-			// @todo Delete when account endpoint is available
-			$orderProxy = new Proxy( ServiceRegister::getService( HttpClient::class ), $account_name, $api_key );
-			$orderProxy->getNew();
-
 			$auth_info = AuthInfo::fromArray( [ 'account_name' => $account_name, 'api_key' => $api_key ] );
 			$this->get_auth_service()->setAuthInfo( $auth_info );
 		} catch ( Exception $e ) {
