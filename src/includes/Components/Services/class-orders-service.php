@@ -99,6 +99,7 @@ class Orders_Service extends OrdersService {
 				$status = $config ? $config->getIncomingOrders() : $order->getStatus();
 				break;
 			case 'CLOSED':
+			case 'SHIPPED':
 				$status = $config ? $config->getFulfilledOrders() : $order->getStatus();
 				break;
 			default:
