@@ -131,7 +131,7 @@ class Orders_Service extends OrdersService {
 			'address_2'  => '',
 			'city'       => $address->getCity(),
 			'postcode'   => $address->getZipCode(),
-			'country'    => WC()->countries->countries[ $address->getCountryIso() ],
+			'country'    => strtoupper($address->getCountryIso()),
 			'state'      => $address->getRegion(),
 			'email'      => $email,
 			'phone'      => $phone,
