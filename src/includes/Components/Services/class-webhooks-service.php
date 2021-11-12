@@ -42,7 +42,7 @@ class Webhooks_Service extends WebhooksService {
 	 */
 	protected function getEvents() {
 		return [
-			EventTypes::ORDERS_CHANGE,
+			EventTypes::ORDERS_CREATE,
 		];
 	}
 
