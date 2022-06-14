@@ -3,6 +3,7 @@
 namespace ChannelEngine\Controllers;
 
 use ChannelEngine\BusinessLogic\Notifications\Contracts\NotificationService;
+use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\Infrastructure\Logger\Logger;
 use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException;
 use ChannelEngine\Infrastructure\ServiceRegister;
@@ -68,7 +69,12 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 		}
 
 		if ( $this->get_state_service()->is_initial_sync_in_progress() ) {
-			return 'sync-in-progress';
+            $config = ServiceRegister::getService(OrdersConfigurationService::class)->getOrderSyncConfig();
+            if($config->isEnableOrdersByMerchantSync() || $config->isEnableOrdersByMarketplaceSync()) {
+                return 'sync-in-progress';
+            }
+            return 'product-sync-in-progress';
+
 		}
 
 		$manualProductSync = $this->get_state_service()->is_manual_product_sync_in_progress();
