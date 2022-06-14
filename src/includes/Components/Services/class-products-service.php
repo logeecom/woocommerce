@@ -13,7 +13,6 @@ use ChannelEngine\Repositories\Meta_Repository;
 use ChannelEngine\Repositories\Product_Repository;
 use DateTime;
 use WC_Product;
-use WC_Product_Attribute;
 use WC_Product_Variation;
 
 /**
@@ -136,7 +135,7 @@ class Products_Service implements ProductsService {
 	 * @return Product
 	 * @throws QueryFilterInvalidParamException
 	 */
-	protected function transform_product( WC_Product $wc_product, array $meta_lookup, $is_enabled_stock_sync, array $extra_data_attributes ) {
+	protected function transform_product( WC_Product $wc_product, array $meta_lookup, $is_enabled_stock_sync, array $extra_data_attributes = [] ) {
 		$this->product_attributes = [];
 		$attributes               = $this->fetch_attributes( $wc_product, $meta_lookup );
 
@@ -193,7 +192,8 @@ class Products_Service implements ProductsService {
 						$variant,
 						$product,
 						isset( $variant_meta_lookup[ $variant->get_id() ] ) ?
-							$variant_meta_lookup[ $variant->get_id() ] : []
+							$variant_meta_lookup[ $variant->get_id() ] : [],
+                        $extra_data_attributes
 					)
 				);
 			}
@@ -219,11 +219,8 @@ class Products_Service implements ProductsService {
 		return wc_get_products( $args );
 	}
 
-	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [] ) {
+	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [],  array $extra_data_attributes = [] ) {
 		$attributes = $this->fetch_attributes( $variant, $meta_lookup );
-
-		$variant_custom_attributes = $this->get_custom_variant_attributes( $variant->get_attributes() );
-		$custom_attributes         = array_merge( $variant_custom_attributes, $parent->getCustomAttributes() );
 
 		return new Variant(
 			$variant->get_id(),
@@ -245,7 +242,7 @@ class Products_Service implements ProductsService {
 			$attributes['color'] ?: $parent->getColor(),
 			$attributes['main_image_url'] ?: $parent->getMainImageUrl(),
 			$attributes['additional_image_urls'] ?: $parent->getAdditionalImageUrls(),
-			$custom_attributes,
+            $this->get_custom_attributes( $variant, $meta_lookup, $extra_data_attributes ),
 			$attributes['category_trail'] ?: $parent->getCategoryTrail()
 		);
 	}
@@ -316,11 +313,20 @@ class Products_Service implements ProductsService {
 			$meta_lookup,
 			[ 'shipping_time' ]
 		);
-		$attributes['ean']                         = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			$attributesMapping->get_gtin() !== null ? [ $attributesMapping->get_gtin() ] : [ 'ean', 'gtin' ]
-		);
+        $ean = $this->get_attribute(
+            $wc_product,
+            $meta_lookup,
+            $attributesMapping->get_gtin() !== null ? [ $attributesMapping->get_gtin() ] : [ 'ean', 'gtin' ]
+        );
+
+        if ($ean) {
+            $attributes['ean'] = $this->get_attribute(
+                $wc_product,
+                $meta_lookup,
+                $attributesMapping->get_gtin() !== null ? [ $attributesMapping->get_gtin() ] : [ 'ean', 'gtin' ]
+            );
+        }
+
 		$attributes['manufacturer_product_number'] = $wc_product->get_sku() ?: $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
@@ -442,16 +448,20 @@ class Products_Service implements ProductsService {
 		$custom_attributes = [];
 
 		foreach ( $extra_data_attributes as $extra_attribute_key => $extra_attribute_value ) {
-			$custom_attributes[] = new CustomAttribute(
-				$extra_attribute_key,
-				$this->get_attribute(
-					$wc_product,
-					$meta_lookup,
-					[ $extra_attribute_value ]
-				),
-				CustomAttribute::TYPE_TEXT,
-				true
-			);
+            $attr = $this->get_attribute(
+                $wc_product,
+                $meta_lookup,
+                [ $extra_attribute_value ]
+            );
+            if ($attr) {
+                $custom_attributes[] = new CustomAttribute(
+                    $extra_attribute_key,
+                    $attr,
+                    CustomAttribute::TYPE_TEXT,
+                    true
+                );
+            }
+
 		}
 
 		return $custom_attributes;
