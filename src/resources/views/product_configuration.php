@@ -26,7 +26,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">3</div>
-                    <div class="ce-step-title"><?php echo __( 'Order status mapping', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine' ); ?></div>
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">4</div>

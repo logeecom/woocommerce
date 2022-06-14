@@ -13,11 +13,24 @@ if (!window.ChannelEngine) {
                     const incomingOptions = document.getElementById('ceIncomingOrders'),
                         shippedOptions = document.getElementById('ceShippedOrders'),
                         fulfilledByMpOptions = document.getElementById('ceFulfilledByMp'),
+                        enableShipmentInfoSync = document.getElementById('enableShipmentInfoSync'),
+                        enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
+                        enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
+                        enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
+                        enableReduceStock = document.getElementById('enableReduceStock'),
                         mappings = response.order_statuses;
 
                     mappings.forEach(item => addMappings(item, incomingOptions, response.incoming));
                     mappings.forEach(item => addMappings(item, shippedOptions, response.shipped));
                     mappings.forEach(item => addMappings(item, fulfilledByMpOptions, response.fulfilledByMp));
+
+                    enableShipmentInfoSync.checked = response.enableShipmentInfoSync;
+                    enableOrderCancellationSync.checked = response.enableOrderCancellationSync;
+                    enableOrdersByMerchantSync.checked = response.enableOrdersByMerchantSync;
+                    enableOrdersByMarketplaceSync.checked = response.enableOrdersByMarketplaceSync;
+                    enableReduceStock.checked = response.enableReduceStock;
+
+                    ChannelEngine.loader.force()
                 }
             );
 

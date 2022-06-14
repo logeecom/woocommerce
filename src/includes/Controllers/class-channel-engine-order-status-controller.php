@@ -6,8 +6,11 @@ use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\BusinessLogic\Orders\Configuration\OrderSyncConfig;
 use ChannelEngine\Components\Services\Order_Config_Service;
 use ChannelEngine\Components\Services\State_Service;
+use ChannelEngine\Infrastructure\ORM\Exceptions\RepositoryNotRegisteredException;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Utility\Script_Loader;
+use DateTime;
+use Exception;
 
 /**
  * Class Channel_Engine_Order_Status_Controller
@@ -54,11 +57,24 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 					'value' => 'wc-completed',
 					'label' => __( 'wc-completed', 'channelengine' ),
 				],
+			'enableShipmentInfoSync' =>
+				! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
+			'enableOrderCancellationSync' =>
+				! ( $mappings && $mappings->isEnableOrderCancellationSync() !== null ) || $mappings->isEnableOrderCancellationSync(),
+			'enableOrdersByMerchantSync' =>
+				! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
+			'enableOrdersByMarketplaceSync' =>
+				! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
+			'enableReduceStock' =>
+				! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock()
 		] );
 	}
 
 	/**
 	 * Saves order statuses.
+	 *
+	 * @throws RepositoryNotRegisteredException
+	 * @throws Exception
 	 */
 	public function save() {
 		$payload = json_decode( $this->get_raw_input(), true );
@@ -74,8 +90,14 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		$orderSyncConfig->setIncomingOrders($payload['incoming']);
 		$orderSyncConfig->setShippedOrders($payload['shipped']);
 		$orderSyncConfig->setFulfilledOrders($payload['fulfilledByMp']);
+		$orderSyncConfig->setEnableShipmentInfoSync($payload['enableShipmentInfoSync']);
+		$orderSyncConfig->setEnableOrderCancellationSync($payload['enableOrderCancellationSync']);
+		$orderSyncConfig->setEnableOrdersByMerchantSync($payload['enableOrdersByMerchantSync']);
+		$orderSyncConfig->setEnableOrdersByMarketplaceSync($payload['enableOrdersByMarketplaceSync']);
+		$orderSyncConfig->setEnableReduceStock($payload['enableReduceStock']);
 
 		$this->get_order_config_service()->saveOrderSyncConfig($orderSyncConfig);
+		$this->get_order_config_service()->setClosedOrdersSyncTime(new DateTime($payload['startSyncDate']));
 		$this->get_state_service()->set_order_configured( true );
 
 		$this->return_json( [ 'success' => true ] );

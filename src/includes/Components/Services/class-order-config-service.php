@@ -25,4 +25,20 @@ class Order_Config_Service extends OrdersConfigurationService {
 		       in_array( $statuses['shipped'], $order_statuses, true ) &&
 		       in_array( $statuses['fulfilledByMp'], $order_statuses, true );
 	}
+
+	/**
+	 * Validates synchronization config.
+	 *
+	 * @param $sync_config
+	 *
+	 * @return bool
+	 */
+	public function is_sync_config_valid( $sync_config ) {
+		return isset(
+			$sync_config['enableShipmentInfoSync'],
+			$sync_config['enableOrderCancellationSync'],
+			$sync_config['enableOrdersByMerchantSync'],
+			$sync_config['enableOrdersByMarketplaceSync']
+		);
+	}
 }

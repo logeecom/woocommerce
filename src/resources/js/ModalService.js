@@ -12,9 +12,16 @@ if (!window.ChannelEngine) {
                 modalButton = modal.getElementsByTagName('BUTTON')[0],
                 closeButton = document.getElementsByClassName('ce-close-modal')[0],
                 disableSwitch = document.getElementById('ce-disable-switch');
+
             modalHeader.innerHTML = header;
-            modalButton.onclick = callback;
-            modalButton.innerHTML = buttonText;
+            if (buttonText) {
+                modalButton.style.display = "block";
+                modalButton.onclick = callback;
+                modalButton.innerHTML = buttonText;
+            } else {
+                modalButton.style.display = "none";
+            }
+
             closeButton.onclick = function () {
                 if (disableSwitch) {
                     disableSwitch.checked = true;

@@ -16,6 +16,7 @@ class Script_Loader {
 	 * @param false $in_footer
 	 */
 	public static function load_js( $scripts, $in_footer = false ) {
+		wp_enqueue_script('jquery-ui-datepicker');
 		self::load( $scripts, $in_footer, true );
 	}
 
@@ -25,6 +26,7 @@ class Script_Loader {
 	 * @param array $scripts
 	 */
 	public static function load_css( $scripts ) {
+		$scripts[] = 'css/jquery-ui.css';
 		self::load( $scripts );
 	}
 

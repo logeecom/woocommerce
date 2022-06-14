@@ -13,6 +13,7 @@ use ChannelEngine\BusinessLogic\Orders\Contracts\OrdersService;
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsService;
 use ChannelEngine\BusinessLogic\Products\Entities\ProductEvent;
 use ChannelEngine\BusinessLogic\Products\Entities\SyncConfig;
+use ChannelEngine\BusinessLogic\Products\Listeners\TickEventListener;
 use ChannelEngine\BusinessLogic\Shipments\Contracts\ShipmentsService;
 use ChannelEngine\BusinessLogic\SupportConsole\Contracts\SupportService;
 use ChannelEngine\BusinessLogic\TransactionLog\Entities\Details;
@@ -20,8 +21,10 @@ use ChannelEngine\BusinessLogic\TransactionLog\Entities\TransactionLog;
 use ChannelEngine\BusinessLogic\Webhooks\Contracts\WebhooksService;
 use ChannelEngine\Components\Listeners\Cleanup_Listener;
 use ChannelEngine\Components\Listeners\Order_Tick_Event_Listener;
+use ChannelEngine\Components\Services\Attribute_Mappings_Service;
 use ChannelEngine\Components\Services\Cancellation_Service;
 use ChannelEngine\Components\Services\Configuration_Service;
+use ChannelEngine\Components\Services\Extra_Data_Attribute_Mappings_Service;
 use ChannelEngine\Components\Services\Logger_Service;
 use ChannelEngine\Components\Services\Order_Config_Service;
 use ChannelEngine\Components\Services\Orders_Service;
@@ -156,6 +159,20 @@ class Bootstrap_Component extends BootstrapComponent {
 				return new Webhooks_Service();
 			}
 		);
+
+		ServiceRegister::registerService(
+			Attribute_Mappings_Service::class,
+			static function () {
+				return new Attribute_Mappings_Service();
+			}
+		);
+
+		ServiceRegister::registerService(
+			Extra_Data_Attribute_Mappings_Service::class,
+			static function () {
+				return new Extra_Data_Attribute_Mappings_Service();
+			}
+		);
 	}
 
 	/**
@@ -201,5 +218,9 @@ class Bootstrap_Component extends BootstrapComponent {
 			TickEvent::CLASS_NAME,
 			Cleanup_Listener::class . "::handle"
 		);
+
+		EventBus::getInstance()->when(
+			TickEvent::CLASS_NAME,
+			[new TickEventListener(), 'handle']);
 	}
 }

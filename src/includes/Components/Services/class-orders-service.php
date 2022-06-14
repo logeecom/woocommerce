@@ -7,6 +7,7 @@ use ChannelEngine\BusinessLogic\API\Orders\DTO\Order;
 use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\BusinessLogic\Orders\Domain\CreateResponse;
 use ChannelEngine\BusinessLogic\Orders\OrdersService;
+use ChannelEngine\BusinessLogic\Products\Contracts\ProductsSyncConfigService;
 use ChannelEngine\Components\Exceptions\ProductNotAvailableException;
 use ChannelEngine\Infrastructure\Exceptions\BaseException;
 use ChannelEngine\Infrastructure\ServiceRegister;
@@ -34,6 +35,10 @@ class Orders_Service extends OrdersService {
 	 * @var Order_Config_Service
 	 */
 	protected $order_config_service;
+	/**
+	 * @var ProductsSyncConfigService
+	 */
+	protected $product_sync_config_service;
 
 	/**
 	 * Creates new orders in the shop system and
@@ -75,6 +80,10 @@ class Orders_Service extends OrdersService {
 
 			$wc_order->save();
 			$this->save_post_meta( $order, $wc_order->get_id() );
+			if ( $this->get_product_sync_config_service()->get()->isEnabledStockSync()
+			     && $this->get_order_config_service()->getOrderSyncConfig()->isEnableReduceStock() ) {
+				wc_reduce_stock_levels( $wc_order->get_id() );
+			}
 		} catch ( BaseException $e ) {
 			return $this->create_response( false, '', $e->getMessage() );
 		} catch ( WC_Data_Exception $e ) {
@@ -325,5 +334,18 @@ class Orders_Service extends OrdersService {
 		}
 
 		return $this->order_config_service;
+	}
+
+	/**
+	 * Retrieves an instance of ProductsSyncConfigService.
+	 *
+	 * @return ProductsSyncConfigService
+	 */
+	protected function get_product_sync_config_service() {
+		if ( $this->product_sync_config_service === null ) {
+			$this->product_sync_config_service = ServiceRegister::getService( ProductsSyncConfigService::class );
+		}
+
+		return $this->product_sync_config_service;
 	}
 }

@@ -16,8 +16,18 @@ if (!window.ChannelEngine) {
             let loader = document.getElementById('ce-loader'),
                 page = document.getElementsByClassName('channel-engine')[0];
 
-            loader.style.display = 'none';
-            page.style.display = 'block';
+            if (!loader.classList.contains('explicitHide')) {
+                loader.style.display = 'none';
+                page.style.display = 'block';
+            }
+        }
+
+        this.force =  function () {
+            let loader = document.getElementById('ce-loader');
+            if (loader.classList.contains('explicitHide')) {
+                loader.classList.remove("explicitHide");
+            }
+            this.hide()
         }
     }
 

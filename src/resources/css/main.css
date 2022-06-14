@@ -149,6 +149,22 @@
 .channel-engine .ce-input-group.ce-wide-group button {
   width: 150px;
 }
+.channel-engine .ce-input-extra-data,
+.channel-engine .ce-extra-data-heading,
+.channel-engine .last,
+.channel-engine .ce-input-extra-data label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 640px;
+  margin-bottom: 15px;
+}
+.channel-engine .ce-input-extra-data label select {
+  width: 400px;
+}
+.channel-engine .ce-input-extra-data label input {
+  width: 100px;
+}
 .channel-engine .ce-message {
   margin: 20px 0;
   border: 1px solid;
@@ -425,6 +441,20 @@
   background: none;
   color: #6c757d;
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.channel-engine .ce-button-extra-data {
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  height: 25px;
+  width: 25px;
+  line-height: 1.5;
+}
+.channel-engine .ce-button-add-mapping {
+  padding: 0.15rem 0.47rem;
+}
+.channel-engine .ce-button-remove-mapping {
+  padding: 0.15rem 0.56rem;
 }
 .channel-engine .ce-table {
   border-collapse: collapse;

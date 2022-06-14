@@ -3,9 +3,8 @@
 namespace ChannelEngine\Controllers;
 
 use ChannelEngine\BusinessLogic\Webhooks\DTO\Webhook;
-use ChannelEngine\BusinessLogic\Webhooks\Handlers\WebhooksHandler;
+use ChannelEngine\BusinessLogic\Webhooks\Handlers\OrderWebhookHandler;
 use ChannelEngine\Components\Services\Plugin_Status_Service;
-use ChannelEngine\Components\Services\State_Service;
 use ChannelEngine\Infrastructure\Exceptions\BaseException;
 use ChannelEngine\Infrastructure\Logger\Logger;
 use ChannelEngine\Infrastructure\ServiceRegister;
@@ -36,7 +35,7 @@ class Channel_Engine_Webhooks_Controller extends Channel_Engine_Base_Controller 
 		$event  = $this->get_param( 'type' );
 		$webhook = new Webhook( $tenant, $token, $event );
 
-		$handler = new WebhooksHandler();
+		$handler = new OrderWebhookHandler();
 		try {
 			$handler->handle( $webhook );
 			$this->return_plain_text();

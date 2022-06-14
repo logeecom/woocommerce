@@ -3,6 +3,7 @@
 namespace ChannelEngine\Controllers;
 
 use ChannelEngine\BusinessLogic\API\Http\Exceptions\RequestNotSuccessfulException;
+use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\BusinessLogic\Orders\Contracts\OrdersService;
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsService;
 use ChannelEngine\BusinessLogic\TransactionLog\Contracts\TransactionLogService;
@@ -38,6 +39,10 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 	 * @var TransactionLogService
 	 */
 	protected $transaction_log_service;
+	/**
+	 * @var OrdersConfigurationService
+	 */
+	protected $orders_config_service;
 
 	/**
 	 * Gets synchronization data.
@@ -104,6 +109,18 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 	}
 
 	/**
+	 * Retrieves information on whether order synchronization is enabled.
+	 *
+	 * @return void
+	 */
+	protected function get_order_sync_config() {
+		$isEnabled = $this->get_orders_config_service()->getOrderSyncConfig()->isEnableOrdersByMarketplaceSync() ||
+		             $this->get_orders_config_service()->getOrderSyncConfig()->isEnableOrdersByMerchantSync();
+
+		$this->return_json( [ 'enabled' => $isEnabled ] );
+	}
+
+	/**
 	 * Retrieves an instance of QueueService.
 	 *
 	 * @return QueueService
@@ -153,5 +170,18 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 		}
 
 		return $this->transaction_log_service;
+	}
+
+	/**
+	 * Retrieves an instance of OrdersConfigurationService.
+	 *
+	 * @return Orders_Service
+	 */
+	protected function get_orders_config_service() {
+		if ( $this->orders_config_service === null ) {
+			$this->orders_config_service = ServiceRegister::getService( OrdersConfigurationService::class );
+		}
+
+		return $this->orders_config_service;
 	}
 }

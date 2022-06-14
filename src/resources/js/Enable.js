@@ -8,6 +8,8 @@ document.addEventListener(
             enableSwitch = document.getElementById('ce-enable-switch');
 
         let triggerModal = document.getElementById('ce-trigger-modal'),
+            getOrderSyncConfigUrl = document.getElementById('ce-check-order-sync'),
+            orderTooltip = document.getElementById('ce-order-sync-tooltip'),
             modal = triggerModal.children[0];
 
 
@@ -37,6 +39,13 @@ document.addEventListener(
         enableSwitch.onchange = (event) => {
             if (event.currentTarget.checked) {
                 triggerModal.style.display = "block";
+                ajaxService.get(getOrderSyncConfigUrl.value, function (response) {
+                    if( ! response.enabled ) {
+                        let order = document.getElementById('ce-order-sync-checkbox');
+                        order.setAttribute('disabled', 'true');
+                        orderTooltip.textContent = 'Order synchronization is disabled, because both order synchronization options are disabled in the configuration (fulfilled by merchant and by marketplace).';
+                    }
+                });
             }
         }
 

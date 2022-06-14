@@ -104,7 +104,9 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 
 		if ( ! $track_and_trace || ! $shipping_method
 		     || ! $order_mappings || ! ( $order instanceof WP_Post )
-		     || $order->post_status !== $order_mappings->getShippedOrders() ) {
+		     || $order->post_status !== $order_mappings->getShippedOrders()
+		     || ! $order_mappings->isEnableShipmentInfoSync()
+		) {
 			return;
 		}
 

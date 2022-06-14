@@ -48,5 +48,7 @@ if ($data['status'] !== 'disabled-integration') {
                value="<?php echo Shop_Helper::get_controller_url( 'Check_Status', 'get_sync_data' ) ?>">
         <input id="ce-enable-plugin" type="hidden"
                value="<?php echo Shop_Helper::get_controller_url( 'Enable', 'enable' ) ?>">
+        <input id="ce-check-order-sync" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url( 'Check_Status', 'get_order_sync_config' ) ?>">
     </main>
 </div>

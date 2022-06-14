@@ -7,7 +7,20 @@ if (!window.ChannelEngine) {
         this.areEventsBinded = false;
         this.showModal = function (url) {
             let triggerModal = document.getElementById('ce-trigger-modal'),
-                modal = triggerModal.children[0];
+                modal = triggerModal.children[0],
+                orderCheckbox = document.getElementById('ce-order-sync-checkbox'),
+                orderTooltip = document.getElementById('ce-order-sync-tooltip'),
+                enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
+                enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync');
+
+            if( ! ( enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked ) ) {
+                orderCheckbox.setAttribute('disabled', 'true');
+                orderCheckbox.checked = false;
+                orderTooltip.textContent = 'Order synchronization is disabled, because both order synchronization options are disabled in the configuration (fulfilled by merchant and by marketplace).';
+            } else {
+                orderCheckbox.removeAttribute('disabled');
+                orderTooltip.textContent = 'The integration will synchronize new and closed orders (fulfilled by the merchant and fulfilled by the marketplace) from ChannelEngine into the shop.';
+            }
 
             triggerModal.style.display = "block";
 
@@ -38,15 +51,9 @@ if (!window.ChannelEngine) {
         };
 
         this.triggerSync = function (url) {
-            let productsChecked = document.getElementById('ce-product-sync-checkbox'),
-                ordersChecked = document.getElementById('ce-order-sync-checkbox');
-
             ChannelEngine.ajaxService.post(
                 url,
-                {
-                    product_sync: productsChecked.checked,
-                    order_sync: ordersChecked.checked
-                },
+                {},
                 function (response) {
                     if (!response.success) {
                         ChannelEngine.notificationService.addNotification(response.message);

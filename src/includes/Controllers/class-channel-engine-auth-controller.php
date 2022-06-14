@@ -39,8 +39,8 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 			$this->get_auth_service()->validateAccountInfo( $api_key, $account_name, get_woocommerce_currency() );
 			$auth_info = AuthInfo::fromArray( [ 'account_name' => $account_name, 'api_key' => $api_key ] );
 			$this->get_auth_service()->setAuthInfo( $auth_info );
-			$this->get_state_service()->set_account_configured( true );
 			$this->register_webhooks();
+			$this->get_state_service()->set_account_configured( true );
 			$this->return_json( [ 'success' => true ] );
 		} catch ( CurrencyMismatchException $e ) {
             $this->return_error( __( $e->getMessage(), 'channelengine' ) );

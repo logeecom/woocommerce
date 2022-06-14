@@ -13,7 +13,7 @@ Frontend_Helper::render_view('config');
 <script src="<?php echo Asset_Helper::get_js_url('ModalService.js') ?>"></script>
 <script src="<?php echo Asset_Helper::get_js_url('TriggerSyncService.js') ?>"></script>
 
-<div id="ce-loader" class="ce-overlay">
+<div id="ce-loader" class="ce-overlay explicitHide">
     <div class="ce-loader"></div>
 </div>
 <div class="channel-engine" style="display: none;">
@@ -73,7 +73,7 @@ Frontend_Helper::render_view('config');
             <input id="ce-trigger-sync-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'trigger_sync'); ?>">
             <input id="ce-stock-url" type="hidden"
-                   value="<?php echo Shop_Helper::get_controller_url('Config', 'get_stock_quantity') ?>">
+                   value="<?php echo Shop_Helper::get_controller_url('Config', 'get_stock_sync_config') ?>">
             <input id="ce-order-statuses-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Order_Status', 'get') ?>">
             <input id="ce-save-url" type="hidden"
@@ -87,6 +87,10 @@ Frontend_Helper::render_view('config');
         <div id="ce-trigger-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/trigger_sync.php' ?>
         </div>
+        <input id="ce-extra-data-duplicates-text" type="hidden"
+               value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine'); ?>">
+        <input id="ce-extra-data-duplicates-header" type="hidden"
+               value="<?php echo __('Warning', 'channelengine'); ?>">
         <input id="ce-disconnect-header-text" type="hidden"
                value="<?php echo __('Disconnect account', 'channelengine'); ?>">
         <input id="ce-disconnect-button-text" type="hidden" value="<?php echo __('Disconnect', 'channelengine'); ?>">

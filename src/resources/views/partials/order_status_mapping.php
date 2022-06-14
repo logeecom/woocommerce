@@ -6,7 +6,69 @@ $basePath = Shop_Helper::get_plugin_resources_path( __DIR__ );
 $baseUrl  = Shop_Helper::get_plugin_page_url();
 
 ?>
-<h1><?php echo __( 'Order status mapping', 'channelengine' ); ?></h1>
+<h1><?php echo __( 'Reduce stock?', 'channelengine' ); ?></h1>
+<p><?php echo __( 'Check this option if you want to automatically reduce the stock after importing the order.', 'channelengine' ); ?></p>
+<form class="ce-form">
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php echo __( 'Automatically reduce the stock', 'channelengine' ); ?></span>
+            <span class="ce-help">
+                    <span class="ce-help-tooltip">
+                        <?php echo __( 'If this field is not checked, plugin does not reduce the product stock after an order has been imported to WooCommerce.', 'channelengine' ); ?>
+                    </span>
+                </span>
+            <input id="enableReduceStock" type="checkbox" class="checkbox">
+        </label>
+    </div>
+</form>
+<h1><?php echo __( 'Order synchronization', 'channelengine' ); ?></h1>
+<form class="ce-form">
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php echo __( 'Shipments', 'channelengine' ); ?></span>
+            <span class="ce-help">
+                    <span class="ce-help-tooltip">
+                        <?php echo __( 'If this field is checked, shipment information will be synchronized to channelengine.', 'channelengine' ); ?>
+                    </span>
+                </span>
+            <input id="enableShipmentInfoSync" type="checkbox" class="checkbox" checked>
+        </label>
+    </div>
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php echo __( 'Cancellations', 'channelengine' ); ?></span>
+            <span class="ce-help">
+                    <span class="ce-help-tooltip">
+                        <?php echo __( 'If this field is checked, the cancellation of the order will be synchronized to the channelengine.', 'channelengine' ); ?>
+                    </span>
+                </span>
+            <input id="enableOrderCancellationSync" type="checkbox" class="checkbox" checked>
+        </label>
+    </div>
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php echo __( 'Orders fulfilled by the merchant', 'channelengine' ); ?></span>
+            <span class="ce-help">
+                    <span class="ce-help-tooltip">
+                        <?php echo __( "If this field is checked, background download process of the orders (from the channelengine) fulfilled by the marketplace will be enabled. Set starting date for synchronizing marketplace orders. All orders older than chosen date won't be synchronized. ", 'channelengine' ); ?>
+                    </span>
+                </span>
+            <input id="enableOrdersByMerchantSync" type="checkbox" class="checkbox" checked>
+        </label>
+    </div>
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php echo __( 'Orders fulfilled by the marketplace', 'channelengine' ); ?></span>
+            <span class="ce-help">
+                    <span class="ce-help-tooltip">
+                        <?php echo __( 'If this field is checked, background download process of the orders (from the channelengine) fulfilled by the marketplace will be enabled.', 'channelengine' ); ?>
+                    </span>
+                </span>
+            <input id="enableOrdersByMarketplaceSync" type="checkbox" class="checkbox" checked>
+            <input type="text" id="startSyncDate" class="datepicker" style="width: 100px;" value="<?php echo date("d.m.Y."); ?>"/>
+        </label>
+    </div>
+</form>
 <p><?php echo __( 'Map WooCommerce shop order statuses to the ChannelEngine order statuses.', 'channelengine' ); ?></p>
 <form class="ce-form">
     <div class="ce-input-group">
