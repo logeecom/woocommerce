@@ -19,17 +19,37 @@ document.addEventListener(
                 purchasePriceMapping = document.getElementById('cePurchasePrice'),
                 detailsMapping = document.getElementById('ceDetails'),
                 categoryMapping = document.getElementById('ceCategory'),
-                extraDataMappings = document.querySelectorAll('.ce-input-extra-data');
+                extraDataMappings = document.querySelectorAll('.ce-input-extra-data'),
+                duplicatesText = document.getElementById('ce-extra-data-duplicates-text').value,
+                duplicatesHeaderText = document.getElementById('ce-extra-data-duplicates-header').value;
 
-            let extraData = {};
+            let extraData = {},
+                isExtraDataValid = true;
             extraDataMappings.forEach(mapping => {
                 if( mapping.id === 'hidden' ) {
                     return;
                 }
 
                 const elements = mapping.firstElementChild.children;
+                const elValue = elements.item(1).value;
+                if (!elValue || Object.keys(extraData).includes(elValue)) {
+                    isExtraDataValid = false;
+                    ChannelEngine.modalService.showModal(duplicatesHeaderText,
+                        '<div>' +
+                        '<label>'+duplicatesText+'</label>' +
+                        '</div>',
+                        null,
+                        null
+                    );
+                    return;
+                }
+                extraData[elValue] = elements.item(0).value;
                 extraData[elements.item(1).value] = elements.item(0).value;
             });
+
+            if (!isExtraDataValid) {
+                return;
+            }
 
             ChannelEngine.notificationService.removeNotifications();
             ChannelEngine.productService.save(url.value, {

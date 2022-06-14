@@ -51,9 +51,15 @@ if (!window.ChannelEngine) {
         };
 
         this.triggerSync = function (url) {
+            const enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
+                enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync');
+
             ChannelEngine.ajaxService.post(
                 url,
-                {},
+                {
+                    product_sync: true,
+                    order_sync: enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked
+                },
                 function (response) {
                     if (!response.success) {
                         ChannelEngine.notificationService.addNotification(response.message);
