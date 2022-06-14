@@ -353,7 +353,7 @@ class Products_Service implements ProductsService {
 		$attributes['main_image_url']        = $image ? $image->guid : null;
 		$attributes['additional_image_urls'] = $this->get_additional_image_urls( $wc_product->get_gallery_image_ids() );
 		$attributes['category_trail']        = $attributesMapping->get_category() !== null ?
-			$this->get_attribute( $wc_product, $meta_lookup, [ $attributesMapping->get_colour() ] ) :
+			$this->get_attribute( $wc_product, $meta_lookup, [ $attributesMapping->get_category() ] ) :
 			$this->get_product_category_trail( $wc_product->get_id() );
 
 		return $attributes;
