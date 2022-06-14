@@ -9,7 +9,7 @@ if (!window.ChannelEngine) {
             let triggerModal = document.getElementById('ce-trigger-modal'),
                 modal = triggerModal.children[0],
                 orderCheckbox = document.getElementById('ce-order-sync-checkbox'),
-                orderTooltip = document.getElementById('ce-order-sync-tooltip'),
+                orderTooltip = orderCheckbox.previousElementSibling.getElementsByClassName('ce-help-tooltip')[0],
                 enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                 enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync');
 

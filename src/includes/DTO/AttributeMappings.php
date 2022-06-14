@@ -167,16 +167,16 @@ class AttributeMappings extends DataTransferObject
      */
     public static function fromArray(array $data)
     {
-        return new self(
-	        static::getDataValue($data, 'brand'),
-	        static::getDataValue($data, 'colour'),
-	        static::getDataValue($data, 'size'),
-			static::getDataValue($data, 'gtin'),
-			static::getDataValue($data, 'cataloguePrice'),
-			static::getDataValue($data, 'price'),
-	        static::getDataValue($data, 'purchasePrice'),
-	        static::getDataValue($data, 'details'),
-	        static::getDataValue($data, 'category')
-        );
+		return new self(
+		    static::getDataValue($data, 'brand', null),
+		    static::getDataValue($data, 'colour', null),
+		    static::getDataValue($data, 'size', null),
+		    static::getDataValue($data, 'gtin', null),
+		    static::getDataValue($data, 'cataloguePrice', null),
+		    static::getDataValue($data, 'price', null),
+		    static::getDataValue($data, 'purchasePrice', null),
+		    static::getDataValue($data, 'details', null),
+		    static::getDataValue($data, 'category', null)
+	    );
     }
 }
