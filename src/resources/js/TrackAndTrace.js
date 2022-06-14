@@ -6,10 +6,21 @@ document.addEventListener(
         let updateInfo = document.getElementById('ce-update-info'),
             createEndpoint = document.getElementById('ce-create-endpoint'),
             loader = document.getElementById('ce-loader'),
-            page = document.getElementById('ce-track-and-trace-content');
+            page = document.getElementById('ce-track-and-trace-content'),
+            checkShipmentSyncStatus = document.getElementById('ceSyncShipmentStatusUrl');
 
-        loader.style.display = 'none';
-        page.style.display = 'flex';
+        ChannelEngine.ajaxService.get(checkShipmentSyncStatus.value, function (response) {
+            if ( ! response.enableShipmentInfoSync) {
+                let nodes = page.getElementsByTagName('*');
+                for(let i = 0; i < nodes.length; i++) {
+                    nodes[i].disabled = true;
+                    nodes[i].style = 'opacity: 0.4';
+                }
+                updateInfo.setAttribute('disabled', 'true');
+            }
+
+            loader.style.display = 'none';
+        });
 
         if (updateInfo) {
             updateInfo.addEventListener(

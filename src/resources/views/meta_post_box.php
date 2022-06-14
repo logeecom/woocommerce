@@ -85,6 +85,8 @@ if ( ! $data['order_cancelled'] ) {
             <input type="hidden" id="ce-create-endpoint"
                    value="<?php echo Shop_Helper::get_controller_url( 'Order_Overview', 'save' ); ?>">
             <input type="hidden" id="ce-post-id" value="<?php echo $data['post_id']; ?>">
+            <input id="ceSyncShipmentStatusUrl" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url( 'Order_Status', 'get_sync_shipment_status' ); ?>">
         </div>
     </div>
 	<?php

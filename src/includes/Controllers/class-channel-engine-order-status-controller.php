@@ -104,6 +104,13 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 	}
 
 	/**
+	 * Retrieves information for shipment synchronization.
+	 */
+	public function get_sync_shipment_status(  ) {
+		$this->return_json( [ 'enableShipmentInfoSync' => $this->get_order_config_service()->getOrderSyncConfig()->isEnableShipmentInfoSync() ] );
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	protected function load_resources() {

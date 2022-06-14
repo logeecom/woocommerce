@@ -39,7 +39,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <input id="ceProductSave" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url( 'Product_Sync', 'save' ); ?>">
             <div id="ce-modal" style="display: none">
-		        <?php include plugin_dir_path(__FILE__) . 'modal.php' ?>
+		        <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
             </div>
             <input id="ce-extra-data-duplicates-text" type="hidden"
                    value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine'); ?>">
