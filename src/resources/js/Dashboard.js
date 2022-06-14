@@ -4,7 +4,7 @@ document.addEventListener(
     'DOMContentLoaded',
     function () {
         const state = document.getElementById('ce-status');
-
+        hidePanels();
         showPanel(state.value);
 
         function hidePanels() {

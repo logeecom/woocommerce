@@ -4,6 +4,7 @@ namespace ChannelEngine\Controllers;
 
 use ChannelEngine\BusinessLogic\InitialSync\OrderSync;
 use ChannelEngine\BusinessLogic\InitialSync\ProductSync;
+use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\Components\Services\State_Service;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Infrastructure\TaskExecution\Exceptions\QueueStorageUnavailableException;
@@ -27,7 +28,10 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 	public function start() {
 		try {
 			$this->get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );
-			$this->get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
+            $config = ServiceRegister::getService(OrdersConfigurationService::class)->getOrderSyncConfig();
+            if($config->isEnableOrdersByMerchantSync() || $config->isEnableOrdersByMarketplaceSync()) {
+                $this->get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
+            }
 			$this->get_state_service()->set_initial_sync_in_progress( true );
 
 			$this->return_json( [ 'success' => true ] );
