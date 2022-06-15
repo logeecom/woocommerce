@@ -65,7 +65,7 @@ class Meta_Repository {
 		global $wpdb;
 		$globalAttributes = wc_get_attribute_taxonomies();
 		$attributes = [];
-
+        $post_meta = $wpdb->postmeta;
 		foreach ($globalAttributes as $globalAttribute) {
 			$attribute = new WC_Product_Attribute();
 			$attribute->set_name($globalAttribute->attribute_name);
@@ -75,7 +75,7 @@ class Meta_Repository {
 			$attribute->set_id( 0 );
 			$attributes[$globalAttribute->attribute_id] = $attribute;
 		}
-		$meta_data = $wpdb->get_results( "SELECT * FROM wp_postmeta WHERE meta_key = '_product_attributes'", ARRAY_A );
+		$meta_data = $wpdb->get_results( "SELECT * FROM $post_meta WHERE meta_key = '_product_attributes'", ARRAY_A );
 		foreach ($meta_data as $metaItem) {
 			$meta_attributes = maybe_unserialize( $metaItem['meta_value'] );
 			foreach ( $meta_attributes as $meta_attribute_value ) {
