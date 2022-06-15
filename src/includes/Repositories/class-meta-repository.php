@@ -98,7 +98,7 @@ class Meta_Repository {
 					}
 					$id = wc_attribute_taxonomy_id_by_name( $meta_value['name'] );
 				} else {
-					$id = 0;
+					$id = $meta_value['name'];
 				}
 
 				if ( array_key_exists( $id, $attributes ) ) {
