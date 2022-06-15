@@ -208,8 +208,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'product_attributes' => $formatted_attributes,
 			'brand' => ( $selectedMapping && $selectedMapping->get_brand() !== '' ) ?
 				$selectedMapping->get_brand() : $default_attributes['brand'] ?: '',
-			'colour' => ( $selectedMapping && $selectedMapping->get_colour() !== '' ) ?
-				$selectedMapping->get_colour() : $default_attributes['colour'] ?: '',
+			'color' => ( $selectedMapping && $selectedMapping->get_color() !== '' ) ?
+				$selectedMapping->get_color() : $default_attributes['color'] ?: '',
 			'size' => ( $selectedMapping && $selectedMapping->get_size() !== '' ) ?
 				$selectedMapping->get_size() : $default_attributes['size'] ?: '',
 			'gtin' => ( $selectedMapping && $selectedMapping->get_gtin() !== '' ) ?
@@ -237,7 +237,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	protected function save_product_attribute_mapping( $mappings ) {
 		$mappings_dto = new AttributeMappings(
 			$mappings['brand']  !== '' ? $mappings['brand'] : null,
-			$mappings['colour']  !== '' ? $mappings['colour'] : null,
+			$mappings['color']  !== '' ? $mappings['color'] : null,
 			$mappings['size']  !== '' ? $mappings['size'] : null,
 			$mappings['gtin']  !== '' ? $mappings['gtin'] : null,
 			$mappings['cataloguePrice']  !== '' ? $mappings['cataloguePrice'] : null,

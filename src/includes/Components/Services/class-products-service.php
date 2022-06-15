@@ -329,7 +329,7 @@ class Products_Service implements ProductsService {
 		$attributes['color']                       = $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
-			$attributesMapping->get_colour() !== null ? [ $attributesMapping->get_colour() ] : [ 'color' ]
+			$attributesMapping->get_color() !== null ? [ $attributesMapping->get_color() ] : [ 'color' ]
 		);
 
 		$image = '';

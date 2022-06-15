@@ -59,7 +59,7 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 
 		$mappings_dto = new AttributeMappings(
 			$mappings['brand']  !== '' ? $mappings['brand'] : null,
-			$mappings['colour']  !== '' ? $mappings['colour'] : null,
+			$mappings['color']  !== '' ? $mappings['color'] : null,
 			$mappings['size']  !== '' ? $mappings['size'] : null,
 			$mappings['gtin']  !== '' ? $mappings['gtin'] : null,
 			$mappings['cataloguePrice']  !== '' ? $mappings['cataloguePrice'] : null,

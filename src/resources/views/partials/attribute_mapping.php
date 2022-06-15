@@ -24,10 +24,10 @@ use ChannelEngine\Utility\Shop_Helper;
             <span class="label"><?php echo __('Color'); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __('This is mapping for colour attribute. Default selected value (if exists) is color attribute value assigned to a product as: global or custom attribute.'); ?>
+                    <?php echo __('This is mapping for color attribute. Default selected value (if exists) is color attribute value assigned to a product as: global or custom attribute.'); ?>
                 </span>
             </span>
-            <select id="ceColour">
+            <select id="ceColor">
                 <option></option>
             </select>
         </label>

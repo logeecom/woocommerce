@@ -40,7 +40,7 @@ if (!window.ChannelEngine) {
 
             ajaxService.get(url, function (response) {
                 const brandOptions = document.getElementById('ceBrand'),
-                    colourOptions = document.getElementById('ceColour'),
+                    colorOptions = document.getElementById('ceColor'),
                     sizeOptions = document.getElementById('ceSize'),
                     gtinOptions = document.getElementById('ceGtin'),
                     cataloguePriceOptions = document.getElementById('ceCataloguePrice'),
@@ -51,7 +51,7 @@ if (!window.ChannelEngine) {
                     mappings = response.product_attributes;
 
                 mappings.forEach(item => addMappings(item, brandOptions, response.brand));
-                mappings.forEach(item => addMappings(item, colourOptions, response.colour));
+                mappings.forEach(item => addMappings(item, colorOptions, response.color));
                 mappings.forEach(item => addMappings(item, sizeOptions, response.size));
                 mappings.forEach(item => addMappings(item, gtinOptions, response.gtin));
                 mappings.forEach(item => addMappings(item, cataloguePriceOptions, response.catalogue_price));

@@ -18,7 +18,7 @@ class AttributeMappings extends DataTransferObject
     /**
      * @var string
      */
-    private $colour;
+    private $color;
     /**
      * @var string
      */
@@ -50,7 +50,7 @@ class AttributeMappings extends DataTransferObject
 
 	/**
 	 * @param string $brand
-	 * @param string $colour
+	 * @param string $color
 	 * @param string $size
 	 * @param string $gtin
 	 * @param string $cataloguePrice
@@ -61,7 +61,7 @@ class AttributeMappings extends DataTransferObject
 	 */
     public function __construct(
         $brand,
-        $colour,
+        $color,
         $size,
         $gtin,
 	    $cataloguePrice,
@@ -71,7 +71,7 @@ class AttributeMappings extends DataTransferObject
 	    $category
     ) {
 	    $this->brand  = $brand;
-	    $this->colour = $colour;
+	    $this->color = $color;
 	    $this->size   = $size;
 		$this->gtin = $gtin;
 		$this->cataloguePrice = $cataloguePrice;
@@ -91,8 +91,8 @@ class AttributeMappings extends DataTransferObject
 	/**
 	 * @return string
 	 */
-	public function get_colour() {
-		return $this->colour;
+	public function get_color() {
+		return $this->color;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class AttributeMappings extends DataTransferObject
     {
         return [
             'brand' => $this->brand,
-            'colour' => $this->colour,
+            'color' => $this->color,
             'size' => $this->size,
 			'gtin' => $this->gtin,
 	        'cataloguePrice' => $this->cataloguePrice,
@@ -169,7 +169,7 @@ class AttributeMappings extends DataTransferObject
     {
 		return new self(
 		    static::getDataValue($data, 'brand', null),
-		    static::getDataValue($data, 'colour', null),
+		    static::getDataValue($data, 'color', null),
 		    static::getDataValue($data, 'size', null),
 		    static::getDataValue($data, 'gtin', null),
 		    static::getDataValue($data, 'cataloguePrice', null),

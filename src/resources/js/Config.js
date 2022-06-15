@@ -27,7 +27,7 @@ document.addEventListener(
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             productAttributesUrl = document.getElementById('ceProductAttributes'),
             brandMapping = document.getElementById('ceBrand'),
-            colourMapping = document.getElementById('ceColour'),
+            colorMapping = document.getElementById('ceColor'),
             sizeMapping = document.getElementById('ceSize'),
             gtinMapping = document.getElementById('ceGtin'),
             cataloguePriceMapping = document.getElementById('ceCataloguePrice'),
@@ -167,7 +167,7 @@ document.addEventListener(
                     },
                     attributeMappings: {
                         brand: brandMapping.value,
-                        colour: colourMapping.value,
+                        color: colorMapping.value,
                         size: sizeMapping.value,
                         gtin: gtinMapping.value,
                         cataloguePrice: cataloguePriceMapping.value,
