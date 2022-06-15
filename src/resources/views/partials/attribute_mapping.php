@@ -21,7 +21,7 @@ use ChannelEngine\Utility\Shop_Helper;
     </div>
     <div class="ce-input-group ce-flex">
         <label>
-            <span class="label"><?php echo __('Colour'); ?></span>
+            <span class="label"><?php echo __('Color'); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
                     <?php echo __('This is mapping for colour attribute. Default selected value (if exists) is color attribute value assigned to a product as: global or custom attribute.'); ?>

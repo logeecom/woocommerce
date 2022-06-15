@@ -202,23 +202,6 @@ class Products_Service implements ProductsService {
 		return $product;
 	}
 
-	/**
-	 * Retrieves all product variations.
-	 *
-	 * @param $parent_id
-	 *
-	 * @return WC_Product
-	 */
-	protected function get_variations( $parent_id ) {
-		$args = [
-			'post_parent' => $parent_id,
-			'post_status' => 'publish',
-		];
-
-		/** @noinspection PhpIncompatibleReturnTypeInspection */
-		return wc_get_products( $args );
-	}
-
 	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [],  array $extra_data_attributes = [] ) {
 		$attributes = $this->fetch_attributes( $variant, $meta_lookup );
 
