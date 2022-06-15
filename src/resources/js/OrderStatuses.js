@@ -13,6 +13,8 @@ document.addEventListener(
             saveUrl = document.getElementById('ceStatusesSaveUrl'),
             link = document.getElementById('ceStatusesSave'),
             checkEnableStockSync = document.getElementById('ceEnabledStockSync'),
+            enableShipmentInfoSync = document.getElementById('enableShipmentInfoSync'),
+            enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
             enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             enableReduceStock = document.getElementById('enableReduceStock'),
@@ -56,6 +58,14 @@ document.addEventListener(
                 enableReduceStock.setAttribute('disabled', 'true');
             } else {
                 enableReduceStock.removeAttribute('disabled');
+            }
+
+            if ( ! enableOrdersByMerchantSync.checked ) {
+                enableShipmentInfoSync.setAttribute('disabled', 'true');
+                enableOrderCancellationSync.setAttribute('disabled', 'true');
+            } else {
+                enableShipmentInfoSync.removeAttribute('disabled');
+                enableOrderCancellationSync.removeAttribute('disabled');
             }
         }
 

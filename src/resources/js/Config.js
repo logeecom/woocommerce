@@ -48,7 +48,7 @@ document.addEventListener(
         ChannelEngine.orderService.get(orderStatusesUrl.value);
         ChannelEngine.triggerSyncService.checkStatus();
 
-        if( ! enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked)) {
+        if( ! ( enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked ) ) ) {
             enableReduceStock.setAttribute('disabled', 'true');
         }
 
@@ -209,6 +209,13 @@ document.addEventListener(
 
         enableOrdersByMerchantSync.onchange = function () {
             changeReduceStockVisibility();
+            if ( ! enableOrdersByMerchantSync.checked ) {
+                enableShipmentInfoSync.setAttribute('disabled', 'true');
+                enableOrderCancellationSync.setAttribute('disabled', 'true');
+            } else {
+                enableShipmentInfoSync.removeAttribute('disabled');
+                enableOrderCancellationSync.removeAttribute('disabled');
+            }
         }
 
         enableOrdersByMarketplaceSync.onchange = function () {

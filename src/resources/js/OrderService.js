@@ -30,6 +30,11 @@ if (!window.ChannelEngine) {
                     enableOrdersByMarketplaceSync.checked = response.enableOrdersByMarketplaceSync;
                     enableReduceStock.checked = response.enableReduceStock;
 
+                    if ( ! response.enableOrdersByMerchantSync ) {
+                        enableShipmentInfoSync.setAttribute('disabled', 'true');
+                        enableOrderCancellationSync.setAttribute('disabled', 'true');
+                    }
+
                     ChannelEngine.loader.force()
                 }
             );

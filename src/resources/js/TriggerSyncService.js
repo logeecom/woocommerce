@@ -51,14 +51,16 @@ if (!window.ChannelEngine) {
         };
 
         this.triggerSync = function (url) {
-            const enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
+            const orderCheckbox = document.getElementById('ce-order-sync-checkbox'),
+                productCheckbox = document.getElementById('ce-product-sync-checkbox'),
+                enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                 enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync');
 
             ChannelEngine.ajaxService.post(
                 url,
                 {
-                    product_sync: true,
-                    order_sync: enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked
+                    product_sync: productCheckbox.checked,
+                    order_sync: orderCheckbox.checked && ( enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked )
                 },
                 function (response) {
                     if (!response.success) {
