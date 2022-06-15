@@ -215,7 +215,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'gtin' => ( $selectedMapping && $selectedMapping->get_gtin() !== '' ) ?
 				$selectedMapping->get_gtin() : $default_attributes['gtin'] ?: $default_attributes['ean']?:'',
 			'catalogue_price' => ( $selectedMapping && $selectedMapping->get_catalogue_price() !== '' ) ?
-				$selectedMapping->get_catalogue_price() : $default_attributes['catalogue_price'] ?: '',
+				$selectedMapping->get_catalogue_price() : $default_attributes['msrp'] ?:
+                    $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
 			'price' => ( $selectedMapping && $selectedMapping->get_price() !== '' ) ?
 				$selectedMapping->get_price() : $default_attributes['price'] ?: '',
 			'purchase_price' => ( $selectedMapping && $selectedMapping->get_purchase_price() !== '' ) ?
