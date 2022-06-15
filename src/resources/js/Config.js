@@ -53,7 +53,13 @@ document.addEventListener(
         }
 
         syncNowBtn.onclick = function () {
+            const orderCheckbox = document.getElementById('ce-order-sync-checkbox'),
+                productCheckbox = document.getElementById('ce-product-sync-checkbox');
+            orderCheckbox.checked = true;
+            productCheckbox.checked = true
             ChannelEngine.triggerSyncService.triggerSync(triggerSyncUrl.value);
+            orderCheckbox.checked = false;
+            productCheckbox.checked = false
         }
 
         disconnectBtn.onclick = function () {
@@ -211,7 +217,9 @@ document.addEventListener(
             changeReduceStockVisibility();
             if ( ! enableOrdersByMerchantSync.checked ) {
                 enableShipmentInfoSync.setAttribute('disabled', 'true');
+                enableShipmentInfoSync.checked = false
                 enableOrderCancellationSync.setAttribute('disabled', 'true');
+                enableOrderCancellationSync.checked = false
             } else {
                 enableShipmentInfoSync.removeAttribute('disabled');
                 enableOrderCancellationSync.removeAttribute('disabled');

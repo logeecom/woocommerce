@@ -62,7 +62,9 @@ document.addEventListener(
 
             if ( ! enableOrdersByMerchantSync.checked ) {
                 enableShipmentInfoSync.setAttribute('disabled', 'true');
+                enableShipmentInfoSync.checked = false;
                 enableOrderCancellationSync.setAttribute('disabled', 'true');
+                enableOrderCancellationSync.checked = false;
             } else {
                 enableShipmentInfoSync.removeAttribute('disabled');
                 enableOrderCancellationSync.removeAttribute('disabled');
