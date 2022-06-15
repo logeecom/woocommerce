@@ -213,7 +213,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'size' => ( $selectedMapping && $selectedMapping->get_size() !== '' ) ?
 				$selectedMapping->get_size() : $default_attributes['size'] ?: '',
 			'gtin' => ( $selectedMapping && $selectedMapping->get_gtin() !== '' ) ?
-				$selectedMapping->get_gtin() : $default_attributes['gtin'] ?: '',
+				$selectedMapping->get_gtin() : $default_attributes['gtin'] ?: $default_attributes['ean']?:'',
 			'catalogue_price' => ( $selectedMapping && $selectedMapping->get_catalogue_price() !== '' ) ?
 				$selectedMapping->get_catalogue_price() : $default_attributes['catalogue_price'] ?: '',
 			'price' => ( $selectedMapping && $selectedMapping->get_price() !== '' ) ?
