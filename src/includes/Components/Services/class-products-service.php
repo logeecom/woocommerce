@@ -11,8 +11,10 @@ use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Repositories\Meta_Repository;
 use ChannelEngine\Repositories\Product_Repository;
+use ChannelEngine\Utility\Standard_Product_Attributes;
 use DateTime;
 use WC_Product;
+use WC_Product_Attribute;
 use WC_Product_Variation;
 
 /**
@@ -121,7 +123,29 @@ class Products_Service implements ProductsService {
 	 * @return array
 	 */
 	public function get_product_attributes() {
-		return $this->get_meta_repository()->get_product_attributes();
+
+		return array_merge( $this->get_standard_product_attributes(), $this->get_meta_repository()->get_product_attributes() );
+	}
+
+	/**
+	 * Get standard WC attributes
+	 *
+	 * @return WC_Product_Attribute[]
+	 */
+	private function get_standard_product_attributes() {
+		$standard_attributes = [];
+		foreach ( Standard_Product_Attributes::ATTRIBUTES as $ATTRIBUTE ) {
+			$attribute = new WC_Product_Attribute();
+			$attribute->set_name( Standard_Product_Attributes::PREFIX . '_' . $ATTRIBUTE );
+			$attribute->set_position( 0 );
+			$attribute->set_visible( 1 );
+			$attribute->set_variation( 0 );
+			$attribute->set_id( 0 );
+
+			$standard_attributes[] = $attribute;
+		}
+
+		return $standard_attributes;
 	}
 
 	/**
@@ -356,6 +380,10 @@ class Products_Service implements ProductsService {
 	 * @return string
 	 */
 	protected function get_attribute( WC_Product $wc_product, $meta_lookup, $keys ) {
+		if ( strpos( $keys[0], Standard_Product_Attributes::PREFIX ) === 0 ) {
+			return $this->get_standard_attribute( $wc_product, $keys[0] );
+		}
+
 		$meta_keys = array_merge(
 			$keys,
 			array_map( static function ( $item ) {
@@ -388,6 +416,61 @@ class Products_Service implements ProductsService {
 
 				return $attribute;
 			}
+		}
+
+		return '';
+	}
+
+	protected function get_standard_attribute( WC_Product $wc_product, $attribute ) {
+		switch ( $attribute ) {
+			case Standard_Product_Attributes::PREFIX . '_' . 'id':
+				return $wc_product->get_id();
+			case Standard_Product_Attributes::PREFIX . '_' . 'name':
+				return $wc_product->get_name();
+			case Standard_Product_Attributes::PREFIX . '_' . 'vat':
+				if ( $wc_product->get_tax_class() === 'reduced-rate' ) {
+					return 'Reduced rate';
+				}
+
+				if ( $wc_product->get_tax_class() === 'zero-rate' ) {
+					return 'Zero rate';
+				}
+
+				return 'Standard rate';
+			case Standard_Product_Attributes::PREFIX . '_' . 'stock':
+				if ( $wc_product->get_stock_quantity() > 0 ) {
+					return $wc_product->get_stock_quantity();
+				}
+
+				return 0;
+			case Standard_Product_Attributes::PREFIX . '_' . 'description':
+				return $wc_product->get_description();
+			case Standard_Product_Attributes::PREFIX . '_' . 'short_description':
+				return $wc_product->get_short_description();
+			case Standard_Product_Attributes::PREFIX . '_' . 'price_incl_tax':
+				return wc_get_price_including_tax( $wc_product, [ 'price' => $wc_product->get_regular_price() ] );
+			case Standard_Product_Attributes::PREFIX . '_' . 'price_excl_tax':
+				return $wc_product->get_regular_price();
+			case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_incl_tax':
+				return wc_get_price_including_tax( $wc_product, [ 'price' => $wc_product->get_sale_price() ] );
+			case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_excl_tax':
+				return $wc_product->get_sale_price();
+			case Standard_Product_Attributes::PREFIX . '_' . 'sku':
+				return $wc_product->get_sku();
+			case Standard_Product_Attributes::PREFIX . '_' . 'product_url':
+				return $wc_product->get_permalink();
+			case Standard_Product_Attributes::PREFIX . '_' . 'category':
+				return $this->get_product_category_trail( $wc_product->get_id() );
+			case Standard_Product_Attributes::PREFIX . '_' . 'image_url':
+				return $this->images[ $wc_product->get_image_id() ]->guid;
+			case Standard_Product_Attributes::PREFIX . '_' . 'weight':
+				return $wc_product->get_weight()();
+			case Standard_Product_Attributes::PREFIX . '_' . 'length':
+				return $wc_product->get_length();
+			case Standard_Product_Attributes::PREFIX . '_' . 'width':
+				return $wc_product->get_width();
+			case Standard_Product_Attributes::PREFIX . '_' . 'height':
+				return $wc_product->get_height();
 		}
 
 		return '';

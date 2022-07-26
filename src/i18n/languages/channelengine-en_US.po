@@ -2,159 +2,214 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ChannelEngine WooCommerce Integration\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-08 10:44+0000\n"
-"PO-Revision-Date: 2021-07-09 14:38+0000\n"
+"POT-Creation-Date: 2021-07-06 11:31+0000\n"
+"PO-Revision-Date: 2022-07-26 14:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-Loco-Version: 2.5.2; wp-5.7.2\n"
-"X-Domain: channelengine"
-
-msgid "Account"
-msgstr "Account"
-
-msgid "Account data"
-msgstr "Account data"
-
-msgid "Account name"
-msgstr "Account name"
-
-msgid "All is up and running"
-msgstr "All is up and running"
-
-msgid "API Key"
-msgstr "API Key"
-
-msgid "ChannelEngine"
-msgstr "ChannelEngine"
-
-msgid "Choose what you would like to synchronize:"
-msgstr "Choose what you would like to synchronize:"
-
-msgid "Close"
-msgstr "Close"
-
-msgid "Configuration"
-msgstr "Configuration"
-
-msgid "Configure"
-msgstr "Configure"
-
-msgid "Connect and continue"
-msgstr "Connect and continue"
-
-msgid "Connect the shop with your ChannelEngine account"
-msgstr "Connect the shop with your ChannelEngine account"
-
-msgid ""
-"Currency mismatch detected. Please make sure that store currency matches "
-"ChannelEngine."
-msgstr ""
-"Currency mismatch detected. Please make sure that store currency matches "
-"ChannelEngine."
-
-msgid "Dashboard"
-msgstr "Dashboard"
-
-msgid "Details"
-msgstr "Details"
-
-msgid "Disable integration"
-msgstr "Disable integration"
-
-msgid "Disconnect"
-msgstr "Disconnect"
-
-msgid "API key and Account name fields are required."
-msgstr "API key and Account name fields are required."
-
-msgid "Displayed"
-msgstr "Displayed"
-
-msgid "Empty credentials."
-msgstr "Empty credentials."
-
-msgid "Enable and start sync"
-msgstr "Enable and start sync"
-
-msgid "Integration status"
-msgstr "Integration status"
-
-msgid "Enable the integration"
-msgstr "Enable the integration"
-
-msgid "Enable the integration and start the initial synchronization"
-msgstr "Enable the integration and start the initial synchronization"
-
-msgid ""
-"Integration between WooCommerce and ChannelEngine is disabled. "
-"Synchronization is not performed in the background."
-msgstr ""
-"Integration between WooCommerce and ChannelEngine is disabled. "
-"Synchronization is not performed in the background."
-
-msgid "Errors"
-msgstr "Errors"
-
-msgid "Explain here the current status"
-msgstr "Explain here the current status"
-
-msgid "Failed to start initial sync because %s"
-msgstr "Failed to start initial sync because %s"
-
-msgid "Full synchronization in progress"
-msgstr "Full synchronization in progress"
-
-msgid "In progress"
-msgstr "In progress"
-
-msgid "Go to the next page"
-msgstr "Go to the next page"
-
-msgid "Go to the previous page"
-msgstr "Go to the previous page"
-
-msgid "In Progress"
-msgstr "In Progress"
-
-msgid "Initial sync"
-msgstr "Initial sync"
-
-msgid "Invalid credentials."
-msgstr "Invalid credentials."
-
-msgid "Default stock quantity is required field."
-msgstr "Default stock quantity is required field."
-
-msgid "It will only take 5 minutes of your time to configure the integration."
-msgstr "It will only take 5 minutes of your time to configure the integration."
-
-msgid "Manually trigger synchronization"
-msgstr "Manually trigger synchronization"
-
-msgid "Map shop order statuses to the ChannelEngine order statuses."
-msgstr "Map shop order statuses to the ChannelEngine order statuses."
-
-msgid "Next"
-msgstr "Next"
-
-msgid "of"
-msgstr "of"
+"X-Domain: channelengine\n"
 
 #: resources/views/meta-post-box.php:18
 msgid "Order ID:"
 msgstr "Order ID:"
 
+#. Name of the plugin
+msgid "ChannelEngine WooCommerce Integration"
+msgstr "ChannelEngine WooCommerce Integration"
+
+msgid "Account"
+msgstr "Account"
+
+msgid "Product synchronization"
+msgstr "Product synchronization"
+
 msgid "Order status mapping"
 msgstr "Order status mapping"
 
-msgid "Order sync"
-msgstr "Order sync"
+msgid "Initial sync"
+msgstr "Initial sync"
+
+msgid "Connect and continue"
+msgstr "Connect and continue"
+
+msgid "Account data"
+msgstr "Account data"
+
+msgid "API Key"
+msgstr "API Key"
+
+msgid "Account name"
+msgstr "Account name"
+
+msgid ""
+"You can generate merchant API key inside ChannelEngine under Settings > "
+"Merchant API keys."
+msgstr ""
+"You can generate merchant API key inside ChannelEngine under Settings > "
+"Merchant API keys."
+
+msgid ""
+"The account name is a subdomain of your ChannelEngine instance (subdomain."
+"channelengine.net). For example, the account name for ChannelEngine instance "
+"myshop.channelengine.net is myshop."
+msgstr ""
+"The account name is a subdomain of your ChannelEngine instance (subdomain."
+"channelengine.net). For example, the account name for ChannelEngine instance "
+"myshop.channelengine.net is myshop."
+
+msgid "ChannelEngine"
+msgstr "ChannelEngine"
+
+msgid "Welcome to ChannelEngine"
+msgstr "Welcome to ChannelEngine"
+
+msgid "It will only take 5 minutes of your time to configure the integration."
+msgstr "It will only take 5 minutes of your time to configure the integration."
+
+msgid "Configure"
+msgstr "Configure"
+
+msgid "Connect the shop with your ChannelEngine account"
+msgstr "Connect the shop with your ChannelEngine account"
+
+msgid "API key and Account name fields are required."
+msgstr "API key and Account name fields are required."
+
+msgid "Invalid API key or Account name."
+msgstr ""
+
+msgid "Default stock quantity is required field."
+msgstr "Default stock quantity is required field."
+
+msgid "Save and continue"
+msgstr "Save and continue"
+
+msgid "Product synchronization settings"
+msgstr "Product synchronization settings"
+
+msgid "Stock synchronization"
+msgstr "Stock synchronization"
+
+msgid "Set default stock quantity"
+msgstr "Set default stock quantity"
+
+msgid ""
+"Set the default stock level for the cases when stock is not being tracked in "
+"the shop or when information about the stock is missing for specific "
+"product(s)."
+msgstr ""
+
+msgid "psc"
+msgstr "psc"
+
+#, fuzzy
+#| msgid ""
+#| "Currency mismatch detected. Please make sure that store currency matches "
+#| "ChannelEngine."
+msgid ""
+"Currency mismatch detected. Please make sure that store currency matches "
+msgstr ""
+"Currency mismatch detected. Please make sure that store currency matches "
+"ChannelEngine."
+
+#, fuzzy
+#| msgid "Map shop order statuses to the ChannelEngine order statuses."
+msgid ""
+"Map WooCommerce shop order statuses to the ChannelEngine order statuses."
+msgstr "Map shop order statuses to the ChannelEngine order statuses."
+
+#, fuzzy
+#| msgid "Select the status of incoming orders"
+msgid "Status of incoming orders"
+msgstr "Select the status of incoming orders"
+
+msgid "Select the status of orders that are not processed yet."
+msgstr ""
+
+msgid "Status that defines a shipped order"
+msgstr "Status that defines a shipped order"
+
+#, fuzzy
+#| msgid "Select the status of incoming orders"
+msgid "Select the status of orders that are shipped."
+msgstr "Select the status of incoming orders"
+
+msgid "Status of the orders fulfilled by a marketplace"
+msgstr "Status of the orders fulfilled by a marketplace"
+
+#, fuzzy
+#| msgid "Status of the orders fulfilled by a marketplace"
+msgid ""
+"Select the status of orders that are already fulfilled by a marketplace."
+msgstr "Status of the orders fulfilled by a marketplace"
+
+msgid "wc-processing"
+msgstr "Processing"
+
+msgid "wc-completed"
+msgstr "Completed"
+
+msgid "wc-pending"
+msgstr "Pending payment"
+
+msgid "wc-on-hold"
+msgstr "On hold"
+
+msgid "wc-cancelled"
+msgstr "Cancelled"
+
+msgid "wc-refunded"
+msgstr "Refunded"
+
+msgid "wc-failed"
+msgstr "Failed"
+
+msgid "You are just one step away"
+msgstr "You are just one step away"
+
+msgid ""
+"By enabling integration, it will trigger the initial synchronization in the "
+"background. The integration will synchronize all published shop products to "
+"ChannelEngine in the background. Also, the integration will synchronize new "
+"and closed orders (fulfilled by the merchant and fulfilled by the "
+"marketplace) from ChannelEngine into the shop."
+msgstr ""
+
+msgid "Enable the integration and start the initial synchronization"
+msgstr "Enable the integration and start the initial synchronization"
+
+msgid "Enable and start sync"
+msgstr "Enable and start sync"
+
+msgid "Failed to start initial sync because %s"
+msgstr "Failed to start initial sync because %s"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Configuration"
+msgstr "Configuration"
+
+msgid "Transaction log"
+msgstr "Transaction log"
+
+msgid "Full synchronization in progress"
+msgstr "Full synchronization in progress"
+
+msgid "Product synchronization:"
+msgstr "Product synchronization:"
+
+msgid "of"
+msgstr "of"
+
+msgid "products uploaded"
+msgstr "products uploaded"
 
 msgid "Order synchronization:"
 msgstr "Order synchronization:"
@@ -162,100 +217,57 @@ msgstr "Order synchronization:"
 msgid "orders downloaded"
 msgstr "orders downloaded"
 
-msgid "Page size:"
-msgstr "Page size:"
+#, fuzzy
+#| msgid "All is up and running"
+msgid "All is up and running."
+msgstr "All is up and running"
 
-msgid "Previous"
-msgstr "Previous"
+msgid "Integration status"
+msgstr "Integration status"
 
-msgid "Product sync"
-msgstr "Product sync"
+msgid ""
+"Integration between WooCommerce and ChannelEngine is disabled. "
+"Synchronization is not performed in the background."
+msgstr ""
+"Integration between WooCommerce and ChannelEngine is disabled. "
+"Synchronization is not performed in the background."
 
-msgid "Product synchronization"
-msgstr "Product synchronization"
+msgid "Enable the integration"
+msgstr "Enable the integration"
 
-msgid "Product synchronization settings"
-msgstr "Product synchronization settings"
+msgid ""
+"By enabling integration, you will be asked whether you want to perform full "
+"synchronization (products and orders) again since synchronization was "
+"disabled for some time."
+msgstr ""
+"By enabling integration, you will be asked whether you want to perform full "
+"synchronization (products and orders) again since synchronization was "
+"disabled for some time."
 
-msgid "Product synchronization:"
-msgstr "Product synchronization:"
+msgid "Disable integration"
+msgstr "Disable integration"
 
-msgid "products uploaded"
-msgstr "products uploaded"
-
-msgid "psc"
-msgstr "psc"
-
-msgid "Save changes"
-msgstr "Save changes"
-
-msgid "Save and continue"
-msgstr "Save and continue"
-
-msgid "Select the status of incoming orders"
-msgstr "Select the status of incoming orders"
-
-msgid "Set default stock quantity"
-msgstr "Set default stock quantity"
-
-msgid "Shipment sync"
-msgstr "Shipment sync"
-
-msgid "Start Time"
-msgstr "Start Time"
-
-msgid "Status"
-msgstr "Status"
-
-msgid "Status of the orders fulfilled by a marketplace"
-msgstr "Status of the orders fulfilled by a marketplace"
-
-msgid "Status that defines a shipped order"
-msgstr "Status that defines a shipped order"
-
-msgid "Stock synchronization"
-msgstr "Stock synchronization"
+msgid "Manually trigger synchronization"
+msgstr "Manually trigger synchronization"
 
 msgid "Start sync now"
 msgstr "Start sync now"
 
-msgid "Synchronize orders"
-msgstr "Synchronize orders"
+msgid "In progress"
+msgstr "In progress"
+
+msgid "Disconnect"
+msgstr "Disconnect"
+
+msgid "Save changes"
+msgstr "Save changes"
+
+msgid "Choose what you would like to synchronize:"
+msgstr "Choose what you would like to synchronize:"
 
 msgid "Synchronize products"
 msgstr "Synchronize products"
 
-msgid "Task Type"
-msgstr "Task Type"
-
-msgid ""
-"The account name is a subdomain of your ChannelEngine instance (subdomain."
-"channelengine.net). For example, the account name for ChannelEngine instance "
-"myshop.channelengine.net is myshop."
-msgstr ""
-"The account name is a subdomain of your ChannelEngine instance (subdomain."
-"channelengine.net). For example, the account name for ChannelEngine instance "
-"myshop.channelengine.net is myshop."
-
-msgid ""
-"You can generate merchant API key inside ChannelEngine under Settings > "
-"Merchant API keys."
-msgstr ""
-"You can generate merchant API key inside ChannelEngine under Settings > "
-"Merchant API keys."
-
-msgid ""
-"By enabling integration, you will be asked whether you want to perform full "
-"synchronization (products and orders) again since synchronization was "
-"disabled for some time."
-msgstr ""
-"By enabling integration, you will be asked whether you want to perform full "
-"synchronization (products and orders) again since synchronization was "
-"disabled for some time."
-
-msgid "This is the help description"
-msgstr "This is the help description"
-
 msgid ""
 "The integration will synchronize all published shop products to "
 "ChannelEngine in the background."
@@ -263,51 +275,78 @@ msgstr ""
 "The integration will synchronize all published shop products to "
 "ChannelEngine in the background."
 
-msgid "Time Completed"
-msgstr "Time Completed"
+#, fuzzy
+#| msgid ""
+#| "The integration will synchronize all published shop products to "
+#| "ChannelEngine in the background."
+msgid ""
+"The integration will synchronize new and closed orders (fulfilled by the "
+"merchant and fulfilled by the marketplace) from ChannelEngine into the shop."
+msgstr ""
+"The integration will synchronize all published shop products to "
+"ChannelEngine in the background."
 
-msgid "to"
-msgstr "to"
+msgid "Synchronize orders"
+msgstr "Synchronize orders"
 
-msgid "Transaction log"
-msgstr "Transaction log"
+#, fuzzy
+#| msgid "Shipment sync"
+msgid "Skip sync"
+msgstr "Shipment sync"
 
 msgid "Transactions history log"
 msgstr "Transactions history log"
 
+msgid "Product sync"
+msgstr "Product sync"
+
+msgid "Order sync"
+msgstr "Order sync"
+
+msgid "Shipment sync"
+msgstr "Shipment sync"
+
+msgid "Errors"
+msgstr "Errors"
+
+msgid "Task Type"
+msgstr "Task Type"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Start Time"
+msgstr "Start Time"
+
+msgid "Time Completed"
+msgstr "Time Completed"
+
 msgid "View details"
 msgstr "View details"
 
-msgid "wc-cancelled"
-msgstr "Cancelled"
+msgid "Previous"
+msgstr "Previous"
 
-msgid "wc-completed"
-msgstr "Completed"
+msgid "Next"
+msgstr "Next"
 
-msgid "wc-failed"
-msgstr "Failed"
+msgid "Page size:"
+msgstr "Page size:"
 
-msgid "wc-on-hold"
-msgstr "On hold"
+msgid "Go to the previous page"
+msgstr "Go to the previous page"
 
-msgid "wc-pending"
-msgstr "Pending payment"
+msgid "Go to the next page"
+msgstr "Go to the next page"
 
-msgid "wc-processing"
-msgstr "Processing"
+msgid "Displayed"
+msgstr "Displayed"
 
-msgid "wc-refunded"
-msgstr "Refunded"
-
-msgid "Welcome to ChannelEngine"
-msgstr "Welcome to ChannelEngine"
-
-#. Name of the plugin
-msgid "ChannelEngine WooCommerce Integration"
-msgstr "ChannelEngine WooCommerce Integration"
-
-msgid "You are just one step away"
-msgstr "You are just one step away"
+msgid "to"
+msgstr "to"
 
 msgid "ProductSync"
 msgstr "Product Sync"
@@ -351,6 +390,9 @@ msgstr "Identifier"
 
 msgid "Message"
 msgstr "Message"
+
+msgid "Configuration saved successfully."
+msgstr ""
 
 msgid "No results"
 msgstr "No results"
@@ -402,3 +444,75 @@ msgstr "Shipment update failed. Reason: "
 
 msgid "Shipment request successfully sent to ChannelEngine."
 msgstr "Shipment request successfully sent to ChannelEngine."
+
+msgid "ce_standard_id"
+msgstr "ID"
+
+msgid "ce_standard_name"
+msgstr "Name"
+
+msgid "ce_standard_vat"
+msgstr "VAT"
+
+msgid "ce_standard_stock"
+msgstr "Stock"
+
+msgid "ce_standard_description"
+msgstr "Description"
+
+msgid "ce_standard_short_description"
+msgstr "Short Description"
+
+msgid "ce_standard_price_incl_tax"
+msgstr "Price incl. tax"
+
+msgid "ce_standard_price_excl_tax"
+msgstr "Price excl. tax"
+
+msgid "ce_standard_sale_price_incl_tax"
+msgstr "Sale Price incl. tax"
+
+msgid "ce_standard_sale_price_excl_tax"
+msgstr "Sale Price excl. tax"
+
+msgid "ce_standard_sku"
+msgstr "SKU"
+
+msgid "ce_standard_product_url"
+msgstr "Product URL"
+
+msgid "ce_standard_category"
+msgstr "Category"
+
+msgid "ce_standard_image_url"
+msgstr "Image URL"
+
+msgid "ce_standard_weight"
+msgstr "Weight"
+
+msgid "ce_standard_length"
+msgstr "Length"
+
+msgid "ce_standard_width"
+msgstr "Width"
+
+msgid "ce_standard_height"
+msgstr "Height"
+
+#~ msgid "Close"
+#~ msgstr "Close"
+
+#~ msgid "Empty credentials."
+#~ msgstr "Empty credentials."
+
+#~ msgid "Explain here the current status"
+#~ msgstr "Explain here the current status"
+
+#~ msgid "In Progress"
+#~ msgstr "In Progress"
+
+#~ msgid "Invalid credentials."
+#~ msgstr "Invalid credentials."
+
+#~ msgid "This is the help description"
+#~ msgstr "This is the help description"

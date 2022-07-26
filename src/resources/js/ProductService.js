@@ -80,7 +80,7 @@ if (!window.ChannelEngine) {
             ajaxService.get(url, function (response) {
                 response.product_attributes.forEach(mapping => {
                     let option = document.createElement('option');
-                    option.text = mapping.value;
+                    option.text = mapping.label;
                     option.value = mapping.value;
                     element.add(option);
                     if( selected === mapping.value ) {

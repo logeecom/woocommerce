@@ -407,3 +407,57 @@ msgstr ""
 
 msgid "Shipment request successfully sent to ChannelEngine."
 msgstr ""
+
+msgid "ce_standard_id"
+msgstr ""
+
+msgid "ce_standard_name"
+msgstr ""
+
+msgid "ce_standard_vat"
+msgstr ""
+
+msgid "ce_standard_stock"
+msgstr ""
+
+msgid "ce_standard_description"
+msgstr ""
+
+msgid "ce_standard_short_description"
+msgstr ""
+
+msgid "ce_standard_price_incl_tax"
+msgstr ""
+
+msgid "ce_standard_price_excl_tax"
+msgstr ""
+
+msgid "ce_standard_sale_price_incl_tax"
+msgstr ""
+
+msgid "ce_standard_sale_price_excl_tax"
+msgstr ""
+
+msgid "ce_standard_sku"
+msgstr ""
+
+msgid "ce_standard_product_url"
+msgstr ""
+
+msgid "ce_standard_category"
+msgstr ""
+
+msgid "ce_standard_image_url"
+msgstr ""
+
+msgid "ce_standard_weight"
+msgstr ""
+
+msgid "ce_standard_length"
+msgstr ""
+
+msgid "ce_standard_width"
+msgstr ""
+
+msgid "ce_standard_height"
+msgstr ""
