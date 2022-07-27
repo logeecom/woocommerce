@@ -15,7 +15,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceBrand">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -28,7 +28,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceColor">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -41,7 +41,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceSize">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -54,7 +54,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceGtin">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -67,7 +67,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceCataloguePrice">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -80,7 +80,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="cePrice">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -93,7 +93,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="cePurchasePrice">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -106,7 +106,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceDetails">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>
@@ -119,7 +119,7 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceCategory">
-                <option></option>
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>
     </div>

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ChannelEngine WooCommerce Integration\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-06 11:31+0000\n"
-"PO-Revision-Date: 2022-07-26 14:53+0200\n"
+"PO-Revision-Date: 2022-07-26 19:13+0200\n"
 "Last-Translator: \n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -498,6 +498,9 @@ msgstr "Width"
 
 msgid "ce_standard_height"
 msgstr "Height"
+
+msgid "Not mapped"
+msgstr "Not mapped"
 
 #~ msgid "Close"
 #~ msgstr "Close"

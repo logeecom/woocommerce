@@ -94,9 +94,9 @@ class Products_Service implements ProductsService {
 			'include'        => $ids,
 		];
 
-		$meta_lookup = $this->get_meta_repository()->get_product_meta( $ids );
-		$wc_products = wc_get_products( $args );
-		$ce_products = [];
+		$meta_lookup           = $this->get_meta_repository()->get_product_meta( $ids );
+		$wc_products           = wc_get_products( $args );
+		$ce_products           = [];
 		$is_enabled_stock_sync = $this->get_product_config_service()->get()->isEnabledStockSync();
 		$extra_data_attributes = $this->get_extra_data_attribute_mapping_service()->getExtraDataAttributeMappings()->get_mappings();
 
@@ -164,7 +164,7 @@ class Products_Service implements ProductsService {
 		$attributes               = $this->fetch_attributes( $wc_product, $meta_lookup );
 
 		//Channel Engine does not support negative values stock, but wc does
-		if ($attributes['stock'] < 0) {
+		if ( $attributes['stock'] < 0 ) {
 			$attributes['stock'] = 0;
 		}
 
@@ -226,7 +226,7 @@ class Products_Service implements ProductsService {
 		return $product;
 	}
 
-	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [],  array $extra_data_attributes = [] ) {
+	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [], array $extra_data_attributes = [] ) {
 		$attributes = $this->fetch_attributes( $variant, $meta_lookup );
 
 		return new Variant(
@@ -275,64 +275,22 @@ class Products_Service implements ProductsService {
 	 * @throws QueryFilterInvalidParamException
 	 */
 	protected function fetch_attributes( WC_Product $wc_product, array $meta_lookup ) {
-		$attributes = [];
-		$attributesMapping = $this->get_attribute_mapping_service()->getAttributeMappings();
+		$attributes        = $this->set_mapped_attributes( $wc_product, $meta_lookup );
 
-		if( $attributesMapping->get_price() !== null ) {
-			$attributes['price'] = $this->get_attribute(
-				$wc_product,
-				$meta_lookup,
-				[ $attributesMapping->get_price() ]
-			);
-		} else {
-			$attributes['price'] = $this->get_price_value( $wc_product );
-		}
-
-		$attributes['stock']          = $wc_product->get_manage_stock() ?
+		$attributes['stock'] = $wc_product->get_manage_stock() ?
 			$wc_product->get_stock_quantity() : $this->get_product_config_service()->get()->getDefaultStock();
-		$attributes['description']    = $attributesMapping->get_details() !== null ?
-			$this->get_attribute(
-				$wc_product,
-				$meta_lookup,
-				[ $attributesMapping->get_details() ]
-			) : strip_tags( $wc_product->get_description() );
 
-		$attributes['purchase_price'] = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			$attributesMapping->get_purchase_price() !== null ? [ $attributesMapping->get_purchase_price() ] : [ 'purchase_price' ]
-		);
-		$attributes['msrp']           = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			$attributesMapping->get_catalogue_price() !== null ?
-				[ $attributesMapping->get_catalogue_price() ] : [ 'msrp', 'manufacturer_price', 'vendor_price' ]
-		);
-
-		$attributes['vat_rate_type']               = 'STANDARD';
-		$attributes['shipping_costs']              = $this->get_attribute(
+		$attributes['vat_rate_type']  = 'STANDARD';
+		$attributes['shipping_costs'] = $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
 			[ 'shipping_cost' ]
 		);
-		$attributes['shipping_time']               = $this->get_attribute(
+		$attributes['shipping_time']  = $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
 			[ 'shipping_time' ]
 		);
-        $ean = $this->get_attribute(
-            $wc_product,
-            $meta_lookup,
-            $attributesMapping->get_gtin() !== null ? [ $attributesMapping->get_gtin() ] : [ 'ean', 'gtin' ]
-        );
-
-        if ($ean) {
-            $attributes['ean'] = $this->get_attribute(
-                $wc_product,
-                $meta_lookup,
-                $attributesMapping->get_gtin() !== null ? [ $attributesMapping->get_gtin() ] : [ 'ean', 'gtin' ]
-            );
-        }
 
 		$attributes['manufacturer_product_number'] = $wc_product->get_sku() ?: $this->get_attribute(
 			$wc_product,
@@ -340,21 +298,6 @@ class Products_Service implements ProductsService {
 			[ 'sku' ]
 		);
 		$attributes['url']                         = $wc_product->get_permalink();
-		$attributes['brand']                       = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			$attributesMapping->get_brand() !== null ? [ $attributesMapping->get_brand() ] : [ 'brand' ]
-		);
-		$attributes['size']                        = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			$attributesMapping->get_size() !== null ? [ $attributesMapping->get_size() ] : [ 'size' ]
-		);
-		$attributes['color']                       = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			$attributesMapping->get_color() !== null ? [ $attributesMapping->get_color() ] : [ 'color' ]
-		);
 
 		$image = '';
 		if ( ! empty( $wc_product->get_image_id() ) ) {
@@ -365,9 +308,89 @@ class Products_Service implements ProductsService {
 
 		$attributes['main_image_url']        = $image ? $image->guid : null;
 		$attributes['additional_image_urls'] = $this->get_additional_image_urls( $wc_product->get_gallery_image_ids() );
-		$attributes['category_trail']        = $attributesMapping->get_category() !== null ?
-			$this->get_attribute( $wc_product, $meta_lookup, [ $attributesMapping->get_category() ] ) :
-			$this->get_product_category_trail( $wc_product->get_id() );
+
+		return $attributes;
+	}
+
+	/**
+	 * Set values of mapped attributes
+	 *
+	 * @param $wc_product
+	 * @param $meta_lookup
+	 *
+	 * @return array
+	 * @throws QueryFilterInvalidParamException
+	 */
+	protected function set_mapped_attributes( $wc_product, $meta_lookup ) {
+		$attributes        = [];
+		$attributesMapping = $this->get_attribute_mapping_service()->getAttributeMappings();
+
+		if ( ! $attributesMapping ) {
+			return [];
+		}
+
+		$attributes['price'] = $attributesMapping->get_price() !== null ? $this->get_attribute(
+			$wc_product,
+			$meta_lookup,
+			[ $attributesMapping->get_price() ]
+		) : '';
+
+
+		$attributes['description'] = $attributesMapping->get_details() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_details() ]
+			) : '';
+
+		$attributes['purchase_price'] = $attributesMapping->get_purchase_price() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_purchase_price() ]
+			) : '';
+
+		$attributes['msrp'] = $attributesMapping->get_catalogue_price() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_catalogue_price() ]
+			) : '';
+
+		$attributes['ean'] = $attributesMapping->get_gtin() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_gtin() ]
+			) : '';
+
+		$attributes['brand'] = $attributesMapping->get_brand() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_brand() ]
+			) : '';
+
+		$attributes['size'] = $attributesMapping->get_size() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_size() ]
+			) : '';
+
+		$attributes['color'] = $attributesMapping->get_color() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_color() ]
+			) : '';
+
+		$attributes['category_trail'] = $attributesMapping->get_category() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_category() ] ) :
+			'';
 
 		return $attributes;
 	}
@@ -421,6 +444,14 @@ class Products_Service implements ProductsService {
 		return '';
 	}
 
+	/**
+	 * Get standard attribute value
+	 *
+	 * @param WC_Product $wc_product
+	 * @param $attribute
+	 *
+	 * @return float|int|string|null
+	 */
 	protected function get_standard_attribute( WC_Product $wc_product, $attribute ) {
 		switch ( $attribute ) {
 			case Standard_Product_Attributes::PREFIX . '_' . 'id':

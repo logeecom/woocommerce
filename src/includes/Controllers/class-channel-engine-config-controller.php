@@ -89,7 +89,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	public function get_stock_sync_config() {
 		$this->return_json( [
-			'stockQuantity' => $this->get_product_config_service()->get()->getDefaultStock(),
+			'stockQuantity'    => $this->get_product_config_service()->get()->getDefaultStock(),
 			'enabledStockSync' => $this->get_product_config_service()->get()->isEnabledStockSync()
 		] );
 	}
@@ -97,7 +97,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	/**
 	 * Retrieves information about stock synchronization flag.
 	 */
-	public function is_enabled_stock_sync(  ) {
+	public function is_enabled_stock_sync() {
 		$this->return_json( [
 			'enabledStockSync' => $this->get_product_config_service()->get()->isEnabledStockSync()
 		] );
@@ -175,12 +175,12 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 *
 	 * @throws QueryFilterInvalidParamException
 	 */
-	public function get_extra_data_mappings(  ) {
+	public function get_extra_data_mappings() {
 		$mappings = $this->get_extra_data_attribute_mapping_service()->getExtraDataAttributeMappings();
 
-		$this->return_json([
+		$this->return_json( [
 			'extra_data_mapping' => $mappings->get_mappings()
-		]);
+		] );
 	}
 
 	/**
@@ -189,8 +189,49 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 * @throws QueryFilterInvalidParamException
 	 */
 	protected function get_product_attributes() {
-		$selectedMapping = $this->get_attribute_mapping_service()->getAttributeMappings();
-		$attributes = $this->get_product_service()->get_product_attributes();
+		$selectedMapping      = $this->get_attribute_mapping_service()->getAttributeMappings();
+		$attributes           = $this->get_product_service()->get_product_attributes();
+		$formatted_attributes = $this->get_formatted_product_attributes( $attributes );
+
+		if ( $selectedMapping ) {
+			$this->return_json( [
+				'product_attributes' => $formatted_attributes,
+				'brand'              => $selectedMapping->get_brand(),
+				'color'              => $selectedMapping->get_color(),
+				'size'               => $selectedMapping->get_size(),
+				'gtin'               => $selectedMapping->get_gtin(),
+				'catalogue_price'    => $selectedMapping->get_catalogue_price(),
+				'price'              => $selectedMapping->get_price(),
+				'purchase_price'     => $selectedMapping->get_purchase_price(),
+				'details'            => $selectedMapping->get_details(),
+				'category'           => $selectedMapping->get_category()
+			] );
+		}
+
+		$default_attributes = $this->get_default_attribute_mapping_values( $attributes );
+
+		$this->return_json( [
+			'product_attributes' => $formatted_attributes,
+			'brand'              => $default_attributes['brand'] ?: '',
+			'color'              => $default_attributes['color'] ?: '',
+			'size'               => $default_attributes['size'] ?: '',
+			'gtin'               => $default_attributes['gtin'] ?: $default_attributes['ean'] ?: '',
+			'catalogue_price'    => $default_attributes['msrp'] ?: $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
+			'price'              => $default_attributes['price'] ?: '',
+			'purchase_price'     => $default_attributes['purchase_price'] ?: '',
+			'details'            => $default_attributes['details'] ?: '',
+			'category'           => $default_attributes['category'] ?: ''
+		] );
+	}
+
+	/**
+	 * Get formatted product attributes
+	 *
+	 * @param array $attributes
+	 *
+	 * @return array
+	 */
+	private function get_formatted_product_attributes( array $attributes ) {
 		$formatted_attributes = [];
 
 		foreach ( $attributes as $attribute ) {
@@ -202,30 +243,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			];
 		}
 
-		$default_attributes = $this->get_default_attribute_mapping_values( $attributes );
-
-		$this->return_json( [
-			'product_attributes' => $formatted_attributes,
-			'brand' => ( $selectedMapping && $selectedMapping->get_brand() !== '' ) ?
-				$selectedMapping->get_brand() : $default_attributes['brand'] ?: '',
-			'color' => ( $selectedMapping && $selectedMapping->get_color() !== '' ) ?
-				$selectedMapping->get_color() : $default_attributes['color'] ?: '',
-			'size' => ( $selectedMapping && $selectedMapping->get_size() !== '' ) ?
-				$selectedMapping->get_size() : $default_attributes['size'] ?: '',
-			'gtin' => ( $selectedMapping && $selectedMapping->get_gtin() !== '' ) ?
-				$selectedMapping->get_gtin() : $default_attributes['gtin'] ?: $default_attributes['ean']?:'',
-			'catalogue_price' => ( $selectedMapping && $selectedMapping->get_catalogue_price() !== '' ) ?
-				$selectedMapping->get_catalogue_price() : $default_attributes['msrp'] ?:
-                    $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
-			'price' => ( $selectedMapping && $selectedMapping->get_price() !== '' ) ?
-				$selectedMapping->get_price() : $default_attributes['price'] ?: '',
-			'purchase_price' => ( $selectedMapping && $selectedMapping->get_purchase_price() !== '' ) ?
-				$selectedMapping->get_purchase_price() : $default_attributes['purchase_price'] ?: '',
-			'details' => ( $selectedMapping && $selectedMapping->get_details() !== '' ) ?
-				$selectedMapping->get_details() : $default_attributes['details'] ?: '',
-			'category' => ( $selectedMapping && $selectedMapping->get_category() !== '' ) ?
-				$selectedMapping->get_category() : $default_attributes['category'] ?: ''
-		] );
+		return $formatted_attributes;
 	}
 
 	/**
@@ -237,18 +255,18 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	protected function save_product_attribute_mapping( $mappings ) {
 		$mappings_dto = new AttributeMappings(
-			$mappings['brand']  !== '' ? $mappings['brand'] : null,
-			$mappings['color']  !== '' ? $mappings['color'] : null,
-			$mappings['size']  !== '' ? $mappings['size'] : null,
-			$mappings['gtin']  !== '' ? $mappings['gtin'] : null,
-			$mappings['cataloguePrice']  !== '' ? $mappings['cataloguePrice'] : null,
-			$mappings['price']  !== '' ? $mappings['price'] : null,
-			$mappings['purchasePrice']  !== '' ? $mappings['purchasePrice'] : null,
-			$mappings['details']  !== '' ? $mappings['details'] : null,
-			$mappings['category']  !== '' ? $mappings['category'] : null
+			$mappings['brand'] !== '' ? $mappings['brand'] : null,
+			$mappings['color'] !== '' ? $mappings['color'] : null,
+			$mappings['size'] !== '' ? $mappings['size'] : null,
+			$mappings['gtin'] !== '' ? $mappings['gtin'] : null,
+			$mappings['cataloguePrice'] !== '' ? $mappings['cataloguePrice'] : null,
+			$mappings['price'] !== '' ? $mappings['price'] : null,
+			$mappings['purchasePrice'] !== '' ? $mappings['purchasePrice'] : null,
+			$mappings['details'] !== '' ? $mappings['details'] : null,
+			$mappings['category'] !== '' ? $mappings['category'] : null
 		);
 
-		$this->get_attribute_mapping_service()->setAttributeMappings($mappings_dto);
+		$this->get_attribute_mapping_service()->setAttributeMappings( $mappings_dto );
 	}
 
 	/**
@@ -261,7 +279,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	protected function get_default_attribute_mapping_values( $attributes ) {
 		$default_attribute_mapping = [];
 		foreach ( $attributes as $attribute ) {
-			$attribute_name = str_replace(' ', '_', $attribute->get_data()['name'] );
+			$attribute_name                               = str_replace( ' ', '_', $attribute->get_data()['name'] );
 			$default_attribute_mapping[ $attribute_name ] = $attribute->get_data()['name'];
 		}
 
@@ -340,7 +358,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$orderSyncConfig->setEnableOrderCancellationSync( $order_sync_config['enableOrderCancellationSync'] );
 		$orderSyncConfig->setEnableOrdersByMerchantSync( $order_sync_config['enableOrdersByMerchantSync'] );
 		$orderSyncConfig->setEnableOrdersByMarketplaceSync( $order_sync_config['enableOrdersByMarketplaceSync'] );
-		$orderSyncConfig->setEnableReduceStock($enable_reduce_stock);
+		$orderSyncConfig->setEnableReduceStock( $enable_reduce_stock );
 
 		$this->get_order_config_service()->saveOrderSyncConfig( $orderSyncConfig );
 	}
