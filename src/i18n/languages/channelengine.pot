@@ -464,3 +464,12 @@ msgstr ""
 
 msgid "Not mapped"
 msgstr ""
+
+msgid "WooCommerce standard fields"
+msgstr ""
+
+msgid "WooCommerce custom fields"
+msgstr ""
+
+msgid "Vendor product number"
+msgstr ""

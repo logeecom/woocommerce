@@ -48,6 +48,7 @@ if (!window.ChannelEngine) {
                     purchasePriceOptions = document.getElementById('cePurchasePrice'),
                     detailsOptions = document.getElementById('ceDetails'),
                     categoryOptions = document.getElementById('ceCategory'),
+                    vendorProductNumberOptions = document.getElementById('ceVendorProductNumber'),
                     standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
                     customAttributesLabel = document.getElementById('ce-custom-attributes-label').value,
                     standardAttributes = response.product_attributes.standard,
@@ -71,6 +72,8 @@ if (!window.ChannelEngine) {
                 addMapping(customAttributesLabel, customAttributes, detailsOptions, response.details);
                 addMapping(standardAttributesLabel, standardAttributes, categoryOptions, response.category);
                 addMapping(customAttributesLabel, customAttributes, categoryOptions, response.category);
+                addMapping(standardAttributesLabel, standardAttributes, vendorProductNumberOptions, response.vendor_product_number);
+                addMapping(customAttributesLabel, customAttributes, vendorProductNumberOptions, response.vendor_product_number);
             });
         }
 

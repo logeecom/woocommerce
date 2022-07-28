@@ -3,8 +3,8 @@
 use ChannelEngine\Utility\Shop_Helper;
 
 ?>
-<input id="ce-standard-attributes-label" type="hidden" value="<?php _e("WooCommerce standard fields") ?>">
-<input id="ce-custom-attributes-label" type="hidden" value="<?php _e("WooCommerce custom fields") ?>">
+<input id="ce-standard-attributes-label" type="hidden" value="<?php _e('WooCommerce standard fields', 'channelengine') ?>">
+<input id="ce-custom-attributes-label" type="hidden" value="<?php _e('WooCommerce custom fields', 'channelengine') ?>">
 <form class="ce-form" onsubmit="return false">
     <h3><?php echo __("Attribute mapping") ?></h3>
     <div class="ce-input-group ce-flex">
@@ -120,6 +120,19 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <select id="ceCategory">
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
+            </select>
+        </label>
+    </div>
+    <div class="ce-input-group ce-flex">
+        <label>
+            <span class="label"><?php _e('Vendor product number', 'channelengine'); ?></span>
+            <span class="ce-help">
+                <span class="ce-help-tooltip">
+                    <?php _e('This is mapping for vendor product number attribute.', 'channelengine'); ?>
+                </span>
+            </span>
+            <select id="ceVendorProductNumber">
                 <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
             </select>
         </label>

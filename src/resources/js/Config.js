@@ -35,6 +35,7 @@ document.addEventListener(
             purchasePriceMapping = document.getElementById('cePurchasePrice'),
             detailsMapping = document.getElementById('ceDetails'),
             categoryMapping = document.getElementById('ceCategory'),
+            vendorProductNumberMapping = document.getElementById('ceVendorProductNumber'),
             extraDataUrl = document.getElementById('ceProductExtraData'),
             enableReduceStock = document.getElementById('enableReduceStock'),
             duplicatesText = document.getElementById('ce-extra-data-duplicates-text').value,
@@ -180,7 +181,8 @@ document.addEventListener(
                         price: priceMapping.value,
                         purchasePrice: purchasePriceMapping.value,
                         details: detailsMapping.value,
-                        category: categoryMapping.value
+                        category: categoryMapping.value,
+                        vendorProductNumber: vendorProductNumberMapping.value,
                     },
                     extraDataMappings: extraData
                 },
