@@ -100,10 +100,10 @@ use ChannelEngine\Utility\Shop_Helper;
     </div>
     <div class="ce-input-group ce-flex">
         <label>
-            <span class="label"><?php echo __('Details'); ?></span>
+            <span class="label"><?php _e('Description', 'channelengine'); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __('This is mapping for details attribute. Default selected value (if exists) is plain text representation of the product description (description content without HTML tags).'); ?>
+                    <?php _e('This is mapping for description attribute. Default selected value (if exists) is plain text representation of the product description (description content without HTML tags).', 'channelengine'); ?>
                 </span>
             </span>
             <select id="ceDetails">

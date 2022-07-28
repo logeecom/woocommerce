@@ -473,3 +473,9 @@ msgstr ""
 
 msgid "Vendor product number"
 msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "This is mapping for description attribute. Default selected value (if exists) is plain text representation of the product description (description content without HTML tags)."
+msgstr ""
