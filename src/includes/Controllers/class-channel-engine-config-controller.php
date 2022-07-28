@@ -197,32 +197,34 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 
 		if ( $selectedMapping ) {
 			$this->return_json( [
-				'product_attributes' => $formatted_attributes,
-				'brand'              => $selectedMapping->get_brand(),
-				'color'              => $selectedMapping->get_color(),
-				'size'               => $selectedMapping->get_size(),
-				'gtin'               => $selectedMapping->get_gtin(),
-				'catalogue_price'    => $selectedMapping->get_catalogue_price(),
-				'price'              => $selectedMapping->get_price(),
-				'purchase_price'     => $selectedMapping->get_purchase_price(),
-				'details'            => $selectedMapping->get_details(),
-				'category'           => $selectedMapping->get_category()
+				'product_attributes'    => $formatted_attributes,
+				'brand'                 => $selectedMapping->get_brand(),
+				'color'                 => $selectedMapping->get_color(),
+				'size'                  => $selectedMapping->get_size(),
+				'gtin'                  => $selectedMapping->get_gtin(),
+				'catalogue_price'       => $selectedMapping->get_catalogue_price(),
+				'price'                 => $selectedMapping->get_price(),
+				'purchase_price'        => $selectedMapping->get_purchase_price(),
+				'details'               => $selectedMapping->get_details(),
+				'category'              => $selectedMapping->get_category(),
+				'vendor_product_number' => $selectedMapping->get_vendor_product_number()
 			] );
 		}
 
 		$default_attributes = $this->get_default_attribute_mapping_values( array_merge( $standard_attributes, $custom_attributes ) );
 
 		$this->return_json( [
-			'product_attributes' => $formatted_attributes,
-			'brand'              => $default_attributes['brand'] ?: '',
-			'color'              => $default_attributes['color'] ?: '',
-			'size'               => $default_attributes['size'] ?: '',
-			'gtin'               => $default_attributes['gtin'] ?: $default_attributes['ean'] ?: '',
-			'catalogue_price'    => $default_attributes['msrp'] ?: $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
-			'price'              => $default_attributes['price'] ?: '',
-			'purchase_price'     => $default_attributes['purchase_price'] ?: '',
-			'details'            => $default_attributes['details'] ?: '',
-			'category'           => $default_attributes['category'] ?: ''
+			'product_attributes'    => $formatted_attributes,
+			'brand'                 => $default_attributes['brand'] ?: '',
+			'color'                 => $default_attributes['color'] ?: '',
+			'size'                  => $default_attributes['size'] ?: '',
+			'gtin'                  => $default_attributes['gtin'] ?: $default_attributes['ean'] ?: '',
+			'catalogue_price'       => $default_attributes['msrp'] ?: $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
+			'price'                 => $default_attributes['price'] ?: '',
+			'purchase_price'        => $default_attributes['purchase_price'] ?: '',
+			'details'               => $default_attributes['details'] ?: '',
+			'category'              => $default_attributes['category'] ?: '',
+			'vendor_product_number' => $default_attributes['vendor_product_number'] ?: ''
 		] );
 	}
 
@@ -275,7 +277,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			$mappings['price'] !== '' ? $mappings['price'] : null,
 			$mappings['purchasePrice'] !== '' ? $mappings['purchasePrice'] : null,
 			$mappings['details'] !== '' ? $mappings['details'] : null,
-			$mappings['category'] !== '' ? $mappings['category'] : null
+			$mappings['category'] !== '' ? $mappings['category'] : null,
+			$mappings['vendorProductNumber'] !== '' ? $mappings['vendorProductNumber'] : null
 		);
 
 		$this->get_attribute_mapping_service()->setAttributeMappings( $mappings_dto );
