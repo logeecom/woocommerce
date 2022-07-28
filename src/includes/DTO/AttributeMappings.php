@@ -49,15 +49,21 @@ class AttributeMappings extends DataTransferObject
 	private $category;
 
 	/**
-	 * @param string $brand
-	 * @param string $color
-	 * @param string $size
-	 * @param string $gtin
-	 * @param string $cataloguePrice
-	 * @param string $price
-	 * @param string $purchasePrice
-	 * @param string $details
-	 * @param string $category
+	 * @var string
+	 */
+	private $vendorProductNumber;
+
+	/**
+	 * @param $brand
+	 * @param $color
+	 * @param $size
+	 * @param $gtin
+	 * @param $cataloguePrice
+	 * @param $price
+	 * @param $purchasePrice
+	 * @param $details
+	 * @param $category
+	 * @param $vendorProductNumber
 	 */
     public function __construct(
         $brand,
@@ -68,7 +74,8 @@ class AttributeMappings extends DataTransferObject
 	    $price,
 	    $purchasePrice,
 	    $details,
-	    $category
+	    $category,
+	    $vendorProductNumber
     ) {
 	    $this->brand  = $brand;
 	    $this->color = $color;
@@ -79,6 +86,7 @@ class AttributeMappings extends DataTransferObject
 	    $this->purchasePrice = $purchasePrice;
         $this->details = $details;
 		$this->category = $category;
+		$this->vendorProductNumber = $vendorProductNumber;
 	}
 
 	/**
@@ -144,6 +152,13 @@ class AttributeMappings extends DataTransferObject
 		return $this->category;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function get_vendor_product_number() {
+		return $this->vendorProductNumber;
+	}
+
     /**
      * @inheritDoc
      */
@@ -158,7 +173,8 @@ class AttributeMappings extends DataTransferObject
 	        'price' => $this->price,
             'purchasePrice' => $this->purchasePrice,
 	        'details' => $this->details,
-	        'category' => $this->category
+	        'category' => $this->category,
+	        'vendorProductNumber' => $this->vendorProductNumber
         ];
     }
 
@@ -176,7 +192,8 @@ class AttributeMappings extends DataTransferObject
 		    static::getDataValue($data, 'price', null),
 		    static::getDataValue($data, 'purchasePrice', null),
 		    static::getDataValue($data, 'details', null),
-		    static::getDataValue($data, 'category', null)
+		    static::getDataValue($data, 'category', null),
+			static::getDataValue($data, 'vendorProductNumber', null)
 	    );
     }
 }
