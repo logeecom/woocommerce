@@ -291,11 +291,6 @@ class Products_Service implements ProductsService {
 			[ 'shipping_time' ]
 		);
 
-		$attributes['manufacturer_product_number'] = $wc_product->get_sku() ?: $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			[ 'sku' ]
-		);
 		$attributes['url']                         = $wc_product->get_permalink();
 
 		$image = '';
@@ -389,6 +384,13 @@ class Products_Service implements ProductsService {
 				$wc_product,
 				$meta_lookup,
 				[ $attributesMapping->get_category() ] ) :
+			'';
+
+		$attributes['manufacturer_product_number'] = $attributesMapping->get_vendor_product_number() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_vendor_product_number() ] ) :
 			'';
 
 		return $attributes;

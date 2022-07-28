@@ -66,7 +66,8 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 			$mappings['price']  !== '' ? $mappings['price'] : null,
 			$mappings['purchasePrice']  !== '' ? $mappings['purchasePrice'] : null,
 			$mappings['details']  !== '' ? $mappings['details'] : null,
-			$mappings['category']  !== '' ? $mappings['category'] : null
+			$mappings['category']  !== '' ? $mappings['category'] : null,
+			$mappings['vendorProductNumber']  !== '' ? $mappings['vendorProductNumber'] : null
 		);
 
 		$extra_data_dto = new ExtraDataAttributeMappings($extraDataMapping);
