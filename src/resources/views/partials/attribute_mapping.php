@@ -3,7 +3,8 @@
 use ChannelEngine\Utility\Shop_Helper;
 
 ?>
-
+<input id="ce-standard-attributes-label" type="hidden" value="<?php _e("WooCommerce standard fields") ?>">
+<input id="ce-custom-attributes-label" type="hidden" value="<?php _e("WooCommerce custom fields") ?>">
 <form class="ce-form" onsubmit="return false">
     <h3><?php echo __("Attribute mapping") ?></h3>
     <div class="ce-input-group ce-flex">

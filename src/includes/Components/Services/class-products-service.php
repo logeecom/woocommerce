@@ -118,21 +118,11 @@ class Products_Service implements ProductsService {
 	}
 
 	/**
-	 * Retrieves product mapped attributes.
-	 *
-	 * @return array
-	 */
-	public function get_product_attributes() {
-
-		return array_merge( $this->get_standard_product_attributes(), $this->get_meta_repository()->get_product_attributes() );
-	}
-
-	/**
 	 * Get standard WC attributes
 	 *
 	 * @return WC_Product_Attribute[]
 	 */
-	private function get_standard_product_attributes() {
+	public function get_standard_product_attributes() {
 		$standard_attributes = [];
 		foreach ( Standard_Product_Attributes::ATTRIBUTES as $ATTRIBUTE ) {
 			$attribute = new WC_Product_Attribute();
@@ -146,6 +136,15 @@ class Products_Service implements ProductsService {
 		}
 
 		return $standard_attributes;
+	}
+
+	/**
+	 * Retrieves product mapped attributes.
+	 *
+	 * @return WC_Product_Attribute[]
+	 */
+	public function get_custom_product_attributes() {
+		return $this->get_meta_repository()->get_product_attributes();
 	}
 
 	/**
@@ -275,7 +274,7 @@ class Products_Service implements ProductsService {
 	 * @throws QueryFilterInvalidParamException
 	 */
 	protected function fetch_attributes( WC_Product $wc_product, array $meta_lookup ) {
-		$attributes        = $this->set_mapped_attributes( $wc_product, $meta_lookup );
+		$attributes = $this->set_mapped_attributes( $wc_product, $meta_lookup );
 
 		$attributes['stock'] = $wc_product->get_manage_stock() ?
 			$wc_product->get_stock_quantity() : $this->get_product_config_service()->get()->getDefaultStock();

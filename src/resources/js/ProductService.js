@@ -13,7 +13,7 @@ if (!window.ChannelEngine) {
                 quantity.value = response.stockQuantity;
                 enabledStockSync.checked = response.enabledStockSync;
 
-                if( !enabledStockSync.checked ) {
+                if (!enabledStockSync.checked) {
                     quantity.setAttribute('disabled', 'true');
                 }
             });
@@ -48,45 +48,40 @@ if (!window.ChannelEngine) {
                     purchasePriceOptions = document.getElementById('cePurchasePrice'),
                     detailsOptions = document.getElementById('ceDetails'),
                     categoryOptions = document.getElementById('ceCategory'),
-                    mappings = response.product_attributes;
+                    standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
+                    customAttributesLabel = document.getElementById('ce-custom-attributes-label').value,
+                    standardAttributes = response.product_attributes.standard,
+                    customAttributes = response.product_attributes.custom;
 
-                mappings.forEach(item => addMappings(item, brandOptions, response.brand));
-                mappings.forEach(item => addMappings(item, colorOptions, response.color));
-                mappings.forEach(item => addMappings(item, sizeOptions, response.size));
-                mappings.forEach(item => addMappings(item, gtinOptions, response.gtin));
-                mappings.forEach(item => addMappings(item, cataloguePriceOptions, response.catalogue_price));
-                mappings.forEach(item => addMappings(item, priceOptions, response.price));
-                mappings.forEach(item => addMappings(item, purchasePriceOptions, response.purchase_price));
-                mappings.forEach(item => addMappings(item, detailsOptions, response.details));
-                mappings.forEach(item => addMappings(item, categoryOptions, response.category));
+                addMapping(standardAttributesLabel, standardAttributes, brandOptions, response.brand);
+                addMapping(customAttributesLabel, customAttributes, brandOptions, response.brand);
+                addMapping(standardAttributesLabel, standardAttributes, colorOptions, response.color);
+                addMapping(customAttributesLabel, customAttributes, colorOptions, response.color);
+                addMapping(standardAttributesLabel, standardAttributes, sizeOptions, response.size);
+                addMapping(customAttributesLabel, customAttributes, sizeOptions, response.size);
+                addMapping(standardAttributesLabel, standardAttributes, gtinOptions, response.gtin);
+                addMapping(customAttributesLabel, customAttributes, gtinOptions, response.gtin);
+                addMapping(standardAttributesLabel, standardAttributes, cataloguePriceOptions, response.catalogue_price);
+                addMapping(customAttributesLabel, customAttributes, cataloguePriceOptions, response.catalogue_price);
+                addMapping(standardAttributesLabel, standardAttributes, priceOptions, response.price);
+                addMapping(customAttributesLabel, customAttributes, priceOptions, response.price);
+                addMapping(standardAttributesLabel, standardAttributes, purchasePriceOptions, response.purchase_price);
+                addMapping(customAttributesLabel, customAttributes, purchasePriceOptions, response.purchase_price);
+                addMapping(standardAttributesLabel, standardAttributes, detailsOptions, response.details);
+                addMapping(customAttributesLabel, customAttributes, detailsOptions, response.details);
+                addMapping(standardAttributesLabel, standardAttributes, categoryOptions, response.category);
+                addMapping(customAttributesLabel, customAttributes, categoryOptions, response.category);
             });
-
-            function addMappings (item, parent, mapping) {
-                const option = document.createElement('OPTION');
-
-                option.innerHTML = item.label;
-                option.value = item.value;
-                if (item.value === mapping) {
-                    option.selected = true;
-                }
-
-                parent.appendChild(option);
-            }
         }
 
         this.getExtraDataMappingOptions = function (url, element, selected) {
-            const ajaxService = ChannelEngine.ajaxService;
+            const ajaxService = ChannelEngine.ajaxService,
+                standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
+                customAttributesLabel = document.getElementById('ce-custom-attributes-label').value;
 
             ajaxService.get(url, function (response) {
-                response.product_attributes.forEach(mapping => {
-                    let option = document.createElement('option');
-                    option.text = mapping.label;
-                    option.value = mapping.value;
-                    element.add(option);
-                    if( selected === mapping.value ) {
-                        element.value = mapping.value;
-                    }
-                });
+                addMapping(standardAttributesLabel, response.product_attributes.standard, element, selected);
+                addMapping(customAttributesLabel, response.product_attributes.custom, element, selected);
             });
         }
 
@@ -107,13 +102,13 @@ if (!window.ChannelEngine) {
                 clone = newAttribute.cloneNode(true),
                 previous = document.querySelectorAll('.last').item(0),
                 attribute = previous.getAttribute('class'),
-                attributeUrl  = document.getElementById('ceProductAttributes');
+                attributeUrl = document.getElementById('ceProductAttributes');
 
             clone.removeAttribute('style');
             clone.removeAttribute('id');
             clone.setAttribute('class', attribute);
 
-            if(previous.id === 'hidden') {
+            if (previous.id === 'hidden') {
                 previous.before(clone);
             } else {
                 previous.after(clone);
@@ -123,7 +118,7 @@ if (!window.ChannelEngine) {
             let removeAttributeList = document.querySelectorAll('.ce-button-remove-mapping');
             removeAttributeList.forEach(removeAttribute => {
                 removeAttribute.addEventListener('click', function () {
-                    if ( removeAttribute.parentNode.parentElement.getAttribute('class').includes('last')) {
+                    if (removeAttribute.parentNode.parentElement.getAttribute('class').includes('last')) {
                         let baseDiv = document.getElementById('hidden');
                         if (baseDiv.previousElementSibling.previousElementSibling.getAttribute('class') !== 'ce-extra-data-heading') {
                             baseDiv.previousElementSibling.previousElementSibling.setAttribute(
@@ -144,6 +139,25 @@ if (!window.ChannelEngine) {
             );
 
             return clone;
+        }
+
+        function addMapping(attributesTypeLabel, attributes, parent, mapping) {
+            const group = document.createElement('OPTGROUP');
+            group.label = attributesTypeLabel;
+            attributes.forEach(item => addOption(item, group, mapping));
+            parent.appendChild(group);
+        }
+
+        function addOption(item, parent, mapping) {
+            const option = document.createElement('OPTION');
+
+            option.innerHTML = item.label;
+            option.value = item.value;
+            if (item.value === mapping) {
+                option.selected = true;
+            }
+
+            parent.appendChild(option);
         }
     }
 

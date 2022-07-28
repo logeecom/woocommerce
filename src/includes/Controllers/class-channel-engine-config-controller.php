@@ -33,6 +33,7 @@ use ChannelEngine\Infrastructure\TaskExecution\QueueService;
 use ChannelEngine\Repositories\Plugin_Options_Repository;
 use ChannelEngine\Utility\Database;
 use Exception;
+use WC_Product_Attribute;
 
 /**
  * Class Channel_Engine_Config_Controller
@@ -190,8 +191,9 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	protected function get_product_attributes() {
 		$selectedMapping      = $this->get_attribute_mapping_service()->getAttributeMappings();
-		$attributes           = $this->get_product_service()->get_product_attributes();
-		$formatted_attributes = $this->get_formatted_product_attributes( $attributes );
+		$standard_attributes  = $this->get_product_service()->get_standard_product_attributes();
+		$custom_attributes    = $this->get_product_service()->get_custom_product_attributes();
+		$formatted_attributes = $this->get_formatted_product_attributes( $standard_attributes, $custom_attributes );
 
 		if ( $selectedMapping ) {
 			$this->return_json( [
@@ -208,7 +210,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			] );
 		}
 
-		$default_attributes = $this->get_default_attribute_mapping_values( $attributes );
+		$default_attributes = $this->get_default_attribute_mapping_values( array_merge( $standard_attributes, $custom_attributes ) );
 
 		$this->return_json( [
 			'product_attributes' => $formatted_attributes,
@@ -227,17 +229,27 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	/**
 	 * Get formatted product attributes
 	 *
-	 * @param array $attributes
+	 * @param WC_Product_Attribute[] $standard_attributes
+	 * @param WC_Product_Attribute[] $custom_attributes
 	 *
 	 * @return array
 	 */
-	private function get_formatted_product_attributes( array $attributes ) {
+	protected function get_formatted_product_attributes( array $standard_attributes, array $custom_attributes ) {
 		$formatted_attributes = [];
 
-		foreach ( $attributes as $attribute ) {
+		foreach ( $standard_attributes as $attribute ) {
 			$attribute_name = $attribute->get_data()['name'];
 
-			$formatted_attributes[] = [
+			$formatted_attributes['standard'][] = [
+				'value' => $attribute_name,
+				'label' => __( $attribute_name, 'channelengine' ),
+			];
+		}
+
+		foreach ( $custom_attributes as $attribute ) {
+			$attribute_name = $attribute->get_data()['name'];
+
+			$formatted_attributes['custom'][] = [
 				'value' => $attribute_name,
 				'label' => __( $attribute_name, 'channelengine' ),
 			];
