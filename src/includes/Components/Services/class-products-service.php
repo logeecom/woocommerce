@@ -496,7 +496,7 @@ class Products_Service implements ProductsService {
 			case Standard_Product_Attributes::PREFIX . '_' . 'image_url':
 				return $this->images[ $wc_product->get_image_id() ]->guid;
 			case Standard_Product_Attributes::PREFIX . '_' . 'weight':
-				return $wc_product->get_weight()();
+				return $wc_product->get_weight();
 			case Standard_Product_Attributes::PREFIX . '_' . 'length':
 				return $wc_product->get_length();
 			case Standard_Product_Attributes::PREFIX . '_' . 'width':
