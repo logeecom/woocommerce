@@ -32,6 +32,7 @@ use ChannelEngine\Infrastructure\TaskExecution\QueueItem;
 use ChannelEngine\Infrastructure\TaskExecution\QueueService;
 use ChannelEngine\Repositories\Plugin_Options_Repository;
 use ChannelEngine\Utility\Database;
+use ChannelEngine\Utility\Standard_Product_Attributes;
 use Exception;
 use WC_Product_Attribute;
 
@@ -220,10 +221,10 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'size'                  => $default_attributes['size'] ?: '',
 			'gtin'                  => $default_attributes['gtin'] ?: $default_attributes['ean'] ?: '',
 			'catalogue_price'       => $default_attributes['msrp'] ?: $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
-			'price'                 => $default_attributes['price'] ?: '',
+			'price'                 => $default_attributes['price'] ?: $default_attributes[Standard_Product_Attributes::PREFIX . '_price_incl_tax'] ?: '',
 			'purchase_price'        => $default_attributes['purchase_price'] ?: '',
-			'details'               => $default_attributes['details'] ?: '',
-			'category'              => $default_attributes['category'] ?: '',
+			'details'               => $default_attributes['details'] ?: $default_attributes[Standard_Product_Attributes::PREFIX . '_description'] ?: '',
+			'category'              => $default_attributes['category'] ?: $default_attributes[Standard_Product_Attributes::PREFIX . '_category'] ?: '',
 			'vendor_product_number' => $default_attributes['vendor_product_number'] ?: ''
 		] );
 	}
