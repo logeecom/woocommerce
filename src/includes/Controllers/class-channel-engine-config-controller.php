@@ -238,7 +238,10 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 * @return array
 	 */
 	protected function get_formatted_product_attributes( array $standard_attributes, array $custom_attributes ) {
-		$formatted_attributes = [];
+		$formatted_attributes = [
+            'custom' => [],
+            'standard' => [],
+        ];
 
 		foreach ( $standard_attributes as $attribute ) {
 			$attribute_name = $attribute->get_data()['name'];

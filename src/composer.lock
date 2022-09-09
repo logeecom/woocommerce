@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1aced937071b41c24259e1dc55f6ffe2",
+    "content-hash": "91cfcfb9e4bf7764542cf8450a601200",
     "packages": [
         {
             "name": "channelengine/integration-core",
-            "version": "dev-dev",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:channelengine/logeecom-core.git",
-                "reference": "4ec3b68f0b1d4af41ceff86daad7d130528f54bb"
+                "reference": "2d4baaa40e7da5af3e1f04a2d5547281f90a4ec9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/4ec3b68f0b1d4af41ceff86daad7d130528f54bb",
-                "reference": "4ec3b68f0b1d4af41ceff86daad7d130528f54bb",
+                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/2d4baaa40e7da5af3e1f04a2d5547281f90a4ec9",
+                "reference": "2d4baaa40e7da5af3e1f04a2d5547281f90a4ec9",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "proprietary"
             ],
             "description": "ChannelEngine integrations core library",
-            "time": "2022-06-14T12:35:43+00:00"
+            "time": "2022-09-09T09:06:31+00:00"
         }
     ],
     "packages-dev": [
@@ -1470,16 +1470,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.37",
+            "version": "v4.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "d7f637cc0f0cc14beb0984f2bb50da560b271311"
+                "reference": "aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/d7f637cc0f0cc14beb0984f2bb50da560b271311",
-                "reference": "d7f637cc0f0cc14beb0984f2bb50da560b271311",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d",
+                "reference": "aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d",
                 "shasum": ""
             },
             "require": {
@@ -1521,7 +1521,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.37"
+                "source": "https://github.com/symfony/yaml/tree/v4.4.45"
             },
             "funding": [
                 {
@@ -1537,7 +1537,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-24T20:11:01+00:00"
+            "time": "2022-08-02T15:47:23+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1600,9 +1600,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "channelengine/integration-core": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
