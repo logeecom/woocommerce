@@ -22,7 +22,7 @@
             <span class="label"><?php echo __( 'API Key', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'Enter the API key. To find theAPI key, on ChannelEngine,go to Settings, Merchant APIkey.', 'channelengine' ); ?>
+                    <?php echo __( 'Enter the API key. To find the API key, on ChannelEngine,go to Settings, Merchant APIkey.', 'channelengine' ); ?>
                 </span>
             </span>
             <input id="ceApiKey" type="password" autocomplete="new-password" />
