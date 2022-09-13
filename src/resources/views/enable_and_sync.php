@@ -40,7 +40,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                     <span class="label ce-big-label"><?php echo __( 'Enable the integration and start the initial synchronization', 'channelengine' ); ?></span>
                     <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'When enabled, it triggers the initial synchronization in the background. Products fromWooCommerce are transferred to ChannelEngine – and orders fromChannelEngine are imported to WooCommerce.', 'channelengine' ); ?>
+                    <?php echo __( 'When enabled, it triggers the initial synchronization in the background. Products from WooCommerce are transferred to ChannelEngine – and orders from ChannelEngine are imported to WooCommerce.', 'channelengine' ); ?>
                 </span>
             </span>
                     <a id="ceStartSync"

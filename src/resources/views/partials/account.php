@@ -11,7 +11,7 @@
             <span class="label"><?php echo __( 'Account name', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'Enter the subdomain of yourChannelEngine instance.This is the name listed beforechannelengine.net. E.g.: theaccount name formyshop.channelengine.net ismyshop.', 'channelengine' ); ?>
+                    <?php echo __( 'Enter the subdomain of your ChannelEngine instance. This is the name listed before channelengine.net. E.g.: the account name for myshop.channelengine.net is myshop.', 'channelengine' ); ?>
                 </span>
             </span>
             <input id="ceAccountName" type="text" autocomplete="new-password" />

@@ -9,7 +9,7 @@ use ChannelEngine\Utility\Shop_Helper;
 <form class="ce-form" onsubmit="return false">
     <div class="ce-extra-data-heading">
         <h3 style="width: 200px"><?php echo __("Extra data mapping") ?></h3>
-        <a id="ceAddNewAttribute" class="ce-button-extra-data ce-button__primary ce-button-add-mapping" title="Add fields">+</a>
+        <a id="ceAddNewAttribute" class="ce-button-extra-data ce-button__primary ce-button-add-mapping">+</a>
     </div>
     <div id="hidden" class="ce-input-extra-data last" style="display: none;">
         <label>
