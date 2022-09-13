@@ -7,7 +7,7 @@
             <span class="label"><?php echo __( 'Enable stock synchronization', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'If this field is checked, stock product information will be synced to the channelengine.', 'channelengine' ); ?>
+                    <?php echo __( 'If checked, stock information is synchronized with ChannelEngine.', 'channelengine' ); ?>
                 </span>
             </span>
             <input id="enableStockSync" type="checkbox" class="checkbox" checked>
@@ -18,7 +18,7 @@
             <span class="label"><?php echo __( 'Set default stock quantity', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'Set the default stock level for the cases when stock is not being tracked in the shop or when information about the stock is missing for specific product(s).', 'channelengine' ); ?>
+                    <?php echo __( 'Enter stock quantity to display when stock information is not tracked or missing.', 'channelengine' ); ?>
                 </span>
             </span>
             <input id="ceStockQuantity" type="number" class="small-number-input" min="0" max="1000" step="1"

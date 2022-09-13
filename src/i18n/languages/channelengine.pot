@@ -49,14 +49,21 @@ msgid "Account name"
 msgstr ""
 
 msgid ""
-"You can generate merchant API key inside ChannelEngine under Settings > "
-"Merchant API keys."
+"Enter the API key. To find the API key, on ChannelEngine, go to Settings, "
+"Merchant API key."
 msgstr ""
 
 msgid ""
-"The account name is a subdomain of your ChannelEngine instance (subdomain."
-"channelengine.net). For example, the account name for ChannelEngine instance "
-"myshop.channelengine.net is myshop."
+"Enter the subdomain of your ChannelEngine instance. This is the name listed "
+"before channelengine.net. E.g.: the account name for myshop.channelengine.net is myshop."
+msgstr ""
+
+msgid ""
+"If checked, stock information is synchronized with ChannelEngine."
+msgstr ""
+
+msgid ""
+"Enter stock quantity to display when stock information is not tracked or missing."
 msgstr ""
 
 msgid "ChannelEngine"
@@ -96,9 +103,7 @@ msgid "Set default stock quantity"
 msgstr ""
 
 msgid ""
-"Set the default stock level for the cases when stock is not being tracked in "
-"the shop or when information about the stock is missing for specific "
-"product(s)."
+"Enter stock quantity to display when stock information is not tracked or missing."
 msgstr ""
 
 msgid "psc"
@@ -115,20 +120,20 @@ msgstr ""
 msgid "Status of incoming orders"
 msgstr ""
 
-msgid "Select the status of orders that are not processed yet."
+msgid "Select the status for unprocessed orders."
 msgstr ""
 
 msgid "Status that defines a shipped order"
 msgstr ""
 
-msgid "Select the status of orders that are shipped."
+msgid "Select the status for shipped orders."
 msgstr ""
 
 msgid "Status of the orders fulfilled by a marketplace"
 msgstr ""
 
 msgid ""
-"Select the status of orders that are already fulfilled by a marketplace."
+"Select the status for marketplace-fulfilled orders."
 msgstr ""
 
 msgid "wc-processing"
@@ -156,11 +161,9 @@ msgid "You are just one step away"
 msgstr ""
 
 msgid ""
-"By enabling integration, it will trigger the initial synchronization in the "
-"background. The integration will synchronize all published shop products to "
-"ChannelEngine in the background. Also, the integration will synchronize new "
-"and closed orders (fulfilled by the merchant and fulfilled by the "
-"marketplace) from ChannelEngine into the shop."
+"When enabled, it triggers the initial synchronization in the background. "
+"Products from WooCommerce are transferred to ChannelEngine – and orders "
+"from ChannelEngine are imported to WooCommerce."
 msgstr ""
 
 msgid "Enable the integration and start the initial synchronization"
@@ -477,5 +480,66 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-msgid "This is mapping for description attribute. Default selected value (if exists) is plain text representation of the product description (description content without HTML tags)."
+msgid ""
+"Select a value to map the Brand attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Color attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Size attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the GTIN attribute to. I.e.: a valid EAN or UPC."
+msgstr ""
+
+msgid ""
+"Select a value to map the Catalog price attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Price attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Purchase price attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Details attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Category attribute to."
+msgstr ""
+
+msgid ""
+"Select a value to map the Vendor product number attribute to."
+msgstr ""
+
+msgid ""
+"Add fields"
+msgstr ""
+
+msgid ""
+"If checked, product stock is updated once an order has been imported to WooCommerce."
+msgstr ""
+
+msgid ""
+"If checked, shipment information is synchronized with ChannelEngine."
+msgstr ""
+
+msgid ""
+"If checked, the order cancellation is synchronized with ChannelEngine."
+msgstr ""
+
+msgid ""
+"If checked, merchant-fulfilled orders with the status New are imported to WooCommerce."
+msgstr ""
+
+msgid ""
+"If checked, marketplace-fulfilled orders are imported to WooCommerce from set date."
 msgstr ""
