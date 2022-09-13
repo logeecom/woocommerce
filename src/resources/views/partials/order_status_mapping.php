@@ -14,7 +14,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Automatically reduce the stock', 'channelengine' ); ?></span>
             <span class="ce-help">
                     <span class="ce-help-tooltip">
-                        <?php echo __( 'If this field is not checked, plugin does not reduce the product stock after an order has been imported to WooCommerce.', 'channelengine' ); ?>
+                        <?php echo __( 'If checked, product stock is updated once an order has been imported to WooCommerce.', 'channelengine' ); ?>
                     </span>
                 </span>
             <input id="enableReduceStock" type="checkbox" class="checkbox">
@@ -28,7 +28,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Shipments', 'channelengine' ); ?></span>
             <span class="ce-help">
                     <span class="ce-help-tooltip">
-                        <?php echo __( 'If this field is checked, shipment information will be synchronized to channelengine.', 'channelengine' ); ?>
+                        <?php echo __( 'If checked, shipment information is synchronized with ChannelEngine.', 'channelengine' ); ?>
                     </span>
                 </span>
             <input id="enableShipmentInfoSync" type="checkbox" class="checkbox" checked>
@@ -39,7 +39,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Cancellations', 'channelengine' ); ?></span>
             <span class="ce-help">
                     <span class="ce-help-tooltip">
-                        <?php echo __( 'If this field is checked, the cancellation of the order will be synchronized to the channelengine.', 'channelengine' ); ?>
+                        <?php echo __( 'If checked, the order cancellation is synchronized with ChannelEngine.', 'channelengine' ); ?>
                     </span>
                 </span>
             <input id="enableOrderCancellationSync" type="checkbox" class="checkbox" checked>
@@ -50,7 +50,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Orders fulfilled by the merchant', 'channelengine' ); ?></span>
             <span class="ce-help">
                     <span class="ce-help-tooltip">
-                        <?php echo __( "If this field is checked, background download process of the orders (from the channelengine) fulfilled by the marketplace will be enabled. Set starting date for synchronizing marketplace orders. All orders older than chosen date won't be synchronized. ", 'channelengine' ); ?>
+                        <?php echo __( "If checked, merchant-fulfilled orders with the status New are imported to WooCommerce.", 'channelengine' ); ?>
                     </span>
                 </span>
             <input id="enableOrdersByMerchantSync" type="checkbox" class="checkbox" checked>
@@ -61,7 +61,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Orders fulfilled by the marketplace', 'channelengine' ); ?></span>
             <span class="ce-help">
                     <span class="ce-help-tooltip">
-                        <?php echo __( 'If this field is checked, background download process of the orders (from the channelengine) fulfilled by the marketplace will be enabled.', 'channelengine' ); ?>
+                        <?php echo __( 'If checked, marketplace-fulfilled orders are imported to WooCommerce from set date.', 'channelengine' ); ?>
                     </span>
                 </span>
             <input id="enableOrdersByMarketplaceSync" type="checkbox" class="checkbox" checked>
@@ -76,7 +76,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Status of incoming orders', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'Select the status of orders that are not processed yet.', 'channelengine' ); ?>
+                    <?php echo __( 'Select the status for unprocessed orders.', 'channelengine' ); ?>
                 </span>
             </span>
             <select id="ceIncomingOrders">
@@ -88,7 +88,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Status that defines a shipped order', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'Select the status of orders that are shipped.', 'channelengine' ); ?>
+                    <?php echo __( 'Select the status for shipped orders.', 'channelengine' ); ?>
                 </span>
             </span>
             <select id="ceShippedOrders">
@@ -100,7 +100,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <span class="label"><?php echo __( 'Status of the orders fulfilled by a marketplace', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'Select the status of orders that are already fulfilled by a marketplace.', 'channelengine' ); ?>
+                    <?php echo __( 'Select the status for marketplace-fulfilled orders.', 'channelengine' ); ?>
                 </span>
             </span>
             <select id="ceFulfilledByMp">

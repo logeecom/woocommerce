@@ -11,7 +11,7 @@
             <span class="label"><?php echo __( 'Account name', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'The account name is a subdomain of your ChannelEngine instance (subdomain.channelengine.net). For example, the account name for ChannelEngine instance myshop.channelengine.net is myshop.', 'channelengine' ); ?>
+                    <?php echo __( 'Enter the subdomain of yourChannelEngine instance.This is the name listed beforechannelengine.net. E.g.: theaccount name formyshop.channelengine.net ismyshop.', 'channelengine' ); ?>
                 </span>
             </span>
             <input id="ceAccountName" type="text" autocomplete="new-password" />
@@ -22,7 +22,7 @@
             <span class="label"><?php echo __( 'API Key', 'channelengine' ); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'You can generate merchant API key inside ChannelEngine under Settings > Merchant API keys.', 'channelengine' ); ?>
+                    <?php echo __( 'Enter the API key. To find theAPI key, on ChannelEngine,go to Settings, Merchant APIkey.', 'channelengine' ); ?>
                 </span>
             </span>
             <input id="ceApiKey" type="password" autocomplete="new-password" />
