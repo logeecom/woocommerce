@@ -172,7 +172,7 @@ class Products_Service implements ProductsService {
 			$attributes['price'],
 			$is_enabled_stock_sync ? $attributes['stock'] : 0,
 			$wc_product->get_name(),
-			$attributes['description'],
+			strip_tags(htmlspecialchars_decode($attributes['description'])),
 			$attributes['purchase_price'],
 			$attributes['msrp'],
 			$attributes['vat_rate_type'],
@@ -356,7 +356,7 @@ class Products_Service implements ProductsService {
 				$wc_product,
 				$meta_lookup,
 				[ $attributesMapping->get_gtin() ]
-			) : '';
+			) : null;
 
 		$attributes['brand'] = $attributesMapping->get_brand() !== null ?
 			$this->get_attribute(

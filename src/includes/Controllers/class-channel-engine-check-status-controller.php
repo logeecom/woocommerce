@@ -2,17 +2,12 @@
 
 namespace ChannelEngine\Controllers;
 
-use ChannelEngine\BusinessLogic\API\Http\Exceptions\RequestNotSuccessfulException;
 use ChannelEngine\BusinessLogic\Orders\Configuration\OrdersConfigurationService;
 use ChannelEngine\BusinessLogic\Orders\Contracts\OrdersService;
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsService;
 use ChannelEngine\BusinessLogic\TransactionLog\Contracts\TransactionLogService;
 use ChannelEngine\Components\Services\Orders_Service;
 use ChannelEngine\Components\Services\Products_Service;
-use ChannelEngine\Infrastructure\Http\Exceptions\HttpCommunicationException;
-use ChannelEngine\Infrastructure\Http\Exceptions\HttpRequestException;
-use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException;
-use ChannelEngine\Infrastructure\ORM\Exceptions\RepositoryNotRegisteredException;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Infrastructure\TaskExecution\Exceptions\QueueItemDeserializationException;
 use ChannelEngine\Infrastructure\TaskExecution\QueueService;
@@ -63,12 +58,7 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 	 *
 	 * @return array
 	 *
-	 * @throws HttpCommunicationException
-	 * @throws HttpRequestException
-	 * @throws QueryFilterInvalidParamException
 	 * @throws QueueItemDeserializationException
-	 * @throws RepositoryNotRegisteredException
-	 * @throws RequestNotSuccessfulException
 	 */
 	protected function get_task_data( $task_type ) {
 		$queueItem = $this->get_queue_service()->findLatestByType( $task_type );
@@ -91,20 +81,20 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 		}
 
 		if ( $task_type === 'OrderSync' ) {
-			$count = $this->get_orders_service()->getOrdersCount();
+			$count = $log->getTotalCount();
 		}
 
 		if ( $count ) {
 			$status *= 100 / $count;
 		} else {
-			$status = 100;
+			$status = $count !== null ? 100 : 0;
 		}
 
 		return [
 			'status'   => $queueItem->getStatus(),
 			'progress' => (int) $status,
 			'synced'   => ( $log && $log->getSynchronizedEntities() ) ? $log->getSynchronizedEntities() : 0,
-			'total'    => $count,
+			'total'    => $count !== null ? $count : '?',
 		];
 	}
 

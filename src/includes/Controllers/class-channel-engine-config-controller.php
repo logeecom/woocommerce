@@ -221,10 +221,10 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'size'                  => $default_attributes['size'] ?: '',
 			'gtin'                  => $default_attributes['gtin'] ?: $default_attributes['ean'] ?: '',
 			'catalogue_price'       => $default_attributes['msrp'] ?: $default_attributes['manufacturer_price'] ?: $default_attributes['vendor_price'] ?: '',
-			'price'                 => $default_attributes['price'] ?: $default_attributes[Standard_Product_Attributes::PREFIX . '_price_incl_tax'] ?: '',
+			'price'                 => $default_attributes['price'] ?: $default_attributes[ Standard_Product_Attributes::PREFIX . '_price_incl_tax' ] ?: '',
 			'purchase_price'        => $default_attributes['purchase_price'] ?: '',
-			'details'               => $default_attributes['details'] ?: $default_attributes[Standard_Product_Attributes::PREFIX . '_description'] ?: '',
-			'category'              => $default_attributes['category'] ?: $default_attributes[Standard_Product_Attributes::PREFIX . '_category'] ?: '',
+			'details'               => $default_attributes['details'] ?: $default_attributes[ Standard_Product_Attributes::PREFIX . '_description' ] ?: '',
+			'category'              => $default_attributes['category'] ?: $default_attributes[ Standard_Product_Attributes::PREFIX . '_category' ] ?: '',
 			'vendor_product_number' => $default_attributes['vendor_product_number'] ?: ''
 		] );
 	}
@@ -239,9 +239,9 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	protected function get_formatted_product_attributes( array $standard_attributes, array $custom_attributes ) {
 		$formatted_attributes = [
-            'custom' => [],
-            'standard' => [],
-        ];
+			'custom'   => [],
+			'standard' => [],
+		];
 
 		foreach ( $standard_attributes as $attribute ) {
 			$attribute_name = $attribute->get_data()['name'];
@@ -254,6 +254,12 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 
 		foreach ( $custom_attributes as $attribute ) {
 			$attribute_name = $attribute->get_data()['name'];
+
+			foreach ( $formatted_attributes['custom'] as $formatted_attribute ) {
+				if ( $formatted_attribute['value'] === $attribute_name ) {
+					continue 2;
+				}
+			}
 
 			$formatted_attributes['custom'][] = [
 				'value' => $attribute_name,
