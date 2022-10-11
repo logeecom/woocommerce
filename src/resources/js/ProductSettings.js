@@ -17,6 +17,7 @@ document.addEventListener(
                 cataloguePriceMapping = document.getElementById('ceCataloguePrice'),
                 priceMapping = document.getElementById('cePrice'),
                 purchasePriceMapping = document.getElementById('cePurchasePrice'),
+                shippingTimeMapping = document.getElementById('ceShippingTime'),
                 detailsMapping = document.getElementById('ceDetails'),
                 categoryMapping = document.getElementById('ceCategory'),
                 vendorProductNumberMapping = document.getElementById('ceVendorProductNumber'),
@@ -66,7 +67,8 @@ document.addEventListener(
                     purchasePrice: purchasePriceMapping.value,
                     details: detailsMapping.value,
                     category: categoryMapping.value,
-                    vendorProductNumber: vendorProductNumberMapping.value
+                    vendorProductNumber: vendorProductNumberMapping.value,
+                    shippingTime: shippingTimeMapping.value
                 },
                 extraDataMappings: extraData
             });

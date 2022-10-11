@@ -46,6 +46,7 @@ if (!window.ChannelEngine) {
                     cataloguePriceOptions = document.getElementById('ceCataloguePrice'),
                     priceOptions = document.getElementById('cePrice'),
                     purchasePriceOptions = document.getElementById('cePurchasePrice'),
+                    shippingTimeOptions = document.getElementById('ceShippingTime'),
                     detailsOptions = document.getElementById('ceDetails'),
                     categoryOptions = document.getElementById('ceCategory'),
                     vendorProductNumberOptions = document.getElementById('ceVendorProductNumber'),
@@ -68,6 +69,8 @@ if (!window.ChannelEngine) {
                 addMapping(customAttributesLabel, customAttributes, priceOptions, response.price);
                 addMapping(standardAttributesLabel, standardAttributes, purchasePriceOptions, response.purchase_price);
                 addMapping(customAttributesLabel, customAttributes, purchasePriceOptions, response.purchase_price);
+                addMapping(standardAttributesLabel, standardAttributes, shippingTimeOptions, response.shipping_time);
+                addMapping(customAttributesLabel, customAttributes, shippingTimeOptions, response.shipping_time);
                 addMapping(standardAttributesLabel, standardAttributes, detailsOptions, response.details);
                 addMapping(customAttributesLabel, customAttributes, detailsOptions, response.details);
                 addMapping(standardAttributesLabel, standardAttributes, categoryOptions, response.category);

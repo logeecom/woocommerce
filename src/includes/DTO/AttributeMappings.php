@@ -53,18 +53,24 @@ class AttributeMappings extends DataTransferObject
 	 */
 	private $vendorProductNumber;
 
-	/**
-	 * @param $brand
-	 * @param $color
-	 * @param $size
-	 * @param $gtin
-	 * @param $cataloguePrice
-	 * @param $price
-	 * @param $purchasePrice
-	 * @param $details
-	 * @param $category
-	 * @param $vendorProductNumber
-	 */
+    /**
+     * @var string
+     */
+    private $shippingTime;
+
+    /**
+     * @param $brand
+     * @param $color
+     * @param $size
+     * @param $gtin
+     * @param $cataloguePrice
+     * @param $price
+     * @param $purchasePrice
+     * @param $details
+     * @param $category
+     * @param $vendorProductNumber
+     * @param $shippingTime
+     */
     public function __construct(
         $brand,
         $color,
@@ -75,7 +81,8 @@ class AttributeMappings extends DataTransferObject
 	    $purchasePrice,
 	    $details,
 	    $category,
-	    $vendorProductNumber
+	    $vendorProductNumber,
+        $shippingTime
     ) {
 	    $this->brand  = $brand;
 	    $this->color = $color;
@@ -87,6 +94,7 @@ class AttributeMappings extends DataTransferObject
         $this->details = $details;
 		$this->category = $category;
 		$this->vendorProductNumber = $vendorProductNumber;
+        $this->shippingTime = $shippingTime;
 	}
 
 	/**
@@ -160,6 +168,14 @@ class AttributeMappings extends DataTransferObject
 	}
 
     /**
+     * @return string
+     */
+    public function get_shipping_time(): string
+    {
+        return $this->shippingTime;
+    }
+
+    /**
      * @inheritDoc
      */
     public function toArray()
@@ -174,7 +190,8 @@ class AttributeMappings extends DataTransferObject
             'purchasePrice' => $this->purchasePrice,
 	        'details' => $this->details,
 	        'category' => $this->category,
-	        'vendorProductNumber' => $this->vendorProductNumber
+	        'vendorProductNumber' => $this->vendorProductNumber,
+            'shippingTime' => $this->shippingTime
         ];
     }
 
@@ -193,7 +210,8 @@ class AttributeMappings extends DataTransferObject
 		    static::getDataValue($data, 'purchasePrice', null),
 		    static::getDataValue($data, 'details', null),
 		    static::getDataValue($data, 'category', null),
-			static::getDataValue($data, 'vendorProductNumber', null)
+			static::getDataValue($data, 'vendorProductNumber', null),
+			static::getDataValue($data, 'shippingTime', null)
 	    );
     }
 }
