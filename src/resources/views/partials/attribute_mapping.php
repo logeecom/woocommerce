@@ -100,6 +100,19 @@ use ChannelEngine\Utility\Shop_Helper;
     </div>
     <div class="ce-input-group ce-flex">
         <label>
+            <span class="label"><?php _e('Shipping time', 'channelengine'); ?></span>
+            <span class="ce-help">
+                <span class="ce-help-tooltip">
+                    <?php echo __('Select a value to map the Shipping time attribute to.', 'channelengine'); ?>
+                </span>
+            </span>
+            <select id="ceShippingTime">
+                <option value=""><?php _e('Not mapped', 'channelengine') ?></option>
+            </select>
+        </label>
+    </div>
+    <div class="ce-input-group ce-flex">
+        <label>
             <span class="label"><?php _e('Description', 'channelengine'); ?></span>
             <span class="ce-help">
                 <span class="ce-help-tooltip">

@@ -208,7 +208,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 				'purchase_price'        => $selectedMapping->get_purchase_price(),
 				'details'               => $selectedMapping->get_details(),
 				'category'              => $selectedMapping->get_category(),
-				'vendor_product_number' => $selectedMapping->get_vendor_product_number()
+				'vendor_product_number' => $selectedMapping->get_vendor_product_number(),
+				'shipping_time' => $selectedMapping->get_shipping_time()
 			] );
 		}
 
@@ -225,7 +226,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'purchase_price'        => $default_attributes['purchase_price'] ?: '',
 			'details'               => $default_attributes['details'] ?: $default_attributes[ Standard_Product_Attributes::PREFIX . '_description' ] ?: '',
 			'category'              => $default_attributes['category'] ?: $default_attributes[ Standard_Product_Attributes::PREFIX . '_category' ] ?: '',
-			'vendor_product_number' => $default_attributes['vendor_product_number'] ?: ''
+			'vendor_product_number' => $default_attributes['vendor_product_number'] ?: '',
+			'shipping_time' => $default_attributes['shipping_time'] ?: ''
 		] );
 	}
 
@@ -288,7 +290,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			$mappings['purchasePrice'] !== '' ? $mappings['purchasePrice'] : null,
 			$mappings['details'] !== '' ? $mappings['details'] : null,
 			$mappings['category'] !== '' ? $mappings['category'] : null,
-			$mappings['vendorProductNumber'] !== '' ? $mappings['vendorProductNumber'] : null
+            $mappings['vendorProductNumber'] !== '' ? $mappings['vendorProductNumber'] : null,
+			$mappings['shippingTime'] !== '' ? $mappings['shippingTime'] : null
 		);
 
 		$this->get_attribute_mapping_service()->setAttributeMappings( $mappings_dto );

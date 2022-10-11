@@ -285,11 +285,6 @@ class Products_Service implements ProductsService {
 			$meta_lookup,
 			[ 'shipping_cost' ]
 		);
-		$attributes['shipping_time']  = $this->get_attribute(
-			$wc_product,
-			$meta_lookup,
-			[ 'shipping_time' ]
-		);
 
 		$attributes['url']                         = $wc_product->get_permalink();
 
@@ -342,6 +337,13 @@ class Products_Service implements ProductsService {
 				$wc_product,
 				$meta_lookup,
 				[ $attributesMapping->get_purchase_price() ]
+			) : '';
+
+		$attributes['shipping_time'] = $attributesMapping->get_shipping_time() !== null ?
+			$this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $attributesMapping->get_shipping_time() ]
 			) : '';
 
 		$attributes['msrp'] = $attributesMapping->get_catalogue_price() !== null ?
