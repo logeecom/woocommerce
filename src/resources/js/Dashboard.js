@@ -3,9 +3,12 @@ var ChannelEngine = window.ChannelEngine || {};
 document.addEventListener(
     'DOMContentLoaded',
     function () {
-        const state = document.getElementById('ce-status');
+        const state = document.getElementById('ce-status'),
+            getAccountUrl = document.getElementById('ceGetAccountName');
         hidePanels();
         showPanel(state.value);
+
+        ChannelEngine.disconnectService.getAccountName(getAccountUrl);
 
         function hidePanels() {
             document.getElementById('sync-in-progress').style.display = 'none';

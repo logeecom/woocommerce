@@ -41,7 +41,8 @@ document.addEventListener(
             enableReduceStock = document.getElementById('enableReduceStock'),
             duplicatesText = document.getElementById('ce-extra-data-duplicates-text').value,
             duplicatesHeaderText = document.getElementById('ce-extra-data-duplicates-header').value,
-            startSyncDate = document.getElementById('startSyncDate');
+            startSyncDate = document.getElementById('startSyncDate'),
+            getAccountNameUrl = document.getElementById('ceGetAccountName');
 
         startSyncDate ? startSyncDate.remove(): false;
         ChannelEngine.productService.get(stockUrl.value);
@@ -49,6 +50,7 @@ document.addEventListener(
         ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
         ChannelEngine.orderService.get(orderStatusesUrl.value);
         ChannelEngine.triggerSyncService.checkStatus();
+        ChannelEngine.disconnectService.getAccountName(getAccountNameUrl);
 
         if( ! ( enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked ) ) ) {
             enableReduceStock.setAttribute('disabled', 'true');

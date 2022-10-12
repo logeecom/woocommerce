@@ -11,7 +11,18 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 </div>
 <div class="channel-engine" style="display: none;">
     <header>
-        <img src="<?php echo Asset_Helper::get_image_url( 'logo.svg' ) ?>" height="30" alt="ChannelEngine" />
+        <div class="ce-header">
+            <div>
+                <img src="<?php echo Asset_Helper::get_image_url( 'logo.svg' ); ?>" height="30" alt="ChannelEngine" />
+            </div>
+            <div class="ce-account-name">
+                <?php echo __( 'Account name: ', 'channelengine' ); ?>
+                &nbsp;<div id="ceAccountNameHeader"></div>&nbsp;
+                <?php echo __( ' (', 'channelengine' ); ?>
+                <a class="ce-disconnect-link" id="ceDisconnectLink"><?php echo __('Disconnect', 'channelengine'); ?></a>
+                <?php echo __( ')', 'channelengine' ); ?>
+            </div>
+        </div>
     </header>
     <main>
         <div class="ce-onboarding">
@@ -42,6 +53,13 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                    value="<?php echo Shop_Helper::get_controller_url( 'Order_Status', 'save' ); ?>">
             <input id="ceEnabledStockSync" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'is_enabled_stock_sync'); ?>">
+            <input id="ceGetAccountName" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
+            <input id="ce-disconnect-url" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url('Config', 'disconnect'); ?>">
+            <div id="ce-modal" style="display: none">
+                <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
+            </div>
         </div>
     </main>
 </div>
