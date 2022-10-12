@@ -48,6 +48,8 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 
 		Script_Loader::load_js( [
 			'/js/InitialSync.js',
+            '/js/DisconnectService.js',
+            '/js/Disconnect.js',
 		] );
 	}
 

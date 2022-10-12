@@ -18,7 +18,18 @@ Frontend_Helper::render_view('config');
 </div>
 <div class="channel-engine" style="display: none;">
     <header>
-        <img src="<?php echo Asset_Helper::get_image_url('logo.svg');  ?>" height="30" alt="ChannelEngine" />
+        <div class="ce-header">
+            <div>
+                <img src="<?php echo Asset_Helper::get_image_url( 'logo.svg' ); ?>" height="30" alt="ChannelEngine" />
+            </div>
+            <div class="ce-account-name">
+                <?php echo __( 'Account name: ', 'channelengine' ); ?>
+                &nbsp;<div id="ceAccountNameHeader"></div>&nbsp;
+                <?php echo __( ' (', 'channelengine' ); ?>
+                <a class="ce-disconnect-link" id="ceDisconnectLink"><?php echo __('Disconnect', 'channelengine'); ?></a>
+                <?php echo __( ')', 'channelengine' ); ?>
+            </div>
+        </div>
     </header>
     <main>
         <nav class="nav-tab-wrapper">
@@ -80,6 +91,8 @@ Frontend_Helper::render_view('config');
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'save'); ?>">
             <input id="ce-check-status-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'check_status'); ?>">
+            <input id="ceGetAccountName" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
         </div>
         <div id="ce-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
@@ -103,3 +116,5 @@ Frontend_Helper::render_view('config');
                value="<?php echo __('You are about to disconnect your ChannelEngine account.', 'channelengine'); ?>">
     </main>
 </div>
+<script src="<?php echo Asset_Helper::get_js_url('DisconnectService.js') ?>"></script>
+<script src="<?php echo Asset_Helper::get_js_url('Disconnect.js') ?>"></script>

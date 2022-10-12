@@ -86,6 +86,8 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 
 		Script_Loader::load_js( [
 			'/js/ProductSettings.js',
+            '/js/DisconnectService.js',
+            '/js/Disconnect.js',
 		] );
 	}
 

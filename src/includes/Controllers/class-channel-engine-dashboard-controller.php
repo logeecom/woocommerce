@@ -25,7 +25,11 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 	 */
 	protected function load_resources() {
 		parent::load_resources();
-		$scripts         = [ '/js/Dashboard.js' ];
+		$scripts         = [
+            '/js/Dashboard.js',
+            '/js/DisconnectService.js',
+            '/js/Disconnect.js',
+        ];
 		$dashboard_state = $this->get_state();
 
 		if ( $dashboard_state === 'disabled-integration' ) {
