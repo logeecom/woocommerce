@@ -118,6 +118,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 
 		Script_Loader::load_js( [
 			'/js/OrderStatuses.js',
+            '/js/ModalService.js',
 		] );
 	}
 

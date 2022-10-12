@@ -5,7 +5,10 @@ document.addEventListener(
     function () {
         const url = document.getElementById('ceProductSave'),
             attributeUrl = document.getElementById('ceProductAttributes'),
-            link = document.getElementById('ceSave');
+            link = document.getElementById('ceSave'),
+            getAccountUrl = document.getElementById('ceGetAccountName');
+
+        ChannelEngine.disconnectService.getAccountName(getAccountUrl);
 
         link.onclick = () => {
             const quantity = document.getElementById('ceStockQuantity'),
@@ -27,7 +30,7 @@ document.addEventListener(
             let extraData = {},
                 isExtraDataValid = true;
             extraDataMappings.forEach(mapping => {
-                if( mapping.id === 'hidden' ) {
+                if (mapping.id === 'hidden') {
                     return;
                 }
 
@@ -37,7 +40,7 @@ document.addEventListener(
                     isExtraDataValid = false;
                     ChannelEngine.modalService.showModal(duplicatesHeaderText,
                         '<div>' +
-                        '<label>'+duplicatesText+'</label>' +
+                        '<label>' + duplicatesText + '</label>' +
                         '</div>',
                         null,
                         null

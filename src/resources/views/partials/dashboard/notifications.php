@@ -39,6 +39,3 @@ use ChannelEngine\Utility\Shop_Helper;
     <input id="ce-details-next" type="hidden" value="<?php echo __( 'Next', 'channelengine' ); ?>">
     <input id="ce-notifications-offset" type="hidden" value="0">
 </div>
-<div id="ce-modal" style="display: none">
-	<?php include plugin_dir_path( __FILE__ ) . '/../modal.php' ?>
-</div>

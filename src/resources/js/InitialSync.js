@@ -5,8 +5,10 @@ document.addEventListener(
     function () {
         const ajaxService = ChannelEngine.ajaxService,
             url = document.getElementById('ceInitialSyncUrl'),
-            link = document.getElementById('ceStartSync');
+            link = document.getElementById('ceStartSync'),
+            getAccountUrl = document.getElementById('ceGetAccountName');
 
+        ChannelEngine.disconnectService.getAccountName(getAccountUrl);
         ChannelEngine.notificationService.removeNotifications();
 
         link.onclick = () => {
