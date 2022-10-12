@@ -17,9 +17,7 @@ Frontend_Helper::render_view('config');
     <div class="ce-loader"></div>
 </div>
 <div class="channel-engine" style="display: none;">
-    <header>
-        <img src="<?php echo Asset_Helper::get_image_url('logo.svg');  ?>" height="30" alt="ChannelEngine" />
-    </header>
+    <?php include plugin_dir_path( __FILE__ ) . 'partials/header.php' ?>
     <main>
         <nav class="nav-tab-wrapper">
             <a href="<?php echo Frontend_Helper::get_subpage_url('dashboard') ?>"
@@ -80,6 +78,8 @@ Frontend_Helper::render_view('config');
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'save'); ?>">
             <input id="ce-check-status-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'check_status'); ?>">
+            <input id="ceGetAccountName" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
         </div>
         <div id="ce-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
@@ -103,3 +103,5 @@ Frontend_Helper::render_view('config');
                value="<?php echo __('You are about to disconnect your ChannelEngine account.', 'channelengine'); ?>">
     </main>
 </div>
+<script src="<?php echo Asset_Helper::get_js_url('DisconnectService.js') ?>"></script>
+<script src="<?php echo Asset_Helper::get_js_url('Disconnect.js') ?>"></script>

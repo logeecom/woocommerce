@@ -1,6 +1,5 @@
 <?php
 
-use ChannelEngine\Utility\Asset_Helper;
 use ChannelEngine\Utility\Frontend_Helper;
 use ChannelEngine\Utility\Shop_Helper;
 
@@ -18,9 +17,7 @@ if ($data['status'] !== 'disabled-integration') {
     <div class="ce-loader"></div>
 </div>
 <div class="channel-engine" style="display: none;">
-    <header>
-        <img src="<?php echo Asset_Helper::get_image_url('logo.svg'); ?>" height="30" alt="ChannelEngine" />
-    </header>
+    <?php include plugin_dir_path( __FILE__ ) . 'partials/header.php' ?>
     <main>
         <nav class="nav-tab-wrapper">
             <a href="<?php echo Frontend_Helper::get_subpage_url('dashboard') ?>"
@@ -38,10 +35,13 @@ if ($data['status'] !== 'disabled-integration') {
 			<?php include plugin_dir_path( __FILE__ ) . 'partials/dashboard/sync_completed.php' ?>
         </div>
         <div id="notifications">
-			<?php include plugin_dir_path( __FILE__ ) . 'partials/dashboard/notifications.php' ?>
+            <?php include plugin_dir_path( __FILE__ ) . 'partials/dashboard/notifications.php' ?>
         </div>
         <div id="disabled-integration">
 			<?php include plugin_dir_path( __FILE__ ) . 'partials/dashboard/disable.php' ?>
+        </div>
+        <div id="ce-modal" style="display: none">
+            <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
         </div>
         <input id="ce-status" type="hidden" value="<?php echo $data['status']; ?>">
         <input id="ce-check-status" type="hidden"
@@ -50,5 +50,9 @@ if ($data['status'] !== 'disabled-integration') {
                value="<?php echo Shop_Helper::get_controller_url( 'Enable', 'enable' ) ?>">
         <input id="ce-check-order-sync" type="hidden"
                value="<?php echo Shop_Helper::get_controller_url( 'Check_Status', 'get_order_sync_config' ) ?>">
+        <input id="ceGetAccountName" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
+        <input id="ce-disconnect-url" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url('Config', 'disconnect'); ?>">
     </main>
 </div>

@@ -71,20 +71,32 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	protected $extra_data_attribute_mappings_service;
 
-	/**
-	 * Retrieves account data.
-	 *
-	 * @throws FailedToRetrieveAuthInfoException
-	 * @throws QueryFilterInvalidParamException
-	 */
-	public function get_account_data() {
-		$auth_info = $this->get_auth_service()->getAuthInfo();
+    /**
+     * Retrieves account data.
+     *
+     * @throws FailedToRetrieveAuthInfoException
+     * @throws QueryFilterInvalidParamException
+     */
+    public function get_account_data() {
+        $auth_info = $this->get_auth_service()->getAuthInfo();
 
-		$this->return_json( [
-			'apiKey'      => $auth_info->getApiKey(),
-			'accountName' => $auth_info->getAccountName(),
-		] );
-	}
+        $this->return_json( [
+            'apiKey'      => $auth_info->getApiKey(),
+            'accountName' => $auth_info->getAccountName(),
+        ] );
+    }
+
+    /**
+     * Retrieves account data.
+     *
+     * @throws FailedToRetrieveAuthInfoException
+     * @throws QueryFilterInvalidParamException
+     */
+    public function get_account_name() {
+        $this->return_json( [
+            'accountName' => $this->get_auth_service()->getAuthInfo()->getAccountName(),
+        ] );
+    }
 
 	/**
 	 * Retrieves stock synchronization configuration.

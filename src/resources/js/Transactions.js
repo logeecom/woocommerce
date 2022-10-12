@@ -15,8 +15,10 @@ document.addEventListener(
             nextPage = document.getElementsByClassName('ce-button__next')[0],
             prevPage = document.getElementsByClassName('ce-button__prev')[0],
             pageSize = document.getElementById('ce-page-size'),
-            detailsUrl = document.getElementById('ce-details-get');
+            detailsUrl = document.getElementById('ce-details-get'),
+            getAccountName = document.getElementById('ceGetAccountName');
 
+        ChannelEngine.disconnectService.getAccountName(getAccountName);
         getPage(1);
 
         function getPage(page) {

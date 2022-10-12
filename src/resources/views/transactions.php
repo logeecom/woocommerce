@@ -15,10 +15,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
     <div class="ce-loader"></div>
 </div>
 <div class="channel-engine" style="display: none;">
-    <header>
-        <img src="<?php echo Asset_Helper::get_image_url( 'logo.svg' ); ?>" alt="ChannelEngine"/>
-    </header>
-
+    <?php include plugin_dir_path( __FILE__ ) . 'partials/header.php' ?>
     <main>
         <nav class="nav-tab-wrapper">
             <a href="<?php echo Frontend_Helper::get_subpage_url( 'dashboard' ) ?>"
@@ -97,6 +94,10 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                value="<?php echo Shop_Helper::get_controller_url( 'Transactions', 'get' ); ?>">
         <input id="ce-details-get" type="hidden"
                value="<?php echo Shop_Helper::get_controller_url( 'Transactions', 'get_details' ) ?>">
+        <input id="ceGetAccountName" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
+        <input id="ce-disconnect-url" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url('Config', 'disconnect'); ?>">
         <input id="ce-view-details-translation" type="hidden"
                value="<?php echo __( 'View details', 'channelengine' ); ?>">
         <input id="ce-start-translation" type="hidden" value="<?php echo __( 'Start time', 'channelengine' ); ?>">

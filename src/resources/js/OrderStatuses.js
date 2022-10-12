@@ -18,7 +18,10 @@ document.addEventListener(
             enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             enableReduceStock = document.getElementById('enableReduceStock'),
-            startSyncDate = document.getElementById('startSyncDate');
+            startSyncDate = document.getElementById('startSyncDate'),
+            getAccountUrl = document.getElementById('ceGetAccountName');
+
+        ChannelEngine.disconnectService.getAccountName(getAccountUrl);
 
         enableReduceStock.checked = true;
         ChannelEngine.ajaxService.get(checkEnableStockSync.value, function (response) {
