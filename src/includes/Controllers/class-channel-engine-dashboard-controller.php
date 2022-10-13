@@ -27,8 +27,6 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 		parent::load_resources();
 		$scripts         = [
             '/js/Dashboard.js',
-            '/js/DisconnectService.js',
-            '/js/Disconnect.js',
         ];
 		$dashboard_state = $this->get_state();
 

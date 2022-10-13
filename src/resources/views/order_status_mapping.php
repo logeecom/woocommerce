@@ -1,6 +1,5 @@
 <?php
 
-use ChannelEngine\Utility\Asset_Helper;
 use ChannelEngine\Utility\Shop_Helper;
 
 $basePath = Shop_Helper::get_plugin_resources_path( __DIR__ );
@@ -10,20 +9,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
     <div class="ce-loader"></div>
 </div>
 <div class="channel-engine" style="display: none;">
-    <header>
-        <div class="ce-header">
-            <div>
-                <img src="<?php echo Asset_Helper::get_image_url( 'logo.svg' ); ?>" height="30" alt="ChannelEngine" />
-            </div>
-            <div class="ce-account-name">
-                <?php echo __( 'Account name: ', 'channelengine' ); ?>
-                &nbsp;<div id="ceAccountNameHeader"></div>&nbsp;
-                <?php echo __( ' (', 'channelengine' ); ?>
-                <a class="ce-disconnect-link" id="ceDisconnectLink"><?php echo __('Disconnect', 'channelengine'); ?></a>
-                <?php echo __( ')', 'channelengine' ); ?>
-            </div>
-        </div>
-    </header>
+    <?php include plugin_dir_path( __FILE__ ) . 'partials/header.php' ?>
     <main>
         <div class="ce-onboarding">
             <div class="ce-onboarding-steps">

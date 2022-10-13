@@ -55,7 +55,10 @@
   flex-direction: row;
   text-decoration: none;
 }
-
+.channel-engine .ce-header .ce-account-name .ce-account-name-field {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 .channel-engine .ce-header .ce-disconnect-link {
   cursor: default;
   text-decoration: underline;
