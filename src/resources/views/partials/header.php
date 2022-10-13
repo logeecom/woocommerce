@@ -12,7 +12,7 @@ use ChannelEngine\Utility\Asset_Helper;
             <?php echo __( 'Account name: ', 'channelengine' ); ?>
             <div id="ceAccountNameHeader" class="ce-account-name-field" style="margin-left: 5px; margin-right: 5px;"></div>
             <?php echo __( ' (', 'channelengine' ); ?>
-            <a class="ce-disconnect-link" id="ceDisconnectLink"><?php echo __('Disconnect', 'channelengine'); ?></a>
+            <a href="#" id="ceDisconnectLink"><?php echo __('Disconnect', 'channelengine'); ?></a>
             <?php echo __( ')', 'channelengine' ); ?>
         </div>
     </div>

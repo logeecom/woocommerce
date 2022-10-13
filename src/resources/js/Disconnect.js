@@ -2,7 +2,8 @@ var ChannelEngine = window.ChannelEngine || {};
 
 document.getElementById('ceDisconnectLink').addEventListener(
     'click',
-    function () {
+    function (e) {
+        e.preventDefault()
         let disconnectUrl = document.getElementById('ce-disconnect-url');
 
         let disconnect = function () {
