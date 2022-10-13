@@ -102,9 +102,17 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 * Retrieves stock synchronization configuration.
 	 */
 	public function get_stock_sync_config() {
+        $syncConfig = $this->get_product_config_service()->get();
+        if ($syncConfig === null) {
+            $this->return_json([
+                'stockQuantity'    => 0,
+                'enabledStockSync' => true
+            ]);
+        }
+
 		$this->return_json( [
-			'stockQuantity'    => $this->get_product_config_service()->get()->getDefaultStock(),
-			'enabledStockSync' => $this->get_product_config_service()->get()->isEnabledStockSync()
+			'stockQuantity'    => $syncConfig->getDefaultStock(),
+			'enabledStockSync' => $syncConfig->isEnabledStockSync()
 		] );
 	}
 
@@ -193,7 +201,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$mappings = $this->get_extra_data_attribute_mapping_service()->getExtraDataAttributeMappings();
 
 		$this->return_json( [
-			'extra_data_mapping' => $mappings->get_mappings()
+			'extra_data_mapping' => $mappings ? $mappings->get_mappings() : []
 		] );
 	}
 

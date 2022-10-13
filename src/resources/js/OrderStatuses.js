@@ -3,9 +3,9 @@ var ChannelEngine = window.ChannelEngine || {};
 document.addEventListener(
     'DOMContentLoaded',
     function () {
-        (function($) {
+        (function ($) {
             $('.datepicker').datepicker({
-                dateFormat : 'dd.mm.yy.'
+                dateFormat: 'dd.mm.yy.'
             });
         }(window.jQuery));
 
@@ -25,7 +25,7 @@ document.addEventListener(
 
         enableReduceStock.checked = true;
         ChannelEngine.ajaxService.get(checkEnableStockSync.value, function (response) {
-            if(!response.enabledStockSync) {
+            if (!response.enabledStockSync) {
                 enableReduceStock.checked = false;
                 enableReduceStock.setAttribute('disabled', 'true');
             }
@@ -55,15 +55,17 @@ document.addEventListener(
             );
         }
 
-        enableOrdersByMerchantSync.onchange = () =>  {
-            if( ! ( enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked ) ) {
-                enableReduceStock.checked = false;
-                enableReduceStock.setAttribute('disabled', 'true');
-            } else {
-                enableReduceStock.removeAttribute('disabled');
-            }
+        enableOrdersByMerchantSync.onchange = () => {
+            ChannelEngine.ajaxService.get(checkEnableStockSync.value, function (response) {
+                if (!response.enabledStockSync || !(enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked)) {
+                    enableReduceStock.checked = false;
+                    enableReduceStock.setAttribute('disabled', 'true');
+                } else {
+                    enableReduceStock.removeAttribute('disabled');
+                }
+            });
 
-            if ( ! enableOrdersByMerchantSync.checked ) {
+            if (!enableOrdersByMerchantSync.checked) {
                 enableShipmentInfoSync.setAttribute('disabled', 'true');
                 enableShipmentInfoSync.checked = false;
                 enableOrderCancellationSync.setAttribute('disabled', 'true');
@@ -74,15 +76,17 @@ document.addEventListener(
             }
         }
 
-        enableOrdersByMarketplaceSync.onchange = () =>  {
-            if( ! ( enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked ) ) {
-                enableReduceStock.checked = false;
-                enableReduceStock.setAttribute('disabled', 'true');
-            } else {
-                enableReduceStock.removeAttribute('disabled');
-            }
+        enableOrdersByMarketplaceSync.onchange = () => {
+            ChannelEngine.ajaxService.get(checkEnableStockSync.value, function (response) {
+                if (!response.enabledStockSync || !(enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked)) {
+                    enableReduceStock.checked = false;
+                    enableReduceStock.setAttribute('disabled', 'true');
+                } else {
+                    enableReduceStock.removeAttribute('disabled');
+                }
+            });
 
-            if ( !enableOrdersByMarketplaceSync.checked ) {
+            if (!enableOrdersByMarketplaceSync.checked) {
                 startSyncDate.setAttribute('disabled', 'true');
             } else {
                 startSyncDate.removeAttribute('disabled');
@@ -90,5 +94,54 @@ document.addEventListener(
         }
 
         ChannelEngine.orderService.get(getUrl.value);
+    }
+);
+
+document.getElementById('stepToProductSettings').addEventListener(
+    'click',
+    function (e) {
+        e.preventDefault()
+        const ajaxService = ChannelEngine.ajaxService,
+            url = document.getElementById('ceSwitchOnboardingPage');
+        ajaxService.post(
+            url.value,
+            {
+                'page': 'product_configuration'
+            },
+            function (response) {
+                if (response.success) {
+                    const incoming = document.getElementById('ceIncomingOrders'),
+                        saveUrl = document.getElementById('ceStatusesSaveForSwitchUrl'),
+                        shipped = document.getElementById('ceShippedOrders'),
+                        fulfilledByMp = document.getElementById('ceFulfilledByMp'),
+                        enableShipmentInfoSync = document.getElementById('enableShipmentInfoSync'),
+                        enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
+                        enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
+                        enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
+                        enableReduceStock = document.getElementById('enableReduceStock'),
+                        startSyncDate = document.getElementById('startSyncDate');
+                    ChannelEngine.notificationService.removeNotifications();
+
+                    ChannelEngine.orderService.save(
+                        saveUrl.value,
+                        {
+                            incoming: incoming.value,
+                            shipped: shipped.value,
+                            fulfilledByMp: fulfilledByMp.value,
+                            enableShipmentInfoSync: enableShipmentInfoSync.checked,
+                            enableOrderCancellationSync: enableOrderCancellationSync.checked,
+                            enableOrdersByMerchantSync: enableOrdersByMerchantSync.checked,
+                            enableOrdersByMarketplaceSync: enableOrdersByMarketplaceSync.checked,
+                            enableReduceStock: enableReduceStock.checked,
+                            startSyncDate: startSyncDate.value
+                        }
+                    );
+
+                    window.location.reload();
+                } else {
+                    ChannelEngine.notificationService.addNotification(response.message);
+                }
+            }
+        )
     }
 );

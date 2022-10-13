@@ -13,11 +13,13 @@ if (!window.ChannelEngine) {
                     const incomingOptions = document.getElementById('ceIncomingOrders'),
                         shippedOptions = document.getElementById('ceShippedOrders'),
                         fulfilledByMpOptions = document.getElementById('ceFulfilledByMp'),
+                        checkEnableStockSync = document.getElementById('ceEnabledStockSync'),
                         enableShipmentInfoSync = document.getElementById('enableShipmentInfoSync'),
                         enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
                         enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
                         enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                         enableReduceStock = document.getElementById('enableReduceStock'),
+                        marketplaceOrdersFromDate = document.getElementById('startSyncDate'),
                         mappings = response.order_statuses;
 
                     mappings.forEach(item => addMappings(item, incomingOptions, response.incoming));
@@ -30,10 +32,25 @@ if (!window.ChannelEngine) {
                     enableOrdersByMarketplaceSync.checked = response.enableOrdersByMarketplaceSync;
                     enableReduceStock.checked = response.enableReduceStock;
 
+                    if ( marketplaceOrdersFromDate ) {
+                        marketplaceOrdersFromDate.value = response.ordersByMarketplaceFromDate;
+
+                        if ( ! response.enableOrdersByMarketplaceSync ) {
+                            marketplaceOrdersFromDate.setAttribute('disabled', 'true');
+                        }
+                    }
+
                     if ( ! response.enableOrdersByMerchantSync ) {
                         enableShipmentInfoSync.setAttribute('disabled', 'true');
                         enableOrderCancellationSync.setAttribute('disabled', 'true');
                     }
+
+                    ChannelEngine.ajaxService.get(checkEnableStockSync.value, function (response) {
+                        if (!response.enabledStockSync) {
+                            enableReduceStock.checked = false;
+                            enableReduceStock.setAttribute('disabled', 'true');
+                        }
+                    });
 
                     ChannelEngine.loader.force()
                 }

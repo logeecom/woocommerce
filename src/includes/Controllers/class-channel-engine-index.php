@@ -60,6 +60,7 @@ class Channel_Engine_Index extends Channel_Engine_Base_Controller {
 			'Notifications',
 			'Support',
 			'Webhooks',
+            'Switch_Page'
 		);
 
 		return in_array( $controller_name, $allowed_controllers, true );

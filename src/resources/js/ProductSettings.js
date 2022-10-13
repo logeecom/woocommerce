@@ -6,9 +6,13 @@ document.addEventListener(
         const url = document.getElementById('ceProductSave'),
             attributeUrl = document.getElementById('ceProductAttributes'),
             link = document.getElementById('ceSave'),
+            stockUrl = document.getElementById('ce-stock-url'),
+            extraDataUrl = document.getElementById('ceProductExtraData'),
             getAccountUrl = document.getElementById('ceGetAccountName');
 
         ChannelEngine.disconnectService.getAccountName(getAccountUrl);
+        ChannelEngine.productService.get(stockUrl.value);
+        ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
 
         link.onclick = () => {
             const quantity = document.getElementById('ceStockQuantity'),

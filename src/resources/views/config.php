@@ -70,8 +70,6 @@ Frontend_Helper::render_view('config');
                    value="<?php echo Shop_Helper::get_controller_url('Enable', 'disable'); ?>">
             <input id="ce-trigger-sync-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'trigger_sync'); ?>">
-            <input id="ce-stock-url" type="hidden"
-                   value="<?php echo Shop_Helper::get_controller_url('Config', 'get_stock_sync_config') ?>">
             <input id="ce-order-statuses-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Order_Status', 'get') ?>">
             <input id="ce-save-url" type="hidden"
@@ -80,6 +78,8 @@ Frontend_Helper::render_view('config');
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'check_status'); ?>">
             <input id="ceGetAccountName" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
+            <input id="ceEnabledStockSync" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url('Config', 'is_enabled_stock_sync'); ?>">
         </div>
         <div id="ce-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>

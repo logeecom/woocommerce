@@ -20,11 +20,15 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                     <div class="ce-step-title"><?php echo __( 'Account', 'channelengine' ); ?></div>
                 </div>
                 <div class="ce-step active">
-                    <div class="ce-step-number">2</div>
+                    <a href="#" id="stepToProductSettings">
+                        <div class="ce-step-number">2</div>
+                    </a>
                     <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine' ); ?></div>
                 </div>
                 <div class="ce-step active">
-                    <div class="ce-step-number">3</div>
+                    <a href="#" id="stepToOrderSettings">
+                        <div class="ce-step-number">3</div>
+                    </a>
                     <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine' ); ?></div>
                 </div>
                 <div class="ce-step active">
@@ -52,6 +56,8 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                    value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
             <input id="ce-disconnect-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'disconnect'); ?>">
+            <input id="ceSwitchOnboardingPage" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url('Switch_Page', 'switch_page'); ?>">
             <div id="ce-modal" style="display: none">
                 <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
             </div>

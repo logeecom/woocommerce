@@ -1,3 +1,6 @@
+<?php
+use ChannelEngine\Utility\Shop_Helper;
+?>
 <h1><?php echo __( 'Product synchronization settings', 'channelengine' ); ?></h1>
 <p></p>
 <form class="ce-form">
@@ -29,4 +32,6 @@
 		<?php include plugin_dir_path( __FILE__ ) . 'attribute_mapping.php' ?>
 		<?php include plugin_dir_path( __FILE__ ) . 'extra_data_mapping.php' ?>
     </div>
+    <input id="ce-stock-url" type="hidden"
+           value="<?php echo Shop_Helper::get_controller_url('Config', 'get_stock_sync_config') ?>">
 </form>
