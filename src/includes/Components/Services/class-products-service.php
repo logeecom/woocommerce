@@ -279,7 +279,7 @@ class Products_Service implements ProductsService {
 		$attributes['stock'] = $wc_product->get_manage_stock() ?
 			$wc_product->get_stock_quantity() : $this->get_product_config_service()->get()->getDefaultStock();
 
-		$attributes['vat_rate_type']  = 'STANDARD';
+		$attributes['vat_rate_type']  = $this->get_product_tax_rate( $wc_product );
 		$attributes['shipping_costs'] = $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
