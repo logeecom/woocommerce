@@ -38,7 +38,7 @@ require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 class ChannelEngine {
 
-	const VERSION = '3.0.0';
+	const VERSION = '1.0.0';
 
 	/**
 	 * @var ChannelEngine
