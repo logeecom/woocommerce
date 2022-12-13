@@ -47,7 +47,7 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 		if ( $enabledStockSync && ( !is_numeric( $quantity) || (int) $quantity < 0 )) {
 			$this->return_json( [
 				'success' => false,
-				'message' => __( 'Default stock quantity is required field.', 'channelengine' ),
+				'message' => __( 'Default stock quantity is required field.', 'channelengine-wc' ),
 			] );
 		}
 

@@ -21,35 +21,35 @@ Frontend_Helper::render_view('config');
     <main>
         <nav class="nav-tab-wrapper">
             <a href="<?php echo Frontend_Helper::get_subpage_url('dashboard') ?>"
-               class="nav-tab"><?php echo __('Dashboard', 'channelengine'); ?></a>
+               class="nav-tab"><?php echo __('Dashboard', 'channelengine-wc'); ?></a>
             <a href="<?php echo Frontend_Helper::get_subpage_url('config') ?>"
-               class="nav-tab nav-tab-active"><?php echo __('Configuration', 'channelengine'); ?></a>
+               class="nav-tab nav-tab-active"><?php echo __('Configuration', 'channelengine-wc'  ); ?></a>
             <a href="<?php echo Frontend_Helper::get_subpage_url('transactions') ?>"
-               class="nav-tab"><?php echo __('Transaction log', 'channelengine'); ?></a>
+               class="nav-tab"><?php echo __('Transaction log', 'channelengine-wc'  ); ?></a>
         </nav>
         <div id="ce-config-page" class="ce-page-with-header-footer">
             <header>
                 <label>
-                    <span class="label"><?php echo __('Disable integration', 'channelengine'); ?></span>
+                    <span class="label"><?php echo __('Disable integration', 'channelengine-wc'  ); ?></span>
                     <label class="ce-switch">
                         <input id="ce-disable-switch" type="checkbox" checked="checked">
                         <span class="ce-switch__slider"></span>
                     </label>
                 </label>
                 <div>
-                    <span><?php echo __('Manually trigger synchronization', 'channelengine'); ?></span>
+                    <span><?php echo __('Manually trigger synchronization', 'channelengine-wc'  ); ?></span>
                     <button id="ce-sync-now" class="ce-button ce-button__primary ce-start-sync">
-                        <?php echo __('Start sync now', 'channelengine'); ?></button>
+                        <?php echo __('Start sync now', 'channelengine-wc'  ); ?></button>
                     <button id="ce-sync-in-progress" class="ce-button ce-button__primary ce-loading"
-                            style="display: none" disabled><?php echo __('In progress', 'channelengine'); ?></button>
+                            style="display: none" disabled><?php echo __('In progress', 'channelengine-wc'  ); ?></button>
                 </div>
             </header>
             <main class="ce-page">
                 <section>
-                    <?php $pageTitle = __("Disconnect your account", 'channelengine');
+                    <?php $pageTitle = __("Disconnect your account", 'channelengine-wc'  );
                     include plugin_dir_path(__FILE__) . 'partials/account.php' ?>
                     <button id="ce-disconnect-btn"
-                            class="ce-button ce-button__primary"><?php echo __('Disconnect', 'channelengine'); ?></button>
+                            class="ce-button ce-button__primary"><?php echo __('Disconnect', 'channelengine-wc'  ); ?></button>
                 </section>
                 <section>
                     <?php include plugin_dir_path(__FILE__) . 'partials/product_feed.php' ?>
@@ -60,7 +60,7 @@ Frontend_Helper::render_view('config');
             </main>
             <footer>
                 <button id="ce-save-config"
-                        class="ce-button ce-button__primary"><?php echo __('Save changes', 'channelengine'); ?></button>
+                        class="ce-button ce-button__primary"><?php echo __('Save changes', 'channelengine-wc'  ); ?></button>
             </footer>
             <input id="ce-account-data-url" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'get_account_data'); ?>">
@@ -88,19 +88,19 @@ Frontend_Helper::render_view('config');
             <?php include plugin_dir_path(__FILE__) . 'partials/trigger_sync.php' ?>
         </div>
         <input id="ce-extra-data-duplicates-text" type="hidden"
-               value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine'); ?>">
+               value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-wc'  ); ?>">
         <input id="ce-extra-data-duplicates-header" type="hidden"
-               value="<?php echo __('Warning', 'channelengine'); ?>">
+               value="<?php echo __('Warning', 'channelengine-wc'  ); ?>">
         <input id="ce-disconnect-header-text" type="hidden"
-               value="<?php echo __('Disconnect account', 'channelengine'); ?>">
-        <input id="ce-disconnect-button-text" type="hidden" value="<?php echo __('Disconnect', 'channelengine'); ?>">
+               value="<?php echo __('Disconnect account', 'channelengine-wc'  ); ?>">
+        <input id="ce-disconnect-button-text" type="hidden" value="<?php echo __('Disconnect', 'channelengine-wc'  ); ?>">
         <input id="ce-disable-header-text" type="hidden"
-               value="<?php echo __('Disable integration', 'channelengine'); ?>">
-        <input id="ce-disable-button-text" type="hidden" value="<?php echo __('Disable', 'channelengine'); ?>">
+               value="<?php echo __('Disable integration', 'channelengine-wc'  ); ?>">
+        <input id="ce-disable-button-text" type="hidden" value="<?php echo __('Disable', 'channelengine-wc'  ); ?>">
         <input id="ce-disable-text" type="hidden"
-               value="<?php echo __('If you disable integration, synchronization between WooCommerce and ChannelEngine will be disabled.', 'channelengine') ?>">
+               value="<?php echo __('If you disable integration, synchronization between WooCommerce and ChannelEngine will be disabled.', 'channelengine-wc'  ) ?>">
         <input id="ce-disconnect-text" type="hidden"
-               value="<?php echo __('You are about to disconnect your ChannelEngine account.', 'channelengine'); ?>">
+               value="<?php echo __('You are about to disconnect your ChannelEngine account.', 'channelengine-wc'  ); ?>">
     </main>
 </div>
 <script src="<?php echo Asset_Helper::get_js_url('DisconnectService.js') ?>"></script>

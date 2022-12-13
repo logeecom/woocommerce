@@ -63,7 +63,7 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 
 		foreach ( $details as $detail ) {
 			$formatted_details[] = [
-				'message'    => vsprintf( __( $detail->getMessage(), 'channelengine' ), $detail->getArguments() ),
+				'message'    => vsprintf( __( $detail->getMessage(), 'channelengine-wc' ), $detail->getArguments() ),
 				'identifier' => $detail->getArguments()[0],
 			];
 		}
@@ -94,8 +94,8 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 			$formatted_notification = [
 				'logId'          => $notification->getTransactionLogId(),
 				'notificationId' => $notification->getId(),
-				'context'        => __( $notification->getNotificationContext(), 'channelengine' ),
-				'message'        => vsprintf( __( $notification->getMessage(), 'channelengine' ), $notification->getArguments() ),
+				'context'        => __( $notification->getNotificationContext(), 'channelengine-wc' ),
+				'message'        => vsprintf( __( $notification->getMessage(), 'channelengine-wc' ), $notification->getArguments() ),
 				'date'           => $log ? $log->getStartTime()->format( 'd/m/Y' ) : '',
 			];
 

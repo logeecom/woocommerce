@@ -18,19 +18,19 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <div class="ce-onboarding-steps">
                 <div class="ce-step active">
                     <div class="ce-step-number">1</div>
-                    <div class="ce-step-title"><?php echo __( 'Account', 'channelengine-woocommerce' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Account', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">2</div>
-                    <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine-woocommerce' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">3</div>
-                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine-woocommerce' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">4</div>
-                    <div class="ce-step-title"><?php echo __( 'Initial sync', 'channelengine-woocommerce' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Initial sync', 'channelengine-wc' ); ?></div>
                 </div>
             </div>
 			<?php
@@ -38,7 +38,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			include plugin_dir_path( __FILE__ ) . 'partials/account.php'
 			?>
             <a id="ceAuth"
-               class="ce-button ce-button__primary"><?php echo __( 'Connect and continue', 'channelengine-woocommerce' ); ?></a>
+               class="ce-button ce-button__primary"><?php echo __( 'Connect and continue', 'channelengine-wc' ); ?></a>
             <input type="hidden" id="ceAuthUrl"
                    value="<?php echo Shop_Helper::get_controller_url( 'Auth', 'auth' ); ?>">
         </div>

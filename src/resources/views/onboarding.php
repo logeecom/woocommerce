@@ -19,10 +19,10 @@ $startOnboardingUrl = Shop_Helper::get_controller_url( 'Welcome', 'start_onboard
         <div class="ce-onboarding ce-page ce-page-centered">
             <img src="<?php echo Asset_Helper::get_image_url( 'icon.svg' ); ?>" alt="ChannelEngine" 
                  class="ce-icon__big"/>
-            <div class="ce-title"><?php echo __( 'Welcome to ChannelEngine', 'channelengine' ); ?></div>
-            <h2 class="ce-subtitle"><?php echo __( 'It will only take 5 minutes of your time to configure the integration.', 'channelengine' ); ?></h2>
+            <div class="ce-title"><?php echo __( 'Welcome to ChannelEngine', 'channelengine-wc' ); ?></div>
+            <h2 class="ce-subtitle"><?php echo __( 'It will only take 5 minutes of your time to configure the integration.', 'channelengine-wc' ); ?></h2>
             <a id="ce-configure"
-               class="ce-button ce-button__primary"><?php echo __( 'Configure', 'channelengine' ); ?></a>
+               class="ce-button ce-button__primary"><?php echo __( 'Configure', 'channelengine-wc' ); ?></a>
             <input id="ceOnboardingUrl" type="hidden" value="<?php echo $startOnboardingUrl; ?>">
         </div>
     </main>

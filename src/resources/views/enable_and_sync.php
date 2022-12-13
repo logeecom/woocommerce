@@ -17,37 +17,37 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <div class="ce-onboarding-steps">
                 <div class="ce-step active">
                     <div class="ce-step-number">1</div>
-                    <div class="ce-step-title"><?php echo __( 'Account', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Account', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step active">
                     <a href="#" id="stepToProductSettings">
                         <div class="ce-step-number">2</div>
                     </a>
-                    <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step active">
                     <a href="#" id="stepToOrderSettings">
                         <div class="ce-step-number">3</div>
                     </a>
-                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step active">
                     <div class="ce-step-number">4</div>
-                    <div class="ce-step-title"><?php echo __( 'Initial sync', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Initial sync', 'channelengine-wc' ); ?></div>
                 </div>
             </div>
-            <h1><?php echo __( 'You are just one step away', 'channelengine' ); ?></h1>
-            <h2><?php echo __( 'Integration status', 'channelengine' ); ?></h2>
+            <h1><?php echo __( 'You are just one step away', 'channelengine-wc' ); ?></h1>
+            <h2><?php echo __( 'Integration status', 'channelengine-wc' ); ?></h2>
             <div class="ce-input-group ce-wide-group">
                 <label>
-                    <span class="label ce-big-label"><?php echo __( 'Enable the integration and start the initial synchronization', 'channelengine' ); ?></span>
+                    <span class="label ce-big-label"><?php echo __( 'Enable the integration and start the initial synchronization', 'channelengine-wc' ); ?></span>
                     <span class="ce-help">
                 <span class="ce-help-tooltip">
-                    <?php echo __( 'When enabled, it triggers the initial synchronization in the background. Products from WooCommerce are transferred to ChannelEngine – and orders from ChannelEngine are imported to WooCommerce.', 'channelengine' ); ?>
+                    <?php echo __( 'When enabled, it triggers the initial synchronization in the background. Products from WooCommerce are transferred to ChannelEngine – and orders from ChannelEngine are imported to WooCommerce.', 'channelengine-wc' ); ?>
                 </span>
             </span>
                     <a id="ceStartSync"
-                       class="ce-button ce-button__primary"><?php echo __( 'Enable and start sync', 'channelengine' ); ?></a>
+                       class="ce-button ce-button__primary"><?php echo __( 'Enable and start sync', 'channelengine-wc' ); ?></a>
                     <input id="ceInitialSyncUrl" type="hidden"
                            value="<?php echo Shop_Helper::get_controller_url( 'Initial_Sync', 'start' ); ?>">
                 </label>

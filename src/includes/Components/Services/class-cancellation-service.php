@@ -54,7 +54,7 @@ class Cancellation_Service implements CancellationService {
 	public function reject( CancellationRequest $request, Exception $reason ) {
 		$error = json_decode( $reason->getMessage(), true );
 		throw new Cancellation_Rejected_Exception(
-			__( 'Order cancellation failed. Reason: ', 'channelengine' ) .
+			__( 'Order cancellation failed. Reason: ', 'channelengine-wc' ) .
 			$error['message']
 		);
 	}

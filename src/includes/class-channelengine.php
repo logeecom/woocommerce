@@ -375,17 +375,17 @@ class ChannelEngine {
 		if ( $notifications ) {
 			$notification = end( $notifications );
 			echo '<div class="notice notice-warning"><p><strong>' .
-			     __( 'ChannelEngine', 'channelengine' ) . '</strong> ' .
-			     vsprintf( __( $notification->getMessage(), 'channelengine' ), $notification->getArguments() )
+			     __( 'ChannelEngine', 'channelengine-wc' ) . '</strong> ' .
+			     vsprintf( __( $notification->getMessage(), 'channelengine-wc' ), $notification->getArguments() )
 			     . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
-			     . __( 'Show details.', 'channelengine' ) . '</a></p></div>';
+			     . __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>';
 		}
 
 		$handler_notification = get_option( '_channel_engine_order_save_note' );
 
 		if ( $handler_notification ) {
 			echo '<div class="notice notice-error"><p>' .
-			     __( $handler_notification, 'channelengine' ) . '</p></div>';
+			     __( $handler_notification, 'channelengine-wc' ) . '</p></div>';
 
 			delete_option( '_channel_engine_order_save_note' );
 		}
@@ -394,7 +394,7 @@ class ChannelEngine {
 
 		if ( $handler_success ) {
 			echo '<div class="notice notice-success"><p>' .
-			     __( $handler_success, 'channelengine' ) . '</p></div>';
+			     __( $handler_success, 'channelengine-wc' ) . '</p></div>';
 
 			delete_option( '_channel_engine_order_save_success' );
 		}
@@ -452,7 +452,7 @@ class ChannelEngine {
 			update_post_meta( $order->get_id(), '_ce_order_cancelled', true );
 			update_option(
 				'_channel_engine_order_save_success',
-				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine' )
+				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine-wc' )
 			);
 		} catch ( Cancellation_Rejected_Exception $exception ) {
 			update_option( '_channel_engine_order_save_note', $exception->getMessage() );
@@ -493,7 +493,7 @@ class ChannelEngine {
 			update_post_meta( $order->get_id(), '_ce_order_shipped', true );
 			update_option(
 				'_channel_engine_order_save_success',
-				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine' )
+				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine-wc' )
 			);
 		} catch ( Shipment_Rejected_Exception $exception ) {
 			update_option( '_channel_engine_order_save_note', $exception->getMessage() );

@@ -1,7 +1,7 @@
 {
   "name": "channelengine/woocommerce",
   "description": "Channel Engine WooCommerce Integration",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "type": "library",
   "require": {
     "symfony/console": "^5.2",

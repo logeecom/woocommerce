@@ -15,25 +15,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     <div class="overview-box">
         <label class="property-name">
-			<?php echo __( 'Order ID:', 'channelengine' ); ?>
+			<?php echo __( 'Order ID:', 'channelengine-wc' ); ?>
         </label>
         <label>
 			<?php echo $data['order_id']; ?>
         </label>
         <label class="property-name">
-			<?php echo __( 'Channel name:', 'channelengine' ); ?>
+			<?php echo __( 'Channel name:', 'channelengine-wc' ); ?>
         </label>
         <label>
 			<?php echo $data['channel_name']; ?>
         </label>
         <label class="property-name">
-			<?php echo __( 'Channel Order No:', 'channelengine' ); ?>
+			<?php echo __( 'Channel Order No:', 'channelengine-wc' ); ?>
         </label>
         <label>
 			<?php echo $data['channel_order_no']; ?>
         </label>
         <label class="property-name">
-			<?php echo __( 'Payment method:', 'channelengine' ); ?>
+			<?php echo __( 'Payment method:', 'channelengine-wc' ); ?>
         </label>
         <label>
 			<?php echo $data['payment_method']; ?>
@@ -53,10 +53,10 @@ if ( ! $data['order_cancelled'] ) {
                 </p>
             </div>
             <label class="property-name">
-				<?php echo __( 'Track & trace', 'channelengine' ); ?>
+				<?php echo __( 'Track & trace', 'channelengine-wc' ); ?>
             </label>
             <label for="ce-shipping-methods">
-				<?php echo __( 'Shipping method:', 'channelengine' ); ?>
+				<?php echo __( 'Shipping method:', 'channelengine-wc' ); ?>
             </label>
             <select name="ce-chipping-methods" id="ce-shipping-methods">
 				<?php
@@ -75,12 +75,12 @@ if ( ! $data['order_cancelled'] ) {
 				?>
             </select>
             <label>
-				<?php echo __( 'Track and trace:', 'channelengine' ); ?>
+				<?php echo __( 'Track and trace:', 'channelengine-wc' ); ?>
                 <input id="ce-track-and-trace" class="ce-track-and-trace-input" type="text"
                        value="<?php echo $data['track_and_trace'] ?>">
             </label>
             <button id="ce-update-info" class="ce-update-button page-title-action">
-				<?php echo __( 'Update tracking information', 'channelengine' ); ?>
+				<?php echo __( 'Update tracking information', 'channelengine-wc' ); ?>
             </button>
             <input type="hidden" id="ce-create-endpoint"
                    value="<?php echo Shop_Helper::get_controller_url( 'Order_Overview', 'save' ); ?>">

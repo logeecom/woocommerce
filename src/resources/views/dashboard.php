@@ -21,11 +21,11 @@ if ($data['status'] !== 'disabled-integration') {
     <main>
         <nav class="nav-tab-wrapper">
             <a href="<?php echo Frontend_Helper::get_subpage_url('dashboard') ?>"
-               class="nav-tab nav-tab-active"><?php echo __( 'Dashboard', 'channelengine' ); ?></a>
+               class="nav-tab nav-tab-active"><?php echo __( 'Dashboard', 'channelengine-wc' ); ?></a>
             <a href="<?php echo Frontend_Helper::get_subpage_url('config') ?>"
-               class="nav-tab"><?php echo __( 'Configuration', 'channelengine' ); ?></a>
+               class="nav-tab"><?php echo __( 'Configuration', 'channelengine-wc' ); ?></a>
             <a href="<?php echo Frontend_Helper::get_subpage_url('transactions') ?>"
-               class="nav-tab"><?php echo __( 'Transaction log', 'channelengine' ); ?></a>
+               class="nav-tab"><?php echo __( 'Transaction log', 'channelengine-wc' ); ?></a>
         </nav>
 
         <div id="sync-in-progress">

@@ -19,33 +19,33 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
     <main>
         <nav class="nav-tab-wrapper">
             <a href="<?php echo Frontend_Helper::get_subpage_url( 'dashboard' ) ?>"
-               class="nav-tab"><?php echo __( 'Dashboard', 'channelengine' ); ?></a>
+               class="nav-tab"><?php echo __( 'Dashboard', 'channelengine-wc' ); ?></a>
             <a href="<?php echo Frontend_Helper::get_subpage_url( 'config' ) ?>"
-               class="nav-tab"><?php echo __( 'Configuration', 'channelengine' ); ?></a>
+               class="nav-tab"><?php echo __( 'Configuration', 'channelengine-wc' ); ?></a>
             <a href="<?php echo Frontend_Helper::get_subpage_url( 'transactions' ) ?>"
-               class="nav-tab nav-tab-active"><?php echo __( 'Transaction log', 'channelengine' ); ?></a>
+               class="nav-tab nav-tab-active"><?php echo __( 'Transaction log', 'channelengine-wc' ); ?></a>
         </nav>
         <div class="ce-page">
-            <h1><?php echo __( 'Transactions history log', 'channelengine' ); ?></h1>
+            <h1><?php echo __( 'Transactions history log', 'channelengine-wc' ); ?></h1>
             <ul class="sub-page-nav">
                 <li><a id="ce-product-link" href="#"
-                       class="ce-current"><?php echo __( 'Product sync', 'channelengine' ); ?></a></li>
-                <li><a id="ce-order-link" href="#"><?php echo __( 'Order sync', 'channelengine' ); ?></a></li>
-                <li><a id="ce-errors-link" href="#"><?php echo __( 'Errors', 'channelengine' ); ?></a></li>
+                       class="ce-current"><?php echo __( 'Product sync', 'channelengine-wc' ); ?></a></li>
+                <li><a id="ce-order-link" href="#"><?php echo __( 'Order sync', 'channelengine-wc' ); ?></a></li>
+                <li><a id="ce-errors-link" href="#"><?php echo __( 'Errors', 'channelengine-wc' ); ?></a></li>
             </ul>
             <table class="ce-table">
                 <thead>
                 <tr>
-                    <th scope="col"><?php echo __( 'Task Type', 'channelengine' ); ?></th>
-                    <th scope="col" class="text-center"><?php echo __( 'Status', 'channelengine' ); ?></th>
+                    <th scope="col"><?php echo __( 'Task Type', 'channelengine-wc' ); ?></th>
+                    <th scope="col" class="text-center"><?php echo __( 'Status', 'channelengine-wc' ); ?></th>
                     <th scope="col"
-                        class="text-center ce-table-compact-view"><?php echo __( 'Details', 'channelengine' ); ?></th>
+                        class="text-center ce-table-compact-view"><?php echo __( 'Details', 'channelengine-wc' ); ?></th>
                     <th scope="col"
-                        class="text-center ce-table-full-view"><?php echo __( 'Start Time', 'channelengine' ); ?></th>
+                        class="text-center ce-table-full-view"><?php echo __( 'Start Time', 'channelengine-wc' ); ?></th>
                     <th scope="col"
-                        class="text-center ce-table-full-view"><?php echo __( 'Time Completed', 'channelengine' ); ?></th>
+                        class="text-center ce-table-full-view"><?php echo __( 'Time Completed', 'channelengine-wc' ); ?></th>
                     <th scope="col"
-                        class="text-center ce-table-full-view"><?php echo __( 'Details', 'channelengine' ); ?></th>
+                        class="text-center ce-table-full-view"><?php echo __( 'Details', 'channelengine-wc' ); ?></th>
                 </tr>
                 </thead>
                 <tbody id="ce-table-body">
@@ -56,13 +56,13 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                         <div class="ce-table-pagination">
                             <div class="ce-horizontal">
                                 <div class="ce-pagination-status">
-									<?php echo __( 'Displayed', 'channelengine' ); ?>
-                                    <strong id="ce-logs-from">1</strong> <?php echo __( 'to', 'channelengine' ); ?>
-                                    <strong id="ce-logs-to">17</strong> <?php echo __( 'of', 'channelengine' ); ?>
+									<?php echo __( 'Displayed', 'channelengine-wc' ); ?>
+                                    <strong id="ce-logs-from">1</strong> <?php echo __( 'to', 'channelengine-wc' ); ?>
+                                    <strong id="ce-logs-to">17</strong> <?php echo __( 'of', 'channelengine-wc' ); ?>
                                     <strong id="ce-logs-total">17</strong>
                                 </div>
                                 <div class="ce-page-size">
-                                    <label><?php echo __( 'Page size:', 'channelengine' ); ?>
+                                    <label><?php echo __( 'Page size:', 'channelengine-wc' ); ?>
                                         <select id="ce-page-size">
                                             <option value="10" selected>10</option>
                                             <option value="25">25</option>
@@ -74,14 +74,14 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                             </div>
                             <div class="ce-pagination-pages">
                                 <button class="ce-button ce-button__prev"
-                                        title="<?php echo __( 'Go to the previous page', 'channelengine' ); ?>">
+                                        title="<?php echo __( 'Go to the previous page', 'channelengine-wc' ); ?>">
                                     <span class="ce-table-compact-view"><</span>
-                                    <span class="ce-table-full-view"><?php echo __( 'Previous', 'channelengine' ); ?></span>
+                                    <span class="ce-table-full-view"><?php echo __( 'Previous', 'channelengine-wc' ); ?></span>
                                 </button>
                                 <button class="ce-button ce-button__next"
-                                        title="<?php echo __( 'Go to the next page', 'channelengine' ); ?>">
+                                        title="<?php echo __( 'Go to the next page', 'channelengine-wc' ); ?>">
                                     <span class="ce-table-compact-view">></span>
-                                    <span class="ce-table-full-view"><?php echo __( 'Next', 'channelengine' ); ?></span>
+                                    <span class="ce-table-full-view"><?php echo __( 'Next', 'channelengine-wc' ); ?></span>
                                 </button>
                             </div>
                         </div>
@@ -99,24 +99,24 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
         <input id="ce-disconnect-url" type="hidden"
                value="<?php echo Shop_Helper::get_controller_url('Config', 'disconnect'); ?>">
         <input id="ce-view-details-translation" type="hidden"
-               value="<?php echo __( 'View details', 'channelengine' ); ?>">
-        <input id="ce-start-translation" type="hidden" value="<?php echo __( 'Start time', 'channelengine' ); ?>">
+               value="<?php echo __( 'View details', 'channelengine-wc' ); ?>">
+        <input id="ce-start-translation" type="hidden" value="<?php echo __( 'Start time', 'channelengine-wc' ); ?>">
         <input id="ce-completed-translation" type="hidden"
-               value="<?php echo __( 'Time completed', 'channelengine' ); ?>">
-        <input id="ce-modal-header" type="hidden" value="<?php echo __( 'Transaction log details', 'channelengine' ); ?>">
-        <input id="ce-modal-button-text" type="hidden" value="<?php echo __( 'Close', 'channelengine' ); ?>">
-        <input id="ce-details-identifier" type="hidden" value="<?php echo __( 'Identifier', 'channelengine' ); ?>">
-        <input id="ce-details-message" type="hidden" value="<?php echo __( 'Message', 'channelengine' ); ?>">
-        <input id="ce-details-display" type="hidden" value="<?php echo __( 'Displayed', 'channelengine' ); ?>">
-        <input id="ce-details-to" type="hidden" value="<?php echo __( 'to', 'channelengine' ); ?>">
-        <input id="ce-details-from" type="hidden" value="<?php echo __( 'of', 'channelengine' ); ?>">
-        <input id="ce-details-page-size" type="hidden" value="<?php echo __( 'Page size:', 'channelengine' ); ?>">
+               value="<?php echo __( 'Time completed', 'channelengine-wc' ); ?>">
+        <input id="ce-modal-header" type="hidden" value="<?php echo __( 'Transaction log details', 'channelengine-wc' ); ?>">
+        <input id="ce-modal-button-text" type="hidden" value="<?php echo __( 'Close', 'channelengine-wc' ); ?>">
+        <input id="ce-details-identifier" type="hidden" value="<?php echo __( 'Identifier', 'channelengine-wc' ); ?>">
+        <input id="ce-details-message" type="hidden" value="<?php echo __( 'Message', 'channelengine-wc' ); ?>">
+        <input id="ce-details-display" type="hidden" value="<?php echo __( 'Displayed', 'channelengine-wc' ); ?>">
+        <input id="ce-details-to" type="hidden" value="<?php echo __( 'to', 'channelengine-wc' ); ?>">
+        <input id="ce-details-from" type="hidden" value="<?php echo __( 'of', 'channelengine-wc' ); ?>">
+        <input id="ce-details-page-size" type="hidden" value="<?php echo __( 'Page size:', 'channelengine-wc' ); ?>">
         <input id="ce-details-go-to-previous" type="hidden"
-               value="<?php echo __( 'Go to previous page', 'channelengine' ); ?>">
-        <input id="ce-details-previous" type="hidden" value="<?php echo __( 'Previous', 'channelengine' ); ?>">
-        <input id="ce-details-go-to-next" type="hidden" value="<?php echo __( 'Go to next page', 'channelengine' ); ?>">
-        <input id="ce-details-next" type="hidden" value="<?php echo __( 'Next', 'channelengine' ); ?>">
-        <input id="ce-no-results" type="hidden" value="<?php echo __( 'No results', 'channelengine' ); ?>">
+               value="<?php echo __( 'Go to previous page', 'channelengine-wc' ); ?>">
+        <input id="ce-details-previous" type="hidden" value="<?php echo __( 'Previous', 'channelengine-wc' ); ?>">
+        <input id="ce-details-go-to-next" type="hidden" value="<?php echo __( 'Go to next page', 'channelengine-wc' ); ?>">
+        <input id="ce-details-next" type="hidden" value="<?php echo __( 'Next', 'channelengine-wc' ); ?>">
+        <input id="ce-no-results" type="hidden" value="<?php echo __( 'No results', 'channelengine-wc' ); ?>">
     </main>
     <div id="ce-modal" style="display: none">
 		<?php include plugin_dir_path( __FILE__ ) . 'partials/modal.php' ?>

@@ -62,7 +62,7 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 
 		foreach ( $details as $detail ) {
 			$formatted_details[] = [
-				'message'    => vsprintf( __( $detail->getMessage(), 'channelengine' ), $detail->getArguments() ),
+				'message'    => vsprintf( __( $detail->getMessage(), 'channelengine-wc' ), $detail->getArguments() ),
 				'identifier' => $detail->getArguments()[0],
 			];
 		}
@@ -134,8 +134,8 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 			$detail = $this->get_details_service()->getForLog( $log->getId() );
 
 			$formatted_log = [
-				'taskType'      => __( $log->getTaskType(), 'channelengine' ),
-				'status'        => __( $log->getStatus(), 'channelengine' ),
+				'taskType'      => __( $log->getTaskType(), 'channelengine-wc' ),
+				'status'        => __( $log->getStatus(), 'channelengine-wc' ),
 				'startTime'     => '',
 				'completedTime' => '',
 				'id'            => $log->getId(),

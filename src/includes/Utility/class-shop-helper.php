@@ -69,7 +69,7 @@ class Shop_Helper {
 	 * @return string
 	 */
 	public static function get_plugin_name() {
-		return plugin_basename( dirname( dirname( __DIR__ ) ) . '/woocommerce-channel-engine.php' );
+		return plugin_basename( dirname( dirname( __DIR__ ) ) . '/channelengine-wc.php' );
 	}
 
 	/**

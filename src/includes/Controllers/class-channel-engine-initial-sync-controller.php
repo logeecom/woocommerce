@@ -38,7 +38,7 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 		} catch ( QueueStorageUnavailableException $e ) {
 			$this->return_json( [
 				'success' => false,
-				'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine' ), $e->getMessage() ),
+				'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-wc' ), $e->getMessage() ),
 			] );
 		}
 	}

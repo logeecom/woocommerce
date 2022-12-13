@@ -15,24 +15,24 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <div class="ce-onboarding-steps">
                 <div class="ce-step active">
                     <div class="ce-step-number">1</div>
-                    <div class="ce-step-title"><?php echo __( 'Account', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Account', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step active">
                     <div class="ce-step-number">2</div>
-                    <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Product synchronization', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">3</div>
-                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Order synchronization', 'channelengine-wc' ); ?></div>
                 </div>
                 <div class="ce-step">
                     <div class="ce-step-number">4</div>
-                    <div class="ce-step-title"><?php echo __( 'Initial sync', 'channelengine' ); ?></div>
+                    <div class="ce-step-title"><?php echo __( 'Initial sync', 'channelengine-wc' ); ?></div>
                 </div>
             </div>
 			<?php include plugin_dir_path( __FILE__ ) . 'partials/product_feed.php' ?>
             <a id="ceSave"
-               class="ce-button ce-button__primary"><?php echo __( 'Save and continue', 'channelengine' ); ?></a>
+               class="ce-button ce-button__primary"><?php echo __( 'Save and continue', 'channelengine-wc' ); ?></a>
             <input id="ceProductSave" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url( 'Product_Sync', 'save' ); ?>">
             <input id="ceGetAccountName" type="hidden"
@@ -43,9 +43,9 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 		        <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
             </div>
             <input id="ce-extra-data-duplicates-text" type="hidden"
-                   value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine'); ?>">
+                   value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-wc' ); ?>">
             <input id="ce-extra-data-duplicates-header" type="hidden"
-                   value="<?php echo __('Warning', 'channelengine'); ?>">
+                   value="<?php echo __('Warning', 'channelengine-wc' ); ?>">
         </div>
     </main>
 </div>
