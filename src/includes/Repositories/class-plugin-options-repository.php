@@ -16,7 +16,7 @@ class Plugin_Options_Repository {
      * @return string
      */
     public function get_schema_version() {
-        return get_option( 'CE_SCHEMA_VERSION', '1.0.0' );
+        return get_option( 'CE_SCHEMA_VERSION', '0.0.1' );
     }
 
     /**
