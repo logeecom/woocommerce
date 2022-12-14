@@ -17,7 +17,14 @@ $startOnboardingUrl = Shop_Helper::get_controller_url( 'Welcome', 'start_onboard
     </header>
     <main>
         <div class="ce-onboarding ce-page ce-page-centered">
-            <img src="<?php echo Asset_Helper::get_image_url( 'icon.svg' ); ?>" alt="ChannelEngine" 
+            <div class="ce-error-message-banner">
+                <p>
+                    <span class="dashicons dashicons-info ce-error-message-banner-icon"></span>
+                    <?php echo __( 'Before proceeding with the onboarding process, please contact ChannelEngine support.',
+                        'channelengine-wc' ); ?>
+                </p>
+            </div>
+            <img src="<?php echo Asset_Helper::get_image_url( 'icon.svg' ); ?>" alt="ChannelEngine"
                  class="ce-icon__big"/>
             <div class="ce-title"><?php echo __( 'Welcome to ChannelEngine', 'channelengine-wc' ); ?></div>
             <h2 class="ce-subtitle"><?php echo __( 'It will only take 5 minutes of your time to configure the integration.', 'channelengine-wc' ); ?></h2>

@@ -75,6 +75,9 @@ msgstr ""
 msgid "It will only take 5 minutes of your time to configure the integration."
 msgstr ""
 
+msgid "Before proceeding with the onboarding process, please contact ChannelEngine support."
+msgstr ""
+
 msgid "Configure"
 msgstr ""
 

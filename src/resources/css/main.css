@@ -633,6 +633,21 @@
   font-size: 18px;
   line-height: 22px;
 }
+.channel-engine .ce-onboarding .ce-error-message-banner {
+  border: #d6c1c1 solid 1px;
+  background-color: #fdc5ed3d;
+  border-radius: 9px;
+  padding: 8px 40px 8px 17px;
+  margin-bottom: 32px;
+}
+.channel-engine .ce-onboarding .ce-error-message-banner-icon {
+  margin-right: 12px;
+  color: red;
+  width: 27px;
+  height: 27px;
+  font-size: 27px;
+  vertical-align: middle;
+}
 .channel-engine .ce-onboarding .ce-onboarding-steps {
   position: relative;
   display: flex;
