@@ -211,7 +211,7 @@ class ChannelEngine {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return;
 		}
-		load_plugin_textdomain( 'channelengine', false, basename( dirname( $this->channelengine_plugin_file ) ) . '/i18n/languages/' );
+		load_plugin_textdomain( 'channelengine-wc', false, basename( dirname( $this->channelengine_plugin_file ) ) . '/i18n/languages/' );
 	}
 
 	/**
