@@ -5,7 +5,7 @@ namespace ChannelEngine\Components\Services;
 use ChannelEngine\BusinessLogic\Configuration\ConfigService;
 use ChannelEngine\BusinessLogic\Configuration\DTO\SystemInfo;
 use ChannelEngine\ChannelEngine;
-use ChannelEngine\Infrastructure\Utility\ServerUtil;
+use ChannelEngine\Infrastructure\Utility\ServerUtility;
 use ChannelEngine\Utility\Shop_Helper;
 
 /**
@@ -48,7 +48,7 @@ class Configuration_Service extends ConfigService {
         return new SystemInfo(
             'woocommerce',
             $this->getWooCommerceVersion(),
-            ServerUtil::get('HTTP_HOST', 'N/A'),
+            ServerUtility::get('HTTP_HOST', 'N/A'),
             ChannelEngine::VERSION
         );
     }
