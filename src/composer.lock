@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d3a3a610fc90e0faeef08e066c29e4d",
+    "content-hash": "1aced937071b41c24259e1dc55f6ffe2",
     "packages": [
         {
             "name": "channelengine/integration-core",
-            "version": "dev-feature/MAIN-1465",
+            "version": "dev-dev",
             "source": {
                 "type": "git",
                 "url": "git@github.com:channelengine/logeecom-core.git",
