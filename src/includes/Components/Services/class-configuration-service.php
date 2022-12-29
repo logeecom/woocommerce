@@ -3,6 +3,9 @@
 namespace ChannelEngine\Components\Services;
 
 use ChannelEngine\BusinessLogic\Configuration\ConfigService;
+use ChannelEngine\BusinessLogic\Configuration\DTO\SystemInfo;
+use ChannelEngine\ChannelEngine;
+use ChannelEngine\Infrastructure\Utility\ServerUtility;
 use ChannelEngine\Utility\Shop_Helper;
 
 /**
@@ -36,4 +39,27 @@ class Configuration_Service extends ConfigService {
 
 		return Shop_Helper::get_controller_url( 'Async_Process', 'run', $params );
 	}
+
+    /**
+     * @inheritDoc
+     */
+    public function getSystemInfo()
+    {
+        return new SystemInfo(
+            'woocommerce',
+            $this->getWooCommerceVersion(),
+            ServerUtility::get('HTTP_HOST', 'N/A'),
+            ChannelEngine::VERSION
+        );
+    }
+
+    /**
+     * Gets WooCommerce version if available.
+     *
+     * @return string
+     */
+    private function getWooCommerceVersion()
+    {
+        return defined('WC_VERSION') ? WC_VERSION : 'N/A';
+    }
 }
