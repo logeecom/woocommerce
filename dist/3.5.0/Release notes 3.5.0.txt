@@ -1,0 +1,1 @@
+- Add User-Agent header to requests made by the plugin
