@@ -1,0 +1,1 @@
+- Add compatibility with "EAN for WooCommerce" third-party plugin

@@ -10,6 +10,11 @@ use WC_Product_Attribute;
  * @package ChannelEngine\Repositories
  */
 class Meta_Repository {
+    /**
+     * Needed for adding compatibility with third-party plugins.
+     */
+    const ADDITIONAL_PRODUCT_FIELDS = ["'_alg_ean'"];
+
 	/**
 	 * Retrieves product meta attributes.
 	 *
@@ -24,22 +29,30 @@ class Meta_Repository {
 			return [];
 		}
 
-		$posts     = $wpdb->posts;
-		$post_meta = $wpdb->postmeta;
+        $posts = $wpdb->posts;
+        $post_meta = $wpdb->postmeta;
+        $meta_keys = [
+            "'_product_attributes'",
+            "'_weight'",
+            "'_length'",
+            "'_height'",
+            "'_width'",
+            "'_sku'",
+            "'_ean'",
+            "'_thumbnail_id'",
+        ];
 
-		$query = $wpdb->prepare(
-			"SELECT $post_meta.*, $posts.post_parent 
+        $query = $wpdb->prepare(
+            "SELECT $post_meta.*, $posts.post_parent 
 			FROM $post_meta
 			INNER JOIN $posts ON $posts.id = $post_meta.post_id
-			WHERE $posts.id IN (%s)
+			WHERE $posts.id IN (" . implode(', ', $ids) . ")
 			AND (($posts.post_status = 'publish' 
 			AND $posts.post_type IN ('product', 'product_variation')) OR 
              ($posts.post_status = 'inherit' 
 			AND $posts.post_type IN ('attachment')))
-			AND $post_meta.meta_key IN('_product_attributes', '_weight', '_length', '_height',
-			                      '_width', '_sku', '_ean', '_thumbnail_id')",
-			implode( ', ', $ids )
-		);
+			AND $post_meta.meta_key IN(" . implode(', ', array_merge($meta_keys, self::ADDITIONAL_PRODUCT_FIELDS)) . ")"
+        );
 
 		$lookup = [];
 
@@ -118,6 +131,37 @@ class Meta_Repository {
 			}
 		}
 
-		return $attributes;
-	}
+        return array_merge($attributes, $this->get_third_party_plugin_attributes());
+    }
+
+    /**
+     * Add compatability with EAN plugins for WooCommerce.
+     * Compatible plugins: EAN for WooCommerce.
+     * @return array
+     */
+    private function get_third_party_plugin_attributes()
+    {
+        global $wpdb;
+        $post_meta = $wpdb->postmeta;
+        $existing_attributes = [];
+        $meta_data = $wpdb->get_results(
+            "SELECT distinct meta_key FROM $post_meta WHERE meta_key in (" . implode(
+                ', ',
+                self::ADDITIONAL_PRODUCT_FIELDS
+            ) . ")",
+            ARRAY_A
+        );
+
+        foreach ($meta_data as $plugin_attribute) {
+            $attribute = new WC_Product_Attribute();
+            $attribute->set_name( $plugin_attribute['meta_key'] );
+            $attribute->set_position( 0 );
+            $attribute->set_visible( 1 );
+            $attribute->set_variation( 0 );
+            $attribute->set_id( $plugin_attribute['meta_key'] );
+            $existing_attributes[] = $attribute;
+        }
+
+        return $existing_attributes;
+    }
 }
