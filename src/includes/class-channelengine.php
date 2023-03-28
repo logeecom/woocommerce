@@ -418,13 +418,11 @@ class ChannelEngine {
 
 		$order_config = $this->get_order_config_service()->getOrderSyncConfig();
 
-		if ( 'cancelled' === strtolower( $order->get_status() ) && $order_config->isEnableOrderCancellationSync() ) {
+		if ( $order_config && 'cancelled' === strtolower( $order->get_status() ) && $order_config->isEnableOrderCancellationSync() ) {
 			$this->handle_order_cancellation( $order );
 		}
 
-		$order_status = $_POST['order_status'];
-
-		if ( $order_config && $order_config->getShippedOrders() === $order_status && $order_config->isEnableShipmentInfoSync() ) {
+		if ( $order_config && wc_get_order_status_name( $order->get_status() ) === wc_get_order_status_name( $order_config->getShippedOrders() ) && $order_config->isEnableShipmentInfoSync() ) {
 			$this->handle_order_shipment( $order );
 		}
 	}
