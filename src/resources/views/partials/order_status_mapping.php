@@ -68,6 +68,9 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
             <input type="text" id="startSyncDate" class="datepicker" style="width: 100px;" value="<?php echo date("d.m.Y."); ?>"/>
         </label>
     </div>
+    <div>
+        <span id="displayOrderFulfilledDate" class="label"></span>
+    </div>
 </form>
 <p><?php echo __( 'Map WooCommerce shop order statuses to the ChannelEngine order statuses.', 'channelengine-wc' ); ?></p>
 <form class="ce-form">

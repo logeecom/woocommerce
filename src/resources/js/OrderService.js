@@ -20,7 +20,15 @@ if (!window.ChannelEngine) {
                         enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                         enableReduceStock = document.getElementById('enableReduceStock'),
                         marketplaceOrdersFromDate = document.getElementById('startSyncDate'),
-                        mappings = response.order_statuses;
+                        mappings = response.order_statuses,
+                        orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate');
+
+                    if(response.enableOrdersByMarketplaceSync && response.ordersByMarketplaceFromDate) {
+                        orderFulfilledByMarketplaceDate.innerHTML = 'Orders fulfilled by the marketplace are imported starting from ' + response.ordersByMarketplaceFromDate;
+                        orderFulfilledByMarketplaceDate.removeAttribute('disabled');
+                    } else {
+                        orderFulfilledByMarketplaceDate.setAttribute('disabled', 'true');
+                    }
 
                     mappings.forEach(item => addMappings(item, incomingOptions, response.incoming));
                     mappings.forEach(item => addMappings(item, shippedOptions, response.shipped));
