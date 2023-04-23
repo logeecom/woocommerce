@@ -23,7 +23,7 @@ if (!window.ChannelEngine) {
                         mappings = response.order_statuses,
                         orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate');
 
-                    if(response.enableOrdersByMarketplaceSync && response.ordersByMarketplaceFromDate) {
+                    if(response.displayTheDateFromWhichOrdersFBMAreImported) {
                         orderFulfilledByMarketplaceDate.innerHTML = 'Orders fulfilled by the marketplace are imported starting from ' + response.ordersByMarketplaceFromDate;
                         orderFulfilledByMarketplaceDate.removeAttribute('disabled');
                     } else {
