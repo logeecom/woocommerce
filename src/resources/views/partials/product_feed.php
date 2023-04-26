@@ -4,6 +4,17 @@ use ChannelEngine\Utility\Shop_Helper;
 <h1><?php echo __( 'Product synchronization settings', 'channelengine-wc' ); ?></h1>
 <p></p>
 <form class="ce-form">
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php echo __( 'Enable product synchronization', 'channelengine-wc' ); ?></span>
+            <span class="ce-help">
+                <span class="ce-help-tooltip">
+                    <?php echo __( 'If this field is disabled, the plugin will not synchronize products to ChannelEngine.', 'channelengine-wc' ); ?>
+                </span>
+            </span>
+            <input id="enableExportProducts" type="checkbox" class="checkbox" checked>
+        </label>
+    </div>
     <h3><?php echo __( 'Stock synchronization', 'channelengine-wc' ); ?></h3>
     <div class="ce-input-group">
         <label>

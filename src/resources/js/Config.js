@@ -42,7 +42,8 @@ document.addEventListener(
             duplicatesText = document.getElementById('ce-extra-data-duplicates-text').value,
             duplicatesHeaderText = document.getElementById('ce-extra-data-duplicates-header').value,
             startSyncDate = document.getElementById('startSyncDate'),
-            getAccountNameUrl = document.getElementById('ceGetAccountName');
+            getAccountNameUrl = document.getElementById('ceGetAccountName'),
+            exportProductsUrl = document.getElementById('ceExportProductsUrl');
 
         startSyncDate ? startSyncDate.remove(): false;
         ChannelEngine.productService.get(stockUrl.value);
@@ -51,6 +52,7 @@ document.addEventListener(
         ChannelEngine.orderService.get(orderStatusesUrl.value);
         ChannelEngine.triggerSyncService.checkStatus();
         ChannelEngine.disconnectService.getAccountName(getAccountNameUrl);
+        ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
 
         if( ! ( enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked ) ) ) {
             enableReduceStock.setAttribute('disabled', 'true');
@@ -161,6 +163,7 @@ document.addEventListener(
                 {
                     apiKey: apiKey.value,
                     accountName: accountName.value,
+                    exportProducts: enabledExportProducts.checked ? 1 : 0,
                     stockQuantity: quantity.value,
                     enabledStockSync: enableStockSync.checked,
                     enableReduceStock: enableReduceStock.checked,
@@ -245,5 +248,21 @@ document.addEventListener(
                 enableReduceStock.removeAttribute('disabled');
             }
         }
+
+        let enabledExportProducts = document.getElementById('enableExportProducts');
+        enabledExportProducts.addEventListener(
+            'change',
+            function () {
+                let productCheckbox = document.getElementById('ce-product-sync-checkbox')
+
+                if(enabledExportProducts.checked) {
+                    productCheckbox.removeAttribute('disabled');
+                    ChannelEngine.productService.enableProductSynchronizationFields();
+                } else {
+                    productCheckbox.setAttribute('disabled', 'true');
+                    ChannelEngine.productService.disableProductSynchronizationFields()
+                }
+            }
+        );
     }
 );

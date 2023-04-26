@@ -6,6 +6,10 @@ document.addEventListener(
         const addNewAttribute = document.getElementById('ceAddNewAttribute');
         let hasEmpty = false;
         addNewAttribute.onclick = () => {
+            if(addNewAttribute.getAttribute('disabled')) {
+                return;
+            }
+
             const extraDataMapping = document.querySelectorAll('.ce-input-extra-data');
             let keys = [];
             extraDataMapping.forEach(mapping => {

@@ -17,6 +17,7 @@ document.addEventListener(
         link.onclick = () => {
             const quantity = document.getElementById('ceStockQuantity'),
                 enabledStockSync = document.getElementById('enableStockSync'),
+                exportProducts = document.getElementById('enableExportProducts').checked ? 1 : 0,
                 brandMapping = document.getElementById('ceBrand'),
                 colorMapping = document.getElementById('ceColor'),
                 sizeMapping = document.getElementById('ceSize'),
@@ -62,6 +63,7 @@ document.addEventListener(
 
             ChannelEngine.notificationService.removeNotifications();
             ChannelEngine.productService.save(url.value, {
+                exportProducts: exportProducts,
                 quantity: quantity.value,
                 enabledStockSync: enabledStockSync.checked,
                 attributeMappings: {
@@ -94,6 +96,18 @@ document.getElementById('enableStockSync').addEventListener(
             quantity.removeAttribute('disabled');
         } else {
             quantity.setAttribute('disabled', 'true');
+        }
+    }
+);
+
+let enabledExportProducts = document.getElementById('enableExportProducts');
+enabledExportProducts.addEventListener(
+    'change',
+    function () {
+        if(enabledExportProducts.checked) {
+            ChannelEngine.productService.enableProductSynchronizationFields();
+        } else {
+            ChannelEngine.productService.disableProductSynchronizationFields()
         }
     }
 );

@@ -5,10 +5,12 @@ namespace ChannelEngine\Controllers;
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsSyncConfigService;
 use ChannelEngine\BusinessLogic\Products\Entities\SyncConfig;
 use ChannelEngine\Components\Services\Attribute_Mappings_Service;
+use ChannelEngine\Components\Services\Export_Products_Service;
 use ChannelEngine\Components\Services\Extra_Data_Attribute_Mappings_Service;
 use ChannelEngine\Components\Services\State_Service;
 use ChannelEngine\DTO\AttributeMappings;
 use ChannelEngine\DTO\ExtraDataAttributeMappings;
+use ChannelEngine\Infrastructure\Logger\Logger;
 use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Utility\Script_Loader;
@@ -32,18 +34,27 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	 */
 	protected $extra_data_attribute_mappings_service;
 
-	/**
-	 * Saves product synchronization configuration.
-	 *
-	 * @throws QueryFilterInvalidParamException
-	 */
-	public function save() {
-		$quantityJson     = json_decode( $this->get_raw_input(), true );
-		$quantity         = $quantityJson['quantity'];
-		$enabledStockSync = $quantityJson['enabledStockSync'];
-		$mappings         = $quantityJson['attributeMappings'];
-		$extraDataMapping = $quantityJson['extraDataMappings'];
+    /**
+     * Saves product synchronization configuration.
+     *
+     * @throws QueryFilterInvalidParamException
+     */
+    public function save() {
+        $quantityJson     = json_decode( $this->get_raw_input(), true );
+        $quantity         = $quantityJson['quantity'];
+        $enabledStockSync = $quantityJson['enabledStockSync'];
+        $mappings         = $quantityJson['attributeMappings'];
+        $extraDataMapping = $quantityJson['extraDataMappings'];
+        $exportProducts   = $quantityJson['exportProducts'];
 
+        if ( $exportProducts !== 1 ) {
+            $this->get_export_products_service()->disableProductsExport();
+            $this->get_state_service()->set_product_configured( true );
+
+            $this->return_json(['success' => true]);
+        }
+
+        $this->get_export_products_service()->enableProductsExport();
 		if ( $enabledStockSync && ( !is_numeric( $quantity) || (int) $quantity < 0 )) {
 			$this->return_json( [
 				'success' => false,
@@ -131,10 +142,19 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 		return $this->extra_data_attribute_mappings_service;
 	}
 
-	/**
-	 * @return State_Service
-	 */
-	protected function get_state_service() {
-		return ServiceRegister::getService( State_Service::class );
-	}
+    /**
+     * @return State_Service
+     */
+    protected function get_state_service() {
+        return ServiceRegister::getService( State_Service::class );
+    }
+
+    /**
+     * Retrieves an instance of Export_Products_Service.
+     *
+     * @return Export_Products_Service
+     */
+    protected function get_export_products_service(): Export_Products_Service {
+        return ServiceRegister::getService( Export_Products_Service::class );
+    }
 }

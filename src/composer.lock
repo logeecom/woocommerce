@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1aced937071b41c24259e1dc55f6ffe2",
+    "content-hash": "134712782bccde9698e19ed73f8e77ff",
     "packages": [
         {
             "name": "channelengine/integration-core",
-            "version": "dev-dev",
+            "version": "dev-CR-07",
             "source": {
                 "type": "git",
                 "url": "git@github.com:channelengine/logeecom-core.git",
-                "reference": "c3678f261e5d0ccdfbadc5f345e0d28e3d9a27b0"
+                "reference": "9b270cfdc8d41b43fd6a90b87b635e682aecf6b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/c3678f261e5d0ccdfbadc5f345e0d28e3d9a27b0",
-                "reference": "c3678f261e5d0ccdfbadc5f345e0d28e3d9a27b0",
+                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/9b270cfdc8d41b43fd6a90b87b635e682aecf6b6",
+                "reference": "9b270cfdc8d41b43fd6a90b87b635e682aecf6b6",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "proprietary"
             ],
             "description": "ChannelEngine integrations core library",
-            "time": "2022-12-28T13:36:52+00:00"
+            "time": "2023-04-25T12:28:35+00:00"
         }
     ],
     "packages-dev": [
@@ -1610,5 +1610,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

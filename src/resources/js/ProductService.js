@@ -103,6 +103,24 @@ if (!window.ChannelEngine) {
             });
         }
 
+        this.getExportProductsEnabled = function(url) {
+            const ajaxService = ChannelEngine.ajaxService;
+            let enabledExportProducts = document.getElementById('enableExportProducts');
+
+            ajaxService.get(url, function (response) {
+                enabledExportProducts.checked = response.exportProducts;
+                let productCheckbox = document.getElementById('ce-product-sync-checkbox')
+
+                if(enabledExportProducts.checked) {
+                    productCheckbox.removeAttribute('disabled');
+                    ChannelEngine.productService.enableProductSynchronizationFields();
+                } else {
+                    productCheckbox.setAttribute('disabled', 'true');
+                    ChannelEngine.productService.disableProductSynchronizationFields()
+                }
+            });
+        }
+
         this.makeExtraDataForm = function (selected) {
             const newAttribute = document.getElementById('hidden'),
                 clone = newAttribute.cloneNode(true),
@@ -124,6 +142,11 @@ if (!window.ChannelEngine) {
             let removeAttributeList = document.querySelectorAll('.ce-button-remove-mapping');
             removeAttributeList.forEach(removeAttribute => {
                 removeAttribute.addEventListener('click', function () {
+                    const addNewAttribute = document.getElementById('ceAddNewAttribute');
+                    if(addNewAttribute.getAttribute('disabled')) {
+                        return;
+                    }
+
                     if (removeAttribute.parentNode.parentElement.getAttribute('class').includes('last')) {
                         let baseDiv = document.getElementById('hidden');
                         if (baseDiv.previousElementSibling.previousElementSibling.getAttribute('class') !== 'ce-extra-data-heading') {
@@ -145,6 +168,78 @@ if (!window.ChannelEngine) {
             );
 
             return clone;
+        }
+
+        this.disableProductSynchronizationFields = function () {
+            disableStockSynchronizationFields();
+            disableAttributeMappingFields();
+            disableExtraDataFields();
+        }
+
+        this.enableProductSynchronizationFields = function () {
+            enableStockSynchronizationFields();
+            enableAttributeMappingFields();
+            enableExtraDataFields();
+        }
+
+        let disableStockSynchronizationFields = function () {
+            document.getElementById('enableStockSync').setAttribute('disabled', 'true');
+            document.getElementById('ceStockQuantity').setAttribute('disabled', 'true');
+        }
+
+        let enableStockSynchronizationFields = function () {
+            document.getElementById('enableStockSync').removeAttribute('disabled');
+            document.getElementById('ceStockQuantity').removeAttribute('disabled');
+        }
+
+        let disableAttributeMappingFields = function () {
+            document.getElementById('ceBrand').setAttribute('disabled', 'true');
+            document.getElementById('ceColor').setAttribute('disabled', 'true');
+            document.getElementById('ceSize').setAttribute('disabled', 'true');
+            document.getElementById('ceGtin').setAttribute('disabled', 'true');
+            document.getElementById('ceCataloguePrice').setAttribute('disabled', 'true');
+            document.getElementById('cePrice').setAttribute('disabled', 'true');
+            document.getElementById('cePurchasePrice').setAttribute('disabled', 'true');
+            document.getElementById('ceShippingTime').setAttribute('disabled', 'true');
+            document.getElementById('ceDetails').setAttribute('disabled', 'true');
+            document.getElementById('ceCategory').setAttribute('disabled', 'true');
+            document.getElementById('ceVendorProductNumber').setAttribute('disabled', 'true');
+        }
+
+        let enableAttributeMappingFields = function () {
+            document.getElementById('ceBrand').removeAttribute('disabled');
+            document.getElementById('ceColor').removeAttribute('disabled');
+            document.getElementById('ceSize').removeAttribute('disabled');
+            document.getElementById('ceGtin').removeAttribute('disabled');
+            document.getElementById('ceCataloguePrice').removeAttribute('disabled');
+            document.getElementById('cePrice').removeAttribute('disabled');
+            document.getElementById('cePurchasePrice').removeAttribute('disabled');
+            document.getElementById('ceShippingTime').removeAttribute('disabled');
+            document.getElementById('ceDetails').removeAttribute('disabled');
+            document.getElementById('ceCategory').removeAttribute('disabled');
+            document.getElementById('ceVendorProductNumber').removeAttribute('disabled');
+        }
+
+        let disableExtraDataFields = function () {
+            document.getElementById('ceAddNewAttribute').setAttribute('disabled', 'true');
+            const extraDataMappings = document.querySelectorAll('.ce-input-extra-data');
+
+            extraDataMappings.forEach(extraData => {
+                let elements = extraData.firstElementChild.children;
+                elements.item(0).setAttribute('disabled', 'true');
+                elements.item(1).setAttribute('disabled', 'true');
+            })
+        }
+
+        let enableExtraDataFields = function () {
+            document.getElementById('ceAddNewAttribute').removeAttribute('disabled');
+            const extraDataMappings = document.querySelectorAll('.ce-input-extra-data');
+
+            extraDataMappings.forEach(extraData => {
+                let elements = extraData.firstElementChild.children;
+                elements.item(0).removeAttribute('disabled');
+                elements.item(1).removeAttribute('disabled');
+            })
         }
 
         function addMapping(attributesTypeLabel, attributes, parent, mapping) {

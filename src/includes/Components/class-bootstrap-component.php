@@ -24,6 +24,7 @@ use ChannelEngine\Components\Listeners\Order_Tick_Event_Listener;
 use ChannelEngine\Components\Services\Attribute_Mappings_Service;
 use ChannelEngine\Components\Services\Cancellation_Service;
 use ChannelEngine\Components\Services\Configuration_Service;
+use ChannelEngine\Components\Services\Export_Products_Service;
 use ChannelEngine\Components\Services\Extra_Data_Attribute_Mappings_Service;
 use ChannelEngine\Components\Services\Logger_Service;
 use ChannelEngine\Components\Services\Order_Config_Service;
@@ -173,6 +174,13 @@ class Bootstrap_Component extends BootstrapComponent {
 				return new Extra_Data_Attribute_Mappings_Service();
 			}
 		);
+
+        ServiceRegister::registerService(
+            Export_Products_Service::class,
+            static function () {
+                return new Export_Products_Service();
+            }
+        );
 	}
 
 	/**

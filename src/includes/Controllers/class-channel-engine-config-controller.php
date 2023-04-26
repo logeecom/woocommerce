@@ -17,6 +17,7 @@ use ChannelEngine\Components\Exceptions\Order_Sync_Config_Invalid;
 use ChannelEngine\Components\Exceptions\Stock_Quantity_Invalid;
 use ChannelEngine\Components\Exceptions\Stock_Sync_Flag_Invalid;
 use ChannelEngine\Components\Services\Attribute_Mappings_Service;
+use ChannelEngine\Components\Services\Export_Products_Service;
 use ChannelEngine\Components\Services\Extra_Data_Attribute_Mappings_Service;
 use ChannelEngine\Components\Services\Order_Config_Service;
 use ChannelEngine\Components\Services\Products_Service;
@@ -70,6 +71,17 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 * @var Extra_Data_Attribute_Mappings_Service
 	 */
 	protected $extra_data_attribute_mappings_service;
+
+    /**
+     * Checks if export products is enabled.
+     *
+     * @return void
+     */
+    public function is_export_products_enabled() {
+        $this->return_json( [
+            'exportProducts' => $this->get_export_products_service()->isExportProductsEnabled()
+        ] );
+    }
 
     /**
      * Retrieves account data.
@@ -167,24 +179,33 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$this->return_json( [ 'in_progress' => $this->sync_in_progress() ] );
 	}
 
-	/**
-	 * Saves configuration data.
-	 */
-	public function save() {
-		$post = json_decode( $this->get_raw_input(), true );
-		try {
-			$this->save_account_data( $post['apiKey'], $post['accountName'] );
-			$this->save_stock_sync_config( $post['stockQuantity'], $post['enabledStockSync'] );
-			$this->save_order_statuses( $post['orderStatuses'], $post['orderSyncConfig'], $post['enableReduceStock'] );
-			$this->save_product_attribute_mapping( $post['attributeMappings'] );
-			$this->get_extra_data_attribute_mapping_service()
-			     ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( $post['extraDataMappings'] ) );
-		} catch ( BaseException $e ) {
-			$this->return_json( [
-				'success' => false,
-				'message' => $e->getMessage(),
-			] );
-		}
+    /**
+     * Saves configuration data.
+     */
+    public function save() {
+        $post = json_decode( $this->get_raw_input(), true );
+        try {
+            $this->save_account_data( $post['apiKey'], $post['accountName'] );
+            if ( $post['exportProducts'] !== 1 ) {
+                $this->get_export_products_service()->disableProductsExport();
+                $this->return_json( [
+                    'success' => true,
+                    'message' => __( 'Configuration saved successfully.' )
+                ] );
+            }
+
+            $this->get_export_products_service()->enableProductsExport();
+            $this->save_stock_sync_config( $post['stockQuantity'], $post['enabledStockSync'] );
+            $this->save_order_statuses( $post['orderStatuses'], $post['orderSyncConfig'], $post['enableReduceStock'] );
+            $this->save_product_attribute_mapping( $post['attributeMappings'] );
+            $this->get_extra_data_attribute_mapping_service()
+                ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( $post['extraDataMappings'] ) );
+        } catch ( BaseException $e ) {
+            $this->return_json( [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ] );
+        }
 
 		$this->return_json( [
 			'success' => true,
@@ -504,6 +525,15 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			$this->extra_data_attribute_mappings_service = ServiceRegister::getService( Extra_Data_Attribute_Mappings_Service::class );
 		}
 
-		return $this->extra_data_attribute_mappings_service;
-	}
+        return $this->extra_data_attribute_mappings_service;
+    }
+
+    /**
+     * Retrieves an instance of Export_Products_Service.
+     *
+     * @return Export_Products_Service
+     */
+    protected function get_export_products_service(): Export_Products_Service {
+        return ServiceRegister::getService( Export_Products_Service::class );
+    }
 }
