@@ -186,20 +186,16 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
         $post = json_decode( $this->get_raw_input(), true );
         try {
             $this->save_account_data( $post['apiKey'], $post['accountName'] );
-            if ( $post['exportProducts'] !== 1 ) {
-                $this->get_export_products_service()->disableProductsExport();
-                $this->return_json( [
-                    'success' => true,
-                    'message' => __( 'Configuration saved successfully.' )
-                ] );
-            }
-
-            $this->get_export_products_service()->enableProductsExport();
-            $this->save_stock_sync_config( $post['stockQuantity'], $post['enabledStockSync'] );
             $this->save_order_statuses( $post['orderStatuses'], $post['orderSyncConfig'], $post['enableReduceStock'] );
-            $this->save_product_attribute_mapping( $post['attributeMappings'] );
-            $this->get_extra_data_attribute_mapping_service()
-                ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( $post['extraDataMappings'] ) );
+            if ( $post['exportProducts'] === 1) {
+                $this->get_export_products_service()->enableProductsExport();
+                $this->save_stock_sync_config( $post['stockQuantity'], $post['enabledStockSync'] );
+                $this->save_product_attribute_mapping( $post['attributeMappings'] );
+                $this->get_extra_data_attribute_mapping_service()
+                    ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( $post['extraDataMappings'] ) );
+            } else {
+                $this->get_export_products_service()->disableProductsExport();
+            }
         } catch ( BaseException $e ) {
             $this->return_json( [
                 'success' => false,

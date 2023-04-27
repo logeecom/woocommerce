@@ -69,7 +69,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
         </label>
     </div>
     <div>
-        <span id="displayOrderFulfilledDate" class="label"></span>
+        <span id="displayOrderFulfilledDate" class="label"><?php echo __('Orders fulfilled by the marketplace are imported starting from ');?></span>
     </div>
 </form>
 <p><?php echo __( 'Map WooCommerce shop order statuses to the ChannelEngine order statuses.', 'channelengine-wc' ); ?></p>

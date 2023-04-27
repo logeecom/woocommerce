@@ -24,7 +24,7 @@ if (!window.ChannelEngine) {
                         orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate');
 
                     if(response.displayTheDateFromWhichOrdersFBMAreImported) {
-                        orderFulfilledByMarketplaceDate.innerHTML = 'Orders fulfilled by the marketplace are imported starting from ' + response.ordersByMarketplaceFromDate;
+                        orderFulfilledByMarketplaceDate.innerHTML += response.ordersByMarketplaceFromDate;
                         orderFulfilledByMarketplaceDate.removeAttribute('disabled');
                     } else {
                         orderFulfilledByMarketplaceDate.setAttribute('disabled', 'true');
