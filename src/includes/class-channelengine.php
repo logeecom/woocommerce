@@ -446,7 +446,7 @@ class ChannelEngine {
 		);
 		$handler = new CancellationRequestHandler();
 		try {
-			$handler->handle( $request );
+			$handler->handle( $request, '' );
 			update_post_meta( $order->get_id(), '_ce_order_cancelled', true );
 			update_option(
 				'_channel_engine_order_save_success',
