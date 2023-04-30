@@ -8,11 +8,13 @@ document.addEventListener(
             link = document.getElementById('ceSave'),
             stockUrl = document.getElementById('ce-stock-url'),
             extraDataUrl = document.getElementById('ceProductExtraData'),
-            getAccountUrl = document.getElementById('ceGetAccountName');
+            getAccountUrl = document.getElementById('ceGetAccountName'),
+            exportProductsUrl = document.getElementById('ceExportProductsUrl');
 
         ChannelEngine.disconnectService.getAccountName(getAccountUrl);
         ChannelEngine.productService.get(stockUrl.value);
         ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
+        ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
 
         link.onclick = () => {
             const quantity = document.getElementById('ceStockQuantity'),

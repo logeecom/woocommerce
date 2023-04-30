@@ -36,12 +36,13 @@ use ChannelEngine\Utility\Shop_Helper;
                 </span>
             </span>
             <input id="ceStockQuantity" type="number" class="small-number-input" min="0" max="1000" step="1"
-                   value="0">&nbsp;<?php echo __( 'psc', 'channelengine-wc' ); ?>
+                   value="0">&nbsp;
+            <span id="psc"><?php echo __( 'psc', 'channelengine-wc' ); ?></span>
         </label>
     </div>
     <div>
-		<?php include plugin_dir_path( __FILE__ ) . 'attribute_mapping.php' ?>
-		<?php include plugin_dir_path( __FILE__ ) . 'extra_data_mapping.php' ?>
+        <?php include plugin_dir_path( __FILE__ ) . 'attribute_mapping.php' ?>
+        <?php include plugin_dir_path( __FILE__ ) . 'extra_data_mapping.php' ?>
     </div>
     <input id="ce-stock-url" type="hidden"
            value="<?php echo Shop_Helper::get_controller_url('Config', 'get_stock_sync_config') ?>">

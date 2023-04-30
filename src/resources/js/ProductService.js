@@ -111,11 +111,17 @@ if (!window.ChannelEngine) {
                 enabledExportProducts.checked = response.exportProducts;
                 let productCheckbox = document.getElementById('ce-product-sync-checkbox')
 
-                if(enabledExportProducts.checked) {
-                    productCheckbox.removeAttribute('disabled');
+                if(response.exportProducts) {
+                    if(productCheckbox) {
+                        productCheckbox.removeAttribute('disabled');
+                    }
+
                     ChannelEngine.productService.enableProductSynchronizationFields();
                 } else {
-                    productCheckbox.setAttribute('disabled', 'true');
+                    if(productCheckbox) {
+                        productCheckbox.setAttribute('disabled', 'true');
+                    }
+
                     ChannelEngine.productService.disableProductSynchronizationFields()
                 }
             });
@@ -185,11 +191,15 @@ if (!window.ChannelEngine) {
         let disableStockSynchronizationFields = function () {
             document.getElementById('enableStockSync').setAttribute('disabled', 'true');
             document.getElementById('ceStockQuantity').setAttribute('disabled', 'true');
+            document.getElementById('ceStockQuantity').classList.add('ce-disabled');
+            document.getElementById('psc').classList.add('ce-disabled-span');
         }
 
         let enableStockSynchronizationFields = function () {
             document.getElementById('enableStockSync').removeAttribute('disabled');
             document.getElementById('ceStockQuantity').removeAttribute('disabled');
+            document.getElementById('ceStockQuantity').classList.remove('ce-disabled');
+            document.getElementById('psc').classList.remove('ce-disabled-span');
         }
 
         let disableAttributeMappingFields = function () {
@@ -228,6 +238,7 @@ if (!window.ChannelEngine) {
                 let elements = extraData.firstElementChild.children;
                 elements.item(0).setAttribute('disabled', 'true');
                 elements.item(1).setAttribute('disabled', 'true');
+                elements.item(1).classList.add('ce-disabled');
             })
         }
 
@@ -239,6 +250,7 @@ if (!window.ChannelEngine) {
                 let elements = extraData.firstElementChild.children;
                 elements.item(0).removeAttribute('disabled');
                 elements.item(1).removeAttribute('disabled');
+                elements.item(1).classList.remove('ce-disabled');
             })
         }
 

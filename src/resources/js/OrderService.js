@@ -21,13 +21,16 @@ if (!window.ChannelEngine) {
                         enableReduceStock = document.getElementById('enableReduceStock'),
                         marketplaceOrdersFromDate = document.getElementById('startSyncDate'),
                         mappings = response.order_statuses,
-                        orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate');
+                        orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate'),
+                        displayDate = document.getElementById('displayDate');
 
-                    if(response.displayTheDateFromWhichOrdersFBMAreImported) {
-                        orderFulfilledByMarketplaceDate.innerHTML += response.ordersByMarketplaceFromDate;
-                        orderFulfilledByMarketplaceDate.removeAttribute('disabled');
+                    if(response.enableOrdersByMarketplaceSync && !document.getElementById('displayOrderFulfilledDateDiv').getAttribute('disabled')) {
+                        displayDate.innerHTML = response.ordersByMarketplaceFromDate;
+                        displayDate.removeAttribute('hidden');
+                        orderFulfilledByMarketplaceDate.removeAttribute('hidden');
                     } else {
-                        orderFulfilledByMarketplaceDate.setAttribute('disabled', 'true');
+                        orderFulfilledByMarketplaceDate.setAttribute('hidden', 'true');
+                        displayDate.setAttribute('hidden', 'true');
                     }
 
                     mappings.forEach(item => addMappings(item, incomingOptions, response.incoming));

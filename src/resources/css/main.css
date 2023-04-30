@@ -841,4 +841,17 @@
   }
 }
 
+.ce-disabled {
+  background-color:white;
+  border: 1px solid #cccccc;
+}
+
+.ce-disabled:disabled {
+  color: #b7b7b7;
+}
+
+.ce-disabled-span {
+  color: #b7b7b7;
+}
+
 /*# sourceMappingURL=main.css.map */

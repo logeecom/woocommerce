@@ -45,6 +45,8 @@ document.addEventListener(
             getAccountNameUrl = document.getElementById('ceGetAccountName'),
             exportProductsUrl = document.getElementById('ceExportProductsUrl');
 
+        document.getElementById('displayOrderFulfilledDateDiv').removeAttribute('hidden');
+
         startSyncDate ? startSyncDate.remove(): false;
         ChannelEngine.productService.get(stockUrl.value);
         ChannelEngine.productService.getProductAttributes(productAttributesUrl.value);
@@ -196,6 +198,8 @@ document.addEventListener(
                 function (response) {
                     ChannelEngine.notificationService.removeNotifications();
                     ChannelEngine.notificationService.addNotification(response.message, response.success);
+                    ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
+                    ChannelEngine.orderService.get(orderStatusesUrl.value);
 
                     if (response.success) {
                         ChannelEngine.triggerSyncService.showModal(triggerSyncUrl.value);
@@ -256,10 +260,8 @@ document.addEventListener(
                 let productCheckbox = document.getElementById('ce-product-sync-checkbox')
 
                 if(enabledExportProducts.checked) {
-                    productCheckbox.removeAttribute('disabled');
                     ChannelEngine.productService.enableProductSynchronizationFields();
                 } else {
-                    productCheckbox.setAttribute('disabled', 'true');
                     ChannelEngine.productService.disableProductSynchronizationFields()
                 }
             }
