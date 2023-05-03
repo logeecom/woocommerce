@@ -202,6 +202,12 @@ document.addEventListener(
                     ChannelEngine.orderService.get(orderStatusesUrl.value);
 
                     if (response.success) {
+                        let productCheckbox = document.getElementById('ce-product-sync-checkbox');
+                        enabledExportProducts.checked ?
+                            productCheckbox.removeAttribute('disabled') :
+                            productCheckbox.setAttribute('disabled', 'true');
+                        productCheckbox.checked = false;
+
                         ChannelEngine.triggerSyncService.showModal(triggerSyncUrl.value);
                     }
                 }
@@ -257,8 +263,6 @@ document.addEventListener(
         enabledExportProducts.addEventListener(
             'change',
             function () {
-                let productCheckbox = document.getElementById('ce-product-sync-checkbox')
-
                 if(enabledExportProducts.checked) {
                     ChannelEngine.productService.enableProductSynchronizationFields();
                 } else {
