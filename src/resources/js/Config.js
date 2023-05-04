@@ -42,7 +42,10 @@ document.addEventListener(
             duplicatesText = document.getElementById('ce-extra-data-duplicates-text').value,
             duplicatesHeaderText = document.getElementById('ce-extra-data-duplicates-header').value,
             startSyncDate = document.getElementById('startSyncDate'),
-            getAccountNameUrl = document.getElementById('ceGetAccountName');
+            getAccountNameUrl = document.getElementById('ceGetAccountName'),
+            exportProductsUrl = document.getElementById('ceExportProductsUrl');
+
+        document.getElementById('displayOrderFulfilledDateDiv').removeAttribute('hidden');
 
         startSyncDate ? startSyncDate.remove(): false;
         ChannelEngine.productService.get(stockUrl.value);
@@ -51,6 +54,7 @@ document.addEventListener(
         ChannelEngine.orderService.get(orderStatusesUrl.value);
         ChannelEngine.triggerSyncService.checkStatus();
         ChannelEngine.disconnectService.getAccountName(getAccountNameUrl);
+        ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
 
         if( ! ( enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked ) ) ) {
             enableReduceStock.setAttribute('disabled', 'true');
@@ -161,6 +165,7 @@ document.addEventListener(
                 {
                     apiKey: apiKey.value,
                     accountName: accountName.value,
+                    exportProducts: enabledExportProducts.checked ? 1 : 0,
                     stockQuantity: quantity.value,
                     enabledStockSync: enableStockSync.checked,
                     enableReduceStock: enableReduceStock.checked,
@@ -193,8 +198,16 @@ document.addEventListener(
                 function (response) {
                     ChannelEngine.notificationService.removeNotifications();
                     ChannelEngine.notificationService.addNotification(response.message, response.success);
+                    ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
+                    ChannelEngine.orderService.get(orderStatusesUrl.value);
 
                     if (response.success) {
+                        let productCheckbox = document.getElementById('ce-product-sync-checkbox');
+                        enabledExportProducts.checked ?
+                            productCheckbox.removeAttribute('disabled') :
+                            productCheckbox.setAttribute('disabled', 'true');
+                        productCheckbox.checked = false;
+
                         ChannelEngine.triggerSyncService.showModal(triggerSyncUrl.value);
                     }
                 }
@@ -245,5 +258,17 @@ document.addEventListener(
                 enableReduceStock.removeAttribute('disabled');
             }
         }
+
+        let enabledExportProducts = document.getElementById('enableExportProducts');
+        enabledExportProducts.addEventListener(
+            'change',
+            function () {
+                if(enabledExportProducts.checked) {
+                    ChannelEngine.productService.enableProductSynchronizationFields();
+                } else {
+                    ChannelEngine.productService.disableProductSynchronizationFields()
+                }
+            }
+        );
     }
 );

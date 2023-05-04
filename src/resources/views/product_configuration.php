@@ -46,6 +46,8 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                    value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-wc' ); ?>">
             <input id="ce-extra-data-duplicates-header" type="hidden"
                    value="<?php echo __('Warning', 'channelengine-wc' ); ?>">
+            <input id="ceExportProductsUrl" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ); ?>">
         </div>
     </main>
 </div>

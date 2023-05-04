@@ -93,6 +93,7 @@ document.addEventListener(
             }
         }
 
+        document.getElementById('displayOrderFulfilledDateDiv').setAttribute('hidden', 'true');
         ChannelEngine.orderService.get(getUrl.value);
     }
 );
@@ -137,6 +138,7 @@ document.getElementById('stepToProductSettings').addEventListener(
                         }
                     );
 
+                    document.getElementById('displayOrderFulfilledDateDiv').removeAttribute('hidden');
                     window.location.reload();
                 } else {
                     ChannelEngine.notificationService.addNotification(response.message);

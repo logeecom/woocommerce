@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ChannelEngine WooCommerce Integration\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 11:31+0000\n"
+"POT-Creation-Date: 2023-05-04 11:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,533 +16,725 @@ msgstr ""
 "X-Loco-Version: 2.5.2; wp-5.7.2\n"
 "X-Domain: channelengine"
 
-#: resources/views/meta-post-box.php:18
-msgid "Order ID:"
+#: resources/views/partials/header.php:14
+msgid " ("
 msgstr ""
 
-#. Name of the plugin
-msgid "ChannelEngine WooCommerce Integration"
+#: resources/views/partials/header.php:16
+msgid ")"
 msgstr ""
 
+#: resources/views/order_status_mapping.php:18
+#: resources/views/enable_and_sync.php:20
+#: resources/views/account_configuration.php:21
+#: resources/views/product_configuration.php:18
 msgid "Account"
 msgstr ""
 
-msgid "Product synchronization"
-msgstr ""
-
-msgid "Order status mapping"
-msgstr ""
-
-msgid "Initial sync"
-msgstr ""
-
-msgid "Connect and continue"
-msgstr ""
-
+#: resources/views/partials/account.php:8
 msgid "Account data"
 msgstr ""
 
-msgid "API Key"
-msgstr ""
-
+#: resources/views/partials/account.php:11
 msgid "Account name"
 msgstr ""
 
-msgid ""
-"Enter the API key. To find the API key, on ChannelEngine, go to Settings, "
-"Merchant API key."
+#: resources/views/partials/header.php:12
+msgid "Account name: "
 msgstr ""
 
-msgid ""
-"Enter the subdomain of your ChannelEngine instance. This is the name listed "
-"before channelengine.net. E.g.: the account name for myshop.channelengine.net is myshop."
-msgstr ""
-
-msgid ""
-"If checked, stock information is synchronized with ChannelEngine."
-msgstr ""
-
-msgid ""
-"Enter stock quantity to display when stock information is not tracked or missing."
-msgstr ""
-
-msgid "ChannelEngine"
-msgstr ""
-
-msgid "Welcome to ChannelEngine"
-msgstr ""
-
-msgid "It will only take 5 minutes of your time to configure the integration."
-msgstr ""
-
-msgid "Before proceeding with the onboarding process, please contact ChannelEngine support."
-msgstr ""
-
-msgid "Configure"
-msgstr ""
-
-msgid "Connect the shop with your ChannelEngine account"
-msgstr ""
-
-msgid "API key and Account name fields are required."
-msgstr ""
-
-msgid "Invalid API key or Account name."
-msgstr ""
-
-msgid "Default stock quantity is required field."
-msgstr ""
-
-msgid "Save and continue"
-msgstr ""
-
-msgid "Product synchronization settings"
-msgstr ""
-
-msgid "Stock synchronization"
-msgstr ""
-
-msgid "Set default stock quantity"
-msgstr ""
-
-msgid ""
-"Enter stock quantity to display when stock information is not tracked or missing."
-msgstr ""
-
-msgid "psc"
-msgstr ""
-
-msgid ""
-"Currency mismatch detected. Please make sure that store currency matches "
-msgstr ""
-
-msgid ""
-"Map WooCommerce shop order statuses to the ChannelEngine order statuses."
-msgstr ""
-
-msgid "Status of incoming orders"
-msgstr ""
-
-msgid "Select the status for unprocessed orders."
-msgstr ""
-
-msgid "Status that defines a shipped order"
-msgstr ""
-
-msgid "Select the status for shipped orders."
-msgstr ""
-
-msgid "Status of the orders fulfilled by a marketplace"
-msgstr ""
-
-msgid ""
-"Select the status for marketplace-fulfilled orders."
-msgstr ""
-
-msgid "wc-processing"
-msgstr ""
-
-msgid "wc-completed"
-msgstr ""
-
-msgid "wc-pending"
-msgstr ""
-
-msgid "wc-on-hold"
-msgstr ""
-
-msgid "wc-cancelled"
-msgstr ""
-
-msgid "wc-refunded"
-msgstr ""
-
-msgid "wc-failed"
-msgstr ""
-
-msgid "You are just one step away"
-msgstr ""
-
-msgid ""
-"When enabled, it triggers the initial synchronization in the background. "
-"Products from WooCommerce are transferred to ChannelEngine – and orders "
-"from ChannelEngine are imported to WooCommerce."
-msgstr ""
-
-msgid "Enable the integration and start the initial synchronization"
-msgstr ""
-
-msgid "Enable and start sync"
-msgstr ""
-
-msgid "Failed to start initial sync because %s"
-msgstr ""
-
-msgid "Dashboard"
-msgstr ""
-
-msgid "Configuration"
-msgstr ""
-
-msgid "Transaction log"
-msgstr ""
-
-msgid "Full synchronization in progress"
-msgstr ""
-
-msgid "Product synchronization:"
-msgstr ""
-
-msgid "of"
-msgstr ""
-
-msgid "products uploaded"
-msgstr ""
-
-msgid "Order synchronization:"
-msgstr ""
-
-msgid "orders downloaded"
-msgstr ""
-
+#: resources/views/partials/dashboard/sync_completed.php:9
 msgid "All is up and running."
 msgstr ""
 
-msgid "Integration status"
+#: resources/views/partials/account.php:22
+msgid "API Key"
 msgstr ""
 
+#: includes/Controllers/class-channel-engine-auth-controller.php:35
+msgid "API key and Account name fields are required."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:14
+msgid "Automatically reduce the stock"
+msgstr ""
+
+#: resources/views/onboarding.php:23
 msgid ""
-"Integration between WooCommerce and ChannelEngine is disabled. "
-"Synchronization is not performed in the background."
+"Before proceeding with the onboarding process, please contact ChannelEngine "
+"support."
 msgstr ""
 
-msgid "Enable the integration"
-msgstr ""
-
+#: resources/views/partials/dashboard/disable.php:19
 msgid ""
 "By enabling integration, you will be asked whether you want to perform full "
 "synchronization (products and orders) again since synchronization was "
 "disabled for some time."
 msgstr ""
 
-msgid "Disable integration"
+#: includes/class-channelengine.php:453
+msgid "Cancellation request successfully sent to ChannelEngine."
 msgstr ""
 
-msgid "Manually trigger synchronization"
+#: resources/views/partials/order_status_mapping.php:39
+msgid "Cancellations"
 msgstr ""
 
-msgid "Start sync now"
+#: resources/views/meta_post_box.php:24
+msgid "Channel name:"
 msgstr ""
 
-msgid "In progress"
+#: resources/views/meta_post_box.php:30
+msgid "Channel Order No:"
 msgstr ""
 
-msgid "Disconnect"
+#. Author of the plugin
+#: includes/class-channelengine.php:378
+msgid "ChannelEngine"
 msgstr ""
 
-msgid "Save changes"
+#. Description of the plugin
+msgid "ChannelEngine plugin for WooCommerce"
 msgstr ""
 
+#. Name of the plugin
+msgid "ChannelEngine WooCommerce Integration"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:10
+msgid ""
+"Check this option if you want to automatically reduce the stock after "
+"importing the order."
+msgstr ""
+
+#: resources/views/partials/trigger_sync.php:14
 msgid "Choose what you would like to synchronize:"
 msgstr ""
 
-msgid "Synchronize products"
+#: resources/views/transactions.php:107
+#: resources/views/partials/dashboard/notifications.php:28
+msgid "Close"
 msgstr ""
 
-msgid ""
-"The integration will synchronize all published shop products to "
-"ChannelEngine in the background."
+#: resources/views/transactions.php:24 resources/views/dashboard.php:26
+#: resources/views/config.php:26
+msgid "Configuration"
 msgstr ""
 
-msgid ""
-"The integration will synchronize new and closed orders (fulfilled by the "
-"merchant and fulfilled by the marketplace) from ChannelEngine into the shop."
+#: resources/views/onboarding.php:32
+msgid "Configure"
 msgstr ""
 
-msgid "Synchronize orders"
+#: resources/views/account_configuration.php:41
+msgid "Connect and continue"
 msgstr ""
 
-msgid "Skip sync"
+#: resources/views/partials/account.php:6
+msgid "Connect the shop with your ChannelEngine account"
 msgstr ""
 
-msgid "Transactions history log"
+#: resources/views/transactions.php:22 resources/views/dashboard.php:24
+#: resources/views/config.php:24
+msgid "Dashboard"
 msgstr ""
 
-msgid "Product sync"
+#: includes/Controllers/class-channel-engine-product-sync-controller.php:61
+msgid "Default stock quantity is required field."
 msgstr ""
 
-msgid "Order sync"
+#: resources/views/partials/attribute_mapping.php:116
+msgid "Description"
 msgstr ""
 
-msgid "Shipment sync"
-msgstr ""
-
-msgid "Errors"
-msgstr ""
-
-msgid "Task Type"
-msgstr ""
-
-msgid "Status"
-msgstr ""
-
+#: resources/views/transactions.php:42 resources/views/transactions.php:48
 msgid "Details"
 msgstr ""
 
-msgid "Start Time"
-msgstr ""
-
-msgid "Time Completed"
-msgstr ""
-
-msgid "View details"
-msgstr ""
-
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
-msgid "Page size:"
-msgstr ""
-
-msgid "Go to the previous page"
-msgstr ""
-
-msgid "Go to the next page"
-msgstr ""
-
-msgid "Displayed"
-msgstr ""
-
-msgid "to"
-msgstr ""
-
-msgid "ProductSync"
-msgstr ""
-
-msgid "OrderSync"
-msgstr ""
-
-msgid "in_progress"
-msgstr ""
-
-msgid "completed"
-msgstr ""
-
-msgid "queued"
-msgstr ""
-
-msgid "created"
-msgstr ""
-
-msgid "failed"
-msgstr ""
-
-msgid "Disconnect account"
-msgstr ""
-
+#: resources/views/config.php:99
 msgid "Disable"
 msgstr ""
 
-msgid "You are about to disconnect your ChannelEngine account."
+#: resources/views/config.php:33 resources/views/config.php:98
+msgid "Disable integration"
 msgstr ""
 
+#: resources/views/config.php:52 resources/views/config.php:96
+#: resources/views/partials/header.php:15
+msgid "Disconnect"
+msgstr ""
+
+#: resources/views/config.php:95
+msgid "Disconnect account"
+msgstr ""
+
+#: resources/views/config.php:49
+msgid "Disconnect your account"
+msgstr ""
+
+#: resources/views/transactions.php:59 resources/views/transactions.php:110
+#: resources/views/partials/dashboard/notifications.php:31
+msgid "Displayed"
+msgstr ""
+
+#: resources/views/config.php:91 resources/views/product_configuration.php:46
+msgid ""
+"Duplicate or empty keys founded in extra data mapping. Delete them to "
+"continue."
+msgstr ""
+
+#: resources/views/enable_and_sync.php:50
+msgid "Enable and start sync"
+msgstr ""
+
+#: resources/views/partials/product_feed.php:9
+msgid "Enable product synchronization"
+msgstr ""
+
+#: resources/views/partials/product_feed.php:21
+msgid "Enable stock synchronization"
+msgstr ""
+
+#: resources/views/partials/dashboard/disable.php:16
+msgid "Enable the integration"
+msgstr ""
+
+#: resources/views/enable_and_sync.php:43
+msgid "Enable the integration and start the initial synchronization"
+msgstr ""
+
+#: resources/views/partials/product_feed.php:35
+msgid ""
+"Enter stock quantity to display when stock information is not tracked or "
+"missing."
+msgstr ""
+
+#: resources/views/partials/account.php:25
+msgid ""
+"Enter the API key. To find the API key, on ChannelEngine,go to Settings, "
+"Merchant APIkey."
+msgstr ""
+
+#: resources/views/partials/account.php:14
+msgid ""
+"Enter the subdomain of your ChannelEngine instance. This is the name listed "
+"before channelengine.net. E.g.: the account name for myshop.channelengine."
+"net is myshop."
+msgstr ""
+
+#: resources/views/transactions.php:34
+msgid "Errors"
+msgstr ""
+
+#: includes/Controllers/class-channel-engine-config-controller.php:169
+#: includes/Controllers/class-channel-engine-initial-sync-controller.php:41
+msgid "Failed to start initial sync because %s"
+msgstr ""
+
+#: resources/views/partials/dashboard/sync_progress.php:2
+msgid "Full synchronization in progress"
+msgstr ""
+
+#: resources/views/transactions.php:117
+#: resources/views/partials/dashboard/notifications.php:38
+msgid "Go to next page"
+msgstr ""
+
+#: resources/views/transactions.php:115
+#: resources/views/partials/dashboard/notifications.php:36
+msgid "Go to previous page"
+msgstr ""
+
+#: resources/views/transactions.php:82
+msgid "Go to the next page"
+msgstr ""
+
+#: resources/views/transactions.php:77
+msgid "Go to the previous page"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://channelengine.net"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://wordpress.org/plugins/channelengine-wc/"
+msgstr ""
+
+#: resources/views/transactions.php:108
+#: resources/views/partials/dashboard/notifications.php:29
+msgid "Identifier"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:64
+msgid ""
+"If checked, marketplace-fulfilled orders are imported to WooCommerce from "
+"set date."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:53
+msgid ""
+"If checked, merchant-fulfilled orders with the status New are imported to "
+"WooCommerce."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:17
+msgid ""
+"If checked, product stock is updated once an order has been imported to "
+"WooCommerce."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:31
+msgid "If checked, shipment information is synchronized with ChannelEngine."
+msgstr ""
+
+#: resources/views/partials/product_feed.php:24
+msgid "If checked, stock information is synchronized with ChannelEngine."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:42
+msgid "If checked, the order cancellation is synchronized with ChannelEngine."
+msgstr ""
+
+#: resources/views/partials/product_feed.php:12
+msgid ""
+"If this field is disabled, the plugin will not synchronize products to "
+"ChannelEngine."
+msgstr ""
+
+#: resources/views/config.php:101
 msgid ""
 "If you disable integration, synchronization between WooCommerce and "
 "ChannelEngine will be disabled."
 msgstr ""
 
-msgid "Identifier"
+#: resources/views/config.php:44
+msgid "In progress"
 msgstr ""
 
-msgid "Message"
+#: resources/views/order_status_mapping.php:32
+#: resources/views/enable_and_sync.php:36
+#: resources/views/account_configuration.php:33
+#: resources/views/product_configuration.php:30
+msgid "Initial sync"
 msgstr ""
 
-msgid "Configuration saved successfully."
+#: resources/views/partials/dashboard/disable.php:11
+msgid ""
+"Integration between WooCommerce and ChannelEngine is disabled. "
+"Synchronization is not performed in the background."
 msgstr ""
 
-msgid "No results"
+#: resources/views/enable_and_sync.php:40
+#: resources/views/partials/dashboard/disable.php:9
+msgid "Integration status"
 msgstr ""
 
-msgid "Notifications"
+#: includes/Controllers/class-channel-engine-config-controller.php:372
+#: includes/Controllers/class-channel-engine-auth-controller.php:50
+msgid "Invalid API key or Account name."
 msgstr ""
 
+#: includes/Controllers/class-channel-engine-order-status-controller.php:101
+msgid "Invalid values."
+msgstr ""
+
+#: resources/views/onboarding.php:30
+msgid "It will only take 5 minutes of your time to configure the integration."
+msgstr ""
+
+#: resources/views/partials/dashboard/notifications.php:16
 msgid "Load more"
 msgstr ""
 
-msgid "Show details"
+#: resources/views/config.php:40 resources/views/partials/trigger_sync.php:9
+msgid "Manually trigger synchronization"
 msgstr ""
 
-msgid "info"
+#: resources/views/partials/order_status_mapping.php:76
+msgid ""
+"Map WooCommerce shop order statuses to the ChannelEngine order statuses."
 msgstr ""
 
-msgid "warning"
+#: resources/views/transactions.php:109
+#: resources/views/partials/dashboard/notifications.php:30
+msgid "Message"
 msgstr ""
 
-msgid "error"
+#: resources/views/transactions.php:84 resources/views/transactions.php:118
+#: resources/views/partials/dashboard/notifications.php:39
+msgid "Next"
 msgstr ""
 
-msgid "success"
+#: resources/views/transactions.php:119
+msgid "No results"
 msgstr ""
 
-msgid "none"
-msgstr ""
-
-msgid "ProductsUpsertTask"
-msgstr ""
-
-msgid "ProductsDeleteTask"
-msgstr ""
-
-msgid "partially_completed"
-msgstr ""
-
-msgid "Cancellation request successfully sent to ChannelEngine."
-msgstr ""
-
-msgid "Order cancellation failed. Reason: "
-msgstr ""
-
-msgid "Shipment create failed. Reason: "
-msgstr ""
-
-msgid "Shipment update failed. Reason: "
-msgstr ""
-
-msgid "Shipment request successfully sent to ChannelEngine."
-msgstr ""
-
-msgid "ce_standard_id"
-msgstr ""
-
-msgid "ce_standard_name"
-msgstr ""
-
-msgid "ce_standard_vat"
-msgstr ""
-
-msgid "ce_standard_stock"
-msgstr ""
-
-msgid "ce_standard_description"
-msgstr ""
-
-msgid "ce_standard_short_description"
-msgstr ""
-
-msgid "ce_standard_price_incl_tax"
-msgstr ""
-
-msgid "ce_standard_price_excl_tax"
-msgstr ""
-
-msgid "ce_standard_sale_price_incl_tax"
-msgstr ""
-
-msgid "ce_standard_sale_price_excl_tax"
-msgstr ""
-
-msgid "ce_standard_sku"
-msgstr ""
-
-msgid "ce_standard_product_url"
-msgstr ""
-
-msgid "ce_standard_category"
-msgstr ""
-
-msgid "ce_standard_image_url"
-msgstr ""
-
-msgid "ce_standard_weight"
-msgstr ""
-
-msgid "ce_standard_length"
-msgstr ""
-
-msgid "ce_standard_width"
-msgstr ""
-
-msgid "ce_standard_height"
-msgstr ""
-
+#: resources/views/partials/attribute_mapping.php:19
+#: resources/views/partials/attribute_mapping.php:32
+#: resources/views/partials/attribute_mapping.php:45
+#: resources/views/partials/attribute_mapping.php:58
+#: resources/views/partials/attribute_mapping.php:71
+#: resources/views/partials/attribute_mapping.php:84
+#: resources/views/partials/attribute_mapping.php:97
+#: resources/views/partials/attribute_mapping.php:110
+#: resources/views/partials/attribute_mapping.php:123
+#: resources/views/partials/attribute_mapping.php:136
+#: resources/views/partials/attribute_mapping.php:149
 msgid "Not mapped"
 msgstr ""
 
-msgid "WooCommerce standard fields"
+#: resources/views/partials/dashboard/notifications.php:13
+msgid "Notifications"
 msgstr ""
 
-msgid "WooCommerce custom fields"
+#: resources/views/transactions.php:61 resources/views/transactions.php:112
+#: resources/views/partials/dashboard/notifications.php:33
+#: resources/views/partials/dashboard/sync_progress.php:11
+#: resources/views/partials/dashboard/sync_progress.php:23
+msgid "of"
 msgstr ""
 
+#: includes/Components/Services/class-cancellation-service.php:57
+msgid "Order cancellation failed. Reason: "
+msgstr ""
+
+#: resources/views/meta_post_box.php:18
+msgid "Order ID:"
+msgstr ""
+
+#: includes/Controllers/class-channel-engine-config-controller.php:412
+msgid "Order statuses are not valid."
+msgstr ""
+
+#: resources/views/transactions.php:33
+msgid "Order sync"
+msgstr ""
+
+#: resources/views/order_status_mapping.php:28
+#: resources/views/enable_and_sync.php:32
+#: resources/views/account_configuration.php:29
+#: resources/views/product_configuration.php:26
+#: resources/views/partials/order_status_mapping.php:24
+msgid "Order synchronization"
+msgstr ""
+
+#: includes/Controllers/class-channel-engine-config-controller.php:415
+msgid "Order synchronization config values are not valid."
+msgstr ""
+
+#: resources/views/partials/dashboard/sync_progress.php:16
+msgid "Order synchronization:"
+msgstr ""
+
+#: resources/views/partials/dashboard/sync_progress.php:24
+msgid "orders downloaded"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:61
+msgid "Orders fulfilled by the marketplace"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:50
+msgid "Orders fulfilled by the merchant"
+msgstr ""
+
+#: resources/views/transactions.php:65 resources/views/transactions.php:113
+#: resources/views/partials/dashboard/notifications.php:34
+msgid "Page size:"
+msgstr ""
+
+#: resources/views/meta_post_box.php:36
+msgid "Payment method:"
+msgstr ""
+
+#: resources/views/transactions.php:79 resources/views/transactions.php:116
+#: resources/views/partials/dashboard/notifications.php:37
+msgid "Previous"
+msgstr ""
+
+#: resources/views/transactions.php:32
+msgid "Product sync"
+msgstr ""
+
+#: resources/views/order_status_mapping.php:24
+#: resources/views/enable_and_sync.php:26
+#: resources/views/account_configuration.php:25
+#: resources/views/product_configuration.php:22
+msgid "Product synchronization"
+msgstr ""
+
+#: resources/views/partials/product_feed.php:4
+msgid "Product synchronization settings"
+msgstr ""
+
+#: resources/views/partials/dashboard/sync_progress.php:4
+msgid "Product synchronization:"
+msgstr ""
+
+#: resources/views/partials/dashboard/sync_progress.php:12
+msgid "products uploaded"
+msgstr ""
+
+#: resources/views/partials/product_feed.php:40
+msgid "psc"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:9
+msgid "Reduce stock?"
+msgstr ""
+
+#: resources/views/order_status_mapping.php:37
+#: resources/views/product_configuration.php:35
+msgid "Save and continue"
+msgstr ""
+
+#: resources/views/config.php:63
+msgid "Save changes"
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:15
+msgid "Select a value to map the Brand attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:67
+msgid "Select a value to map the Catalog price attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:132
+msgid "Select a value to map the Category attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:28
+msgid "Select a value to map the Color attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:119
+msgid "Select a value to map the Details attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:54
+msgid "Select a value to map the GTIN attribute to. I.e.: a valid EAN or UPC."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:80
+msgid "Select a value to map the Price attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:93
+msgid "Select a value to map the Purchase price attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:106
+msgid "Select a value to map the Shipping time attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:41
+msgid "Select a value to map the Size attribute to."
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:145
+msgid "Select a value to map the Vendor product number attribute to."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:107
+msgid "Select the status for marketplace-fulfilled orders."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:95
+msgid "Select the status for shipped orders."
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:83
+msgid "Select the status for unprocessed orders."
+msgstr ""
+
+#: resources/views/partials/product_feed.php:32
+msgid "Set default stock quantity"
+msgstr ""
+
+#: includes/Components/Services/class-shipments-service.php:63
+msgid "Shipment create failed. Reason: "
+msgstr ""
+
+#: includes/class-channelengine.php:494
+msgid "Shipment request successfully sent to ChannelEngine."
+msgstr ""
+
+#: includes/Components/Services/class-shipments-service.php:81
+msgid "Shipment update failed. Reason: "
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:28
+msgid "Shipments"
+msgstr ""
+
+#: resources/views/meta_post_box.php:59
+msgid "Shipping method:"
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:103
+msgid "Shipping time"
+msgstr ""
+
+#: resources/views/partials/dashboard/notifications.php:26
+msgid "Show details"
+msgstr ""
+
+#: includes/class-channelengine.php:381
+msgid "Show details."
+msgstr ""
+
+#: resources/views/partials/trigger_sync.php:46
+msgid "Skip sync"
+msgstr ""
+
+#: resources/views/config.php:42 resources/views/partials/trigger_sync.php:43
+msgid "Start sync now"
+msgstr ""
+
+#: resources/views/transactions.php:44
+msgid "Start Time"
+msgstr ""
+
+#: resources/views/transactions.php:103
+msgid "Start time"
+msgstr ""
+
+#: resources/views/transactions.php:40
+msgid "Status"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:80
+msgid "Status of incoming orders"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:104
+msgid "Status of the orders fulfilled by a marketplace"
+msgstr ""
+
+#: resources/views/partials/order_status_mapping.php:92
+msgid "Status that defines a shipped order"
+msgstr ""
+
+#: includes/Controllers/class-channel-engine-config-controller.php:386
+msgid "Stock quantity is not valid."
+msgstr ""
+
+#: resources/views/partials/product_feed.php:18
+msgid "Stock synchronization"
+msgstr ""
+
+#: includes/Controllers/class-channel-engine-config-controller.php:390
+msgid "Stock synchronization flag is not valid."
+msgstr ""
+
+#: resources/views/partials/trigger_sync.php:30
+msgid "Synchronize orders"
+msgstr ""
+
+#: resources/views/partials/trigger_sync.php:19
+msgid "Synchronize products"
+msgstr ""
+
+#: resources/views/transactions.php:39
+msgid "Task Type"
+msgstr ""
+
+#: resources/views/partials/trigger_sync.php:22
+msgid ""
+"The integration will synchronize all published shop products to "
+"ChannelEngine in the background."
+msgstr ""
+
+#: resources/views/partials/trigger_sync.php:33
+msgid ""
+"The integration will synchronize new and closed orders (fulfilled by the "
+"merchant and fulfilled by the marketplace) from ChannelEngine into the shop."
+msgstr ""
+
+#: resources/views/transactions.php:46
+msgid "Time Completed"
+msgstr ""
+
+#: resources/views/transactions.php:105
+msgid "Time completed"
+msgstr ""
+
+#: resources/views/transactions.php:60 resources/views/transactions.php:111
+#: resources/views/partials/dashboard/notifications.php:32
+msgid "to"
+msgstr ""
+
+#: resources/views/meta_post_box.php:56
+msgid "Track & trace"
+msgstr ""
+
+#: resources/views/meta_post_box.php:78
+msgid "Track and trace:"
+msgstr ""
+
+#: resources/views/transactions.php:26 resources/views/dashboard.php:28
+#: resources/views/config.php:28
+msgid "Transaction log"
+msgstr ""
+
+#: resources/views/transactions.php:106
+#: resources/views/partials/dashboard/notifications.php:27
+msgid "Transaction log details"
+msgstr ""
+
+#: resources/views/transactions.php:29
+msgid "Transactions history log"
+msgstr ""
+
+#: resources/views/meta_post_box.php:83
+msgid "Update tracking information"
+msgstr ""
+
+#: resources/views/partials/attribute_mapping.php:142
 msgid "Vendor product number"
 msgstr ""
 
-msgid "Description"
+#: resources/views/transactions.php:102
+msgid "View details"
 msgstr ""
 
-msgid ""
-"Select a value to map the Brand attribute to."
+#: resources/views/config.php:93 resources/views/product_configuration.php:48
+msgid "Warning"
 msgstr ""
 
-msgid ""
-"Select a value to map the Color attribute to."
+#: includes/Controllers/class-channel-engine-order-status-controller.php:53
+#: includes/Controllers/class-channel-engine-order-status-controller.php:61
+msgid "wc-completed"
 msgstr ""
 
-msgid ""
-"Select a value to map the Size attribute to."
+#: includes/Controllers/class-channel-engine-order-status-controller.php:45
+msgid "wc-processing"
 msgstr ""
 
-msgid ""
-"Select a value to map the GTIN attribute to. I.e.: a valid EAN or UPC."
+#: resources/views/onboarding.php:29
+msgid "Welcome to ChannelEngine"
 msgstr ""
 
+#: resources/views/enable_and_sync.php:46
 msgid ""
-"Select a value to map the Catalog price attribute to."
+"When enabled, it triggers the initial synchronization in the background. "
+"Products from WooCommerce are transferred to ChannelEngine – and orders from "
+"ChannelEngine are imported to WooCommerce."
 msgstr ""
 
-msgid ""
-"Select a value to map the Price attribute to."
+#: resources/views/partials/attribute_mapping.php:7
+msgid "WooCommerce custom fields"
 msgstr ""
 
-msgid ""
-"Select a value to map the Purchase price attribute to."
+#: resources/views/partials/attribute_mapping.php:6
+msgid "WooCommerce standard fields"
 msgstr ""
 
-msgid ""
-"Select a value to map the Details attribute to."
+#: resources/views/config.php:103
+msgid "You are about to disconnect your ChannelEngine account."
 msgstr ""
 
-msgid ""
-"Select a value to map the Category attribute to."
-msgstr ""
-
-msgid ""
-"Select a value to map the Vendor product number attribute to."
-msgstr ""
-
-msgid ""
-"Add fields"
-msgstr ""
-
-msgid ""
-"If checked, product stock is updated once an order has been imported to WooCommerce."
-msgstr ""
-
-msgid ""
-"If checked, shipment information is synchronized with ChannelEngine."
-msgstr ""
-
-msgid ""
-"If checked, the order cancellation is synchronized with ChannelEngine."
-msgstr ""
-
-msgid ""
-"If checked, merchant-fulfilled orders with the status New are imported to WooCommerce."
-msgstr ""
-
-msgid ""
-"If checked, marketplace-fulfilled orders are imported to WooCommerce from set date."
+#: resources/views/enable_and_sync.php:39
+msgid "You are just one step away"
 msgstr ""

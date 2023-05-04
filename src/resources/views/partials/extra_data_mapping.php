@@ -15,7 +15,7 @@ use ChannelEngine\Utility\Shop_Helper;
         <label>
             <select>
             </select>
-            <input type="text" class="small-number-input" maxlength="100" minlength="1"/>
+            <input type="text" class="small-number-input" maxlength="100" minlength="1" placeholder="<?php echo __("Enter CE field name") ?>" style="width: 150px"/>
             <a class="ce-button-extra-data ce-button__primary ce-button-remove-mapping">-</a>
         </label>
     </div>

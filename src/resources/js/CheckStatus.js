@@ -12,12 +12,19 @@ document.addEventListener(
             orderProgress = document.getElementById('ce-order-progress'),
             orderProgressBar = document.getElementById('ce-order-progress-bar'),
             orderTotal = document.getElementById('ce-order-total'),
-            orderSynced = document.getElementById('ce-order-synced');
+            orderSynced = document.getElementById('ce-order-synced'),
+            productSyncSection = document.getElementById('ce-product-sync-in-progress');
 
         checkStatus();
 
         function checkStatus() {
             ajaxService.get(url.value, function (response) {
+                if(response.export_products) {
+                    productSyncSection.style.display = '';
+                } else {
+                    productSyncSection.style.display = 'none';
+                }
+
                 if (response.product_sync.status === 'completed' && response.order_sync.status === 'completed') {
                     window.location.reload();
                 } else {

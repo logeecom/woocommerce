@@ -101,6 +101,8 @@ Frontend_Helper::render_view('config');
                value="<?php echo __('If you disable integration, synchronization between WooCommerce and ChannelEngine will be disabled.', 'channelengine-wc'  ) ?>">
         <input id="ce-disconnect-text" type="hidden"
                value="<?php echo __('You are about to disconnect your ChannelEngine account.', 'channelengine-wc'  ); ?>">
+        <input id="ceExportProductsUrl" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ); ?>">
     </main>
 </div>
 <script src="<?php echo Asset_Helper::get_js_url('DisconnectService.js') ?>"></script>
