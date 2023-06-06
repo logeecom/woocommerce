@@ -528,11 +528,11 @@ class Products_Service implements ProductsService {
 			] );
 		}
 
-		foreach ( $images as $image ) {
-			$additional_image_urls[] = $image->guid;
-		}
+        foreach ( $images as $index => $image ) {
+            $additional_image_urls[] = $this->get_image_guid($image_ids[$index], $images);
+        }
 
-		return $additional_image_urls;
+        return $additional_image_urls;
 	}
 
 	/**
@@ -730,4 +730,21 @@ class Products_Service implements ProductsService {
 	protected function get_product_tax_rate( $product ) {
 		return ! empty( static::$tax_class_map[ $product->get_tax_class() ] ) ? static::$tax_class_map[ $product->get_tax_class() ] : 'STANDARD';
 	}
+
+    /**
+     * Retrieves image guid based on image id.
+     *
+     * @param string $image_id
+     * @param array $images
+     * @return string
+     */
+    private function get_image_guid(string $image_id, array $images): string {
+        foreach ($images as $image) {
+            if($image->ID == $image_id) {
+                return $image->guid;
+            }
+        }
+
+        return '';
+    }
 }
