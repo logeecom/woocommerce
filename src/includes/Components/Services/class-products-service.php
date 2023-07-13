@@ -486,8 +486,8 @@ class Products_Service implements ProductsService {
 			case Standard_Product_Attributes::PREFIX . '_' . 'price_excl_tax':
 				return $wc_product->get_regular_price();
 			case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_incl_tax':
-				return wc_get_price_including_tax( $wc_product, [ 'price' => $wc_product->get_sale_price() ] );
-			case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_excl_tax':
+                return $wc_product->get_sale_price() !== '' ? wc_get_price_including_tax( $wc_product, [ 'price' => $wc_product->get_sale_price() ] ) : $wc_product->get_sale_price();
+            case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_excl_tax':
 				return $wc_product->get_sale_price();
 			case Standard_Product_Attributes::PREFIX . '_' . 'sku':
 				return $wc_product->get_sku();
@@ -553,7 +553,7 @@ class Products_Service implements ProductsService {
                 $meta_lookup,
                 [ $extra_attribute_value ]
             );
-            if ($attr) {
+            if ($attr !== null) {
                 $custom_attributes[] = new CustomAttribute(
                     $extra_attribute_key,
                     $attr,
