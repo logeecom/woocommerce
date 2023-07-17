@@ -27,7 +27,8 @@ class Shipments_Service implements ShipmentsService {
 	 */
 	public function getAllItems( $shopOrderId ) {
 		$order       = new WC_Order( $shopOrderId );
-		$ce_order_id = get_post_meta( $order->get_id(), '_channel_engine_order_id', true );
+        $wcGetOrder = wc_get_order( $order->get_id() );
+        $ce_order_id = $wcGetOrder->get_meta('_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
 			return [];

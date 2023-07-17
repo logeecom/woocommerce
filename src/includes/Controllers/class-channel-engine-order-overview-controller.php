@@ -28,26 +28,27 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	/**
 	 * Renders ChannelEngine order overview box content.
 	 *
-	 * @param WP_Post $wp_post
+     * @param string $postId
 	 */
-	public function render( WP_Post $wp_post ) {
+	public function render( string $postId ) {
 		Script_Loader::load_css( [ '/css/meta-post-box.css' ] );
 		Script_Loader::load_js( [
 			'/channelengine/js/AjaxService.js',
 			'/js/TrackAndTrace.js',
 		] );
 
-		$order = get_post( $wp_post->ID );
+        $order      = get_post( $postId );
+        $wcGetOrder = wc_get_order( $postId );
 
 		echo View::file( '/meta_post_box.php' )->render( [
-			'order_id'               => get_post_meta( $wp_post->ID, '_channel_engine_order_id', true ),
-			'channel_name'           => get_post_meta( $wp_post->ID, '_channel_engine_channel_name', true ),
-			'channel_order_no'       => get_post_meta( $wp_post->ID, '_channel_engine_channel_order_no', true ),
-			'payment_method'         => get_post_meta( $wp_post->ID, '_channel_engine_payment_method', true ),
-			'track_and_trace'        => get_post_meta( $wp_post->ID, '_shipping_ce_track_and_trace', true ),
-			'chosen_shipping_method' => get_post_meta( $wp_post->ID, '_shipping_ce_shipping_method', true ),
+            'order_id'               => $wcGetOrder->get_meta( '_channel_engine_order_id' ),
+            'channel_name'           => $wcGetOrder->get_meta( '_channel_engine_channel_name' ),
+            'channel_order_no'       => $wcGetOrder->get_meta( '_channel_engine_channel_order_no' ),
+            'payment_method'         => $wcGetOrder->get_meta( '_channel_engine_payment_method' ),
+            'track_and_trace'        => $wcGetOrder->get_meta( '_shipping_ce_track_and_trace' ),
+            'chosen_shipping_method' => $wcGetOrder->get_meta( '_shipping_ce_shipping_method' ),
 			'shipping_methods'       => WC()->shipping() ? WC()->shipping()->load_shipping_methods() : [],
-			'post_id'                => $wp_post->ID,
+			'post_id'                => $postId,
 			'order_cancelled'        => $order->post_status === 'wc-cancelled',
 		] );
 	}
@@ -95,10 +96,12 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	protected function handle_order_update( $raw_data ) {
 		$id = $raw_data['postId'];
 
+        $wcGetOrder = wc_get_order( $id );
+
 		$track_and_trace = ! empty( $raw_data['trackAndTrace'] ) ?
-			$raw_data['trackAndTrace'] : get_post_meta( $id, '_shipping_ce_track_and_trace', true );
+			$raw_data['trackAndTrace'] : $wcGetOrder->get_meta( '_shipping_ce_track_and_trace' );
 		$shipping_method = ! empty( $raw_data['shippingMethod'] ) ?
-			$raw_data['shippingMethod'] : get_post_meta( $id, '_shipping_ce_shipping_method', true );
+			$raw_data['shippingMethod'] : $wcGetOrder->get_meta( '_shipping_ce_shipping_method' );
 		$order           = get_post( $id );
 		$order_mappings  = $this->get_order_config_service()->getOrderSyncConfig();
 
