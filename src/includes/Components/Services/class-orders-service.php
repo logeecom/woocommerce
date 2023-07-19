@@ -78,6 +78,11 @@ class Orders_Service extends OrdersService {
 				$wc_order->add_item( $this->get_tax_subtotal_item( $order ) );
 			}
 
+            $wc_order->add_meta_data( '_channel_engine_order_id', $order->getId() );
+            $wc_order->add_meta_data( '_channel_engine_channel_name', $order->getChannelName() );
+            $wc_order->add_meta_data( '_channel_engine_channel_order_no', $order->getChannelOrderNo() );
+            $wc_order->add_meta_data( '_channel_engine_payment_method', $order->getPaymentMethod() );
+
 			$wc_order->save();
 			$this->save_post_meta( $order, $wc_order->get_id() );
 			if ( $this->get_product_sync_config_service()->get()->isEnabledStockSync()

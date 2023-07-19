@@ -424,10 +424,7 @@ class ChannelEngine {
 			return;
 		}
 
-        $ce_order_id = null;
-
-        $order = wc_get_order( $order->get_id() );
-        $order && $ce_order_id = $order->get_meta( '_channel_engine_order_id' );
+        $ce_order_id = $order->get_meta( '_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
 			return;
