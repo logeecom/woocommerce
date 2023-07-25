@@ -447,8 +447,7 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function handle_order_cancellation( WC_Order $order ) {
-        $wcGetOrder = wc_get_order( $order->get_id() );
-        if ( $wcGetOrder->get_meta( '_ce_order_cancelled' ) ) {
+        if ( $order->get_meta( '_ce_order_cancelled' ) ) {
             return;
         }
 
@@ -463,8 +462,8 @@ class ChannelEngine {
 		$handler = new CancellationRequestHandler();
 		try {
 			$handler->handle( $request, '' );
-            $wcGetOrder->update_meta_data( '_ce_order_cancelled', true );
-            $wcGetOrder->save();
+            $order->update_meta_data( '_ce_order_cancelled', true );
+            $order->save();
 			update_option(
 				'_channel_engine_order_save_success',
 				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine-wc' )
@@ -484,13 +483,12 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function handle_order_shipment( WC_Order $order ) {
-        $wcGetOrder = wc_get_order( $order->get_id() );
-        if ( $wcGetOrder->get_meta( '_ce_order_shipped' ) ) {
+        if ( $order->get_meta( '_ce_order_shipped' ) ) {
             return;
         }
 
-        $track_trace_no  = $wcGetOrder->get_meta( '_shipping_ce_track_and_trace' );
-        $shipping_method = $wcGetOrder->get_meta( '_shipping_ce_shipping_method' );
+        $track_trace_no  = $order->get_meta( '_shipping_ce_track_and_trace' );
+        $shipping_method = $order->get_meta( '_shipping_ce_shipping_method' );
 		$request         = new CreateShipmentRequest(
 			$order->get_id(),
 			$this->get_shipments_service()->getAllItems( $order->get_id() ),
@@ -506,8 +504,8 @@ class ChannelEngine {
 		$handler = new ShipmentsCreateRequestHandler();
 		try {
 			$handler->handle( $request );
-            $wcGetOrder->update_meta_data( '_ce_order_shipped', true );
-            $wcGetOrder->save();
+            $order->update_meta_data( '_ce_order_shipped', true );
+            $order->save();
 			update_option(
 				'_channel_engine_order_save_success',
 				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine-wc' )

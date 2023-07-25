@@ -300,19 +300,6 @@ class Orders_Service extends OrdersService {
 	}
 
 	/**
-	 * Saves post meta.
-	 *
-	 * @param Order $order
-	 * @param int   $post_id
-	 */
-	protected function save_post_meta( Order $order, $post_id ) {
-		add_post_meta( $post_id, '_channel_engine_order_id', $order->getId() );
-		add_post_meta( $post_id, '_channel_engine_channel_name', $order->getChannelName() );
-		add_post_meta( $post_id, '_channel_engine_channel_order_no', $order->getChannelOrderNo() );
-		add_post_meta( $post_id, '_channel_engine_payment_method', $order->getPaymentMethod() );
-	}
-
-	/**
 	 * Creates CreateResponse.
 	 *
 	 * @param bool   $status
