@@ -50,6 +50,10 @@ class Orders_Service extends OrdersService {
 	 */
 	public function create( Order $order ) {
 		try {
+            if ( $this->orderFromChannelEngineAlreadyExists( $order ) ) {
+                return $this->create_response( false, '', 'Order already created' );
+            }
+
 			$wc_products = $this->fetch_products( $order );
 			$order_data  = $this->format_order_data( $order );
 			$wc_order    = wc_create_order( $order_data );
@@ -342,4 +346,21 @@ class Orders_Service extends OrdersService {
 
 		return $this->product_sync_config_service;
 	}
+
+    /**
+     * Checks if order from ChannelEngine already exist in WooCommerce.
+     *
+     * @param Order $order
+     * @return bool
+     */
+    private function orderFromChannelEngineAlreadyExists( Order $order ): bool {
+        $wc_orders = wc_get_orders(
+            array(
+                'meta_key'   => '_channel_engine_order_id',
+                'meta_value' => $order->getId(),
+            )
+        );
+
+        return ! empty( $wc_orders );
+    }
 }
