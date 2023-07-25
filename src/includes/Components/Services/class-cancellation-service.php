@@ -25,8 +25,8 @@ class Cancellation_Service implements CancellationService {
 	 * @return CancellationItem[]
 	 */
 	public function getAllItems( $orderId ) {
-		$order       = new WC_Order( $orderId );
-		$ce_order_id = get_post_meta( $order->get_id(), '_channel_engine_order_id', true );
+        $order = wc_get_order( $orderId );
+        $ce_order_id = $order->get_meta( '_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
 			return [];

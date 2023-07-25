@@ -65,13 +65,8 @@ class Orders_Service extends OrdersService {
 			$wc_order->set_date_created( $order->getOrderDate()->format( DATE_ATOM ) );
 			$wc_order->set_total( $order->getTotalInclVat() );
 			$wc_order->set_shipping_total( $order->getShippingCostsInclVat() );
-			$wc_order->set_address(
-				$this->format_address_data( $order->getBillingAddress(), $order->getEmail(), $order->getPhone() )
-			);
-			$wc_order->set_address(
-				$this->format_address_data( $order->getShippingAddress(), $order->getEmail(), $order->getPhone() ),
-				'shipping'
-			);
+			$wc_order->set_shipping_address( $this->format_address_data( $order->getShippingAddress(), $order->getEmail(), $order->getPhone() ) );
+			$wc_order->set_billing_address( $this->format_address_data( $order->getBillingAddress(), $order->getEmail(), $order->getPhone() ) );
 
 			$this->add_items( $wc_products, $wc_order );
 			$wc_order->add_item( $this->get_shipping_item( $order ) );
@@ -82,10 +77,14 @@ class Orders_Service extends OrdersService {
 				$wc_order->add_item( $this->get_tax_subtotal_item( $order ) );
 			}
 
+			$wc_order->add_meta_data( '_channel_engine_order_id', $order->getId() );
+			$wc_order->add_meta_data( '_channel_engine_channel_name', $order->getChannelName() );
+			$wc_order->add_meta_data( '_channel_engine_channel_order_no', $order->getChannelOrderNo() );
+			$wc_order->add_meta_data( '_channel_engine_payment_method', $order->getPaymentMethod() );
+
 			$wc_order->save();
-			$this->save_post_meta( $order, $wc_order->get_id() );
 			if ( $this->get_product_sync_config_service()->get()->isEnabledStockSync()
-			     && $this->get_order_config_service()->getOrderSyncConfig()->isEnableReduceStock() ) {
+				 && $this->get_order_config_service()->getOrderSyncConfig()->isEnableReduceStock() ) {
 				wc_reduce_stock_levels( $wc_order->get_id() );
 			}
 		} catch ( BaseException $e ) {
@@ -119,36 +118,36 @@ class Orders_Service extends OrdersService {
 				$status = $order->getStatus();
 		}
 
-		return [
+		return array(
 			'status'      => $status,
 			'customer_id' => null,
-		];
+		);
 	}
 
 	/**
 	 * Formats order address data.
 	 *
 	 * @param Address $address
-	 * @param string $email
-	 * @param string $phone
+	 * @param string  $email
+	 * @param string  $phone
 	 *
 	 * @return array
 	 */
 	protected function format_address_data( Address $address, $email, $phone ) {
-		return [
+		return array(
 			'first_name' => $address->getFirstName(),
 			'last_name'  => $address->getLastName(),
 			'company'    => $address->getCompanyName(),
 			'address_1'  => $address->getStreetName() . ' ' .
-			                $address->getHouseNumber() . ' ' . $address->getHouseNumberAddition(),
+							$address->getHouseNumber() . ' ' . $address->getHouseNumberAddition(),
 			'address_2'  => '',
 			'city'       => $address->getCity(),
 			'postcode'   => $address->getZipCode(),
-			'country'    => strtoupper($address->getCountryIso()),
+			'country'    => strtoupper( $address->getCountryIso() ),
 			'state'      => $address->getRegion(),
 			'email'      => $email,
 			'phone'      => $phone,
-		];
+		);
 	}
 
 	/**
@@ -161,17 +160,22 @@ class Orders_Service extends OrdersService {
 	 * @throws ProductNotAvailableException
 	 */
 	protected function fetch_products( Order $order ) {
-		$result = [];
+		$result = array();
 
 		$product_ids_batch = $this->get_product_ids( $order );
-		$products          = wc_get_products( [ 'include' => $product_ids_batch ] );
-		$variations        = wc_get_products( [ 'type' => 'variation', 'include' => $product_ids_batch ] );
+		$products          = wc_get_products( array( 'include' => $product_ids_batch ) );
+		$variations        = wc_get_products(
+			array(
+				'type'    => 'variation',
+				'include' => $product_ids_batch,
+			)
+		);
 		$products          = array_merge( $products, $variations );
 
 		foreach ( $order->getLines() as $order_line ) {
 			$product = $this->get_product( $products, (int) $order_line->getMerchantProductNo() );
 
-			$product_data = [
+			$product_data = array(
 				'name'         => $product->get_name(),
 				'sku'          => $product->get_sku(),
 				'variation_id' => $product->is_type( 'variation' ) ? $order_line->getMerchantProductNo() : 0,
@@ -180,24 +184,27 @@ class Orders_Service extends OrdersService {
 				'total'        => $order_line->getLineTotalInclVat(),
 				'total_tax'    => 0,
 				'subtotal_tax' => 0,
-				'taxes'        => [ 'total' => [], 'subtotal' => [] ],
-			];
+				'taxes'        => array(
+					'total'    => array(),
+					'subtotal' => array(),
+				),
+			);
 
 			if ( wc_tax_enabled() ) {
-				$product_data['subtotal']     -= $order_line->getUnitVat();
-				$product_data['total']        -= $order_line->getLineVat();
+				$product_data['subtotal']    -= $order_line->getUnitVat();
+				$product_data['total']       -= $order_line->getLineVat();
 				$product_data['total_tax']    = $order_line->getLineVat();
 				$product_data['subtotal_tax'] = $order_line->getLineVat();
-				$product_data['taxes']        = [
-					'total'    => [ self::CUSTOM_TAX_RATE_ID => $order_line->getLineVat() ],
-					'subtotal' => [ self::CUSTOM_TAX_RATE_ID => $order_line->getLineVat() ],
-				];
+				$product_data['taxes']        = array(
+					'total'    => array( self::CUSTOM_TAX_RATE_ID => $order_line->getLineVat() ),
+					'subtotal' => array( self::CUSTOM_TAX_RATE_ID => $order_line->getLineVat() ),
+				);
 			}
 
-			$result[] = [
+			$result[] = array(
 				'product'      => $product,
 				'product_data' => $product_data,
-			];
+			);
 		}
 
 		return $result;
@@ -231,7 +238,7 @@ class Orders_Service extends OrdersService {
 	 * @return array
 	 */
 	protected function get_product_ids( Order $order ) {
-		$result = [];
+		$result = array();
 
 		foreach ( $order->getLines() as $order_line ) {
 			$result[] = $order_line->getMerchantProductNo();
@@ -243,7 +250,7 @@ class Orders_Service extends OrdersService {
 	/**
 	 * Adds product items to order.
 	 *
-	 * @param array $wc_products
+	 * @param array    $wc_products
 	 * @param WC_Order $wc_order
 	 *
 	 * @throws WC_Data_Exception
@@ -270,7 +277,7 @@ class Orders_Service extends OrdersService {
 
 		if ( wc_tax_enabled() ) {
 			$shipping_item->set_total( $order->getShippingCostsInclVat() - $order->getShippingCostsVat() );
-			$shipping_item->set_taxes( [ 'total' => [ self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat() ] ] );
+			$shipping_item->set_taxes( array( 'total' => array( self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat() ) ) );
 		}
 
 		return $shipping_item;
@@ -297,22 +304,9 @@ class Orders_Service extends OrdersService {
 	}
 
 	/**
-	 * Saves post meta.
-	 *
-	 * @param Order $order
-	 * @param int $post_id
-	 */
-	protected function save_post_meta( Order $order, $post_id ) {
-		add_post_meta( $post_id, '_channel_engine_order_id', $order->getId() );
-		add_post_meta( $post_id, '_channel_engine_channel_name', $order->getChannelName() );
-		add_post_meta( $post_id, '_channel_engine_channel_order_no', $order->getChannelOrderNo() );
-		add_post_meta( $post_id, '_channel_engine_payment_method', $order->getPaymentMethod() );
-	}
-
-	/**
 	 * Creates CreateResponse.
 	 *
-	 * @param bool $status
+	 * @param bool   $status
 	 * @param string $shopOrderId
 	 * @param string $message
 	 *

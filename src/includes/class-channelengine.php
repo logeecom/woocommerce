@@ -2,6 +2,7 @@
 
 namespace ChannelEngine;
 
+use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use ChannelEngine\BusinessLogic\Authorization\Contracts\AuthorizationService;
 use ChannelEngine\BusinessLogic\Cancellation\Domain\CancellationItem;
 use ChannelEngine\BusinessLogic\Cancellation\Domain\CancellationRequest;
@@ -32,6 +33,7 @@ use ChannelEngine\Utility\Shop_Helper;
 use Exception;
 use WC_Order;
 use WP_Post;
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
@@ -110,6 +112,14 @@ class ChannelEngine {
 		add_action( 'admin_notices', array( $this, 'render_notifications' ) );
 		add_action( 'woocommerce_loaded', array( $this, 'add_order_change_hook' ) );
 		add_action( 'wp_loaded', [ $this, 'update_database' ] );
+        add_action(
+            'before_woocommerce_init',
+            function() {
+                if ( class_exists( FeaturesUtil::class ) ) {
+                    FeaturesUtil::declare_compatibility( 'custom_order_tables', static::get_plugin_dir_path(), true );
+                }
+            }
+        );
 
 		try {
 			$auth_info = $this->get_auth_service()->getAuthInfo();
@@ -294,19 +304,23 @@ class ChannelEngine {
 	 * @param string $page
 	 * @param WP_Post $post
 	 */
-	public function add_channel_engine_overview_box( $page, $post ) {
-		if ( 'shop_order' === $page && $post && $post->__isset( '_channel_engine_order_id' ) ) {
-			$controller = new Channel_Engine_Order_Overview_Controller();
-			add_meta_box(
-				'channel-engine-order-overview',
-				'ChannelEngine',
-				array( $controller, 'render' ),
-				'shop_order',
-				'side',
-				'core'
-			);
-		}
-	}
+    public function add_channel_engine_overview_box( $page, $post ) {
+        if ( ( 'shop_order' === $page && $post && $post->__isset( '_channel_engine_order_id' ) )
+            || ( 'woocommerce_page_wc-orders' === $page && $post instanceof WC_Order && $post->get_meta_data( '_channel_engine_order_id' ) ) ) {
+            $controller = new Channel_Engine_Order_Overview_Controller();
+            $screen     = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
+                ? wc_get_page_screen_id( 'shop-order' )
+                : 'shop_order';
+            add_meta_box(
+                'channel-engine-order-overview',
+                'ChannelEngine',
+                function ($data) use ($controller) { $data_id = $data->ID;  $controller->render($data_id); },
+                $screen,
+                'side',
+                'core'
+            );
+        }
+    }
 
 	/**
 	 * Plugin deactivation function.
@@ -410,7 +424,7 @@ class ChannelEngine {
 			return;
 		}
 
-		$ce_order_id = get_post_meta( $order->get_id(), '_channel_engine_order_id', true );
+        $ce_order_id = $order->get_meta( '_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
 			return;
@@ -433,9 +447,9 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function handle_order_cancellation( WC_Order $order ) {
-		if ( get_post_meta( $order->get_id(), '_ce_order_cancelled', true ) ) {
-			return;
-		}
+        if ( $order->get_meta( '_ce_order_cancelled' ) ) {
+            return;
+        }
 
 		$request = new CancellationRequest(
 			$order->get_id(),
@@ -444,10 +458,12 @@ class ChannelEngine {
 			false,
 			CancellationRequest::REASON_OTHER
 		);
+
 		$handler = new CancellationRequestHandler();
 		try {
 			$handler->handle( $request, '' );
-			update_post_meta( $order->get_id(), '_ce_order_cancelled', true );
+            $order->update_meta_data( '_ce_order_cancelled', true );
+            $order->save();
 			update_option(
 				'_channel_engine_order_save_success',
 				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine-wc' )
@@ -467,12 +483,12 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function handle_order_shipment( WC_Order $order ) {
-		if ( get_post_meta( $order->get_id(), '_ce_order_shipped', true ) ) {
-			return;
-		}
+        if ( $order->get_meta( '_ce_order_shipped' ) ) {
+            return;
+        }
 
-		$track_trace_no  = get_post_meta( $order->get_id(), '_shipping_ce_track_and_trace', true );
-		$shipping_method = get_post_meta( $order->get_id(), '_shipping_ce_shipping_method', true );
+        $track_trace_no  = $order->get_meta( '_shipping_ce_track_and_trace' );
+        $shipping_method = $order->get_meta( '_shipping_ce_shipping_method' );
 		$request         = new CreateShipmentRequest(
 			$order->get_id(),
 			$this->get_shipments_service()->getAllItems( $order->get_id() ),
@@ -488,7 +504,8 @@ class ChannelEngine {
 		$handler = new ShipmentsCreateRequestHandler();
 		try {
 			$handler->handle( $request );
-			update_post_meta( $order->get_id(), '_ce_order_shipped', true );
+            $order->update_meta_data( '_ce_order_shipped', true );
+            $order->save();
 			update_option(
 				'_channel_engine_order_save_success',
 				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine-wc' )
