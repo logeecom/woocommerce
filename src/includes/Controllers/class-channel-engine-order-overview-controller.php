@@ -12,7 +12,7 @@ use ChannelEngine\Infrastructure\ORM\Exceptions\RepositoryNotRegisteredException
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Utility\Script_Loader;
 use ChannelEngine\Utility\View;
-use WP_Post;
+use WC_Order;
 
 /**
  * Class Channel_Engine_Order_Overview_Controller
@@ -63,8 +63,9 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 			$this->redirect404();
 		}
 
+		$order = wc_get_order($raw['postId']);
 		try {
-			$this->handle_order_update( $raw );
+			$this->handle_order_update( $order );
 		} catch ( BaseException $e ) {
 			$this->return_json(
 				[
@@ -75,28 +76,26 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 		}
 
 		if ( ! empty( $raw['trackAndTrace'] ) ) {
-			update_post_meta( $raw['postId'], '_shipping_ce_track_and_trace', $raw['trackAndTrace'] );
+			$order->update_meta_data('_shipping_ce_track_and_trace', $raw['trackAndTrace']);
+			$order->save();
 		}
 
 		if ( ! empty( $raw['shippingMethod'] ) ) {
-			update_post_meta( $raw['postId'], '_shipping_ce_shipping_method', $raw['shippingMethod'] );
+			$order->update_meta_data( '_shipping_ce_shipping_method', $raw['shippingMethod'] );
+			$order->save();
 		}
 
 		$this->return_json( [ 'success' => true ] );
 	}
 
 	/**
-	 * @param $raw_data
+	 * @param WC_Order $order
 	 *
 	 * @throws FailedToRetrieveOrdersChannelSupportEntityException
 	 * @throws QueryFilterInvalidParamException
 	 * @throws RepositoryNotRegisteredException
 	 */
-	protected function handle_order_update( $raw_data ) {
-		$id = $raw_data['postId'];
-
-        $order = wc_get_order( $id );
-
+	protected function handle_order_update( WC_Order $order) {
 		$track_and_trace = ! empty( $raw_data['trackAndTrace'] ) ?
 			$raw_data['trackAndTrace'] : $order->get_meta( '_shipping_ce_track_and_trace' );
 		$shipping_method = ! empty( $raw_data['shippingMethod'] ) ?
@@ -111,7 +110,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
         }
 
 		$request = new UpdateShipmentRequest(
-			$id,
+			$order->get_id(),
 			false,
 			$shipping_method,
 			$track_and_trace,
