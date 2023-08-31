@@ -43,7 +43,10 @@ document.addEventListener(
             duplicatesHeaderText = document.getElementById('ce-extra-data-duplicates-header').value,
             startSyncDate = document.getElementById('startSyncDate'),
             getAccountNameUrl = document.getElementById('ceGetAccountName'),
-            exportProductsUrl = document.getElementById('ceExportProductsUrl');
+            exportProductsUrl = document.getElementById('ceExportProductsUrl'),
+            threeLevelSyncUrl = document.getElementById('ceThreeLevelSyncUrl');
+        let threeLevelSyncStatus = document.getElementById('enableThreeLevelSync'),
+            threeLevelSyncAttribute= document.getElementById('ceThreeLevelSyncAttribute');
 
         document.getElementById('displayOrderFulfilledDateDiv').removeAttribute('hidden');
 
@@ -55,9 +58,14 @@ document.addEventListener(
         ChannelEngine.triggerSyncService.checkStatus();
         ChannelEngine.disconnectService.getAccountName(getAccountNameUrl);
         ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
+        ChannelEngine.productService.getThreeLevelSyncSettings(threeLevelSyncUrl.value);
 
         if( ! ( enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked ) ) ) {
             enableReduceStock.setAttribute('disabled', 'true');
+        }
+
+        if ( ! threeLevelSyncStatus.checked ) {
+            ChannelEngine.productService.disableThreeLevelSyncOption();
         }
 
         syncNowBtn.onclick = function () {
@@ -131,6 +139,17 @@ document.addEventListener(
         );
 
         saveBtn.onclick = function () {
+            let newThreeLevelSyncStatus = threeLevelSyncStatus.checked,
+                newThreeLevelSyncAttribute = threeLevelSyncAttribute.value;
+
+            if (ChannelEngine.productService.threeLevelSyncConfigChanged(newThreeLevelSyncStatus, newThreeLevelSyncAttribute)) {
+                ChannelEngine.triggerSyncService.showThreeLevelSyncChangedModal(() => triggerSyncUrl.value, saveConfig);
+            } else {
+                saveConfig(true);
+            }
+        }
+
+        let saveConfig = (showStartSyncModal) => {
             let extraData = {},
                 extraDataMapping = document.querySelectorAll('.ce-input-extra-data'),
                 isValid = true;
@@ -169,6 +188,8 @@ document.addEventListener(
                     stockQuantity: quantity.value,
                     enabledStockSync: enableStockSync.checked,
                     enableReduceStock: enableReduceStock.checked,
+                    threeLevelSyncStatus: threeLevelSyncStatus.checked,
+                    threeLevelSyncAttribute: threeLevelSyncAttribute.value,
                     orderStatuses: {
                         incoming: incoming.value,
                         shipped: shipped.value,
@@ -200,6 +221,7 @@ document.addEventListener(
                     ChannelEngine.notificationService.addNotification(response.message, response.success);
                     ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
                     ChannelEngine.orderService.get(orderStatusesUrl.value);
+                    ChannelEngine.productService.getThreeLevelSyncSettings(threeLevelSyncUrl.value);
 
                     if (response.success) {
                         let productCheckbox = document.getElementById('ce-product-sync-checkbox');
@@ -208,7 +230,13 @@ document.addEventListener(
                             productCheckbox.setAttribute('disabled', 'true');
                         productCheckbox.checked = false;
 
-                        ChannelEngine.triggerSyncService.showModal(triggerSyncUrl.value);
+                        if ( ! threeLevelSyncStatus.checked ) {
+                            ChannelEngine.productService.disableThreeLevelSyncOption();
+                        }
+
+                        if (showStartSyncModal) {
+                            ChannelEngine.triggerSyncService.showModal(triggerSyncUrl.value);
+                        }
                     }
                 }
             )
@@ -267,6 +295,18 @@ document.addEventListener(
                     ChannelEngine.productService.enableProductSynchronizationFields();
                 } else {
                     ChannelEngine.productService.disableProductSynchronizationFields()
+                }
+            }
+        );
+
+        threeLevelSyncStatus = document.getElementById('enableThreeLevelSync')
+        document.getElementById('enableThreeLevelSync').addEventListener(
+            'change',
+            function () {
+                if(threeLevelSyncStatus.checked) {
+                    ChannelEngine.productService.enableThreeLevelSyncOption();
+                } else {
+                    ChannelEngine.productService.disableThreeLevelSyncOption()
                 }
             }
         );

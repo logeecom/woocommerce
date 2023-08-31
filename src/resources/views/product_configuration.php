@@ -48,6 +48,8 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
                    value="<?php echo __('Warning', 'channelengine-wc' ); ?>">
             <input id="ceExportProductsUrl" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ); ?>">
+            <input id="ceThreeLevelSyncUrl" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_three_level_sync_config' ); ?>">
         </div>
     </main>
 </div>

@@ -50,7 +50,27 @@ if (!window.ChannelEngine) {
             ceSetHelp(".ce-modal-content");
         };
 
-        this.triggerSync = function (url) {
+        this.showThreeLevelSyncChangedModal = function (url, onSave) {
+            let saveButton = document.getElementById('ce-change-three-level-sync-btn'),
+                modal = document.getElementById('ce-three-level-sync-changed-modal'),
+                closeButtons = modal.querySelectorAll(".ce-close-modal-button");
+
+            modal.style.display = "block";
+
+            closeButtons.forEach(closeButton => {
+                closeButton.addEventListener('click', () => {
+                    modal.style.display = "none";
+                });
+            })
+
+            saveButton.addEventListener('click', () => {
+                modal.style.display = "none";
+                onSave(false);
+                this.triggerSync(url, true);
+            });
+        }
+
+        this.triggerSync = function (url, threeLevelConfigChanged = false) {
             const orderCheckbox = document.getElementById('ce-order-sync-checkbox'),
                 productCheckbox = document.getElementById('ce-product-sync-checkbox'),
                 enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
@@ -59,7 +79,7 @@ if (!window.ChannelEngine) {
             ChannelEngine.ajaxService.post(
                 url,
                 {
-                    product_sync: productCheckbox.checked,
+                    product_sync: threeLevelConfigChanged ? true : productCheckbox.checked,
                     order_sync: orderCheckbox.checked && ( enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked )
                 },
                 function (response) {

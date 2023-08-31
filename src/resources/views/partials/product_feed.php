@@ -40,7 +40,8 @@ use ChannelEngine\Utility\Shop_Helper;
             <span id="psc"><?php echo __( 'psc', 'channelengine-wc' ); ?></span>
         </label>
     </div>
-    <div>
+    <div
+        <?php include plugin_dir_path( __FILE__ ) . 'three_level_sync.php' ?>>
         <?php include plugin_dir_path( __FILE__ ) . 'attribute_mapping.php' ?>
         <?php include plugin_dir_path( __FILE__ ) . 'extra_data_mapping.php' ?>
     </div>

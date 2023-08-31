@@ -9,16 +9,20 @@ document.addEventListener(
             stockUrl = document.getElementById('ce-stock-url'),
             extraDataUrl = document.getElementById('ceProductExtraData'),
             getAccountUrl = document.getElementById('ceGetAccountName'),
-            exportProductsUrl = document.getElementById('ceExportProductsUrl');
+            exportProductsUrl = document.getElementById('ceExportProductsUrl'),
+            threeLevelSyncUrl = document.getElementById('ceThreeLevelSyncUrl');
 
         ChannelEngine.disconnectService.getAccountName(getAccountUrl);
         ChannelEngine.productService.get(stockUrl.value);
         ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
         ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
+        ChannelEngine.productService.getThreeLevelSyncSettings(threeLevelSyncUrl.value);
 
         link.onclick = () => {
             const quantity = document.getElementById('ceStockQuantity'),
                 enabledStockSync = document.getElementById('enableStockSync'),
+                enabledThreeLevelSync = document.getElementById('enableThreeLevelSync'),
+                threeLevelSyncAttribute= document.getElementById('ceThreeLevelSyncAttribute'),
                 exportProducts = document.getElementById('enableExportProducts').checked ? 1 : 0,
                 brandMapping = document.getElementById('ceBrand'),
                 colorMapping = document.getElementById('ceColor'),
@@ -68,6 +72,8 @@ document.addEventListener(
                 exportProducts: exportProducts,
                 quantity: quantity.value,
                 enabledStockSync: enabledStockSync.checked,
+                threeLevelSyncStatus: enabledThreeLevelSync.checked,
+                threeLevelSyncAttribute: threeLevelSyncAttribute.value,
                 attributeMappings: {
                     brand: brandMapping.value,
                     color: colorMapping.value,
@@ -110,6 +116,18 @@ enabledExportProducts.addEventListener(
             ChannelEngine.productService.enableProductSynchronizationFields();
         } else {
             ChannelEngine.productService.disableProductSynchronizationFields()
+        }
+    }
+);
+
+enabledThreeLevelSync = document.getElementById('enableThreeLevelSync')
+document.getElementById('enableThreeLevelSync').addEventListener(
+    'change',
+    function () {
+        if(enabledThreeLevelSync.checked) {
+            ChannelEngine.productService.enableThreeLevelSyncOption();
+        } else {
+            ChannelEngine.productService.disableThreeLevelSyncOption()
         }
     }
 );

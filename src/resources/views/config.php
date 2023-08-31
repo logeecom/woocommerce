@@ -87,6 +87,8 @@ Frontend_Helper::render_view('config');
         <div id="ce-trigger-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/trigger_sync.php' ?>
         </div>
+        <div id="ce-three-level-sync-changed-modal" style="display: block">
+            <?php include plugin_dir_path(__FILE__) . 'partials/three_level_sync_changed.php' ?>
         <input id="ce-extra-data-duplicates-text" type="hidden"
                value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-wc'  ); ?>">
         <input id="ce-extra-data-duplicates-header" type="hidden"
@@ -103,6 +105,8 @@ Frontend_Helper::render_view('config');
                value="<?php echo __('You are about to disconnect your ChannelEngine account.', 'channelengine-wc'  ); ?>">
         <input id="ceExportProductsUrl" type="hidden"
                value="<?php echo Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ); ?>">
+        <input id="ceThreeLevelSyncUrl" type="hidden"
+               value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_three_level_sync_config' ); ?>">
     </main>
 </div>
 <script src="<?php echo Asset_Helper::get_js_url('DisconnectService.js') ?>"></script>

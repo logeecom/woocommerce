@@ -46,6 +46,8 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
         $mappings         = $quantityJson['attributeMappings'];
         $extraDataMapping = $quantityJson['extraDataMappings'];
         $exportProducts   = $quantityJson['exportProducts'];
+        $threeLevelSyncStatus   = $quantityJson['threeLevelSyncStatus'];
+        $threeLevelSyncAttribute = $quantityJson['threeLevelSyncAttribute'];
 
         if ( $exportProducts !== 1 ) {
             $this->get_export_products_service()->disableProductsExport();
@@ -65,6 +67,8 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 		$config = new SyncConfig();
 		$config->setDefaultStock( $quantity );
 		$config->setEnabledStockSync( $enabledStockSync );
+        $config->setThreeLevelSyncStatus( $threeLevelSyncStatus );
+        $config->setThreeLevelSyncAttribute( $threeLevelSyncStatus ? $threeLevelSyncAttribute : null);
 
 		$this->get_product_config_service()->set( $config );
 

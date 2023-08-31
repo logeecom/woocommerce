@@ -3,6 +3,9 @@ if (!window.ChannelEngine) {
 }
 
 (function () {
+    let initialThreeLevelSyncStatus = null,
+        initialThreeLevelSyncAttribute = null;
+
     function ProductService() {
         this.get = function (url) {
             const ajaxService = ChannelEngine.ajaxService,
@@ -127,6 +130,31 @@ if (!window.ChannelEngine) {
             });
         }
 
+        this.getThreeLevelSyncSettings = function(url) {
+            const ajaxService = ChannelEngine.ajaxService;
+
+            ajaxService.get(url, function (response) {
+                const threeLevelSyncEnabled = document.getElementById('enableThreeLevelSync'),
+                    threeLevelSyncOptions = document.getElementById('ceThreeLevelSyncAttribute'),
+                    standardAttributes = response.productAttributes.standard,
+                    customAttributes = response.productAttributes.custom,
+                    standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
+                    customAttributesLabel = document.getElementById('ce-custom-attributes-label').value;
+
+                addMapping(standardAttributesLabel, standardAttributes, threeLevelSyncOptions, response.threeLevelSyncAttribute);
+                addMapping(customAttributesLabel, customAttributes, threeLevelSyncOptions, response.threeLevelSyncAttribute);
+
+                threeLevelSyncEnabled.checked = response.threeLevelSyncStatus;
+
+                if (!response.threeLevelSyncStatus) {
+                    ChannelEngine.productService.disableThreeLevelSyncOption();
+                }
+
+                initialThreeLevelSyncStatus = threeLevelSyncEnabled.checked;
+                initialThreeLevelSyncAttribute = response.threeLevelSyncAttribute;
+            });
+        }
+
         this.makeExtraDataForm = function (selected) {
             const newAttribute = document.getElementById('hidden'),
                 clone = newAttribute.cloneNode(true),
@@ -180,12 +208,27 @@ if (!window.ChannelEngine) {
             disableStockSynchronizationFields();
             disableAttributeMappingFields();
             disableExtraDataFields();
+            disableThreeLevelSyncFields();
         }
 
         this.enableProductSynchronizationFields = function () {
             enableStockSynchronizationFields();
             enableAttributeMappingFields();
             enableExtraDataFields();
+            enableThreeLevelSyncFields();
+        }
+
+        this.disableThreeLevelSyncOption = function () {
+            document.getElementById('ceThreeLevelSyncAttribute').setAttribute('disabled', 'true');
+        }
+
+        this.enableThreeLevelSyncOption = function () {
+            document.getElementById('ceThreeLevelSyncAttribute').removeAttribute('disabled');
+        }
+
+        this.threeLevelSyncConfigChanged = function (newThreeLevelSyncStatus, newThreeLevelSyncAttribute) {
+            return initialThreeLevelSyncStatus !== newThreeLevelSyncStatus ||
+                newThreeLevelSyncStatus && initialThreeLevelSyncAttribute !== newThreeLevelSyncAttribute;
         }
 
         let disableStockSynchronizationFields = function () {
@@ -252,6 +295,16 @@ if (!window.ChannelEngine) {
                 elements.item(1).removeAttribute('disabled');
                 elements.item(1).classList.remove('ce-disabled');
             })
+        }
+
+        let disableThreeLevelSyncFields = function () {
+            document.getElementById('ceThreeLevelSyncAttribute').setAttribute('disabled', 'true');
+            document.getElementById('enableThreeLevelSync').setAttribute('disabled', 'true');
+        }
+
+        let enableThreeLevelSyncFields = function () {
+            document.getElementById('ceThreeLevelSyncAttribute').removeAttribute('disabled');
+            document.getElementById('enableThreeLevelSync').removeAttribute('disabled');
         }
 
         function addMapping(attributesTypeLabel, attributes, parent, mapping) {
