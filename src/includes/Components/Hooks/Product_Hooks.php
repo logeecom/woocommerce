@@ -2,10 +2,12 @@
 
 namespace ChannelEngine\Components\Hooks;
 
+use ChannelEngine\BusinessLogic\Products\Contracts\ProductsSyncConfigService;
 use ChannelEngine\BusinessLogic\Products\Domain\ProductDeleted;
 use ChannelEngine\BusinessLogic\Products\Domain\ProductUpsert;
 use ChannelEngine\BusinessLogic\Products\Handlers\ProductDeletedEventHandler;
 use ChannelEngine\BusinessLogic\Products\Handlers\ProductUpsertEventHandler;
+use ChannelEngine\Components\Services\Plugin_Status_Service;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Infrastructure\TaskExecution\Interfaces\TaskRunnerWakeup;
 use WC_Product_Variation;
@@ -49,6 +51,22 @@ class Product_Hooks {
 		static::handle_delete_event( $id );
 	}
 
+    /**
+     * Handles attribute deleted event.
+     *
+     * @param int $id
+     * @param string $attribute
+     *
+     * @return void
+     */
+    public static function on_attribute_deleted(int $id, string $attribute) {
+        $syncConfig = static::get_product_config_service()->get();
+
+        if ($syncConfig->getThreeLevelSyncAttribute() === $attribute) {
+            static::getStatusService()->disable();
+        }
+    }
+
 	protected static function handle_delete_event( $id ) {
 		$handler     = new ProductDeletedEventHandler();
 		$product     = wc_get_product( $id );
@@ -72,4 +90,17 @@ class Product_Hooks {
 	protected static function get_task_runner_wakeup() {
 		return ServiceRegister::getService( TaskRunnerWakeup::class );
 	}
+    /**
+     * @return ProductsSyncConfigService
+     */
+    protected static function get_product_config_service() {
+        return ServiceRegister::getService( ProductsSyncConfigService::class );
+    }
+
+    /**
+     * @return Plugin_Status_Service
+     */
+    protected static function getStatusService(): Plugin_Status_Service {
+        return ServiceRegister::getService(Plugin_Status_Service::class);
+    }
 }
