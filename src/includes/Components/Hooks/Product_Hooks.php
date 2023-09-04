@@ -3,9 +3,11 @@
 namespace ChannelEngine\Components\Hooks;
 
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsSyncConfigService;
-use ChannelEngine\BusinessLogic\Products\Domain\ProductDeleted;
+use ChannelEngine\BusinessLogic\Products\Domain\ProductPurged;
+use ChannelEngine\BusinessLogic\Products\Domain\ProductReplaced;
 use ChannelEngine\BusinessLogic\Products\Domain\ProductUpsert;
-use ChannelEngine\BusinessLogic\Products\Handlers\ProductDeletedEventHandler;
+use ChannelEngine\BusinessLogic\Products\Handlers\ProductPurgedEventHandler;
+use ChannelEngine\BusinessLogic\Products\Handlers\ProductReplacedEventHandler;
 use ChannelEngine\BusinessLogic\Products\Handlers\ProductUpsertEventHandler;
 use ChannelEngine\Components\Services\Plugin_Status_Service;
 use ChannelEngine\Infrastructure\ServiceRegister;
@@ -30,14 +32,30 @@ class Product_Hooks {
         }
 	}
 
+    /**
+     * @param $id
+     * @return void
+     */
+    public static function on_product_update( $id ) {
+        static::get_task_runner_wakeup()->wakeup();
+        $post = get_post( $id );
+
+        if ( $post->post_status === 'publish' ) {
+            $handler = new ProductReplacedEventHandler();
+            $handler->handle( new ProductReplaced( $id ) );
+        } else {
+            static::handle_delete_event( $id );
+        }
+    }
+
 	/**
 	 * @param int $id
 	 * @param WC_Product_Variation $variation
 	 */
 	public static function on_variant_create( $id, $variation ) {
 		static::get_task_runner_wakeup()->wakeup();
-		$handler = new ProductUpsertEventHandler();
-		$handler->handle( new ProductUpsert( $id, true, $variation->get_parent_id( 'edit' ) ) );
+		$handler = new ProductReplacedEventHandler();
+        $handler->handle( new ProductReplaced( $id ) );
 	}
 
 	public static function on_product_deleted( $id ) {
@@ -50,6 +68,23 @@ class Product_Hooks {
 		static::get_task_runner_wakeup()->wakeup();
 		static::handle_delete_event( $id );
 	}
+
+    /**
+     * @param $id
+     * @return void
+     */
+    public static function on_variant_deleted( $id ) {
+        $product = wc_get_product( $id );
+
+        if ( ! $product ) {
+            return;
+        }
+
+        static::get_task_runner_wakeup()->wakeup();
+
+        $handler = new ProductReplacedEventHandler();
+        $handler->handle( new ProductReplaced( $id ) );
+    }
 
     /**
      * Handles attribute deleted event.
@@ -68,7 +103,7 @@ class Product_Hooks {
     }
 
 	protected static function handle_delete_event( $id ) {
-		$handler     = new ProductDeletedEventHandler();
+		$handler     = new ProductPurgedEventHandler();
 		$product     = wc_get_product( $id );
 		$variant_ids = wc_get_products( [
 			'type'   => 'variation',
@@ -78,10 +113,10 @@ class Product_Hooks {
 		] );
 
 		foreach ( $variant_ids as $variant_id ) {
-			$handler->handle( new ProductDeleted( $variant_id ) );
+            $handler->handle( new ProductPurged( $variant_id ) );
 		}
 
-		$handler->handle( new ProductDeleted( $id ) );
+        $handler->handle( new ProductPurged( $id ) );
 	}
 
 	/**

@@ -599,13 +599,13 @@ class ChannelEngine {
 	private function add_plugin_hooks() {
 		if ( $this->get_plugin_status_service()->is_enabled() ) {
 			add_action( 'woocommerce_new_product', Product_Hooks::class . '::on_product_create' );
-			add_action( 'woocommerce_update_product', Product_Hooks::class . '::on_product_create' );
+			add_action( 'woocommerce_update_product', Product_Hooks::class . '::on_product_update' );
 			add_action( 'woocommerce_new_product_variation', Product_Hooks::class . '::on_variant_create', 10, 2 );
 			add_action( 'woocommerce_update_product_variation', Product_Hooks::class . '::on_variant_create', 10, 2 );
 			add_action( 'woocommerce_delete_product', Product_Hooks::class . '::on_product_deleted' );
-			add_action( 'woocommerce_delete_product_variation', Product_Hooks::class . '::on_product_deleted' );
+			add_action( 'woocommerce_delete_product_variation', Product_Hooks::class . '::on_variant_deleted' );
 			add_action( 'woocommerce_trash_product', Product_Hooks::class . '::on_product_deleted' );
-			add_action( 'woocommerce_trash_product_variation', Product_Hooks::class . '::on_product_deleted' );
+			add_action( 'woocommerce_trash_product_variation', Product_Hooks::class . '::on_variant_deleted' );
 			add_action( 'wp_trash_post', Product_Hooks::class . '::on_product_deleted' );
             add_action( 'woocommerce_attribute_deleted', Product_Hooks::class . '::on_attribute_deleted', 10, 2 );
 		}
