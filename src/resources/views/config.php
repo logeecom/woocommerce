@@ -80,6 +80,8 @@ Frontend_Helper::render_view('config');
                    value="<?php echo Shop_Helper::get_controller_url( 'Config', 'get_account_name' ); ?>">
             <input id="ceEnabledStockSync" type="hidden"
                    value="<?php echo Shop_Helper::get_controller_url('Config', 'is_enabled_stock_sync'); ?>">
+            <input id="ceProductResyncUrl" type="hidden"
+                   value="<?php echo Shop_Helper::get_controller_url('Config', 'product_resync'); ?>">
         </div>
         <div id="ce-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/modal.php' ?>
@@ -87,7 +89,7 @@ Frontend_Helper::render_view('config');
         <div id="ce-trigger-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/trigger_sync.php' ?>
         </div>
-        <div id="ce-three-level-sync-changed-modal" style="display: block">
+        <div id="ce-three-level-sync-changed-modal" style="display: none">
             <?php include plugin_dir_path(__FILE__) . 'partials/three_level_sync_changed.php' ?>
         <input id="ce-extra-data-duplicates-text" type="hidden"
                value="<?php echo __('Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-wc'  ); ?>">

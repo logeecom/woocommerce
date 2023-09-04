@@ -153,7 +153,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			$this->return_json(
 				array(
 					'threeLevelSyncStatus'    => false,
-					'threeLevelSyncAttribute' => $formatted_attributes[0],
+					'threeLevelSyncAttribute' => null,
 					'productAttributes'       => $formatted_attributes,
 				)
 			);
@@ -233,7 +233,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			$this->save_order_statuses( $post['orderStatuses'], $post['orderSyncConfig'], $post['enableReduceStock'] );
 			if ( $post['exportProducts'] === 1 ) {
 				$this->get_export_products_service()->enableProductsExport();
-				$this->save_stock_sync_config( $post['stockQuantity'], $post['enabledStockSync'] );
+                $this->save_stock_sync_config( $post['stockQuantity'] !== null && $post['stockQuantity'] !== '' ? $post['stockQuantity'] : '0', $post['enabledStockSync'] );
                 $this->save_three_level_sync_config( $post['threeLevelSyncStatus'], $post['threeLevelSyncStatus'] ? $post['threeLevelSyncAttribute'] : null );
 				$this->save_product_attribute_mapping( $post['attributeMappings'] );
 				$this->get_extra_data_attribute_mapping_service()
@@ -272,6 +272,17 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			)
 		);
 	}
+
+    /**
+     * Starts product resync.
+     *
+     * @return void
+     */
+    public function product_resync() {
+        Trigger_Sync_Service::product_resync();
+
+        $this->return_json( array( 'success' => true ) );
+    }
 
 	/**
 	 * Retrieves product attributes.

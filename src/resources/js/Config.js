@@ -44,7 +44,8 @@ document.addEventListener(
             startSyncDate = document.getElementById('startSyncDate'),
             getAccountNameUrl = document.getElementById('ceGetAccountName'),
             exportProductsUrl = document.getElementById('ceExportProductsUrl'),
-            threeLevelSyncUrl = document.getElementById('ceThreeLevelSyncUrl');
+            threeLevelSyncUrl = document.getElementById('ceThreeLevelSyncUrl'),
+            productResyncUrl = document.getElementById('ceProductResyncUrl');
         let threeLevelSyncStatus = document.getElementById('enableThreeLevelSync'),
             threeLevelSyncAttribute= document.getElementById('ceThreeLevelSyncAttribute');
 
@@ -143,7 +144,7 @@ document.addEventListener(
                 newThreeLevelSyncAttribute = threeLevelSyncAttribute.value;
 
             if (ChannelEngine.productService.threeLevelSyncConfigChanged(newThreeLevelSyncStatus, newThreeLevelSyncAttribute)) {
-                ChannelEngine.triggerSyncService.showThreeLevelSyncChangedModal(() => triggerSyncUrl.value, saveConfig);
+                ChannelEngine.triggerSyncService.showThreeLevelSyncChangedModal(productResyncUrl.value, saveConfig);
             } else {
                 saveConfig(true);
             }

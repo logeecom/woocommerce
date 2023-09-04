@@ -19,7 +19,7 @@ use ChannelEngine\Utility\Asset_Helper;
                 <button id="ce-cancel-change-three-level-sync-btn" class="ce-button ce-button__secondary ce-close-modal ce-close-modal-button">
                     <?php echo __( 'Cancel', 'channelengine-wc' ); ?>
                 </button>
-                <button class="ce-button ce-button__primary ce-close-modal">
+                <button id="ce-change-three-level-sync-btn" class="ce-button ce-button__primary ce-close-modal">
                     <?php echo __( 'Save configuration', 'channelengine-wc' ); ?>
                 </button>
             </footer>
