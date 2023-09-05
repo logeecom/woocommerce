@@ -608,6 +608,7 @@ class ChannelEngine {
 			add_action( 'woocommerce_trash_product_variation', Product_Hooks::class . '::on_variant_deleted' );
 			add_action( 'wp_trash_post', Product_Hooks::class . '::on_product_deleted' );
             add_action( 'woocommerce_attribute_deleted', Product_Hooks::class . '::on_attribute_deleted', 10, 2 );
+            add_action( 'edited_term', Product_Hooks::class . '::on_attribute_value_updated');
 		}
 	}
 

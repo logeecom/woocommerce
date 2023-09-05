@@ -13,6 +13,8 @@ use ChannelEngine\Components\Services\Plugin_Status_Service;
 use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Infrastructure\TaskExecution\Interfaces\TaskRunnerWakeup;
 use WC_Product_Variation;
+use WP_Query;
+
 
 /**
  * Class Product_Hooks
@@ -99,6 +101,44 @@ class Product_Hooks {
 
         if ($syncConfig->getThreeLevelSyncAttribute() === $attribute) {
             static::getStatusService()->disable();
+        }
+    }
+
+    /**
+     * Handles attribute value name changed event.
+     *
+     * @param int $id
+     * @return void
+     */
+    public static function on_attribute_value_updated(int $id) {
+        static::get_task_runner_wakeup()->wakeup();
+
+        $term = get_term($id);
+        $args = array(
+            'posts_per_page' => 20,
+            'no_found_rows' => true,
+            'post_type' => array('product'),
+            'tax_query' =>
+                array(
+                    'relation' => 'OR',
+                    array(
+                        'taxonomy' => $term->taxonomy,
+                        'field' => 'slug',
+                        'terms' => $term->slug,
+                        'operator' => 'IN'
+                    ),
+                ),
+        );
+        $query = new WP_Query($args);
+        $products = $query->posts;
+
+        foreach ($products as $product) {
+            if ( $product->post_status === 'publish' ) {
+                $handler = new ProductReplacedEventHandler();
+                $handler->handle( new ProductReplaced( $product->ID ) );
+            } else {
+                static::handle_delete_event( $product->ID );
+            }
         }
     }
 
