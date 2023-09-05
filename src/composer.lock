@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:channelengine/logeecom-core.git",
-                "reference": "919e530ff05badc140ecb78e577fc1df7065bfd4"
+                "reference": "6324c6bc71aa04a1142da92657a0dea228de19ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/919e530ff05badc140ecb78e577fc1df7065bfd4",
-                "reference": "919e530ff05badc140ecb78e577fc1df7065bfd4",
+                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/6324c6bc71aa04a1142da92657a0dea228de19ae",
+                "reference": "6324c6bc71aa04a1142da92657a0dea228de19ae",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "proprietary"
             ],
             "description": "ChannelEngine integrations core library",
-            "time": "2023-07-14T11:24:46+00:00"
+            "time": "2023-09-05T11:37:22+00:00"
         }
     ],
     "packages-dev": [

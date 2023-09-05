@@ -13,12 +13,14 @@ use ChannelEngine\BusinessLogic\Orders\Contracts\OrdersService;
 use ChannelEngine\BusinessLogic\Products\Contracts\ProductsService;
 use ChannelEngine\BusinessLogic\Products\Entities\ProductEvent;
 use ChannelEngine\BusinessLogic\Products\Entities\SyncConfig;
+use ChannelEngine\BusinessLogic\Products\Handlers\TickEventHandler;
 use ChannelEngine\BusinessLogic\Products\Listeners\TickEventListener;
 use ChannelEngine\BusinessLogic\Shipments\Contracts\ShipmentsService;
 use ChannelEngine\BusinessLogic\SupportConsole\Contracts\SupportService;
 use ChannelEngine\BusinessLogic\TransactionLog\Entities\Details;
 use ChannelEngine\BusinessLogic\TransactionLog\Entities\TransactionLog;
 use ChannelEngine\BusinessLogic\Webhooks\Contracts\WebhooksService;
+use ChannelEngine\Components\Handlers\Tick_Event_Handler;
 use ChannelEngine\Components\Listeners\Cleanup_Listener;
 use ChannelEngine\Components\Listeners\Order_Tick_Event_Listener;
 use ChannelEngine\Components\Services\Attribute_Mappings_Service;
@@ -31,6 +33,7 @@ use ChannelEngine\Components\Services\Order_Config_Service;
 use ChannelEngine\Components\Services\Orders_Service;
 use ChannelEngine\Components\Services\Plugin_Status_Service;
 use ChannelEngine\Components\Services\Products_Service;
+use ChannelEngine\Components\Services\Replace_Products_Service;
 use ChannelEngine\Components\Services\Shipments_Service;
 use ChannelEngine\Components\Services\State_Service;
 use ChannelEngine\Components\Services\Support_Service;
@@ -179,6 +182,20 @@ class Bootstrap_Component extends BootstrapComponent {
             Export_Products_Service::class,
             static function () {
                 return new Export_Products_Service();
+            }
+        );
+
+        ServiceRegister::registerService(
+            Replace_Products_Service::class,
+            static function () {
+                return new Replace_Products_Service();
+            }
+        );
+
+        ServiceRegister::registerService(
+            TickEventHandler::class,
+            static function () {
+                return new Tick_Event_Handler();
             }
         );
 	}
