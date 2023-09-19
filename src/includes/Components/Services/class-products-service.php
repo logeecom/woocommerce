@@ -167,6 +167,8 @@ class Products_Service implements ProductsService {
 			$attributes['stock'] = 0;
 		}
 
+        $hasThreeLevelSyncAttribute = $this->has_three_level_sync_attribute( $attributes );
+
 		$product = new Product(
 			$wc_product->get_id(),
 			$attributes['price'],
@@ -187,7 +189,8 @@ class Products_Service implements ProductsService {
 			$attributes['main_image_url'],
 			$attributes['additional_image_urls'],
 			$this->get_custom_attributes( $wc_product, $meta_lookup, $extra_data_attributes ),
-			$attributes['category_trail']
+			$attributes['category_trail'],
+            $hasThreeLevelSyncAttribute
 		);
 
 		$variant_ids = $wc_product->get_children();
@@ -227,6 +230,10 @@ class Products_Service implements ProductsService {
 
 	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [], array $extra_data_attributes = [] ) {
 		$attributes = $this->fetch_attributes( $variant, $meta_lookup );
+        $threeLevelSyncAttribute = $this->get_product_config_service()->get()->getThreeLevelSyncAttribute();
+        if ( $parent->getHasThreeLevelSync() && $threeLevelSyncAttribute && $variant->get_attribute($threeLevelSyncAttribute) !== '' ) {
+            $threeLevelSyncAttribute = $variant->get_attribute($threeLevelSyncAttribute);
+        }
 
 		return new Variant(
 			$variant->get_id(),
@@ -249,7 +256,8 @@ class Products_Service implements ProductsService {
 			$attributes['main_image_url'] ?: $parent->getMainImageUrl(),
 			$attributes['additional_image_urls'] ?: $parent->getAdditionalImageUrls(),
             $this->get_custom_attributes( $variant, $meta_lookup, $extra_data_attributes ),
-			$attributes['category_trail'] ?: $parent->getCategoryTrail()
+			$attributes['category_trail'] ?: $parent->getCategoryTrail(),
+            $threeLevelSyncAttribute
 		);
 	}
 
@@ -746,5 +754,20 @@ class Products_Service implements ProductsService {
         }
 
         return '';
+    }
+
+    /**
+     * Checks if main products has three level sync attribute.
+     *
+     * @param array $attributes
+     * @return bool
+     */
+    private function has_three_level_sync_attribute(array $attributes): bool {
+        $syncConfig = $this->get_product_config_service()->get();
+        $threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
+
+        return $threeLevelSyncAttribute !== null &&
+            $threeLevelSyncAttribute !== '' &&
+            array_key_exists($threeLevelSyncAttribute, $attributes);
     }
 }
