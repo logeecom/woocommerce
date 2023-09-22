@@ -233,8 +233,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			$this->save_order_statuses( $post['orderStatuses'], $post['orderSyncConfig'], $post['enableReduceStock'] );
 			if ( $post['exportProducts'] === 1 ) {
 				$this->get_export_products_service()->enableProductsExport();
-                $this->save_stock_sync_config( $post['stockQuantity'] !== null && $post['stockQuantity'] !== '' ? $post['stockQuantity'] : '0', $post['enabledStockSync'] );
-                $this->save_three_level_sync_config( $post['threeLevelSyncStatus'], $post['threeLevelSyncStatus'] ? $post['threeLevelSyncAttribute'] : null );
+				$this->save_stock_sync_config( $post['stockQuantity'] !== null && $post['stockQuantity'] !== '' ? $post['stockQuantity'] : '0', $post['enabledStockSync'] );
+                $this->save_three_level_sync_config( $post['threeLevelSyncStatus'], $post['threeLevelSyncStatus'] ? $post['threeLevelSyncAttribute'] : null , $post['threeLevelConfigurationChanged']);
 				$this->save_product_attribute_mapping( $post['attributeMappings'] );
 				$this->get_extra_data_attribute_mapping_service()
 					->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( $post['extraDataMappings'] ) );
@@ -273,16 +273,16 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		);
 	}
 
-    /**
-     * Starts product resync.
-     *
-     * @return void
-     */
-    public function product_resync() {
-        Trigger_Sync_Service::product_resync();
+	/**
+	 * Starts product resync.
+	 *
+	 * @return void
+	 */
+	private function product_resync() {
+		Trigger_Sync_Service::product_resync();
 
-        $this->return_json( array( 'success' => true ) );
-    }
+		$this->return_json( array( 'success' => true ) );
+	}
 
 	/**
 	 * Retrieves product attributes.
@@ -473,15 +473,20 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
      *
      * @param $three_level_sync_status
      * @param $three_level_sync_attribute
+     * @param $threeLevelConfigurationChanged
      * @return void
      */
-    protected function save_three_level_sync_config( $three_level_sync_status, $three_level_sync_attribute ) {
-        $config = new SyncConfig();
-        $config->setThreeLevelSyncStatus( $three_level_sync_status );
-        $config->setThreeLevelSyncAttribute( $three_level_sync_attribute );
+	protected function save_three_level_sync_config( $three_level_sync_status, $three_level_sync_attribute, $threeLevelConfigurationChanged ) {
+		$config = new SyncConfig();
+		$config->setThreeLevelSyncStatus( $three_level_sync_status );
+		$config->setThreeLevelSyncAttribute( $three_level_sync_attribute );
 
-        $this->get_product_config_service()->set( $config );
-    }
+		$this->get_product_config_service()->set( $config );
+
+		if ( $threeLevelConfigurationChanged ) {
+			$this->product_resync();
+		}
+	}
 
 	/**
 	 * Saves order statuses.

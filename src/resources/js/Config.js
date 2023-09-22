@@ -65,10 +65,6 @@ document.addEventListener(
             enableReduceStock.setAttribute('disabled', 'true');
         }
 
-        if ( ! threeLevelSyncStatus.checked ) {
-            ChannelEngine.productService.disableThreeLevelSyncOption();
-        }
-
         syncNowBtn.onclick = function () {
             const orderCheckbox = document.getElementById('ce-order-sync-checkbox'),
                 productCheckbox = document.getElementById('ce-product-sync-checkbox');
@@ -144,7 +140,7 @@ document.addEventListener(
                 newThreeLevelSyncAttribute = threeLevelSyncAttribute.value;
 
             if (ChannelEngine.productService.threeLevelSyncConfigChanged(newThreeLevelSyncStatus, newThreeLevelSyncAttribute)) {
-                ChannelEngine.triggerSyncService.showThreeLevelSyncChangedModal(productResyncUrl.value, saveConfig);
+                ChannelEngine.triggerSyncService.showThreeLevelSyncChangedModal(saveConfig);
             } else {
                 saveConfig(true);
             }
@@ -191,6 +187,7 @@ document.addEventListener(
                     enableReduceStock: enableReduceStock.checked,
                     threeLevelSyncStatus: threeLevelSyncStatus.checked,
                     threeLevelSyncAttribute: threeLevelSyncAttribute.value,
+                    threeLevelConfigurationChanged: !showStartSyncModal,
                     orderStatuses: {
                         incoming: incoming.value,
                         shipped: shipped.value,

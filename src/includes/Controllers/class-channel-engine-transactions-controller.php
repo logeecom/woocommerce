@@ -112,7 +112,7 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 		}
 
 		if ( $task_type === 'ProductSync' ) {
-			$filters['taskType'] = [ 'ProductSync', 'ProductsDeleteTask', 'ProductsUpsertTask' ];
+            $filters['taskType'] = [ 'ProductSync', 'ProductsDeleteTask', 'ProductsUpsertTask' , 'ProductsResyncTask' , 'ProductsPurgeTask' ];
 		}
 
 		if ( $status ) {

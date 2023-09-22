@@ -170,7 +170,7 @@ class Products_Service implements ProductsService {
         $hasThreeLevelSyncAttribute = $this->has_three_level_sync_attribute( $attributes );
 
 		$product = new Product(
-			$wc_product->get_id(),
+            (string)$wc_product->get_id(),
 			$attributes['price'],
 			$is_enabled_stock_sync ? $attributes['stock'] : 0,
 			$wc_product->get_name(),
@@ -236,11 +236,11 @@ class Products_Service implements ProductsService {
         }
 
 		return new Variant(
-			$variant->get_id(),
+            (string)$variant->get_id(),
 			$parent,
 			$attributes['price'] ?: $parent->getPrice(),
 			$attributes['stock'] ?: $parent->getStock(),
-			$parent->getName(),
+            $variant->get_name() ?? $parent->getName(),
 			$attributes['description'] ?: $parent->getDescription(),
 			$attributes['purchase_price'] ?: $parent->getPurchasePrice(),
 			$attributes['msrp'] ?: $parent->getMsrp(),

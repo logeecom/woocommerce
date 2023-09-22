@@ -1,331 +1,133 @@
-if (!window.ChannelEngine) {
-    window.ChannelEngine = {};
-}
+var ChannelEngine = window.ChannelEngine || {};
 
-(function () {
-    let initialThreeLevelSyncStatus = null,
-        initialThreeLevelSyncAttribute = null;
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+        const url = document.getElementById('ceProductSave'),
+            attributeUrl = document.getElementById('ceProductAttributes'),
+            link = document.getElementById('ceSave'),
+            stockUrl = document.getElementById('ce-stock-url'),
+            extraDataUrl = document.getElementById('ceProductExtraData'),
+            getAccountUrl = document.getElementById('ceGetAccountName'),
+            exportProductsUrl = document.getElementById('ceExportProductsUrl'),
+            threeLevelSyncUrl = document.getElementById('ceThreeLevelSyncUrl');
 
-    function ProductService() {
-        this.get = function (url) {
-            const ajaxService = ChannelEngine.ajaxService,
-                quantity = document.getElementById('ceStockQuantity'),
-                enabledStockSync = document.getElementById('enableStockSync');
+        ChannelEngine.disconnectService.getAccountName(getAccountUrl);
+        ChannelEngine.productService.get(stockUrl.value);
+        ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
+        ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
+        ChannelEngine.productService.getThreeLevelSyncSettings(threeLevelSyncUrl.value);
 
-            ajaxService.get(url, function (response) {
-                quantity.value = response.stockQuantity;
-                enabledStockSync.checked = response.enabledStockSync;
+        link.onclick = () => {
+            const quantity = document.getElementById('ceStockQuantity'),
+                enabledStockSync = document.getElementById('enableStockSync'),
+                enabledThreeLevelSync = document.getElementById('enableThreeLevelSync'),
+                threeLevelSyncAttribute= document.getElementById('ceThreeLevelSyncAttribute'),
+                exportProducts = document.getElementById('enableExportProducts').checked ? 1 : 0,
+                brandMapping = document.getElementById('ceBrand'),
+                colorMapping = document.getElementById('ceColor'),
+                sizeMapping = document.getElementById('ceSize'),
+                gtinMapping = document.getElementById('ceGtin'),
+                cataloguePriceMapping = document.getElementById('ceCataloguePrice'),
+                priceMapping = document.getElementById('cePrice'),
+                purchasePriceMapping = document.getElementById('cePurchasePrice'),
+                shippingTimeMapping = document.getElementById('ceShippingTime'),
+                detailsMapping = document.getElementById('ceDetails'),
+                categoryMapping = document.getElementById('ceCategory'),
+                vendorProductNumberMapping = document.getElementById('ceVendorProductNumber'),
+                extraDataMappings = document.querySelectorAll('.ce-input-extra-data'),
+                duplicatesText = document.getElementById('ce-extra-data-duplicates-text').value,
+                duplicatesHeaderText = document.getElementById('ce-extra-data-duplicates-header').value;
 
-                if (!enabledStockSync.checked) {
-                    quantity.setAttribute('disabled', 'true');
+            let extraData = {},
+                isExtraDataValid = true;
+            extraDataMappings.forEach(mapping => {
+                if (mapping.id === 'hidden') {
+                    return;
                 }
-            });
-        };
 
-        this.save = function (url, data) {
-            const ajaxService = ChannelEngine.ajaxService;
+                const elements = mapping.firstElementChild.children;
+                const elValue = elements.item(1).value;
+                if (!elValue || Object.keys(extraData).includes(elValue)) {
+                    isExtraDataValid = false;
+                    ChannelEngine.modalService.showModal(duplicatesHeaderText,
+                        '<div>' +
+                        '<label>' + duplicatesText + '</label>' +
+                        '</div>',
+                        null,
+                        null
+                    );
+                    return;
+                }
+                extraData[elValue] = elements.item(0).value;
+                extraData[elements.item(1).value] = elements.item(0).value;
+            });
+
+            if (!isExtraDataValid) {
+                return;
+            }
+
             ChannelEngine.notificationService.removeNotifications();
-
-            ajaxService.post(
-                url,
-                data,
-                function (response) {
-                    if (response.success) {
-                        window.location.reload();
-                    } else {
-                        ChannelEngine.notificationService.addNotification(response.message);
-                    }
-                });
-        };
-
-        this.getProductAttributes = function (url) {
-            const ajaxService = ChannelEngine.ajaxService;
-
-            ajaxService.get(url, function (response) {
-                const brandOptions = document.getElementById('ceBrand'),
-                    colorOptions = document.getElementById('ceColor'),
-                    sizeOptions = document.getElementById('ceSize'),
-                    gtinOptions = document.getElementById('ceGtin'),
-                    cataloguePriceOptions = document.getElementById('ceCataloguePrice'),
-                    priceOptions = document.getElementById('cePrice'),
-                    purchasePriceOptions = document.getElementById('cePurchasePrice'),
-                    shippingTimeOptions = document.getElementById('ceShippingTime'),
-                    detailsOptions = document.getElementById('ceDetails'),
-                    categoryOptions = document.getElementById('ceCategory'),
-                    vendorProductNumberOptions = document.getElementById('ceVendorProductNumber'),
-                    standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
-                    customAttributesLabel = document.getElementById('ce-custom-attributes-label').value,
-                    standardAttributes = response.product_attributes.standard,
-                    customAttributes = response.product_attributes.custom;
-
-                addMapping(standardAttributesLabel, standardAttributes, brandOptions, response.brand);
-                addMapping(customAttributesLabel, customAttributes, brandOptions, response.brand);
-                addMapping(standardAttributesLabel, standardAttributes, colorOptions, response.color);
-                addMapping(customAttributesLabel, customAttributes, colorOptions, response.color);
-                addMapping(standardAttributesLabel, standardAttributes, sizeOptions, response.size);
-                addMapping(customAttributesLabel, customAttributes, sizeOptions, response.size);
-                addMapping(standardAttributesLabel, standardAttributes, gtinOptions, response.gtin);
-                addMapping(customAttributesLabel, customAttributes, gtinOptions, response.gtin);
-                addMapping(standardAttributesLabel, standardAttributes, cataloguePriceOptions, response.catalogue_price);
-                addMapping(customAttributesLabel, customAttributes, cataloguePriceOptions, response.catalogue_price);
-                addMapping(standardAttributesLabel, standardAttributes, priceOptions, response.price);
-                addMapping(customAttributesLabel, customAttributes, priceOptions, response.price);
-                addMapping(standardAttributesLabel, standardAttributes, purchasePriceOptions, response.purchase_price);
-                addMapping(customAttributesLabel, customAttributes, purchasePriceOptions, response.purchase_price);
-                addMapping(standardAttributesLabel, standardAttributes, shippingTimeOptions, response.shipping_time);
-                addMapping(customAttributesLabel, customAttributes, shippingTimeOptions, response.shipping_time);
-                addMapping(standardAttributesLabel, standardAttributes, detailsOptions, response.details);
-                addMapping(customAttributesLabel, customAttributes, detailsOptions, response.details);
-                addMapping(standardAttributesLabel, standardAttributes, categoryOptions, response.category);
-                addMapping(customAttributesLabel, customAttributes, categoryOptions, response.category);
-                addMapping(standardAttributesLabel, standardAttributes, vendorProductNumberOptions, response.vendor_product_number);
-                addMapping(customAttributesLabel, customAttributes, vendorProductNumberOptions, response.vendor_product_number);
+            ChannelEngine.productService.save(url.value, {
+                exportProducts: exportProducts,
+                quantity: quantity.value,
+                enabledStockSync: enabledStockSync.checked,
+                threeLevelSyncStatus: enabledThreeLevelSync.checked,
+                threeLevelSyncAttribute: threeLevelSyncAttribute.value,
+                attributeMappings: {
+                    brand: brandMapping.value,
+                    color: colorMapping.value,
+                    size: sizeMapping.value,
+                    gtin: gtinMapping.value,
+                    cataloguePrice: cataloguePriceMapping.value,
+                    price: priceMapping.value,
+                    purchasePrice: purchasePriceMapping.value,
+                    details: detailsMapping.value,
+                    category: categoryMapping.value,
+                    vendorProductNumber: vendorProductNumberMapping.value,
+                    shippingTime: shippingTimeMapping.value
+                },
+                extraDataMappings: extraData
             });
         }
 
-        this.getExtraDataMappingOptions = function (url, element, selected) {
-            const ajaxService = ChannelEngine.ajaxService,
-                standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
-                customAttributesLabel = document.getElementById('ce-custom-attributes-label').value;
+        ChannelEngine.productService.getProductAttributes(attributeUrl.value);
+    }
+);
 
-            ajaxService.get(url, function (response) {
-                addMapping(standardAttributesLabel, response.product_attributes.standard, element, selected);
-                addMapping(customAttributesLabel, response.product_attributes.custom, element, selected);
-            });
-        }
+document.getElementById('enableStockSync').addEventListener(
+    'change',
+    function () {
+        const quantity = document.getElementById('ceStockQuantity');
 
-        this.getExtraDataMapping = function (url) {
-            const ajaxService = ChannelEngine.ajaxService;
-
-            ajaxService.get(url, function (response) {
-                Object.entries(response.extra_data_mapping).forEach(entry => {
-                    const [key, value] = entry;
-                    let element = ChannelEngine.productService.makeExtraDataForm(value);
-                    element.children[0].children[1].value = key;
-                });
-            });
-        }
-
-        this.getExportProductsEnabled = function(url) {
-            const ajaxService = ChannelEngine.ajaxService;
-            let enabledExportProducts = document.getElementById('enableExportProducts');
-
-            ajaxService.get(url, function (response) {
-                enabledExportProducts.checked = response.exportProducts;
-                let productCheckbox = document.getElementById('ce-product-sync-checkbox')
-
-                if(response.exportProducts) {
-                    if(productCheckbox) {
-                        productCheckbox.removeAttribute('disabled');
-                    }
-
-                    ChannelEngine.productService.enableProductSynchronizationFields();
-                } else {
-                    if(productCheckbox) {
-                        productCheckbox.setAttribute('disabled', 'true');
-                    }
-
-                    ChannelEngine.productService.disableProductSynchronizationFields()
-                }
-            });
-        }
-
-        this.getThreeLevelSyncSettings = function(url) {
-            const ajaxService = ChannelEngine.ajaxService;
-
-            ajaxService.get(url, function (response) {
-                const threeLevelSyncEnabled = document.getElementById('enableThreeLevelSync'),
-                    threeLevelSyncOptions = document.getElementById('ceThreeLevelSyncAttribute'),
-                    standardAttributes = response.productAttributes.standard,
-                    customAttributes = response.productAttributes.custom,
-                    standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
-                    customAttributesLabel = document.getElementById('ce-custom-attributes-label').value;
-
-                addMapping(standardAttributesLabel, standardAttributes, threeLevelSyncOptions, response.threeLevelSyncAttribute);
-                addMapping(customAttributesLabel, customAttributes, threeLevelSyncOptions, response.threeLevelSyncAttribute);
-
-                threeLevelSyncEnabled.checked = response.threeLevelSyncStatus;
-
-                if (!response.threeLevelSyncStatus) {
-                    ChannelEngine.productService.disableThreeLevelSyncOption();
-                }
-
-                initialThreeLevelSyncStatus = threeLevelSyncEnabled.checked;
-                initialThreeLevelSyncAttribute = response.threeLevelSyncAttribute;
-            });
-        }
-
-        this.makeExtraDataForm = function (selected) {
-            const newAttribute = document.getElementById('hidden'),
-                clone = newAttribute.cloneNode(true),
-                previous = document.querySelectorAll('.last').item(0),
-                attribute = previous.getAttribute('class'),
-                attributeUrl = document.getElementById('ceProductAttributes');
-
-            clone.removeAttribute('style');
-            clone.removeAttribute('id');
-            clone.setAttribute('class', attribute);
-
-            if (previous.id === 'hidden') {
-                previous.before(clone);
-            } else {
-                previous.after(clone);
-            }
-
-            previous.setAttribute('class', 'ce-input-extra-data');
-            let removeAttributeList = document.querySelectorAll('.ce-button-remove-mapping');
-            removeAttributeList.forEach(removeAttribute => {
-                removeAttribute.addEventListener('click', function () {
-                    const addNewAttribute = document.getElementById('ceAddNewAttribute');
-                    if(addNewAttribute.getAttribute('disabled')) {
-                        return;
-                    }
-
-                    if (removeAttribute.parentNode.parentElement.getAttribute('class').includes('last')) {
-                        let baseDiv = document.getElementById('hidden');
-                        if (baseDiv.previousElementSibling.previousElementSibling.getAttribute('class') !== 'ce-extra-data-heading') {
-                            baseDiv.previousElementSibling.previousElementSibling.setAttribute(
-                                'class',
-                                baseDiv.previousElementSibling.previousElementSibling.getAttribute('class') + ' last');
-                        } else {
-                            baseDiv.setAttribute('class', baseDiv.getAttribute('class') + ' last');
-                        }
-                    }
-                    removeAttribute.parentNode.parentElement.remove();
-                });
-            });
-
-            ChannelEngine.productService.getExtraDataMappingOptions(
-                attributeUrl.value,
-                clone.firstElementChild.firstElementChild,
-                selected
-            );
-
-            return clone;
-        }
-
-        this.disableProductSynchronizationFields = function () {
-            disableStockSynchronizationFields();
-            disableAttributeMappingFields();
-            disableExtraDataFields();
-            disableThreeLevelSyncFields();
-        }
-
-        this.enableProductSynchronizationFields = function () {
-            enableStockSynchronizationFields();
-            enableAttributeMappingFields();
-            enableExtraDataFields();
-            enableThreeLevelSyncFields();
-        }
-
-        this.disableThreeLevelSyncOption = function () {
-            document.getElementById('ceThreeLevelSyncAttribute').setAttribute('disabled', 'true');
-        }
-
-        this.enableThreeLevelSyncOption = function () {
-            document.getElementById('ceThreeLevelSyncAttribute').removeAttribute('disabled');
-        }
-
-        this.threeLevelSyncConfigChanged = function (newThreeLevelSyncStatus, newThreeLevelSyncAttribute) {
-            return initialThreeLevelSyncStatus !== newThreeLevelSyncStatus ||
-                newThreeLevelSyncStatus && initialThreeLevelSyncAttribute !== newThreeLevelSyncAttribute;
-        }
-
-        let disableStockSynchronizationFields = function () {
-            document.getElementById('enableStockSync').setAttribute('disabled', 'true');
-            document.getElementById('ceStockQuantity').setAttribute('disabled', 'true');
-            document.getElementById('ceStockQuantity').classList.add('ce-disabled');
-            document.getElementById('psc').classList.add('ce-disabled-span');
-        }
-
-        let enableStockSynchronizationFields = function () {
-            document.getElementById('enableStockSync').removeAttribute('disabled');
-            document.getElementById('ceStockQuantity').removeAttribute('disabled');
-            document.getElementById('ceStockQuantity').classList.remove('ce-disabled');
-            document.getElementById('psc').classList.remove('ce-disabled-span');
-        }
-
-        let disableAttributeMappingFields = function () {
-            document.getElementById('ceBrand').setAttribute('disabled', 'true');
-            document.getElementById('ceColor').setAttribute('disabled', 'true');
-            document.getElementById('ceSize').setAttribute('disabled', 'true');
-            document.getElementById('ceGtin').setAttribute('disabled', 'true');
-            document.getElementById('ceCataloguePrice').setAttribute('disabled', 'true');
-            document.getElementById('cePrice').setAttribute('disabled', 'true');
-            document.getElementById('cePurchasePrice').setAttribute('disabled', 'true');
-            document.getElementById('ceShippingTime').setAttribute('disabled', 'true');
-            document.getElementById('ceDetails').setAttribute('disabled', 'true');
-            document.getElementById('ceCategory').setAttribute('disabled', 'true');
-            document.getElementById('ceVendorProductNumber').setAttribute('disabled', 'true');
-        }
-
-        let enableAttributeMappingFields = function () {
-            document.getElementById('ceBrand').removeAttribute('disabled');
-            document.getElementById('ceColor').removeAttribute('disabled');
-            document.getElementById('ceSize').removeAttribute('disabled');
-            document.getElementById('ceGtin').removeAttribute('disabled');
-            document.getElementById('ceCataloguePrice').removeAttribute('disabled');
-            document.getElementById('cePrice').removeAttribute('disabled');
-            document.getElementById('cePurchasePrice').removeAttribute('disabled');
-            document.getElementById('ceShippingTime').removeAttribute('disabled');
-            document.getElementById('ceDetails').removeAttribute('disabled');
-            document.getElementById('ceCategory').removeAttribute('disabled');
-            document.getElementById('ceVendorProductNumber').removeAttribute('disabled');
-        }
-
-        let disableExtraDataFields = function () {
-            document.getElementById('ceAddNewAttribute').setAttribute('disabled', 'true');
-            const extraDataMappings = document.querySelectorAll('.ce-input-extra-data');
-
-            extraDataMappings.forEach(extraData => {
-                let elements = extraData.firstElementChild.children;
-                elements.item(0).setAttribute('disabled', 'true');
-                elements.item(1).setAttribute('disabled', 'true');
-                elements.item(1).classList.add('ce-disabled');
-            })
-        }
-
-        let enableExtraDataFields = function () {
-            document.getElementById('ceAddNewAttribute').removeAttribute('disabled');
-            const extraDataMappings = document.querySelectorAll('.ce-input-extra-data');
-
-            extraDataMappings.forEach(extraData => {
-                let elements = extraData.firstElementChild.children;
-                elements.item(0).removeAttribute('disabled');
-                elements.item(1).removeAttribute('disabled');
-                elements.item(1).classList.remove('ce-disabled');
-            })
-        }
-
-        let disableThreeLevelSyncFields = function () {
-            document.getElementById('ceThreeLevelSyncAttribute').setAttribute('disabled', 'true');
-            document.getElementById('enableThreeLevelSync').setAttribute('disabled', 'true');
-        }
-
-        let enableThreeLevelSyncFields = function () {
-            document.getElementById('ceThreeLevelSyncAttribute').removeAttribute('disabled');
-            document.getElementById('enableThreeLevelSync').removeAttribute('disabled');
-        }
-
-        function addMapping(attributesTypeLabel, attributes, parent, mapping) {
-            const group = document.createElement('OPTGROUP');
-            group.label = attributesTypeLabel;
-            attributes.forEach(item => addOption(item, group, mapping));
-            parent.appendChild(group);
-        }
-
-        function addOption(item, parent, mapping) {
-            const option = document.createElement('OPTION');
-
-            option.innerHTML = item.label;
-            option.value = item.value;
-            if (item.value === mapping) {
-                option.selected = true;
-            }
-
-            parent.appendChild(option);
+        if (quantity.hasAttribute('disabled')) {
+            quantity.removeAttribute('disabled');
+        } else {
+            quantity.setAttribute('disabled', 'true');
         }
     }
+);
 
-    ChannelEngine.productService = new ProductService();
-})();
+let enabledExportProducts = document.getElementById('enableExportProducts');
+enabledExportProducts.addEventListener(
+    'change',
+    function () {
+        if(enabledExportProducts.checked) {
+            ChannelEngine.productService.enableProductSynchronizationFields();
+        } else {
+            ChannelEngine.productService.disableProductSynchronizationFields()
+        }
+    }
+);
+
+enabledThreeLevelSync = document.getElementById('enableThreeLevelSync')
+document.getElementById('enableThreeLevelSync').addEventListener(
+    'change',
+    function () {
+        if(enabledThreeLevelSync.checked) {
+            ChannelEngine.productService.enableThreeLevelSyncOption();
+        } else {
+            ChannelEngine.productService.disableThreeLevelSyncOption()
+        }
+    }
+);

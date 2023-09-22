@@ -45,7 +45,7 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
      */
     public function get_sync_data() {
         $data = [
-            'product_sync' => $this->get_task_data( 'ProductSync' ),
+            'product_sync' => $this->get_task_data( 'ProductsResyncTask' ),
             'order_sync'   => $this->get_task_data( 'OrderSync' ),
             'export_products' => $this->get_export_products_service()->isExportProductsEnabled()
         ];
@@ -65,6 +65,10 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
     protected function get_task_data( $task_type ) {
         $queueItem = $this->get_queue_service()->findLatestByType( $task_type );
 
+        if ($task_type === 'ProductsResyncTask' && !$queueItem) {
+            $queueItem = $this->get_queue_service()->findLatestByType('ProductSync');
+        }
+
         if ( ! $queueItem ) {
             return [
                 'status' => 'not created',
@@ -78,7 +82,7 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
         $status = ( $log && $log->getSynchronizedEntities() ) ? $log->getSynchronizedEntities() : 0;
         $count  = 0;
 
-        if ( $task_type === 'ProductSync' ) {
+        if ( $task_type === 'ProductsResyncTask' ) {
             $count = $this->get_products_service()->count();
         }
 
@@ -92,10 +96,17 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
             $status = $count !== null ? 100 : 0;
         }
 
+        $progress = (int) $status;
+        $synced = ( $log && $log->getSynchronizedEntities() ) ? $log->getSynchronizedEntities() : 0;
+        if ($queueItem->getTask()->getType() === 'ProductsResyncTask') {
+            $progress = round($progress / 2);
+            $synced = round($synced / 2);
+        }
+
         return [
             'status'   => $queueItem->getStatus(),
-            'progress' => (int) $status,
-            'synced'   => ( $log && $log->getSynchronizedEntities() ) ? $log->getSynchronizedEntities() : 0,
+            'progress' => $progress,
+            'synced'   => $synced,
             'total'    => $count !== null ? $count : '?',
         ];
     }
