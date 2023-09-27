@@ -4,7 +4,7 @@
 <input id="ce-standard-attributes-label" type="hidden" value="<?php _e('WooCommerce standard fields', 'channelengine-wc' ) ?>">
 <input id="ce-custom-attributes-label" type="hidden" value="<?php _e('WooCommerce custom fields', 'channelengine-wc' ) ?>">
 <form class="ce-form" onsubmit="return false">
-    <h3><?php echo __("Three-level synchronization") ?></h3>
+    <h3><?php echo __('Three-level synchronization','channelengine-wc') ?></h3>
     <div class="ce-input-group">
         <label>
             <span class="label"><?php echo __( 'Enable three-level synchronization (Zalando)', 'channelengine-wc' ); ?></span>

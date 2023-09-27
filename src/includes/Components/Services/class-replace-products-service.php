@@ -2,6 +2,7 @@
 
 namespace ChannelEngine\Components\Services;
 
+use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException;
 use WC_Product;
 
 /**
@@ -11,19 +12,33 @@ use WC_Product;
  */
 class Replace_Products_Service extends Products_Service
 {
+    /**
+     * @inheritDoc
+     */
     public function getProducts( array $ids ) {
-        // Invalidate cache to preserve memory.
         $this->category_trails = [];
         $this->images          = [];
-
         $args = [
             'return'         => 'objects',
             'posts_per_page' => - 1,
             'include'        => $ids,
         ];
 
+        $wc_products = wc_get_products( $args );
+
+        return $this->transform_products($wc_products, $ids);
+    }
+
+    /**
+     * @param WC_Product[] $wc_products
+     * @param array $ids
+     *
+     * @return array
+     *
+     * @throws QueryFilterInvalidParamException
+     */
+    private function transform_products(array $wc_products, array $ids): array {
         $meta_lookup           = $this->get_meta_repository()->get_product_meta( $ids );
-        $wc_products           = wc_get_products( $args );
         $ce_products           = [];
         $is_enabled_stock_sync = $this->get_product_config_service()->get()->isEnabledStockSync();
         $extra_data_attributes = $this->get_extra_data_attribute_mapping_service()->getExtraDataAttributeMappings()->get_mappings();

@@ -766,8 +766,6 @@ class Products_Service implements ProductsService {
         $syncConfig = $this->get_product_config_service()->get();
         $threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
 
-        return $threeLevelSyncAttribute !== null &&
-            $threeLevelSyncAttribute !== '' &&
-            array_key_exists($threeLevelSyncAttribute, $attributes);
+        return !empty($threeLevelSyncAttribute) && array_key_exists($threeLevelSyncAttribute, $attributes);
     }
 }

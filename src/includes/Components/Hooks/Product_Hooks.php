@@ -113,24 +113,7 @@ class Product_Hooks {
     public static function on_attribute_value_updated(int $id) {
         static::get_task_runner_wakeup()->wakeup();
 
-        $term = get_term($id);
-        $args = array(
-            'posts_per_page' => 20,
-            'no_found_rows' => true,
-            'post_type' => array('product'),
-            'tax_query' =>
-                array(
-                    'relation' => 'OR',
-                    array(
-                        'taxonomy' => $term->taxonomy,
-                        'field' => 'slug',
-                        'terms' => $term->slug,
-                        'operator' => 'IN'
-                    ),
-                ),
-        );
-        $query = new WP_Query($args);
-        $products = $query->posts;
+        $products = static::getProductsByTerm($id);
 
         foreach ($products as $product) {
             if ( $product->post_status === 'publish' ) {
@@ -177,5 +160,31 @@ class Product_Hooks {
      */
     protected static function getStatusService(): Plugin_Status_Service {
         return ServiceRegister::getService(Plugin_Status_Service::class);
+    }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    protected static function getProductsByTerm(int $id): array {
+        $term = get_term($id);
+        $args = array(
+            'posts_per_page' => 20,
+            'no_found_rows' => true,
+            'post_type' => array('product'),
+            'tax_query' =>
+                array(
+                    'relation' => 'OR',
+                    array(
+                        'taxonomy' => $term->taxonomy,
+                        'field' => 'slug',
+                        'terms' => $term->slug,
+                        'operator' => 'IN'
+                    ),
+                ),
+        );
+        $query = new WP_Query($args);
+
+        return $query->posts;
     }
 }
