@@ -854,4 +854,11 @@
   color: #b7b7b7;
 }
 
+.three-level-sync-warning {
+  border: 1px solid #c3c4c7;
+  border-left-width: 4px;
+  border-left-color: #dba617;
+  width: 75%;
+}
+
 /*# sourceMappingURL=main.css.map */

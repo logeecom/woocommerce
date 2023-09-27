@@ -50,6 +50,7 @@ document.addEventListener(
             threeLevelSyncAttribute= document.getElementById('ceThreeLevelSyncAttribute');
 
         document.getElementById('displayOrderFulfilledDateDiv').removeAttribute('hidden');
+        document.getElementById('three-level-sync-warning').removeAttribute('hidden');
 
         startSyncDate ? startSyncDate.remove(): false;
         ChannelEngine.productService.get(stockUrl.value);

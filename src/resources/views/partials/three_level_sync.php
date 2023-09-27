@@ -6,6 +6,11 @@
 <form class="ce-form" onsubmit="return false">
     <h3><?php echo __('Three-level synchronization','channelengine-wc') ?></h3>
     <div class="ce-input-group">
+        <div id="three-level-sync-warning" class="update-message inline notice-warning notice-large three-level-sync-warning notice-alt">
+            <?php echo __('Please note that if you change this configuration, the integration will delete all products from ChannelEngine and sync them again.','channelengine-wc') ?>
+        </div>
+    </div>
+    <div class="ce-input-group">
         <label>
             <span class="label"><?php echo __( 'Enable three-level synchronization (Zalando)', 'channelengine-wc' ); ?></span>
             <span class="ce-help">

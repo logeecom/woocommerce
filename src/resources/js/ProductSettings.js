@@ -12,6 +12,7 @@ document.addEventListener(
             exportProductsUrl = document.getElementById('ceExportProductsUrl'),
             threeLevelSyncUrl = document.getElementById('ceThreeLevelSyncUrl');
 
+        document.getElementById('three-level-sync-warning').setAttribute('hidden',true);
         ChannelEngine.disconnectService.getAccountName(getAccountUrl);
         ChannelEngine.productService.get(stockUrl.value);
         ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
