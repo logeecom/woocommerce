@@ -208,21 +208,33 @@ class Products_Service implements ProductsService {
 			/**
 			 * @var WC_Product_Variation $variant
 			 */
-			foreach ( $variants as $variant ) {
-				if ( $variant->is_virtual() || $variant->is_downloadable() ) {
-					continue;
-				}
+            foreach ( $variants as $variant ) {
+                if ( $variant->is_virtual() || $variant->is_downloadable() ) {
+                    continue;
+                }
 
-				$product->addVariant(
-					$this->transform_variant(
-						$variant,
-						$product,
-						isset( $variant_meta_lookup[ $variant->get_id() ] ) ?
-							$variant_meta_lookup[ $variant->get_id() ] : [],
-                        $extra_data_attributes
-					)
-				);
-			}
+                $variant = $this->transform_variant(
+                    $variant,
+                    $product,
+                    isset( $variant_meta_lookup[ $variant->get_id() ] ) ?
+                        $variant_meta_lookup[ $variant->get_id() ] : [],
+                    $extra_data_attributes
+                );
+
+                if ($product->getHasThreeLevelSync()) {
+                    $syncConfig = $this->get_product_config_service()->get();
+                    $threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
+                    $values = explode(', ', $attributes[$threeLevelSyncAttribute]);
+
+                    if (!in_array($variant->getThreeLevelSyncAttributeValue(), $values)) {
+                        continue;
+                    }
+                }
+
+                $product->addVariant(
+                    $variant
+                );
+            }
 		}
 
 		return $product;
@@ -766,6 +778,8 @@ class Products_Service implements ProductsService {
         $syncConfig = $this->get_product_config_service()->get();
         $threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
 
-        return !empty($threeLevelSyncAttribute) && array_key_exists($threeLevelSyncAttribute, $attributes);
+        return !empty($threeLevelSyncAttribute) &&
+            array_key_exists($threeLevelSyncAttribute, $attributes) &&
+            !empty($attributes[$threeLevelSyncAttribute]);
     }
 }

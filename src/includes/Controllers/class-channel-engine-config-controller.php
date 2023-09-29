@@ -280,8 +280,6 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	private function product_resync() {
 		Trigger_Sync_Service::product_resync();
-
-		$this->return_json( array( 'success' => true ) );
 	}
 
 	/**
