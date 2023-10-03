@@ -167,7 +167,7 @@ class Products_Service implements ProductsService {
 			$attributes['stock'] = 0;
 		}
 
-        $hasThreeLevelSyncAttribute = $this->has_three_level_sync_attribute( $attributes );
+		$hasThreeLevelSyncAttribute = $this->has_three_level_sync_attribute( $wc_product, $attributes );
 
 		$product = new Product(
             (string)$wc_product->get_id(),
@@ -208,33 +208,23 @@ class Products_Service implements ProductsService {
 			/**
 			 * @var WC_Product_Variation $variant
 			 */
-            foreach ( $variants as $variant ) {
-                if ( $variant->is_virtual() || $variant->is_downloadable() ) {
-                    continue;
-                }
+			foreach ( $variants as $variant ) {
+				if ( $variant->is_virtual() || $variant->is_downloadable() ) {
+					continue;
+				}
 
-                $variant = $this->transform_variant(
-                    $variant,
-                    $product,
-                    isset( $variant_meta_lookup[ $variant->get_id() ] ) ?
-                        $variant_meta_lookup[ $variant->get_id() ] : [],
-                    $extra_data_attributes
-                );
+				$variant = $this->transform_variant(
+					$variant,
+					$product,
+					isset( $variant_meta_lookup[ $variant->get_id() ] ) ?
+						$variant_meta_lookup[ $variant->get_id() ] : [],
+					$extra_data_attributes
+				);
 
-                if ($product->getHasThreeLevelSync()) {
-                    $syncConfig = $this->get_product_config_service()->get();
-                    $threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
-                    $values = explode(', ', $attributes[$threeLevelSyncAttribute]);
-
-                    if (!in_array($variant->getThreeLevelSyncAttributeValue(), $values)) {
-                        continue;
-                    }
-                }
-
-                $product->addVariant(
-                    $variant
-                );
-            }
+				$product->addVariant(
+					$variant
+				);
+			}
 		}
 
 		return $product;
@@ -768,18 +758,19 @@ class Products_Service implements ProductsService {
         return '';
     }
 
-    /**
-     * Checks if main products has three level sync attribute.
-     *
-     * @param array $attributes
-     * @return bool
-     */
-    private function has_three_level_sync_attribute(array $attributes): bool {
-        $syncConfig = $this->get_product_config_service()->get();
-        $threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
+	/**
+	 * Checks if main products has three level sync attribute.
+	 *
+	 * @param WC_Product $wc_product
+	 * @param array $attributes
+	 *
+	 * @return bool
+	 */
+	private function has_three_level_sync_attribute( WC_Product $wc_product, array $attributes ): bool {
+		$syncConfig              = $this->get_product_config_service()->get();
+		$threeLevelSyncAttribute = $syncConfig->getThreeLevelSyncAttribute();
 
-        return !empty($threeLevelSyncAttribute) &&
-            array_key_exists($threeLevelSyncAttribute, $attributes) &&
-            !empty($attributes[$threeLevelSyncAttribute]);
-    }
+		return ! empty( $threeLevelSyncAttribute ) &&
+		       $wc_product->get_attribute( 'material' );
+	}
 }
