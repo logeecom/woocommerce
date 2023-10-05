@@ -170,11 +170,11 @@ class Products_Service implements ProductsService {
 		$hasThreeLevelSyncAttribute = $this->has_three_level_sync_attribute( $wc_product, $attributes );
 
 		$product = new Product(
-            (string)$wc_product->get_id(),
+			(string) $wc_product->get_id(),
 			$attributes['price'],
 			$is_enabled_stock_sync ? $attributes['stock'] : 0,
 			$wc_product->get_name(),
-			strip_tags(htmlspecialchars_decode($attributes['description'])),
+			strip_tags( htmlspecialchars_decode( $attributes['description'] ) ),
 			$attributes['purchase_price'],
 			$attributes['msrp'],
 			$attributes['vat_rate_type'],
@@ -190,7 +190,7 @@ class Products_Service implements ProductsService {
 			$attributes['additional_image_urls'],
 			$this->get_custom_attributes( $wc_product, $meta_lookup, $extra_data_attributes ),
 			$attributes['category_trail'],
-            $hasThreeLevelSyncAttribute
+			$hasThreeLevelSyncAttribute
 		);
 
 		$variant_ids = $wc_product->get_children();
@@ -209,7 +209,7 @@ class Products_Service implements ProductsService {
 			 * @var WC_Product_Variation $variant
 			 */
 			foreach ( $variants as $variant ) {
-				if ( $variant->is_virtual() || $variant->is_downloadable() ) {
+				if ( $variant->is_virtual() || $variant->is_downloadable() || in_array( '', $variant->get_attributes(), true ) ) {
 					continue;
 				}
 
@@ -296,7 +296,7 @@ class Products_Service implements ProductsService {
 			[ 'shipping_cost' ]
 		);
 
-		$attributes['url']                         = $wc_product->get_permalink();
+		$attributes['url'] = $wc_product->get_permalink();
 
 		$image = '';
 		if ( ! empty( $wc_product->get_image_id() ) ) {
@@ -558,19 +558,19 @@ class Products_Service implements ProductsService {
 		$custom_attributes = [];
 
 		foreach ( $extra_data_attributes as $extra_attribute_key => $extra_attribute_value ) {
-            $attr = $this->get_attribute(
-                $wc_product,
-                $meta_lookup,
-                [ $extra_attribute_value ]
-            );
-            if ($attr !== null) {
-                $custom_attributes[] = new CustomAttribute(
-                    $extra_attribute_key,
-                    $attr,
-                    CustomAttribute::TYPE_TEXT,
-                    true
-                );
-            }
+			$attr = $this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				[ $extra_attribute_value ]
+			);
+			if ( $attr !== null ) {
+				$custom_attributes[] = new CustomAttribute(
+					$extra_attribute_key,
+					$attr,
+					CustomAttribute::TYPE_TEXT,
+					true
+				);
+			}
 
 		}
 
@@ -656,7 +656,7 @@ class Products_Service implements ProductsService {
 	 * @return float|string
 	 */
 	protected function get_price_value( WC_Product $wc_product ) {
-		$now        = new DateTime();
+		$now = new DateTime();
 
 		if ( get_option( 'woocommerce_prices_include_tax' ) === 'yes' ) {
 			$price = $wc_product->get_price();
@@ -741,22 +741,23 @@ class Products_Service implements ProductsService {
 		return ! empty( static::$tax_class_map[ $product->get_tax_class() ] ) ? static::$tax_class_map[ $product->get_tax_class() ] : 'STANDARD';
 	}
 
-    /**
-     * Retrieves image guid based on image id.
-     *
-     * @param string $image_id
-     * @param array $images
-     * @return string
-     */
-    private function get_image_guid(string $image_id, array $images): string {
-        foreach ($images as $image) {
-            if($image->ID == $image_id) {
-                return $image->guid;
-            }
-        }
+	/**
+	 * Retrieves image guid based on image id.
+	 *
+	 * @param string $image_id
+	 * @param array $images
+	 *
+	 * @return string
+	 */
+	private function get_image_guid( string $image_id, array $images ): string {
+		foreach ( $images as $image ) {
+			if ( $image->ID == $image_id ) {
+				return $image->guid;
+			}
+		}
 
-        return '';
-    }
+		return '';
+	}
 
 	/**
 	 * Checks if main products has three level sync attribute.
