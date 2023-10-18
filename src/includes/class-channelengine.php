@@ -489,6 +489,10 @@ class ChannelEngine {
 
         $track_trace_no  = $order->get_meta( '_shipping_ce_track_and_trace' );
         $shipping_method = $order->get_meta( '_shipping_ce_shipping_method' );
+		$shipping_method_title =  array_key_exists($shipping_method, WC()->shipping()->load_shipping_methods())
+			? WC()->shipping()->load_shipping_methods()[$shipping_method]->get_method_title()
+			: $shipping_method;
+
 		$request         = new CreateShipmentRequest(
 			$order->get_id(),
 			$this->get_shipments_service()->getAllItems( $order->get_id() ),
@@ -498,7 +502,7 @@ class ChannelEngine {
 			$track_trace_no,
 			'',
 			'',
-			$shipping_method
+			$shipping_method_title
 		);
 
 		$handler = new ShipmentsCreateRequestHandler();

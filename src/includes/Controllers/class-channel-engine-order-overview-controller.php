@@ -65,7 +65,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 
 		$order = wc_get_order($raw['postId']);
 		try {
-			$this->handle_order_update( $order );
+			$this->handle_order_update( $order, $raw );
 		} catch ( BaseException $e ) {
 			$this->return_json(
 				[
@@ -95,7 +95,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	 * @throws QueryFilterInvalidParamException
 	 * @throws RepositoryNotRegisteredException
 	 */
-	protected function handle_order_update( WC_Order $order) {
+	protected function handle_order_update( WC_Order $order, $raw_data ) {
 		$track_and_trace = ! empty( $raw_data['trackAndTrace'] ) ?
 			$raw_data['trackAndTrace'] : $order->get_meta( '_shipping_ce_track_and_trace' );
 		$shipping_method = ! empty( $raw_data['shippingMethod'] ) ?
@@ -109,10 +109,14 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
             return;
         }
 
+		$shipping_method_title =  array_key_exists($shipping_method, WC()->shipping()->load_shipping_methods())
+			? WC()->shipping()->load_shipping_methods()[$shipping_method]->get_method_title()
+			: $shipping_method;
+
 		$request = new UpdateShipmentRequest(
 			$order->get_id(),
 			false,
-			$shipping_method,
+			$shipping_method_title,
 			$track_and_trace,
 			'',
 			''
