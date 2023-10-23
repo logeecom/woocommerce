@@ -46,6 +46,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
             'payment_method'         => $order->get_meta( '_channel_engine_payment_method' ),
             'track_and_trace'        => $order->get_meta( '_shipping_ce_track_and_trace' ),
             'chosen_shipping_method' => $order->get_meta( '_shipping_ce_shipping_method' ),
+            'type_of_fulfillment'    => $order->get_meta( '_channel_engine_type_of_fulfillment' ),
 			'shipping_methods'       => WC()->shipping() ? WC()->shipping()->load_shipping_methods() : [],
 			'post_id'                => $postId,
 			'order_cancelled'        => $order->get_status() === 'cancelled',
