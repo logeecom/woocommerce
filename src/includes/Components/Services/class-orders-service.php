@@ -80,6 +80,7 @@ class Orders_Service extends OrdersService {
 			$wc_order->add_meta_data( '_channel_engine_order_id', $order->getId() );
 			$wc_order->add_meta_data( '_channel_engine_channel_name', $order->getChannelName() );
 			$wc_order->add_meta_data( '_channel_engine_channel_order_no', $order->getChannelOrderNo() );
+			$wc_order->add_meta_data( '_channel_engine_type_of_fulfillment', $order->getTypeOfFulfillment() );
 			$wc_order->add_meta_data( '_channel_engine_payment_method', $order->getPaymentMethod() );
 
 			$wc_order->save();
