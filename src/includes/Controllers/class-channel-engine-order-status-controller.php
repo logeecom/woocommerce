@@ -68,11 +68,11 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 				! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
             'enableOrdersByMarketplaceSync' =>
                 ! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
-            'ordersByMarketplaceFromDate' => $order_by_marketplace_time_from->getTimestamp() !== 0 ?
+            'ordersByMarketplaceFromDate' => $order_by_marketplace_time_from != null && $order_by_marketplace_time_from->getTimestamp() !== 0 ?
                 $order_by_marketplace_time_from->format('d.m.Y.') : date('d.m.Y'),
             'enableReduceStock' =>
                 ! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
-            'displayTheDateFromWhichOrdersFBMAreImported' => $order_by_marketplace_time_from->getTimestamp() !== 0
+            'displayTheDateFromWhichOrdersFBMAreImported' => $order_by_marketplace_time_from != null && $order_by_marketplace_time_from->getTimestamp() !== 0
         ] );
     }
 
