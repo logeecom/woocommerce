@@ -175,12 +175,12 @@ class Bootstrap_Component extends BootstrapComponent {
 			}
 		);
 
-        ServiceRegister::registerService(
-            Export_Products_Service::class,
-            static function () {
-                return new Export_Products_Service();
-            }
-        );
+		ServiceRegister::registerService(
+			Export_Products_Service::class,
+			static function () {
+				return new Export_Products_Service();
+			}
+		);
 	}
 
 	/**
@@ -208,27 +208,27 @@ class Bootstrap_Component extends BootstrapComponent {
 
 		EventBus::getInstance()->when(
 			QueueStatusChangedEvent::class,
-			[ Product_State_Transition_Listener::class, 'handle' ]
+			array( Product_State_Transition_Listener::class, 'handle' )
 		);
 
 		EventBus::getInstance()->when(
 			QueueStatusChangedEvent::class,
-			[ Order_State_Transition_Listener::class, 'handle' ]
-		);
-
-
-		EventBus::getInstance()->when(
-			TickEvent::CLASS_NAME,
-			[ new Order_Tick_Event_Listener(), 'handle' ]
+			array( Order_State_Transition_Listener::class, 'handle' )
 		);
 
 		EventBus::getInstance()->when(
 			TickEvent::CLASS_NAME,
-			Cleanup_Listener::class . "::handle"
+			array( new Order_Tick_Event_Listener(), 'handle' )
 		);
 
 		EventBus::getInstance()->when(
 			TickEvent::CLASS_NAME,
-			[new TickEventListener(), 'handle']);
+			Cleanup_Listener::class . '::handle'
+		);
+
+		EventBus::getInstance()->when(
+			TickEvent::CLASS_NAME,
+			array( new TickEventListener(), 'handle' )
+		);
 	}
 }

@@ -16,7 +16,7 @@ use WC_Logger;
  * @package ChannelEngine\Components\Services
  */
 class Logger_Service extends Singleton implements LoggerAdapter {
-	const LOG_DEF = "[%s][%d][%s] %s\n";
+	const LOG_DEF     = "[%s][%d][%s] %s\n";
 	const CONTEXT_DEF = "\tContext[%s]: %s\n";
 
 	/**
@@ -68,7 +68,7 @@ class Logger_Service extends Singleton implements LoggerAdapter {
 				$this->wc_logger->debug( $this->format_message( 'debug', $data ) );
 
 				break;
-			default :
+			default:
 				$this->wc_logger->warning( $this->format_message( 'warning', $data ) );
 				break;
 		}

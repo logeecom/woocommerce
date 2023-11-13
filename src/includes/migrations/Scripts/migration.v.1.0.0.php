@@ -50,9 +50,9 @@ class Migration_1_0_0 extends Abstract_Migration {
 		$this->db->query( $sql );
 	}
 
-    /**
-     * Creates events table.
-     */
+	/**
+	 * Creates events table.
+	 */
 	private function create_buffer_table() {
 		$table_name = $this->db->prefix . 'channel_engine_events';
 		$sql        = Buffer_Schema_Provider::get_schema( $table_name );
@@ -60,9 +60,9 @@ class Migration_1_0_0 extends Abstract_Migration {
 		$this->db->query( $sql );
 	}
 
-    /**
-     * Creates logs table.
-     */
+	/**
+	 * Creates logs table.
+	 */
 	private function create_log_table() {
 		$table_name = $this->db->prefix . 'channel_engine_logs';
 		$sql        = Log_Schema_Provider::get_schema( $table_name );

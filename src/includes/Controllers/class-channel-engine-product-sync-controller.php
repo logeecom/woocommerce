@@ -34,32 +34,34 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	 */
 	protected $extra_data_attribute_mappings_service;
 
-    /**
-     * Saves product synchronization configuration.
-     *
-     * @throws QueryFilterInvalidParamException
-     */
-    public function save() {
-        $quantityJson     = json_decode( $this->get_raw_input(), true );
-        $quantity         = $quantityJson['quantity'];
-        $enabledStockSync = $quantityJson['enabledStockSync'];
-        $mappings         = $quantityJson['attributeMappings'];
-        $extraDataMapping = $quantityJson['extraDataMappings'];
-        $exportProducts   = $quantityJson['exportProducts'];
+	/**
+	 * Saves product synchronization configuration.
+	 *
+	 * @throws QueryFilterInvalidParamException
+	 */
+	public function save() {
+		$quantityJson     = json_decode( $this->get_raw_input(), true );
+		$quantity         = $quantityJson['quantity'];
+		$enabledStockSync = $quantityJson['enabledStockSync'];
+		$mappings         = $quantityJson['attributeMappings'];
+		$extraDataMapping = $quantityJson['extraDataMappings'];
+		$exportProducts   = $quantityJson['exportProducts'];
 
-        if ( $exportProducts !== 1 ) {
-            $this->get_export_products_service()->disableProductsExport();
-            $this->get_state_service()->set_product_configured( true );
+		if ( 1 !== $exportProducts ) {
+			$this->get_export_products_service()->disableProductsExport();
+			$this->get_state_service()->set_product_configured( true );
 
-            $this->return_json(['success' => true]);
-        }
+			$this->return_json( array( 'success' => true ) );
+		}
 
-        $this->get_export_products_service()->enableProductsExport();
-		if ( $enabledStockSync && ( !is_numeric( $quantity) || (int) $quantity < 0 )) {
-			$this->return_json( [
-				'success' => false,
-				'message' => __( 'Default stock quantity is required field.', 'channelengine-wc' ),
-			] );
+		$this->get_export_products_service()->enableProductsExport();
+		if ( $enabledStockSync && ( ! is_numeric( $quantity ) || (int) $quantity < 0 ) ) {
+			$this->return_json(
+				array(
+					'success' => false,
+					'message' => __( 'Default stock quantity is required field.', 'channelengine-wc' ),
+				)
+			);
 		}
 
 		$config = new SyncConfig();
@@ -69,25 +71,25 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 		$this->get_product_config_service()->set( $config );
 
 		$mappings_dto = new AttributeMappings(
-			$mappings['brand']  !== '' ? $mappings['brand'] : null,
-			$mappings['color']  !== '' ? $mappings['color'] : null,
-			$mappings['size']  !== '' ? $mappings['size'] : null,
-			$mappings['gtin']  !== '' ? $mappings['gtin'] : null,
-			$mappings['cataloguePrice']  !== '' ? $mappings['cataloguePrice'] : null,
-			$mappings['price']  !== '' ? $mappings['price'] : null,
-			$mappings['purchasePrice']  !== '' ? $mappings['purchasePrice'] : null,
-			$mappings['details']  !== '' ? $mappings['details'] : null,
-			$mappings['category']  !== '' ? $mappings['category'] : null,
-			$mappings['vendorProductNumber']  !== '' ? $mappings['vendorProductNumber'] : null,
-			$mappings['shippingTime']  !== '' ? $mappings['shippingTime'] : null
+			'' !== $mappings['brand'] ? $mappings['brand'] : null,
+			'' !== $mappings['color'] ? $mappings['color'] : null,
+			'' !== $mappings['size'] ? $mappings['size'] : null,
+			'' !== $mappings['gtin'] ? $mappings['gtin'] : null,
+			'' !== $mappings['cataloguePrice'] ? $mappings['cataloguePrice'] : null,
+			'' !== $mappings['price'] ? $mappings['price'] : null,
+			'' !== $mappings['purchasePrice'] ? $mappings['purchasePrice'] : null,
+			'' !== $mappings['details'] ? $mappings['details'] : null,
+			'' !== $mappings['category'] ? $mappings['category'] : null,
+			'' !== $mappings['vendorProductNumber'] ? $mappings['vendorProductNumber'] : null,
+			'' !== $mappings['shippingTime'] ? $mappings['shippingTime'] : null
 		);
 
-		$extra_data_dto = new ExtraDataAttributeMappings($extraDataMapping);
+		$extra_data_dto = new ExtraDataAttributeMappings( $extraDataMapping );
 
-		$this->get_attribute_mappings_service()->setAttributeMappings($mappings_dto);
-		$this->get_extra_data_attribute_mappings_service()->setExtraDataAttributeMappings($extra_data_dto);
+		$this->get_attribute_mappings_service()->setAttributeMappings( $mappings_dto );
+		$this->get_extra_data_attribute_mappings_service()->setExtraDataAttributeMappings( $extra_data_dto );
 		$this->get_state_service()->set_product_configured( true );
-		$this->return_json( [ 'success' => true ] );
+		$this->return_json( array( 'success' => true ) );
 	}
 
 	/**
@@ -96,11 +98,15 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	protected function load_resources() {
 		parent::load_resources();
 
-		Script_Loader::load_js( [
-			'/js/ProductSettings.js',
-            '/js/DisconnectService.js',
-            '/js/Disconnect.js',
-		] );
+		Script_Loader::load_js(
+			array(
+				'/js/ProductSettings.js',
+				'/js/DisconnectService.js',
+				'/js/Disconnect.js',
+				'/js/ExtraDataMapping.js',
+				'/js/ModalService.js',
+			)
+		);
 	}
 
 	/**
@@ -109,7 +115,7 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	 * @return ProductsSyncConfigService
 	 */
 	protected function get_product_config_service() {
-		if ( $this->product_config_service === null ) {
+		if ( null === $this->product_config_service ) {
 			$this->product_config_service = ServiceRegister::getService( ProductsSyncConfigService::class );
 		}
 
@@ -122,7 +128,7 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	 * @return Attribute_Mappings_Service
 	 */
 	protected function get_attribute_mappings_service() {
-		if ( $this->attribute_mappings_service === null ) {
+		if ( null === $this->attribute_mappings_service ) {
 			$this->attribute_mappings_service = ServiceRegister::getService( Attribute_Mappings_Service::class );
 		}
 
@@ -135,26 +141,26 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	 * @return Extra_Data_Attribute_Mappings_Service
 	 */
 	protected function get_extra_data_attribute_mappings_service() {
-		if ( $this->extra_data_attribute_mappings_service === null ) {
+		if ( null === $this->extra_data_attribute_mappings_service ) {
 			$this->extra_data_attribute_mappings_service = ServiceRegister::getService( Extra_Data_Attribute_Mappings_Service::class );
 		}
 
 		return $this->extra_data_attribute_mappings_service;
 	}
 
-    /**
-     * @return State_Service
-     */
-    protected function get_state_service() {
-        return ServiceRegister::getService( State_Service::class );
-    }
+	/**
+	 * @return State_Service
+	 */
+	protected function get_state_service() {
+		return ServiceRegister::getService( State_Service::class );
+	}
 
-    /**
-     * Retrieves an instance of Export_Products_Service.
-     *
-     * @return Export_Products_Service
-     */
-    protected function get_export_products_service(): Export_Products_Service {
-        return ServiceRegister::getService( Export_Products_Service::class );
-    }
+	/**
+	 * Retrieves an instance of Export_Products_Service.
+	 *
+	 * @return Export_Products_Service
+	 */
+	protected function get_export_products_service(): Export_Products_Service {
+		return ServiceRegister::getService( Export_Products_Service::class );
+	}
 }

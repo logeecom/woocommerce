@@ -10,39 +10,39 @@ use ChannelEngine\Infrastructure\ServiceRegister;
  *
  * @package ChannelEngine\Controllers
  */
-class Channel_Engine_Switch_Page_Controller extends Channel_Engine_Base_Controller
-{
-    /**
-     * @var State_Service
-     */
-    protected $state_service;
+class Channel_Engine_Switch_Page_Controller extends Channel_Engine_Base_Controller {
 
-    /**
-     * Renders appropriate view.
-     */
-    public function switch_page() {
-        $input = json_decode( $this->get_raw_input(), true );
-        $page    = $input['page'];
-        if($page === State_Service::PRODUCT_CONFIGURATION) {
-            $this->get_state_service()->set_product_configured(false);
-            $this->get_state_service()->set_order_configured(false);
-        }
+	/**
+	 * @var State_Service
+	 */
+	protected $state_service;
 
-        if($page === State_Service::ORDER_STATUS_MAPPING) {
-            $this->get_state_service()->set_order_configured(false);
-        }
+	/**
+	 * Renders appropriate view.
+	 */
+	public function switch_page() {
+		$input = json_decode( $this->get_raw_input(), true );
+		$page  = $input['page'];
+		if ( State_Service::PRODUCT_CONFIGURATION === $page ) {
+			$this->get_state_service()->set_product_configured( false );
+			$this->get_state_service()->set_order_configured( false );
+		}
 
-        $this->return_json( [ 'success' => true ] );
-    }
+		if ( State_Service::ORDER_STATUS_MAPPING === $page ) {
+			$this->get_state_service()->set_order_configured( false );
+		}
 
-    /**
-     * @return State_Service
-     */
-    protected function get_state_service() {
-        if ( $this->state_service === null ) {
-            $this->state_service = ServiceRegister::getService( State_Service::class );
-        }
+		$this->return_json( array( 'success' => true ) );
+	}
 
-        return $this->state_service;
-    }
+	/**
+	 * @return State_Service
+	 */
+	protected function get_state_service() {
+		if ( null === $this->state_service ) {
+			$this->state_service = ServiceRegister::getService( State_Service::class );
+		}
+
+		return $this->state_service;
+	}
 }

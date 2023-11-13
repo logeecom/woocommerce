@@ -10,70 +10,70 @@ use ChannelEngine\Utility\Shop_Helper;
  * @package ChannelEngine\Controllers
  */
 class Channel_Engine_Base_Controller {
-    /**
-     * Is request call internal.
-     *
-     * @var bool
-     */
-    protected $is_internal = true;
+	/**
+	 * Is request call internal.
+	 *
+	 * @var bool
+	 */
+	protected $is_internal = true;
 
-    public function process( $action = '' ) {
-        if ( $this->is_internal ) {
-            $this->validate_internal_call();
-        }
+	public function process( $action = '' ) {
+		if ( $this->is_internal ) {
+			$this->validate_internal_call();
+		}
 
-        if ( empty( $action ) ) {
-            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
-            $action = $this->get_param( 'action' );
-        }
+		if ( empty( $action ) ) {
+			/** @noinspection CallableParameterUseCaseInTypeContextInspection */
+			$action = $this->get_param( 'action' );
+		}
 
-        if ( $action ) {
-            if ( method_exists( $this, $action ) ) {
-                $this->$action();
-            } else {
-                $this->return_json( array( 'error' => "Method $action does not exist!" ), 404 );
-            }
-        }
-    }
+		if ( $action ) {
+			if ( method_exists( $this, $action ) ) {
+				$this->$action();
+			} else {
+				$this->return_json( array( 'error' => "Method $action does not exist!" ), 404 );
+			}
+		}
+	}
 
-    /**
-     * Validates if call made from plugin code is secure by checking session token.
-     * If call is not secure, returns 401 status and terminates request.
-     */
-    protected function validate_internal_call() {
-        $logged_user_id = get_current_user_id();
-        if ( empty( $logged_user_id ) ) {
-            status_header( 401 );
-            nocache_headers();
+	/**
+	 * Validates if call made from plugin code is secure by checking session token.
+	 * If call is not secure, returns 401 status and terminates request.
+	 */
+	protected function validate_internal_call() {
+		$logged_user_id = get_current_user_id();
+		if ( empty( $logged_user_id ) ) {
+			status_header( 401 );
+			nocache_headers();
 
-            exit();
-        }
-    }
+			exit();
+		}
+	}
 
-    /**
-     * Gets request parameter if exists. Otherwise, returns null.
-     *
-     * @param string $key Request parameter key.
-     *
-     * @return mixed
-     */
-    protected function get_param( $key ) {
-        if ( isset( $_REQUEST[ $key ] ) ) {
-            return sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
-        }
+	/**
+	 * Gets request parameter if exists. Otherwise, returns null.
+	 *
+	 * @param string $key Request parameter key.
+	 *
+	 * @return mixed
+	 */
+	protected function get_param( $key ) {
+		if ( isset( $_REQUEST[ $key ] ) ) {
+			return sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * Sets response header content type to json, echos supplied $data as a json string and terminates request.
-     *
-     * @param array $data Array to be returned as a json response.
-     * @param int   $status_code Response status code.
-     */
-    protected function return_json( array $data, $status_code = 200 ) {
-        wp_send_json( $data, $status_code );
-    }
+	/**
+	 * Sets response header content type to json, echos supplied $data as a json string and terminates request.
+	 *
+	 * @param array $data Array to be returned as a json response.
+	 * @param int   $status_code Response status code.
+	 */
+	protected function return_json( array $data, $status_code = 200 ) {
+		wp_send_json( $data, $status_code );
+	}
 
 	/**
 	 * Gets raw request.

@@ -30,12 +30,13 @@ use ChannelEngine\Utility\Currency_Check;
 use ChannelEngine\Utility\Database;
 use ChannelEngine\Utility\Logging_Callable;
 use ChannelEngine\Utility\Shop_Helper;
+use ChannelEngine\Utility\View;
 use Exception;
 use WC_Order;
 use WP_Post;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
-require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 
 class ChannelEngine {
@@ -81,7 +82,7 @@ class ChannelEngine {
 	 * @return ChannelEngine
 	 */
 	public static function init( $channelengine_plugin_file ) {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self( $channelengine_plugin_file );
 		}
 
@@ -111,15 +112,15 @@ class ChannelEngine {
 		add_filter( 'post_updated_messages', array( $this, 'change_order_success_message' ), 20 );
 		add_action( 'admin_notices', array( $this, 'render_notifications' ) );
 		add_action( 'woocommerce_loaded', array( $this, 'add_order_change_hook' ) );
-		add_action( 'wp_loaded', [ $this, 'update_database' ] );
-        add_action(
-            'before_woocommerce_init',
-            function() {
-                if ( class_exists( FeaturesUtil::class ) ) {
-                    FeaturesUtil::declare_compatibility( 'custom_order_tables', static::get_plugin_dir_path(), true );
-                }
-            }
-        );
+		add_action( 'wp_loaded', array( $this, 'update_database' ) );
+		add_action(
+			'before_woocommerce_init',
+			function () {
+				if ( class_exists( FeaturesUtil::class ) ) {
+					FeaturesUtil::declare_compatibility( 'custom_order_tables', static::get_plugin_dir_path(), true );
+				}
+			}
+		);
 
 		try {
 			$auth_info = $this->get_auth_service()->getAuthInfo();
@@ -129,6 +130,7 @@ class ChannelEngine {
 		} catch ( BaseException $e ) {
 			// Client has not connected their account yet, so we cannot check if woocommerce currency
 			// is the same as the one on ChannelEngine.
+			Logger::logInfo( 'Client has not connected their account yet, so we cannot check if woocommerce currency is the same as the one on ChannelEngine.' );
 		}
 
 		if ( is_multisite() ) {
@@ -150,10 +152,13 @@ class ChannelEngine {
 		if ( $config ) {
 			$order_statuses = wc_get_order_statuses();
 			$status         = $order_statuses[ $config->getShippedOrders() ];
-			add_action( 'woocommerce_order_status_' . $status, array(
-				$this,
-				'before_order_shipped_status_transition'
-			) );
+			add_action(
+				'woocommerce_order_status_' . $status,
+				array(
+					$this,
+					'before_order_shipped_status_transition',
+				)
+			);
 		}
 	}
 
@@ -256,7 +261,7 @@ class ChannelEngine {
 			'plugin_action_links_' . plugin_basename( Shop_Helper::get_plugin_name() ),
 			array(
 				$this,
-				'channel_engine_action_links'
+				'channel_engine_action_links',
 			)
 		);
 	}
@@ -304,23 +309,26 @@ class ChannelEngine {
 	 * @param string $page
 	 * @param WP_Post $post
 	 */
-    public function add_channel_engine_overview_box( $page, $post ) {
-        if ( ( 'shop_order' === $page && $post && $post->__isset( '_channel_engine_order_id' ) )
-            || ( 'woocommerce_page_wc-orders' === $page && $post instanceof WC_Order && $post->get_meta_data( '_channel_engine_order_id' ) ) ) {
-            $controller = new Channel_Engine_Order_Overview_Controller();
-            $screen     = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
-                ? wc_get_page_screen_id( 'shop-order' )
-                : 'shop_order';
-            add_meta_box(
-                'channel-engine-order-overview',
-                'ChannelEngine',
-                function ($data) use ($controller) { $data_id = $data->ID;  $controller->render($data_id); },
-                $screen,
-                'side',
-                'core'
-            );
-        }
-    }
+	public function add_channel_engine_overview_box( $page, $post ) {
+		if ( ( 'shop_order' === $page && $post && $post->__isset( '_channel_engine_order_id' ) )
+			 || ( 'woocommerce_page_wc-orders' === $page && $post instanceof WC_Order && $post->get_meta_data( '_channel_engine_order_id' ) ) ) {
+			$controller = new Channel_Engine_Order_Overview_Controller();
+			$screen     = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
+				? wc_get_page_screen_id( 'shop-order' )
+				: 'shop_order';
+			add_meta_box(
+				'channel-engine-order-overview',
+				'ChannelEngine',
+				function ( $data ) use ( $controller ) {
+					$data_id = $data->ID;
+					$controller->render( $data_id );
+				},
+				$screen,
+				'side',
+				'core'
+			);
+		}
+	}
 
 	/**
 	 * Plugin deactivation function.
@@ -384,22 +392,22 @@ class ChannelEngine {
 	 * Renders ChannelEngine notifications.
 	 */
 	public function render_notifications() {
-		$notifications = $this->get_notification_service()->find( [ 'isRead' => false ] );
+		$notifications = $this->get_notification_service()->find( array( 'isRead' => false ) );
 
 		if ( $notifications ) {
 			$notification = end( $notifications );
-			echo '<div class="notice notice-warning"><p><strong>' .
-			     __( 'ChannelEngine', 'channelengine-wc' ) . '</strong> ' .
-			     vsprintf( __( $notification->getMessage(), 'channelengine-wc' ), $notification->getArguments() )
-			     . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
-			     . __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>';
+			echo wp_kses( '<div class="notice notice-warning"><p><strong>' .
+						  __( 'ChannelEngine', 'channelengine-wc' ) . '</strong> ' .
+						  vsprintf( __( $notification->getMessage(), 'channelengine-wc' ), $notification->getArguments() )
+						  . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
+						  . __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>', View::get_allowed_tags() );
 		}
 
 		$handler_notification = get_option( '_channel_engine_order_save_note' );
 
 		if ( $handler_notification ) {
-			echo '<div class="notice notice-error"><p>' .
-			     __( $handler_notification, 'channelengine-wc' ) . '</p></div>';
+			echo wp_kses('<div class="notice notice-error"><p>' .
+				 __( $handler_notification, 'channelengine-wc' ) . '</p></div>', View::get_allowed_tags());
 
 			delete_option( '_channel_engine_order_save_note' );
 		}
@@ -407,8 +415,8 @@ class ChannelEngine {
 		$handler_success = get_option( '_channel_engine_order_save_success' );
 
 		if ( $handler_success ) {
-			echo '<div class="notice notice-success"><p>' .
-			     __( $handler_success, 'channelengine-wc' ) . '</p></div>';
+			echo wp_kses('<div class="notice notice-success"><p>' .
+				 __( $handler_success, 'channelengine-wc' ) . '</p></div>', View::get_allowed_tags());
 
 			delete_option( '_channel_engine_order_save_success' );
 		}
@@ -424,7 +432,7 @@ class ChannelEngine {
 			return;
 		}
 
-        $ce_order_id = $order->get_meta( '_channel_engine_order_id' );
+		$ce_order_id = $order->get_meta( '_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
 			return;
@@ -447,9 +455,9 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function handle_order_cancellation( WC_Order $order ) {
-        if ( $order->get_meta( '_ce_order_cancelled' ) ) {
-            return;
-        }
+		if ( $order->get_meta( '_ce_order_cancelled' ) ) {
+			return;
+		}
 
 		$request = new CancellationRequest(
 			$order->get_id(),
@@ -462,8 +470,8 @@ class ChannelEngine {
 		$handler = new CancellationRequestHandler();
 		try {
 			$handler->handle( $request, '' );
-            $order->update_meta_data( '_ce_order_cancelled', true );
-            $order->save();
+			$order->update_meta_data( '_ce_order_cancelled', true );
+			$order->save();
 			update_option(
 				'_channel_engine_order_save_success',
 				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine-wc' )
@@ -483,17 +491,17 @@ class ChannelEngine {
 	 * @throws Exception
 	 */
 	public function handle_order_shipment( WC_Order $order ) {
-        if ( $order->get_meta( '_ce_order_shipped' ) ) {
-            return;
-        }
+		if ( $order->get_meta( '_ce_order_shipped' ) ) {
+			return;
+		}
 
-        $track_trace_no  = $order->get_meta( '_shipping_ce_track_and_trace' );
-        $shipping_method = $order->get_meta( '_shipping_ce_shipping_method' );
-		$shipping_method_title =  array_key_exists($shipping_method, WC()->shipping()->load_shipping_methods())
-			? WC()->shipping()->load_shipping_methods()[$shipping_method]->get_method_title()
+		$track_trace_no        = $order->get_meta( '_shipping_ce_track_and_trace' );
+		$shipping_method       = $order->get_meta( '_shipping_ce_shipping_method' );
+		$shipping_method_title = array_key_exists( $shipping_method, WC()->shipping()->load_shipping_methods() )
+			? WC()->shipping()->load_shipping_methods()[ $shipping_method ]->get_method_title()
 			: $shipping_method;
 
-		$request         = new CreateShipmentRequest(
+		$request = new CreateShipmentRequest(
 			$order->get_id(),
 			$this->get_shipments_service()->getAllItems( $order->get_id() ),
 			false,
@@ -508,8 +516,8 @@ class ChannelEngine {
 		$handler = new ShipmentsCreateRequestHandler();
 		try {
 			$handler->handle( $request );
-            $order->update_meta_data( '_ce_order_shipped', true );
-            $order->save();
+			$order->update_meta_data( '_ce_order_shipped', true );
+			$order->save();
 			update_option(
 				'_channel_engine_order_save_success',
 				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine-wc' )
@@ -559,11 +567,11 @@ class ChannelEngine {
 	 * @return array
 	 */
 	protected function get_cancellation_items( WC_Order $order ) {
-		$line_items = [];
+		$line_items = array();
 
 		foreach ( $order->get_items() as $item ) {
 			$line_items[] = new CancellationItem(
-				$item['variation_id'] ?: $item['product_id'],
+				$item['variation_id'] ? $item['variation_id'] : $item['product_id'],
 				$item['qty'],
 				true
 			);

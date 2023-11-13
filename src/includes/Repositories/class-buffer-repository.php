@@ -9,5 +9,5 @@ namespace ChannelEngine\Repositories;
  */
 class Buffer_Repository extends Base_Repository {
 	const THIS_CLASS_NAME = __CLASS__;
-	const TABLE_NAME = 'channel_engine_events';
+	const TABLE_NAME      = 'channel_engine_events';
 }

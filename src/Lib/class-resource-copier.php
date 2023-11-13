@@ -17,9 +17,9 @@ class Resource_Copier {
 		$from_base = __DIR__ . '/../vendor/channelengine/integration-core/src/BusinessLogic/Resources/';
 		$to_base   = __DIR__ . '/../resources/';
 
-		$map = [
+		$map = array(
 			$from_base . 'js' => $to_base . 'channelengine/js',
-		];
+		);
 
 		foreach ( $map as $from => $to ) {
 			self::copy_directory( $from, $to );

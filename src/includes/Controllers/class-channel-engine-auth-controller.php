@@ -37,14 +37,19 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 
 		try {
 			$this->get_auth_service()->validateAccountInfo( $api_key, $account_name, get_woocommerce_currency() );
-			$auth_info = AuthInfo::fromArray( [ 'account_name' => $account_name, 'api_key' => $api_key ] );
+			$auth_info = AuthInfo::fromArray(
+				array(
+					'account_name' => $account_name,
+					'api_key'      => $api_key,
+				)
+			);
 			$this->get_auth_service()->setAuthInfo( $auth_info );
 			$this->register_webhooks();
 			$this->get_state_service()->set_account_configured( true );
-			$this->return_json( [ 'success' => true ] );
+			$this->return_json( array( 'success' => true ) );
 		} catch ( CurrencyMismatchException $e ) {
-            $this->return_error( __( $e->getMessage(), 'channelengine-wc' ) );
-        } catch ( Webhook_Creation_Failed_Exception $e ) {
+			$this->return_error( __( $e->getMessage(), 'channelengine-wc' ) );
+		} catch ( Webhook_Creation_Failed_Exception $e ) {
 			$this->return_error( __( $e->getMessage(), 'channelengine-wc' ) );
 		} catch ( Exception $e ) {
 			$this->return_error( __( 'Invalid API key or Account name.', 'channelengine-wc' ) );
@@ -69,9 +74,11 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 	protected function load_resources() {
 		parent::load_resources();
 
-		Script_Loader::load_js( [
-			'/js/OnboardingAuth.js',
-		] );
+		Script_Loader::load_js(
+			array(
+				'/js/OnboardingAuth.js',
+			)
+		);
 	}
 
 	/**
@@ -80,7 +87,7 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 	 * @return AuthorizationService
 	 */
 	protected function get_auth_service() {
-		if ( $this->auth_service === null ) {
+		if ( null === $this->auth_service ) {
 			$this->auth_service = ServiceRegister::getService( AuthorizationService::class );
 		}
 

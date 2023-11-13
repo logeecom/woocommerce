@@ -2,7 +2,6 @@
 
 namespace ChannelEngine\Components\Services;
 
-
 use ChannelEngine\BusinessLogic\SupportConsole\SupportService;
 use ChannelEngine\BusinessLogic\Webhooks\Contracts\WebhooksService;
 use ChannelEngine\Infrastructure\Logger\Logger;
@@ -23,8 +22,8 @@ class Support_Service extends SupportService {
 	protected function hardReset() {
 		try {
 			$this->get_webhook_service()->delete();
-		} catch ( Exception $e) {
-			Logger::logError('Failed to delete webhook because: ' . $e->getMessage());
+		} catch ( Exception $e ) {
+			Logger::logError( 'Failed to delete webhook because: ' . $e->getMessage() );
 		}
 
 		$database = new Database( new Plugin_Options_Repository() );
@@ -35,6 +34,6 @@ class Support_Service extends SupportService {
 	 * @return WebhooksService
 	 */
 	protected function get_webhook_service() {
-		return ServiceRegister::getService(WebhooksService::class);
+		return ServiceRegister::getService( WebhooksService::class );
 	}
 }

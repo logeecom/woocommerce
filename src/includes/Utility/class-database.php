@@ -84,7 +84,7 @@ class Database {
 	 * @param string $table_name
 	 */
 	private function truncate( $table_name ) {
-		$query = "TRUNCATE " . $this->db->prefix . $table_name . ";";
+		$query = 'TRUNCATE ' . $this->db->prefix . $table_name . ';';
 		$this->db->query( $query );
 	}
 
@@ -92,7 +92,7 @@ class Database {
 	 * @param string $table_name
 	 */
 	private function drop_table( $table_name ) {
-		$query = "DROP TABLE IF EXISTS " . $this->db->prefix . $table_name;
+		$query = 'DROP TABLE IF EXISTS ' . $this->db->prefix . $table_name;
 		$this->db->query( $query );
 	}
 

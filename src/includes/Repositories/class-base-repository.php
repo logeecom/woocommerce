@@ -20,7 +20,7 @@ class Base_Repository implements RepositoryInterface {
 	 * Fully qualified name of this class.
 	 */
 	const THIS_CLASS_NAME = __CLASS__;
-	const TABLE_NAME = 'channel_engine_entity';
+	const TABLE_NAME      = 'channel_engine_entity';
 
 	/**
 	 * @var wpdb
@@ -63,7 +63,7 @@ class Base_Repository implements RepositoryInterface {
 	 */
 	public function select( QueryFilter $filter = null ) {
 		/** @var Entity $entity */
-		$entity = new $this->entity_class;
+		$entity = new $this->entity_class();
 		$type   = $entity->getConfig()->getType();
 
 		/** @noinspection SqlNoDataSourceInspection */
@@ -124,8 +124,7 @@ class Base_Repository implements RepositoryInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function deleteWhere(QueryFilter $filter)
-	{
+	public function deleteWhere( QueryFilter $filter ) {
 		/** @var Entity $entity */
 		$entity = new $this->entity_class();
 		$type   = $entity->getConfig()->getType();
@@ -137,7 +136,7 @@ class Base_Repository implements RepositoryInterface {
 			$query .= $this->get_condition( $filter, IndexHelper::mapFieldsToIndexes( $entity ) );
 		}
 
-		$this->db->query($query);
+		$this->db->query( $query );
 	}
 
 
@@ -204,7 +203,7 @@ class Base_Repository implements RepositoryInterface {
 	 * Builds query filter part of the query.
 	 *
 	 * @param QueryFilter $filter Query filter object.
-	 * @param array $field_index_map Property to index number map.
+	 * @param array       $field_index_map Property to index number map.
 	 *
 	 * @return string Query filter addendum.
 	 * @throws QueryFilterInvalidParamException If filter condition is invalid.
@@ -215,12 +214,12 @@ class Base_Repository implements RepositoryInterface {
 		if ( $filter->getOrderByColumn() ) {
 			$this->validate_index_column( $filter->getOrderByColumn(), $field_index_map );
 			$order_index = 'id' === $filter->getOrderByColumn() ? 'id' : 'index_' . $field_index_map[ $filter->getOrderByColumn() ];
-			$query       .= " ORDER BY {$order_index} {$filter->getOrderDirection()}";
+			$query      .= " ORDER BY {$order_index} {$filter->getOrderDirection()}";
 		}
 
 		if ( $filter->getLimit() ) {
 			$offset = (int) $filter->getOffset();
-			$query  .= " LIMIT {$offset}, {$filter->getLimit()}";
+			$query .= " LIMIT {$offset}, {$filter->getLimit()}";
 		}
 
 		return $query;
@@ -280,7 +279,7 @@ class Base_Repository implements RepositoryInterface {
 	 * Validates if column can be filtered or sorted by.
 	 *
 	 * @param string $column Column name.
-	 * @param array $index_map Index map.
+	 * @param array  $index_map Index map.
 	 *
 	 * @throws QueryFilterInvalidParamException If filter condition is invalid.
 	 */
@@ -315,7 +314,7 @@ class Base_Repository implements RepositoryInterface {
 
 	/**
 	 * @param QueryFilter $filter
-	 * @param array $field_index_map
+	 * @param array       $field_index_map
 	 *
 	 * @return string
 	 * @throws QueryFilterInvalidParamException
@@ -325,19 +324,19 @@ class Base_Repository implements RepositoryInterface {
 		$conditions = $filter->getConditions();
 		if ( ! empty( $conditions ) ) {
 			$query .= 'AND (';
-			$first = true;
+			$first  = true;
 			foreach ( $conditions as $condition ) {
 				$this->validate_index_column( $condition->getColumn(), $field_index_map );
 				$chain_op = $first ? '' : $condition->getChainOperator();
 				$first    = false;
 				$column   = 'id' === $condition->getColumn() ? 'id' : 'index_' . $field_index_map[ $condition->getColumn() ];
 				$operator = $condition->getOperator();
-				$query    .= " $chain_op $column $operator " . $this->convert_value( $condition );
+				$query   .= " $chain_op $column $operator " . $this->convert_value( $condition );
 			}
 
 			$query .= ')';
 		}
 
 		return $query;
-}
+	}
 }

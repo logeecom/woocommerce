@@ -10,5 +10,5 @@ global $wpdb;
 
 \ChannelEngine\Components\Bootstrap_Component::init();
 
-$plugin = \ChannelEngine\ChannelEngine::init( __FILE__ );
-$plugin->uninstall();
+$channel_engine = \ChannelEngine\ChannelEngine::init( __FILE__ );
+$channel_engine->uninstall();

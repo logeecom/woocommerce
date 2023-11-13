@@ -28,22 +28,24 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 	 */
 	public function get() {
 		$status    = (bool) $this->get_param( 'status' );
-		$page      = (int) $this->get_param( 'page' ) ?: 1;
-		$page_size = (int) $this->get_param( 'page_size' ) ?: 10;
+		$page      = (int) $this->get_param( 'page' ) ? (int) $this->get_param( 'page' ) : 1;
+		$page_size = (int) $this->get_param( 'page_size' ) ? (int) $this->get_param( 'page_size' ) : 10;
 		$task_type = $status ? '' : $this->get_param( 'task_type' );
 
 		$logs           = $this->get_logs( $page, $page_size, $task_type, $status );
 		$number_of_logs = $this->get_log_service()->count( $this->get_filters( $task_type, $status ) );
 
-		$this->return_json( [
-			'logs'          => $this->format_logs( $logs ),
-			'numberOfLogs'  => $number_of_logs,
-			'from'          => ( $number_of_logs === 0 ) ? 0 : ( $page - 1 ) * $page_size + 1,
-			'to'            => ( $number_of_logs < $page * $page_size ) ? $number_of_logs : $page * $page_size,
-			'numberOfPages' => ceil( $number_of_logs / $page_size ),
-			'currentPage'   => (int) $page,
-			'taskType'      => $status ? 'Errors' : $task_type,
-		] );
+		$this->return_json(
+			array(
+				'logs'          => $this->format_logs( $logs ),
+				'numberOfLogs'  => $number_of_logs,
+				'from'          => ( 0 === $number_of_logs ) ? 0 : ( $page - 1 ) * $page_size + 1,
+				'to'            => ( $number_of_logs < $page * $page_size ) ? $number_of_logs : $page * $page_size,
+				'numberOfPages' => ceil( $number_of_logs / $page_size ),
+				'currentPage'   => (int) $page,
+				'taskType'      => $status ? 'Errors' : $task_type,
+			)
+		);
 	}
 
 	/**
@@ -51,44 +53,45 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 	 */
 	public function get_details() {
 		$log_id            = (int) $this->get_param( 'log_id' );
-		$page              = (int) $this->get_param( 'page' ) ?: 1;
-		$page_size         = $this->get_param( 'page_size' ) ?: 10;
+		$page              = (int) $this->get_param( 'page' ) ? (int) $this->get_param( 'page' ) : 1;
+		$page_size         = $this->get_param( 'page_size' ) ? $this->get_param( 'page_size' ) : 10;
 		$details           = $this->get_details_service()->find(
-			[ 'logId' => $log_id ],
+			array( 'logId' => $log_id ),
 			( $page - 1 ) * $page_size,
 			$page_size
 		);
-		$formatted_details = [];
+		$formatted_details = array();
 
 		foreach ( $details as $detail ) {
-			$formatted_details[] = [
+			$formatted_details[] = array(
 				'message'    => vsprintf( __( $detail->getMessage(), 'channelengine-wc' ), $detail->getArguments() ),
 				'identifier' => $detail->getArguments()[0],
-			];
+			);
 		}
 
-		$number_of_details = $this->get_details_service()->count( [ 'logId' => $log_id ] );
+		$number_of_details = $this->get_details_service()->count( array( 'logId' => $log_id ) );
 
-		$this->return_json( [
-			'details'         => $formatted_details,
-			'numberOfDetails' => $number_of_details,
-			'from'            => ( $number_of_details === 0 ) ? 0 : ( $page - 1 ) * $page_size + 1,
-			'to'              => ( $number_of_details < $page * $page_size ) ? $number_of_details : $page * $page_size,
-			'numberOfPages'   => ceil( $number_of_details / $page_size ),
-			'currentPage'     => (int) $page,
-			'logId'           => $log_id,
-			'pageSize'        => $page_size,
-		] );
+		$this->return_json(
+			array(
+				'details'         => $formatted_details,
+				'numberOfDetails' => $number_of_details,
+				'from'            => ( 0 === $number_of_details ) ? 0 : ( $page - 1 ) * $page_size + 1,
+				'to'              => ( $number_of_details < $page * $page_size ) ? $number_of_details : $page * $page_size,
+				'numberOfPages'   => ceil( $number_of_details / $page_size ),
+				'currentPage'     => (int) $page,
+				'logId'           => $log_id,
+				'pageSize'        => $page_size,
+			)
+		);
 	}
 
 	/**
 	 * @param $page
 	 * @param $page_size
-	 * @param string $task_type
-	 * @param string $status
+	 * @param string    $task_type
+	 * @param string    $status
 	 *
 	 * @return TransactionLog[]
-	 *
 	 */
 	protected function get_logs( $page, $page_size, $task_type, $status ) {
 		return $this->get_log_service()->find(
@@ -105,14 +108,14 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 	 * @return array
 	 */
 	protected function get_filters( $task_type, $status ) {
-		$filters = [];
+		$filters = array();
 
 		if ( $task_type ) {
 			$filters['taskType'] = $task_type;
 		}
 
-		if ( $task_type === 'ProductSync' ) {
-			$filters['taskType'] = [ 'ProductSync', 'ProductsDeleteTask', 'ProductsUpsertTask' ];
+		if ( 'ProductSync' === $task_type ) {
+			$filters['taskType'] = array( 'ProductSync', 'ProductsDeleteTask', 'ProductsUpsertTask' );
 		}
 
 		if ( $status ) {
@@ -128,30 +131,30 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 	 * @return array
 	 */
 	protected function format_logs( $logs ) {
-		$formatted_logs = [];
+		$formatted_logs = array();
 
 		foreach ( $logs as $log ) {
 			$detail = $this->get_details_service()->getForLog( $log->getId() );
 
-			$formatted_log = [
+			$formatted_log = array(
 				'taskType'      => __( $log->getTaskType(), 'channelengine-wc' ),
 				'status'        => __( $log->getStatus(), 'channelengine-wc' ),
 				'startTime'     => '',
 				'completedTime' => '',
 				'id'            => $log->getId(),
-				'hasDetails'    => $detail !== []
-			];
+				'hasDetails'    => array() !== $detail,
+			);
 
 			if ( $log->getStartTime() ) {
 				$formatted_log['startTime'] = get_date_from_gmt(
-					date( 'Y-m-d H:i:s', $log->getStartTime()->getTimestamp() ),
+					gmdate( 'Y-m-d H:i:s', $log->getStartTime()->getTimestamp() ),
 					'd/m/Y H.i'
 				);
 			}
 
 			if ( $log->getCompletedTime() ) {
 				$formatted_log['completedTime'] = get_date_from_gmt(
-					date( 'Y-m-d H:i:s', $log->getCompletedTime()->getTimestamp() ),
+					gmdate( 'Y-m-d H:i:s', $log->getCompletedTime()->getTimestamp() ),
 					'd/m/Y H.i'
 				);
 			}
@@ -168,7 +171,7 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 	 * @return TransactionLogService
 	 */
 	protected function get_log_service() {
-		if ( $this->log_service === null ) {
+		if ( null === $this->log_service ) {
 			$this->log_service = ServiceRegister::getService( TransactionLogService::class );
 		}
 
@@ -181,7 +184,7 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 	 * @return DetailsService
 	 */
 	protected function get_details_service() {
-		if ( $this->details_service === null ) {
+		if ( null === $this->details_service ) {
 			$this->details_service = ServiceRegister::getService( DetailsService::class );
 		}
 

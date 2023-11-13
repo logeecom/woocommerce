@@ -15,7 +15,7 @@ class Product_Event_Repository extends Base_Repository implements ProductEventRe
 	 * Fully qualified name of this class.
 	 */
 	const THIS_CLASS_NAME = __CLASS__;
-	const TABLE_NAME = 'channel_engine_events';
+	const TABLE_NAME      = 'channel_engine_events';
 
 	/**
 	 * Deletes multiple entities and returns success flag.
@@ -25,15 +25,15 @@ class Product_Event_Repository extends Base_Repository implements ProductEventRe
 	 * @return bool
 	 */
 	public function batchDelete( array $entities ) {
-		$ids = [];
+		$ids = array();
 
-		foreach ($entities as $entity) {
+		foreach ( $entities as $entity ) {
 			$ids[] = $entity->getId();
 		}
 
-		$format = implode(', ', array_fill(0, count($ids), '%d'));
-		$query = $this->db->prepare("DELETE FROM $this->table_name WHERE ID IN ($format)", $ids);
+		$format = implode( ', ', array_fill( 0, count( $ids ), '%d' ) );
+		$query  = $this->db->prepare( "DELETE FROM $this->table_name WHERE ID IN ($format)", $ids );
 
-		return $this->db->query($query) === count($ids);
+		return $this->db->query( $query ) === count( $ids );
 	}
 }

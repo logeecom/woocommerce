@@ -26,20 +26,20 @@ class Shipments_Service implements ShipmentsService {
 	 * @return OrderItem[]
 	 */
 	public function getAllItems( $shopOrderId ) {
-        $order = wc_get_order( $shopOrderId );
-        $ce_order_id = $order->get_meta('_channel_engine_order_id' );
+		$order       = wc_get_order( $shopOrderId );
+		$ce_order_id = $order->get_meta( '_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
-			return [];
+			return array();
 		}
 
-		$items = [];
+		$items = array();
 
-		foreach ($order->get_items() as $item) {
+		foreach ( $order->get_items() as $item ) {
 			$orderItem = new OrderItem();
-			$orderItem->setShipped(true);
-			$orderItem->setQuantity($item['qty']);
-			$orderItem->setMerchantProductNo($item['variation_id'] ?: $item['product_id']);
+			$orderItem->setShipped( true );
+			$orderItem->setQuantity( $item['qty'] );
+			$orderItem->setMerchantProductNo( $item['variation_id'] ? $item['variation_id'] : $item['product_id'] );
 
 			$items[] = $orderItem;
 		}
@@ -51,7 +51,7 @@ class Shipments_Service implements ShipmentsService {
 	 * Rejects creation request.
 	 *
 	 * @param CreateShipmentRequest $request
-	 * @param Exception $reason
+	 * @param Exception             $reason
 	 *
 	 * @return RejectResponse
 	 *
@@ -69,7 +69,7 @@ class Shipments_Service implements ShipmentsService {
 	 * Rejects update request.
 	 *
 	 * @param UpdateShipmentRequest $request
-	 * @param Exception $reason
+	 * @param Exception             $reason
 	 *
 	 * @return RejectResponse
 	 *

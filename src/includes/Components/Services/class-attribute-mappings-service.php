@@ -11,21 +11,20 @@ use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException
  *
  * @package ChannelEngine\Components\Services
  */
-class Attribute_Mappings_Service
-{
-    /**
-     * Sets attribute mappings configuration.
-     *
-     * @param AttributeMappings $mappings
-     *
-     * @return void
-     *
-     * @throws QueryFilterInvalidParamException
-     */
-    public function setAttributeMappings($mappings)
-    {
-        ConfigurationManager::getInstance()->saveConfigValue('attributeMappings', $mappings->toArray());
-    }
+class Attribute_Mappings_Service {
+
+	/**
+	 * Sets attribute mappings configuration.
+	 *
+	 * @param AttributeMappings $mappings
+	 *
+	 * @return void
+	 *
+	 * @throws QueryFilterInvalidParamException
+	 */
+	public function setAttributeMappings( $mappings ) {
+		ConfigurationManager::getInstance()->saveConfigValue( 'attributeMappings', $mappings->toArray() );
+	}
 
 	/**
 	 * Retrieves attribute mappings configuration.
@@ -34,10 +33,9 @@ class Attribute_Mappings_Service
 	 *
 	 * @throws QueryFilterInvalidParamException
 	 */
-	public function getAttributeMappings()
-	{
-		$rawData = ConfigurationManager::getInstance()->getConfigValue('attributeMappings');
+	public function getAttributeMappings() {
+		$rawData = ConfigurationManager::getInstance()->getConfigValue( 'attributeMappings' );
 
-		return $rawData !== null ? AttributeMappings::fromArray($rawData) : $rawData;
+		return null !== $rawData ? AttributeMappings::fromArray( $rawData ) : $rawData;
 	}
 }

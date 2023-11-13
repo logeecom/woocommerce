@@ -11,46 +11,47 @@ use wpdb;
  * @package ChannelEngine\Migrations
  */
 class Migrator {
-    /**
-     * @var wpdb
-     */
-    private $db;
-    /**
-     * @var string
-     */
-    private $version;
+	/**
+	 * @var wpdb
+	 */
+	private $db;
+	/**
+	 * @var string
+	 */
+	private $version;
 
-    /**
-     * Migrator constructor.
-     *
-     * @param wpdb $db
-     * @param string $version
-     */
-    public function __construct( $db, $version ) {
-        $this->db      = $db;
-        $this->version = $version;
-    }
+	/**
+	 * Migrator constructor.
+	 *
+	 * @param wpdb   $db
+	 * @param string $version
+	 */
+	public function __construct( $db, $version ) {
+		$this->db      = $db;
+		$this->version = $version;
+	}
 
-    /**
-     * Executes migrations that have higher version then the provided version.
-     *
-     * @throws Exceptions\Migration_Exception
-     */
-    public function execute() {
-        $migration_reader = new Migration_Reader( $this->get_migration_directory() , $this->version, $this->db);
-        while ($migration_reader->has_next()) {
-            if ($migration = $migration_reader->read_next()) {
-                $migration->execute();
-            }
-        }
-    }
+	/**
+	 * Executes migrations that have higher version then the provided version.
+	 *
+	 * @throws Exceptions\Migration_Exception
+	 */
+	public function execute() {
+		$migration_reader = new Migration_Reader( $this->get_migration_directory(), $this->version, $this->db );
+		while ( $migration_reader->has_next() ) {
+			$migration = $migration_reader->read_next();
+			if ( $migration ) {
+				$migration->execute();
+			}
+		}
+	}
 
-    /**
-     * Provides migration directory.
-     *
-     * @return string
-     */
-    protected function get_migration_directory() {
-        return realpath( __DIR__ ) . '/Scripts/';
-    }
+	/**
+	 * Provides migration directory.
+	 *
+	 * @return string
+	 */
+	protected function get_migration_directory() {
+		return realpath( __DIR__ ) . '/Scripts/';
+	}
 }

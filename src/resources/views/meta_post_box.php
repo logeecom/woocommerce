@@ -1,6 +1,7 @@
 <?php
 
 use ChannelEngine\Utility\Shop_Helper;
+use ChannelEngine\Utility\View;
 
 /**
  * ChannelEngine details.
@@ -13,82 +14,82 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-    <div class="overview-box">
-        <label class="property-name">
-			<?php echo __( 'Order ID:', 'channelengine-wc' ); ?>
-        </label>
-        <label>
-			<?php echo $data['order_id']; ?>
-        </label>
-        <label class="property-name">
-			<?php echo __( 'Channel name:', 'channelengine-wc' ); ?>
-        </label>
-        <label>
-			<?php echo $data['channel_name']; ?>
-        </label>
-        <label class="property-name">
-			<?php echo __( 'Channel Order No:', 'channelengine-wc' ); ?>
-        </label>
-        <label>
-			<?php echo $data['channel_order_no']; ?>
-        </label>
-        <label class="property-name">
-			<?php echo __( 'Payment method:', 'channelengine-wc' ); ?>
-        </label>
-        <label>
-			<?php echo $data['payment_method']; ?>
-        </label>
-    </div>
+<div class="overview-box">
+	<label class="property-name">
+		<?php esc_html_e( 'Order ID:', 'channelengine-wc' ); ?>
+	</label>
+	<label>
+		<?php esc_html( $data['order_id'] ); ?>
+	</label>
+	<label class="property-name">
+		<?php esc_html_e( 'Channel name:', 'channelengine-wc' ); ?>
+	</label>
+	<label>
+		<?php esc_html( $data['channel_name'] ); ?>
+	</label>
+	<label class="property-name">
+		<?php esc_html_e( 'Channel Order No:', 'channelengine-wc' ); ?>
+	</label>
+	<label>
+		<?php esc_html( $data['channel_order_no'] ); ?>
+	</label>
+	<label class="property-name">
+		<?php esc_html_e( 'Payment method:', 'channelengine-wc' ); ?>
+	</label>
+	<label>
+		<?php esc_html( $data['payment_method'] ); ?>
+	</label>
+</div>
 
 <?php
 if ( ! $data['order_cancelled'] ) {
 	?>
-    <div>
-        <div id="ce-loader" class="ce-overlay">
-            <div class="ce-loader"></div>
-        </div>
-        <div id="ce-track-and-trace-content" class="track-and-trace-box">
-            <div id="ce-shipment-error" class="notice notice-error" style="display: none">
-                <p id="ce-shipment-error-description">
-                </p>
-            </div>
-            <label class="property-name">
-				<?php echo __( 'Track & trace', 'channelengine-wc' ); ?>
-            </label>
-            <label for="ce-shipping-methods">
-				<?php echo __( 'Shipping method:', 'channelengine-wc' ); ?>
-            </label>
-            <select name="ce-chipping-methods" id="ce-shipping-methods">
+	<div>
+		<div id="ce-loader" class="ce-overlay">
+			<div class="ce-loader"></div>
+		</div>
+		<div id="ce-track-and-trace-content" class="track-and-trace-box">
+			<div id="ce-shipment-error" class="notice notice-error" style="display: none">
+				<p id="ce-shipment-error-description">
+				</p>
+			</div>
+			<label class="property-name">
+				<?php esc_html_e( 'Track & trace', 'channelengine-wc' ); ?>
+			</label>
+			<label for="ce-shipping-methods">
+				<?php esc_html_e( 'Shipping method:', 'channelengine-wc' ); ?>
+			</label>
+			<select name="ce-chipping-methods" id="ce-shipping-methods">
 				<?php
 				if ( ! $data['chosen_shipping_method'] ) {
-					echo '<option selected="selected" value="">' . __( '--Shipping Method--' ) . '</option>';
+					echo wp_kses( '<option selected="selected" value="">' . __( '--Shipping Method--' ) . '</option>', View::get_allowed_tags() );
 				}
 				foreach ( $data['shipping_methods'] as $method ) {
 					if ( $method->id === $data['chosen_shipping_method'] ) {
-						echo '<option selected="selected" value="' . $method->id . '">' . $method->method_title
-						     . '</option>';
+						echo wp_kses( '<option selected="selected" value="' . $method->id . '">' . $method->method_title
+									  . '</option>', View::get_allowed_tags() );
 					} else {
-						echo '<option value="' . $method->id . '">' . $method->method_title
-						     . '</option>';
+						echo wp_kses( '<option value="' . $method->id . '">' . $method->method_title
+									  . '</option>', View::get_allowed_tags() );
 					}
 				}
 				?>
-            </select>
-            <label>
-				<?php echo __( 'Track and trace:', 'channelengine-wc' ); ?>
-                <input id="ce-track-and-trace" class="ce-track-and-trace-input" type="text"
-                       value="<?php echo $data['track_and_trace'] ?>">
-            </label>
-            <button id="ce-update-info" class="ce-update-button page-title-action">
-				<?php echo __( 'Update tracking information', 'channelengine-wc' ); ?>
-            </button>
-            <input type="hidden" id="ce-create-endpoint"
-                   value="<?php echo Shop_Helper::get_controller_url( 'Order_Overview', 'save' ); ?>">
-            <input type="hidden" id="ce-post-id" value="<?php echo $data['post_id']; ?>">
-            <input id="ceSyncShipmentStatusUrl" type="hidden"
-                   value="<?php echo Shop_Helper::get_controller_url( 'Order_Status', 'get_sync_shipment_status' ); ?>">
-        </div>
-    </div>
+			</select>
+			<label>
+				<?php esc_html_e( 'Track and trace:', 'channelengine-wc' ); ?>
+				<input id="ce-track-and-trace" class="ce-track-and-trace-input" type="text"
+					   value="<?php esc_attr( $data['track_and_trace'] ); ?>">
+			</label>
+			<button id="ce-update-info" class="ce-update-button page-title-action">
+				<?php esc_html_e( 'Update tracking information', 'channelengine-wc' ); ?>
+			</button>
+			<input type="hidden" id="ce-create-endpoint"
+				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Order_Overview', 'save' ) ); ?>">
+			<input type="hidden" id="ce-post-id" value="<?php esc_attr( $data['post_id'] ); ?>">
+			<input id="ceSyncShipmentStatusUrl" type="hidden"
+				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'get_sync_shipment_status' ) ); ?>">
+		</div>
+	</div>
 	<?php
 }
 ?>

@@ -41,9 +41,9 @@ class Webhooks_Service extends WebhooksService {
 	 * @inheritDoc
 	 */
 	protected function getEvents() {
-		return [
+		return array(
 			EventTypes::ORDERS_CREATE,
-		];
+		);
 	}
 
 	/**
@@ -59,6 +59,6 @@ class Webhooks_Service extends WebhooksService {
 	 * @inheritDoc
 	 */
 	protected function getUrl() {
-		return Shop_Helper::get_controller_url('Webhooks', 'handle');
+		return Shop_Helper::get_controller_url( 'Webhooks', 'handle' );
 	}
 }

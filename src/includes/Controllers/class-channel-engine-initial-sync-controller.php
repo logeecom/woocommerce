@@ -28,29 +28,34 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 	public function start() {
 		try {
 			$this->get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );
-            $config = ServiceRegister::getService(OrdersConfigurationService::class)->getOrderSyncConfig();
-            if($config->isEnableOrdersByMerchantSync() || $config->isEnableOrdersByMarketplaceSync()) {
-                $this->get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
-            }
+			$config = ServiceRegister::getService( OrdersConfigurationService::class )->getOrderSyncConfig();
+			if ( $config->isEnableOrdersByMerchantSync() || $config->isEnableOrdersByMarketplaceSync() ) {
+				$this->get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
+			}
 			$this->get_state_service()->set_initial_sync_in_progress( true );
 
-			$this->return_json( [ 'success' => true ] );
+			$this->return_json( array( 'success' => true ) );
 		} catch ( QueueStorageUnavailableException $e ) {
-			$this->return_json( [
-				'success' => false,
-				'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-wc' ), $e->getMessage() ),
-			] );
+			$this->return_json(
+				array(
+					'success' => false,
+					/* translators: %s: search term */
+					'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-wc' ), $e->getMessage() ),
+				)
+			);
 		}
 	}
 
 	protected function load_resources() {
 		parent::load_resources();
 
-		Script_Loader::load_js( [
-			'/js/InitialSync.js',
-            '/js/DisconnectService.js',
-            '/js/Disconnect.js',
-		] );
+		Script_Loader::load_js(
+			array(
+				'/js/InitialSync.js',
+				'/js/DisconnectService.js',
+				'/js/Disconnect.js',
+			)
+		);
 	}
 
 	/**
@@ -59,7 +64,7 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 	 * @return QueueService
 	 */
 	protected function get_queue_service() {
-		if ( $this->queue_service === null ) {
+		if ( null === $this->queue_service ) {
 			$this->queue_service = ServiceRegister::getService( QueueService::class );
 		}
 
@@ -70,6 +75,6 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 	 * @return State_Service
 	 */
 	protected function get_state_service() {
-		return ServiceRegister::getService(State_Service::class);
+		return ServiceRegister::getService( State_Service::class );
 	}
 }

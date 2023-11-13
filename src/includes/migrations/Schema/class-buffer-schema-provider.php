@@ -16,7 +16,7 @@ class Buffer_Schema_Provider {
 	 * @return string
 	 */
 	public static function get_schema( $table_name ) {
-		return "CREATE TABLE IF NOT EXISTS `" . $table_name . "` (
+		return 'CREATE TABLE IF NOT EXISTS `' . $table_name . '` (
                        `id` INT NOT NULL AUTO_INCREMENT,
                        `type` VARCHAR(191) NOT NULL,
                        `data` TEXT NOT NULL,
@@ -25,6 +25,6 @@ class Buffer_Schema_Provider {
                        PRIMARY KEY (`id`),
                        INDEX `type_index_1` (`type`, `index_1`),
                        INDEX `type_index_2` (`type`, `index_2`)
-                       )";
+                       )';
 	}
 }

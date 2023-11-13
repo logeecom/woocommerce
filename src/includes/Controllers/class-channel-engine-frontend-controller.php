@@ -36,7 +36,7 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 *
 	 * @var array
 	 */
-	protected $data = [];
+	protected $data = array();
 
 	/**
 	 * Renders appropriate view.
@@ -49,7 +49,7 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 		$this->data      = $controller->get_view_data();
 		$controller->load_resources();
 
-		echo View::file( '/' . $this->page . '.php' )->render( $this->data );
+		echo wp_kses( View::file( '/' . $this->page . '.php' )->render( $this->data ), View::get_allowed_tags() );
 	}
 
 	/**
@@ -59,8 +59,8 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 		$subpage    = $this->get_param( 'subpage' );
 		$this->page = $this->get_state_service()->get_current_state();
 
-		if ( $subpage && $this->page === State_Service::DASHBOARD
-		     && $this->get_plugin_status_service()->is_enabled() ) {
+		if ( $subpage && State_Service::DASHBOARD === $this->page
+			 && $this->get_plugin_status_service()->is_enabled() ) {
 			$this->page = $subpage;
 		}
 	}
@@ -69,15 +69,17 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 * Loads CSS and JS for specific ChannelEngine pages.
 	 */
 	protected function load_resources() {
-		Script_Loader::load_css( [ '/css/main.css' ] );
-		Script_Loader::load_js( [
-			'/channelengine/js/AjaxService.js',
-			'/js/Main.js',
-			'/js/Notifications.js',
-			'/js/ProductService.js',
-			'/js/OrderService.js',
-			'/js/Loader.js',
-		] );
+		Script_Loader::load_css( array( '/css/main.css' ) );
+		Script_Loader::load_js(
+			array(
+				'/channelengine/js/AjaxService.js',
+				'/js/Main.js',
+				'/js/Notifications.js',
+				'/js/ProductService.js',
+				'/js/OrderService.js',
+				'/js/Loader.js',
+			)
+		);
 	}
 
 	/**
@@ -86,7 +88,7 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 * @return array
 	 */
 	protected function get_view_data() {
-		return [];
+		return array();
 	}
 
 	/**
@@ -117,7 +119,7 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 * @return State_Service
 	 */
 	protected function get_state_service() {
-		if ( $this->state_service === null ) {
+		if ( null === $this->state_service ) {
 			$this->state_service = ServiceRegister::getService( State_Service::class );
 		}
 
@@ -128,7 +130,7 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 * @return Plugin_Status_Service
 	 */
 	protected function get_plugin_status_service() {
-		if ( $this->plugin_status_service === null ) {
+		if ( null === $this->plugin_status_service ) {
 			$this->plugin_status_service = ServiceRegister::getService( Plugin_Status_Service::class );
 		}
 
@@ -139,7 +141,7 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 * @return TaskRunnerWakeup
 	 */
 	protected function get_task_runner_wakeup() {
-		if ( $this->task_runner_wakeup === null ) {
+		if ( null === $this->task_runner_wakeup ) {
 			$this->task_runner_wakeup = ServiceRegister::getService( TaskRunnerWakeup::class );
 		}
 
@@ -153,10 +155,10 @@ class Channel_Engine_Frontend_Controller extends Channel_Engine_Base_Controller 
 	 */
 	protected function return_error( $message ) {
 		$this->return_json(
-			[
+			array(
 				'success' => false,
 				'message' => $message,
-			]
+			)
 		);
 	}
 }

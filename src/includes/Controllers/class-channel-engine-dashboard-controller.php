@@ -25,20 +25,33 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 	 */
 	protected function load_resources() {
 		parent::load_resources();
-		$scripts         = [
-            '/js/Dashboard.js',
-        ];
+		$scripts         = array(
+			'/js/Dashboard.js',
+			'/js/TriggerSyncService.js',
+			'/js/DashboardNotifications.js',
+			'/js/ModalService.js',
+			'/js/Details.js',
+			'/js/DisconnectService.js',
+			'/js/Disconnect.js',
+			'/js/TriggerSyncModal.js',
+			'/js/Transactions.js',
+			'/js/Details.js',
+		);
+
 		$dashboard_state = $this->get_state();
 
-		if ( $dashboard_state === 'disabled-integration' ) {
+		if ( 'disabled-integration' === $dashboard_state ) {
 			$scripts[] = '/js/Enable.js';
 		}
 
-		if ( in_array( $dashboard_state, [
-			'sync-in-progress',
-			'order-sync-in-progress',
-			'product-sync-in-progress'
-		] ) ) {
+		if ( in_array(
+			$dashboard_state,
+			array(
+				'sync-in-progress',
+				'order-sync-in-progress',
+				'product-sync-in-progress',
+			)
+		) ) {
 			$scripts[] = '/js/CheckStatus.js';
 		}
 
@@ -50,11 +63,11 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 	 */
 	protected function get_view_data() {
 		try {
-			return [ 'status' => $this->get_state() ];
+			return array( 'status' => $this->get_state() );
 		} catch ( QueryFilterInvalidParamException $e ) {
 			Logger::logError( $e->getMessage() );
 
-			return [ 'status' => 'notifications' ];
+			return array( 'status' => 'notifications' );
 		}
 	}
 
@@ -71,11 +84,11 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 		}
 
 		if ( $this->get_state_service()->is_initial_sync_in_progress() ) {
-            $config = ServiceRegister::getService(OrdersConfigurationService::class)->getOrderSyncConfig();
-            if($config->isEnableOrdersByMerchantSync() || $config->isEnableOrdersByMarketplaceSync()) {
-                return 'sync-in-progress';
-            }
-            return 'product-sync-in-progress';
+			$config = ServiceRegister::getService( OrdersConfigurationService::class )->getOrderSyncConfig();
+			if ( $config->isEnableOrdersByMerchantSync() || $config->isEnableOrdersByMarketplaceSync() ) {
+				return 'sync-in-progress';
+			}
+			return 'product-sync-in-progress';
 
 		}
 
@@ -105,7 +118,7 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 	 * @return NotificationService
 	 */
 	protected function get_notification_service() {
-		if ( $this->notification_service === null ) {
+		if ( null === $this->notification_service ) {
 			$this->notification_service = ServiceRegister::getService( NotificationService::class );
 		}
 

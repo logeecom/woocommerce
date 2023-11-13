@@ -20,10 +20,10 @@ class Trigger_Sync_Service {
 		$order_sync   = $sync_details['order_sync'];
 		$product_sync = $sync_details['product_sync'];
 
-        if ( $product_sync ) {
-            static::get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );
-            static::get_state_service()->set_manual_product_sync_in_progress( true );
-        }
+		if ( $product_sync ) {
+			static::get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );
+			static::get_state_service()->set_manual_product_sync_in_progress( true );
+		}
 		if ( $order_sync ) {
 			static::get_queue_service()->enqueue( 'channel-engine-orders', new OrderSync() );
 			static::get_state_service()->set_manual_order_sync_in_progress( true );

@@ -50,9 +50,9 @@ class Orders_Service extends OrdersService {
 	 */
 	public function create( Order $order ) {
 		try {
-            if ( $this->orderFromChannelEngineAlreadyExists( $order ) ) {
-                return $this->create_response( false, '', 'Order already created' );
-            }
+			if ( $this->orderFromChannelEngineAlreadyExists( $order ) ) {
+				return $this->create_response( false, '', 'Order already created' );
+			}
 
 			$wc_products = $this->fetch_products( $order );
 			$order_data  = $this->format_order_data( $order );
@@ -128,8 +128,8 @@ class Orders_Service extends OrdersService {
 	 * Formats order address data.
 	 *
 	 * @param Address $address
-	 * @param string  $email
-	 * @param string  $phone
+	 * @param string $email
+	 * @param string $phone
 	 *
 	 * @return array
 	 */
@@ -191,8 +191,8 @@ class Orders_Service extends OrdersService {
 			);
 
 			if ( wc_tax_enabled() ) {
-				$product_data['subtotal']    -= $order_line->getUnitVat();
-				$product_data['total']       -= $order_line->getLineVat();
+				$product_data['subtotal']     -= $order_line->getUnitVat();
+				$product_data['total']        -= $order_line->getLineVat();
 				$product_data['total_tax']    = $order_line->getLineVat();
 				$product_data['subtotal_tax'] = $order_line->getLineVat();
 				$product_data['taxes']        = array(
@@ -250,7 +250,7 @@ class Orders_Service extends OrdersService {
 	/**
 	 * Adds product items to order.
 	 *
-	 * @param array    $wc_products
+	 * @param array $wc_products
 	 * @param WC_Order $wc_order
 	 *
 	 * @throws WC_Data_Exception
@@ -306,7 +306,7 @@ class Orders_Service extends OrdersService {
 	/**
 	 * Creates CreateResponse.
 	 *
-	 * @param bool   $status
+	 * @param bool $status
 	 * @param string $shopOrderId
 	 * @param string $message
 	 *
@@ -327,7 +327,7 @@ class Orders_Service extends OrdersService {
 	 * @return Order_Config_Service
 	 */
 	protected function get_order_config_service() {
-		if ( $this->order_config_service === null ) {
+		if ( null === $this->order_config_service ) {
 			$this->order_config_service = ServiceRegister::getService( OrdersConfigurationService::class );
 		}
 
@@ -340,27 +340,28 @@ class Orders_Service extends OrdersService {
 	 * @return ProductsSyncConfigService
 	 */
 	protected function get_product_sync_config_service() {
-		if ( $this->product_sync_config_service === null ) {
+		if ( null === $this->product_sync_config_service ) {
 			$this->product_sync_config_service = ServiceRegister::getService( ProductsSyncConfigService::class );
 		}
 
 		return $this->product_sync_config_service;
 	}
 
-    /**
-     * Checks if order from ChannelEngine already exist in WooCommerce.
-     *
-     * @param Order $order
-     * @return bool
-     */
-    private function orderFromChannelEngineAlreadyExists( Order $order ): bool {
-        $wc_orders = wc_get_orders(
-            array(
-                'meta_key'   => '_channel_engine_order_id',
-                'meta_value' => $order->getId(),
-            )
-        );
+	/**
+	 * Checks if order from ChannelEngine already exist in WooCommerce.
+	 *
+	 * @param Order $order
+	 *
+	 * @return bool
+	 */
+	private function orderFromChannelEngineAlreadyExists( Order $order ): bool {
+		$wc_orders = wc_get_orders(
+			array(
+				'meta_key'   => '_channel_engine_order_id',
+				'meta_value' => $order->getId(),
+			)
+		);
 
-        return ! empty( $wc_orders );
-    }
+		return ! empty( $wc_orders );
+	}
 }

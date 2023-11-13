@@ -26,13 +26,13 @@ class Channel_Engine_Webhooks_Controller extends Channel_Engine_Base_Controller 
 	 * Handles webhook.
 	 */
 	public function handle() {
-		if (!$this->get_plugin_status_service()->is_enabled()) {
+		if ( ! $this->get_plugin_status_service()->is_enabled() ) {
 			return;
 		}
 
-		$tenant = $this->get_param( 'tenant' );
-		$token  = $this->get_param( 'token' );
-		$event  = $this->get_param( 'type' );
+		$tenant  = $this->get_param( 'tenant' );
+		$token   = $this->get_param( 'token' );
+		$event   = $this->get_param( 'type' );
 		$webhook = new Webhook( $tenant, $token, $event );
 
 		$handler = new OrderWebhookHandler();
@@ -40,8 +40,15 @@ class Channel_Engine_Webhooks_Controller extends Channel_Engine_Base_Controller 
 			$handler->handle( $webhook );
 			$this->return_plain_text();
 		} catch ( BaseException $e ) {
-			Logger::logError($e->getMessage());
-			$this->return_plain_text(json_encode(['Error' => $e->getMessage(), 400]));
+			Logger::logError( $e->getMessage() );
+			$this->return_plain_text(
+				json_encode(
+					array(
+						'Error' => $e->getMessage(),
+						400,
+					)
+				)
+			);
 		}
 	}
 
@@ -51,9 +58,9 @@ class Channel_Engine_Webhooks_Controller extends Channel_Engine_Base_Controller 
 	 * @param string $data
 	 * @param int $status_code
 	 */
-	protected function return_plain_text($data = '', $status_code = 200) {
+	protected function return_plain_text( $data = '', $status_code = 200 ) {
 		status_header( $status_code );
-		echo $data;
+		esc_html( $data );
 		die();
 	}
 
@@ -61,6 +68,6 @@ class Channel_Engine_Webhooks_Controller extends Channel_Engine_Base_Controller 
 	 * @return Plugin_Status_Service
 	 */
 	protected function get_plugin_status_service() {
-		return ServiceRegister::getService(Plugin_Status_Service::class);
+		return ServiceRegister::getService( Plugin_Status_Service::class );
 	}
 }

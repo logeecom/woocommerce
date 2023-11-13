@@ -37,11 +37,13 @@ To check the code against the coding standards, execute these commands in the ro
 ```bash
 composer install
 vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs/
-vendor/bin/phpcs src/ --standard=WordPress --colors --severity=10
+vendor/bin/phpcs --standard=pbs-rules-set.xml --extensions=php,html --warning-severity=0  --report-source --report-full=phpcs-report.txt --ignore-annotations src
 ```
 
 Correct **all** errors reported but the code sniffer.
-
+```bash
+vendor/bin/phpcbf --standard=pbs-rules-set.xml --extensions=php,html --warning-severity=0  --report-source --ignore-annotations src
+```
 ### Running the tests
 
 Tests are run on WordPress testing SDK. More on this can be found [here](https://make.wordpress.org/cli/handbook/plugin-unit-tests/).

@@ -16,7 +16,7 @@ class Script_Loader {
 	 * @param false $in_footer
 	 */
 	public static function load_js( $scripts, $in_footer = false ) {
-		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_script( 'jquery-ui-datepicker' );
 		self::load( $scripts, $in_footer, true );
 	}
 
@@ -41,8 +41,8 @@ class Script_Loader {
 		$base_url = Shop_Helper::get_plugin_base_url() . 'resources/';
 		$version  = Shop_Helper::get_plugin_version();
 		foreach ( $files as $file_path ) {
-			$file_path = ltrim($file_path, '/');
-			$name = substr( $file_path, strrpos( '/', $file_path ) );
+			$file_path = ltrim( $file_path, '/' );
+			$name      = substr( $file_path, strrpos( '/', $file_path ) );
 			if ( $is_js ) {
 				wp_enqueue_script( $name, $base_url . $file_path, array(), $version, $in_footer );
 			} else {

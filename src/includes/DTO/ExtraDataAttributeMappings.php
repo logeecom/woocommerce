@@ -18,7 +18,7 @@ class ExtraDataAttributeMappings extends DataTransferObject {
 	/**
 	 * @param $mappings
 	 */
-	public function __construct( $mappings  ) {
+	public function __construct( $mappings ) {
 		$this->mappings = $mappings;
 	}
 

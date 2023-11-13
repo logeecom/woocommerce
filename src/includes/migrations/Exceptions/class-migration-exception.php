@@ -10,7 +10,7 @@ use Exception;
  *
  * @package ChannelEngine\Migrations\Exceptions
  */
-class Migration_Exception extends Exception
-{
+class Migration_Exception extends Exception {
+
 
 }

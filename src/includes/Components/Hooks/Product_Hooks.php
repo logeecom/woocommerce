@@ -20,12 +20,12 @@ class Product_Hooks {
 		static::get_task_runner_wakeup()->wakeup();
 		$post = get_post( $id );
 
-		if ( $post->post_status === 'publish' ) {
-            $handler = new ProductUpsertEventHandler();
-            $handler->handle( new ProductUpsert( $id ) );
+		if ( 'publish' === $post->post_status ) {
+			$handler = new ProductUpsertEventHandler();
+			$handler->handle( new ProductUpsert( $id ) );
 		} else {
-            static::handle_delete_event( $id );
-        }
+			static::handle_delete_event( $id );
+		}
 	}
 
 	/**
@@ -52,12 +52,14 @@ class Product_Hooks {
 	protected static function handle_delete_event( $id ) {
 		$handler     = new ProductDeletedEventHandler();
 		$product     = wc_get_product( $id );
-		$variant_ids = wc_get_products( [
-			'type'   => 'variation',
-			'parent' => $product->get_id(),
-			'limit'  => - 1,
-			'return' => 'ids',
-		] );
+		$variant_ids = wc_get_products(
+			array(
+				'type'   => 'variation',
+				'parent' => $product->get_id(),
+				'limit'  => - 1,
+				'return' => 'ids',
+			)
+		);
 
 		foreach ( $variant_ids as $variant_id ) {
 			$handler->handle( new ProductDeleted( $variant_id ) );

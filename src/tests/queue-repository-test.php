@@ -11,10 +11,12 @@ class Queue_Repository_Test extends AbstractGenericQueueItemRepositoryTest {
 	protected function setUp() {
 		parent::setUp();
 
-		ServiceRegister::registerService( Serializer::CLASS_NAME,
-		function () {
-			return new NativeSerializer();
-		});
+		ServiceRegister::registerService(
+			Serializer::CLASS_NAME,
+			function () {
+				return new NativeSerializer();
+			}
+		);
 
 		$this->create_test_table();
 	}

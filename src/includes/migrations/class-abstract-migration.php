@@ -11,26 +11,26 @@ use wpdb;
  *
  * @package ChannelEngine\Migrations
  */
-abstract class Abstract_Migration
-{
-    /**
-     * @var wpdb
-     */
-    protected $db;
+abstract class Abstract_Migration {
 
-    /**
-     * Abstract_Migration constructor.
-     *
-     * @param wpdb $db
-     */
-    public function __construct($db) {
-        $this->db = $db;
-    }
+	/**
+	 * @var wpdb
+	 */
+	protected $db;
 
-    /**
-     * Executes migration.
-     *
-     * @throws Migration_Exception
-     */
-    abstract public function execute();
+	/**
+	 * Abstract_Migration constructor.
+	 *
+	 * @param wpdb $db
+	 */
+	public function __construct( $db ) {
+		$this->db = $db;
+	}
+
+	/**
+	 * Executes migration.
+	 *
+	 * @throws Migration_Exception
+	 */
+	abstract public function execute();
 }

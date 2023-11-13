@@ -33,7 +33,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		$names = $this->get_running_queue_names();
 		$ids   = $this->get_ids_for_execution( $names, $limit, $priority );
 		if ( empty( $ids ) ) {
-			return [];
+			return array();
 		}
 
 		$ids_query = implode( ', ', array_fill( 0, count( $ids ), '%d' ) );
@@ -61,7 +61,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		$filter->where( 'id', Operators::EQUALS, $queueItem->getId() );
 
 		foreach ( $additionalWhere as $name => $value ) {
-			if ( $value === null ) {
+			if ( null === $value ) {
 				$filter->where( $name, Operators::NULL );
 			} else {
 				$filter->where( $name, Operators::EQUALS, $value );
@@ -94,14 +94,20 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		$current_time_serialized = IndexHelper::castFieldValue( $current_time, 'dateTime' );
 
 		$sql = "UPDATE $this->table_name SET `$status_index`=%s, `status`=%s, `$last_update_index`=%s, `last_update_time`=%d" .
-		       " WHERE `id` IN (" . implode( ', ', array_fill( 0, count( $ids ), '%d' ) ) . ")";
+			   ' WHERE `id` IN (' . implode( ', ', array_fill( 0, count( $ids ), '%d' ) ) . ')';
 
-		$sql = $this->db->prepare( $sql, array_merge( [
-			$status,
-			$status,
-			$current_time_serialized,
-			$current_timestamp
-		], $ids ) );
+		$sql = $this->db->prepare(
+			$sql,
+			array_merge(
+				array(
+					$status,
+					$status,
+					$current_time_serialized,
+					$current_timestamp,
+				),
+				$ids
+			)
+		);
 
 		$this->db->query( $sql );
 	}
@@ -110,7 +116,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 	 * @inheritDoc
 	 */
 	protected function transform_to_entities( array $result ) {
-		$entities = [];
+		$entities = array();
 
 		foreach ( $result as $entity ) {
 			$item = new QueueItem();
@@ -144,7 +150,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		/** @var QueueItem $item */
 		$item = $entity;
 
-		$storage_item = [
+		$storage_item = array(
 			'type'                    => $item->getConfig()->getType(),
 			'parent_id'               => $item->getParentId(),
 			'status'                  => $item->getStatus(),
@@ -161,7 +167,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 			'queue_time'              => $item->getQueueTimestamp(),
 			'last_update_time'        => $item->getLastUpdateTimestamp(),
 			'priority'                => $item->getPriority(),
-		];
+		);
 
 		$indexes = IndexHelper::transformFieldsToIndexes( $item );
 		foreach ( $indexes as $index => $value ) {
@@ -185,12 +191,12 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		$entity    = new $this->entity_class();
 		$index_map = IndexHelper::mapFieldsToIndexes( $entity );
 
-		return [
+		return array(
 			'status_index'      => 'index_' . $index_map['status'],
 			'queue_index'       => 'index_' . $index_map['queueName'],
 			'priority_index'    => 'index_' . $index_map['priority'],
 			'last_update_index' => 'index_' . $index_map['lastUpdateTimestamp'],
-		];
+		);
 	}
 
 	/**
@@ -214,7 +220,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		$status_index     = $index_columns['status_index'];
 
 		$running_queues_query = "SELECT $queue_name_index as name FROM `$this->table_name` q2 WHERE q2.`$status_index` = '"
-		                        . QueueItem::IN_PROGRESS . "'";
+								. QueueItem::IN_PROGRESS . "'";
 
 		$result = $this->db->get_results( $running_queues_query, ARRAY_A );
 
@@ -225,8 +231,8 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 	 * Provides list of ids for execution.
 	 *
 	 * @param array $names
-	 * @param int $limit
-	 * @param int $priority
+	 * @param int   $limit
+	 * @param int   $priority
 	 *
 	 * @return array
 	 */
@@ -247,7 +253,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 			$sql .= " AND q.`$queue_name_index` NOT IN ($running_queues_query) ";
 		}
 
-		$sql    .= " GROUP BY `$queue_name_index`";
+		$sql   .= " GROUP BY `$queue_name_index`";
 		$sql    = $this->db->prepare( $sql, $names );
 		$result = $this->db->get_results( $sql, ARRAY_A );
 		$result = array_column( $result, 'id' );

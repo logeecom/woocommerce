@@ -33,7 +33,7 @@ class Channel_Engine_Enable_Controller extends Channel_Engine_Frontend_Controlle
 			$this->return_error( 'Failed to start sync.' );
 		}
 
-		$this->return_json( [ 'success' => true ] );
+		$this->return_json( array( 'success' => true ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Channel_Engine_Enable_Controller extends Channel_Engine_Frontend_Controlle
 	public function disable() {
 		$this->get_status_service()->disable();
 
-		$this->return_json( [ 'success' => true ] );
+		$this->return_json( array( 'success' => true ) );
 	}
 
 	/**
@@ -51,9 +51,14 @@ class Channel_Engine_Enable_Controller extends Channel_Engine_Frontend_Controlle
 	protected function load_resources() {
 		parent::load_resources();
 
-		Script_Loader::load_js( [
-			'/js/InitialSync.js',
-		] );
+		Script_Loader::load_js(
+			array(
+				'/js/InitialSync.js',
+				'/js/DisconnectService.js',
+				'/js/Disconnect.js',
+				'/js/ModalService.js',
+			)
+		);
 	}
 
 	/**

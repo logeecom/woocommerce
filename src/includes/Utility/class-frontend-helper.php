@@ -28,7 +28,7 @@ class Frontend_Helper {
 	public static function render_view( $current_page ) {
 		$subpage = isset( $_REQUEST['subpage'] ) ? $_REQUEST['subpage'] : '';
 		if ( $subpage && $subpage !== $current_page ) {
-			echo View::file( '/' . $subpage . '.php' )->render();
+			echo wp_kses( View::file( '/' . $subpage . '.php' )->render(), View::get_allowed_tags() );
 		}
 	}
 }

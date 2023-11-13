@@ -28,28 +28,32 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	/**
 	 * Renders ChannelEngine order overview box content.
 	 *
-     * @param string $postId
+	 * @param string $postId
 	 */
 	public function render( string $postId ) {
-		Script_Loader::load_css( [ '/css/meta-post-box.css' ] );
-		Script_Loader::load_js( [
-			'/channelengine/js/AjaxService.js',
-			'/js/TrackAndTrace.js',
-		] );
+		Script_Loader::load_css( array( '/css/meta-post-box.css' ) );
+		Script_Loader::load_js(
+			array(
+				'/channelengine/js/AjaxService.js',
+				'/js/TrackAndTrace.js',
+			)
+		);
 
-        $order = wc_get_order( $postId );
+		$order = wc_get_order( $postId );
 
-		echo View::file( '/meta_post_box.php' )->render( [
-            'order_id'               => $order->get_meta( '_channel_engine_order_id' ),
-            'channel_name'           => $order->get_meta( '_channel_engine_channel_name' ),
-            'channel_order_no'       => $order->get_meta( '_channel_engine_channel_order_no' ),
-            'payment_method'         => $order->get_meta( '_channel_engine_payment_method' ),
-            'track_and_trace'        => $order->get_meta( '_shipping_ce_track_and_trace' ),
-            'chosen_shipping_method' => $order->get_meta( '_shipping_ce_shipping_method' ),
-			'shipping_methods'       => WC()->shipping() ? WC()->shipping()->load_shipping_methods() : [],
-			'post_id'                => $postId,
-			'order_cancelled'        => $order->get_status() === 'cancelled',
-		] );
+		echo wp_kses( View::file( '/meta_post_box.php' )->render(
+			array(
+				'order_id'               => $order->get_meta( '_channel_engine_order_id' ),
+				'channel_name'           => $order->get_meta( '_channel_engine_channel_name' ),
+				'channel_order_no'       => $order->get_meta( '_channel_engine_channel_order_no' ),
+				'payment_method'         => $order->get_meta( '_channel_engine_payment_method' ),
+				'track_and_trace'        => $order->get_meta( '_shipping_ce_track_and_trace' ),
+				'chosen_shipping_method' => $order->get_meta( '_shipping_ce_shipping_method' ),
+				'shipping_methods'       => WC()->shipping() ? WC()->shipping()->load_shipping_methods() : array(),
+				'post_id'                => $postId,
+				'order_cancelled'        => $order->get_status() === 'cancelled',
+			)
+		), View::get_allowed_tags() );
 	}
 
 	/**
@@ -63,20 +67,20 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 			$this->redirect404();
 		}
 
-		$order = wc_get_order($raw['postId']);
+		$order = wc_get_order( $raw['postId'] );
 		try {
 			$this->handle_order_update( $order, $raw );
 		} catch ( BaseException $e ) {
 			$this->return_json(
-				[
+				array(
 					'success' => false,
 					'message' => $e->getMessage(),
-				]
+				)
 			);
 		}
 
 		if ( ! empty( $raw['trackAndTrace'] ) ) {
-			$order->update_meta_data('_shipping_ce_track_and_trace', $raw['trackAndTrace']);
+			$order->update_meta_data( '_shipping_ce_track_and_trace', $raw['trackAndTrace'] );
 			$order->save();
 		}
 
@@ -85,7 +89,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 			$order->save();
 		}
 
-		$this->return_json( [ 'success' => true ] );
+		$this->return_json( array( 'success' => true ) );
 	}
 
 	/**
@@ -102,15 +106,15 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 			$raw_data['shippingMethod'] : $order->get_meta( '_shipping_ce_shipping_method' );
 		$order_mappings  = $this->get_order_config_service()->getOrderSyncConfig();
 
-        if ( ! $track_and_trace || ! $shipping_method
-            || ! $order_mappings || ! stripos( $order_mappings->getShippedOrders(), $order->get_status() )
-            || ! $order_mappings->isEnableShipmentInfoSync()
-        ) {
-            return;
-        }
+		if ( ! $track_and_trace || ! $shipping_method
+			 || ! $order_mappings || ! stripos( $order_mappings->getShippedOrders(), $order->get_status() )
+			 || ! $order_mappings->isEnableShipmentInfoSync()
+		) {
+			return;
+		}
 
-		$shipping_method_title =  array_key_exists($shipping_method, WC()->shipping()->load_shipping_methods())
-			? WC()->shipping()->load_shipping_methods()[$shipping_method]->get_method_title()
+		$shipping_method_title = array_key_exists( $shipping_method, WC()->shipping()->load_shipping_methods() )
+			? WC()->shipping()->load_shipping_methods()[ $shipping_method ]->get_method_title()
 			: $shipping_method;
 
 		$request = new UpdateShipmentRequest(
@@ -130,7 +134,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	 * @return OrdersConfigurationService
 	 */
 	protected function get_order_config_service() {
-		if ( $this->order_config_service === null ) {
+		if ( null === $this->order_config_service ) {
 			$this->order_config_service = ServiceRegister::getService( OrdersConfigurationService::class );
 		}
 

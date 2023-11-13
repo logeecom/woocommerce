@@ -31,7 +31,7 @@ class Product_State_Transition_Listener {
 		}
 
 		if ( $queue_item->getStatus() === QueueItem::IN_PROGRESS
-		     && ! $state_service->is_manual_product_sync_in_progress() ) {
+			 && ! $state_service->is_manual_product_sync_in_progress() ) {
 			$state_service->set_initial_sync_in_progress( true );
 			$state_service->set_product_sync_in_progress( true );
 		}

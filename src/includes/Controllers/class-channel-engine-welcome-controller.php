@@ -21,10 +21,10 @@ class Channel_Engine_Welcome_Controller extends Channel_Engine_Frontend_Controll
 		$state_service = new State_Service();
 		try {
 			$state_service->set_onboarding_started( true );
-			$this->return_json( [ 'status' => true ] );
+			$this->return_json( array( 'status' => true ) );
 		} catch ( QueryFilterInvalidParamException $e ) {
 			Logger::logError( $e->getMessage() );
-			$this->return_json( [ 'status' => false ] );
+			$this->return_json( array( 'status' => false ) );
 		}
 	}
 
@@ -34,8 +34,10 @@ class Channel_Engine_Welcome_Controller extends Channel_Engine_Frontend_Controll
 	protected function load_resources() {
 		parent::load_resources();
 
-		Script_Loader::load_js( [
-			'/js/Onboarding.js',
-		] );
+		Script_Loader::load_js(
+			array(
+				'/js/Onboarding.js',
+			)
+		);
 	}
 }

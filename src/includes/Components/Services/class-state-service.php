@@ -11,14 +11,14 @@ use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException
  * @package ChannelEngine\Components\Services
  */
 class State_Service {
-	const WELCOME_STATE = 'onboarding';
+	const WELCOME_STATE         = 'onboarding';
 	const ACCOUNT_CONFIGURATION = 'account_configuration';
 	const PRODUCT_CONFIGURATION = 'product_configuration';
-	const ORDER_STATUS_MAPPING = 'order_status_mapping';
-	const ENABLE_AND_SYNC = 'enable_and_sync';
-	const DASHBOARD = 'dashboard';
-	const CONFIG = 'config';
-	const TRANSACTIONS = 'transactions';
+	const ORDER_STATUS_MAPPING  = 'order_status_mapping';
+	const ENABLE_AND_SYNC       = 'enable_and_sync';
+	const DASHBOARD             = 'dashboard';
+	const CONFIG                = 'config';
+	const TRANSACTIONS          = 'transactions';
 
 	/**
 	 * Retrieves current plugin state.
@@ -33,7 +33,7 @@ class State_Service {
 		}
 
 		if ( ! $this->is_account_configured() &&
-		     $this->get_onboarding_started() ) {
+			 $this->get_onboarding_started() ) {
 			$page = self::ACCOUNT_CONFIGURATION;
 		}
 
@@ -82,7 +82,7 @@ class State_Service {
 	 * @throws QueryFilterInvalidParamException
 	 */
 	public function set_manual_order_sync_in_progress( $value ) {
-		ConfigurationManager::getInstance()->saveConfigValue('manualOrderSyncInProgress', $value);
+		ConfigurationManager::getInstance()->saveConfigValue( 'manualOrderSyncInProgress', $value );
 	}
 
 	/**

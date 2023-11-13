@@ -9,20 +9,20 @@ use ChannelEngine\Infrastructure\Data\DataTransferObject;
  *
  * @package ChannelEngine\DTO
  */
-class AttributeMappings extends DataTransferObject
-{
-    /**
-     * @var string
-     */
-    private $brand;
-    /**
-     * @var string
-     */
-    private $color;
-    /**
-     * @var string
-     */
-    private $size;
+class AttributeMappings extends DataTransferObject {
+
+	/**
+	 * @var string
+	 */
+	private $brand;
+	/**
+	 * @var string
+	 */
+	private $color;
+	/**
+	 * @var string
+	 */
+	private $size;
 	/**
 	 * @var string
 	 */
@@ -53,48 +53,48 @@ class AttributeMappings extends DataTransferObject
 	 */
 	private $vendorProductNumber;
 
-    /**
-     * @var string
-     */
-    private $shippingTime;
+	/**
+	 * @var string
+	 */
+	private $shippingTime;
 
-    /**
-     * @param $brand
-     * @param $color
-     * @param $size
-     * @param $gtin
-     * @param $cataloguePrice
-     * @param $price
-     * @param $purchasePrice
-     * @param $details
-     * @param $category
-     * @param $vendorProductNumber
-     * @param $shippingTime
-     */
-    public function __construct(
-        $brand,
-        $color,
-        $size,
-        $gtin,
-	    $cataloguePrice,
-	    $price,
-	    $purchasePrice,
-	    $details,
-	    $category,
-	    $vendorProductNumber,
-        $shippingTime
-    ) {
-	    $this->brand  = $brand;
-	    $this->color = $color;
-	    $this->size   = $size;
-		$this->gtin = $gtin;
-		$this->cataloguePrice = $cataloguePrice;
-		$this->price = $price;
-	    $this->purchasePrice = $purchasePrice;
-        $this->details = $details;
-		$this->category = $category;
+	/**
+	 * @param $brand
+	 * @param $color
+	 * @param $size
+	 * @param $gtin
+	 * @param $cataloguePrice
+	 * @param $price
+	 * @param $purchasePrice
+	 * @param $details
+	 * @param $category
+	 * @param $vendorProductNumber
+	 * @param $shippingTime
+	 */
+	public function __construct(
+		$brand,
+		$color,
+		$size,
+		$gtin,
+		$cataloguePrice,
+		$price,
+		$purchasePrice,
+		$details,
+		$category,
+		$vendorProductNumber,
+		$shippingTime
+	) {
+		$this->brand               = $brand;
+		$this->color               = $color;
+		$this->size                = $size;
+		$this->gtin                = $gtin;
+		$this->cataloguePrice      = $cataloguePrice;
+		$this->price               = $price;
+		$this->purchasePrice       = $purchasePrice;
+		$this->details             = $details;
+		$this->category            = $category;
 		$this->vendorProductNumber = $vendorProductNumber;
-        $this->shippingTime = $shippingTime;
+		$this->shippingTime        = $shippingTime;
 	}
 
 	/**
@@ -167,51 +167,48 @@ class AttributeMappings extends DataTransferObject
 		return $this->vendorProductNumber;
 	}
 
-    /**
-     * @return string
-     */
-    public function get_shipping_time()
-    {
-        return $this->shippingTime;
-    }
+	/**
+	 * @return string
+	 */
+	public function get_shipping_time() {
+		return $this->shippingTime;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public function toArray()
-    {
-        return [
-            'brand' => $this->brand,
-            'color' => $this->color,
-            'size' => $this->size,
-			'gtin' => $this->gtin,
-	        'cataloguePrice' => $this->cataloguePrice,
-	        'price' => $this->price,
-            'purchasePrice' => $this->purchasePrice,
-	        'details' => $this->details,
-	        'category' => $this->category,
-	        'vendorProductNumber' => $this->vendorProductNumber,
-            'shippingTime' => $this->shippingTime
-        ];
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public function toArray() {
+		return array(
+			'brand'               => $this->brand,
+			'color'               => $this->color,
+			'size'                => $this->size,
+			'gtin'                => $this->gtin,
+			'cataloguePrice'      => $this->cataloguePrice,
+			'price'               => $this->price,
+			'purchasePrice'       => $this->purchasePrice,
+			'details'             => $this->details,
+			'category'            => $this->category,
+			'vendorProductNumber' => $this->vendorProductNumber,
+			'shippingTime'        => $this->shippingTime,
+		);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public static function fromArray(array $data)
-    {
+	/**
+	 * @inheritDoc
+	 */
+	public static function fromArray( array $data ) {
 		return new self(
-		    static::getDataValue($data, 'brand', null),
-		    static::getDataValue($data, 'color', null),
-		    static::getDataValue($data, 'size', null),
-		    static::getDataValue($data, 'gtin', null),
-		    static::getDataValue($data, 'cataloguePrice', null),
-		    static::getDataValue($data, 'price', null),
-		    static::getDataValue($data, 'purchasePrice', null),
-		    static::getDataValue($data, 'details', null),
-		    static::getDataValue($data, 'category', null),
-			static::getDataValue($data, 'vendorProductNumber', null),
-			static::getDataValue($data, 'shippingTime', null)
-	    );
-    }
+			static::getDataValue( $data, 'brand', null ),
+			static::getDataValue( $data, 'color', null ),
+			static::getDataValue( $data, 'size', null ),
+			static::getDataValue( $data, 'gtin', null ),
+			static::getDataValue( $data, 'cataloguePrice', null ),
+			static::getDataValue( $data, 'price', null ),
+			static::getDataValue( $data, 'purchasePrice', null ),
+			static::getDataValue( $data, 'details', null ),
+			static::getDataValue( $data, 'category', null ),
+			static::getDataValue( $data, 'vendorProductNumber', null ),
+			static::getDataValue( $data, 'shippingTime', null )
+		);
+	}
 }

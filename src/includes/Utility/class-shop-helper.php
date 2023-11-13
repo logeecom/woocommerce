@@ -86,7 +86,7 @@ class Shop_Helper {
 	 *
 	 * @param string $name
 	 * @param string $action
-	 * @param array $params
+	 * @param array  $params
 	 *
 	 * @return string
 	 */
@@ -98,7 +98,7 @@ class Shop_Helper {
 
 		$query = array_merge( $query, $params );
 
-		return rtrim(get_site_url(), '/') . '/?' . http_build_query( $query );
+		return rtrim( get_site_url(), '/' ) . '/?' . http_build_query( $query );
 	}
 
 	/**

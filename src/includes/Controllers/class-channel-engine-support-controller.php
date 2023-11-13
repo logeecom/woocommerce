@@ -20,7 +20,7 @@ class Channel_Engine_Support_Controller extends Channel_Engine_Frontend_Controll
 	 * Return system configuration parameters.
 	 */
 	public function display() {
-		$this->return_json( [ $this->get_support_service()->get() ] );
+		$this->return_json( array( $this->get_support_service()->get() ) );
 	}
 
 	/**
@@ -29,14 +29,14 @@ class Channel_Engine_Support_Controller extends Channel_Engine_Frontend_Controll
 	public function modify() {
 		$payload = json_decode( $this->get_raw_input(), true );
 
-		$this->return_json( [ $this->get_support_service()->update( $payload ) ] );
+		$this->return_json( array( $this->get_support_service()->update( $payload ) ) );
 	}
 
 	/**
 	 * @return SupportService
 	 */
 	protected function get_support_service() {
-		if ( $this->support_service === null ) {
+		if ( null === $this->support_service ) {
 			$this->support_service = ServiceRegister::getService( SupportService::class );
 		}
 

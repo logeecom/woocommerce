@@ -11,21 +11,20 @@ use ChannelEngine\Infrastructure\ORM\Exceptions\QueryFilterInvalidParamException
  *
  * @package ChannelEngine\Components\Services
  */
-class Extra_Data_Attribute_Mappings_Service
-{
-    /**
-     * Sets extra data attribute mappings configuration.
-     *
-     * @param ExtraDataAttributeMappings $mappings
-     *
-     * @return void
-     *
-     * @throws QueryFilterInvalidParamException
-     */
-    public function setExtraDataAttributeMappings($mappings)
-    {
-        ConfigurationManager::getInstance()->saveConfigValue('extraDataAttributeMappings', $mappings->toArray());
-    }
+class Extra_Data_Attribute_Mappings_Service {
+
+	/**
+	 * Sets extra data attribute mappings configuration.
+	 *
+	 * @param ExtraDataAttributeMappings $mappings
+	 *
+	 * @return void
+	 *
+	 * @throws QueryFilterInvalidParamException
+	 */
+	public function setExtraDataAttributeMappings( $mappings ) {
+		ConfigurationManager::getInstance()->saveConfigValue( 'extraDataAttributeMappings', $mappings->toArray() );
+	}
 
 	/**
 	 * Retrieves extra data attribute mappings configuration.
@@ -34,10 +33,9 @@ class Extra_Data_Attribute_Mappings_Service
 	 *
 	 * @throws QueryFilterInvalidParamException
 	 */
-	public function getExtraDataAttributeMappings()
-	{
-		$rawData = ConfigurationManager::getInstance()->getConfigValue('extraDataAttributeMappings');
+	public function getExtraDataAttributeMappings() {
+		$rawData = ConfigurationManager::getInstance()->getConfigValue( 'extraDataAttributeMappings' );
 
-		return $rawData !== null ? new ExtraDataAttributeMappings($rawData) : $rawData;
+		return null !== $rawData ? new ExtraDataAttributeMappings( $rawData ) : $rawData;
 	}
 }

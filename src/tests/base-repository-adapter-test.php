@@ -50,7 +50,7 @@ class BaseRepositoryTestAdapter extends AbstractGenericStudentRepositoryTest {
 	 */
 	protected function create_test_table() {
 		$table_name = $this->db->prefix . 'channel_engine_test_entity';
-		$query = Channel_Engine_Entity_Schema_Provider::get_schema( $table_name );
+		$query      = Channel_Engine_Entity_Schema_Provider::get_schema( $table_name );
 
 		$this->db->query( $query );
 	}

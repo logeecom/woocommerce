@@ -31,18 +31,20 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 	 * Retrieves notifications.
 	 */
 	public function get() {
-		$offset                        = (int) $this->get_param( 'offset' ) ?: 0;
-		$limit                         = (int) $this->get_param( 'limit' ) ?: 15;
-		$notifications                 = $this->get_notification_service()->find( [ 'isRead' => false ], $offset, $limit );
+		$offset                        = (int) $this->get_param( 'offset' ) ? (int) $this->get_param( 'offset' ) : 0;
+		$limit                         = (int) $this->get_param( 'limit' ) ? (int) $this->get_param( 'limit' ) : 15;
+		$notifications                 = $this->get_notification_service()->find( array( 'isRead' => false ), $offset, $limit );
 		$formatted_notifications       = $this->format_notifications( $notifications );
 		$number_of_notifications       = count( $formatted_notifications );
 		$total_number_of_notifications = $this->get_notification_service()->countNotRead();
 
-		$this->return_json( [
-			'notifications'         => $formatted_notifications,
-			'numberOfNotifications' => $offset + $number_of_notifications,
-			'disableButton'         => $total_number_of_notifications - ( $offset + $number_of_notifications ) === 0,
-		] );
+		$this->return_json(
+			array(
+				'notifications'         => $formatted_notifications,
+				'numberOfNotifications' => $offset + $number_of_notifications,
+				'disableButton'         => $total_number_of_notifications - ( $offset + $number_of_notifications ) === 0,
+			)
+		);
 	}
 
 	/**
@@ -58,46 +60,48 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 			$this->get_notification_service()->delete( $notification );
 		}
 
-		$details           = $this->get_details_service()->find( [ 'logId' => $log_id ], 0, 10 );
-		$formatted_details = [];
+		$details           = $this->get_details_service()->find( array( 'logId' => $log_id ), 0, 10 );
+		$formatted_details = array();
 
 		foreach ( $details as $detail ) {
-			$formatted_details[] = [
+			$formatted_details[] = array(
 				'message'    => vsprintf( __( $detail->getMessage(), 'channelengine-wc' ), $detail->getArguments() ),
 				'identifier' => $detail->getArguments()[0],
-			];
+			);
 		}
 
-		$number_of_details = $this->get_details_service()->count( [ 'logId' => $log_id ] );
+		$number_of_details = $this->get_details_service()->count( array( 'logId' => $log_id ) );
 
-		$this->return_json( [
-			'details'         => $formatted_details,
-			'numberOfDetails' => $number_of_details,
-			'from'            => ( $number_of_details === 0 ) ? 0 : 1,
-			'to'              => ( $number_of_details < 10 ) ? $number_of_details : 10,
-			'numberOfPages'   => ceil( $number_of_details / 10 ),
-			'currentPage'     => 1,
-			'logId'           => $log_id,
-			'pageSize'        => 10,
-		] );
+		$this->return_json(
+			array(
+				'details'         => $formatted_details,
+				'numberOfDetails' => $number_of_details,
+				'from'            => ( 0 === $number_of_details ) ? 0 : 1,
+				'to'              => ( $number_of_details < 10 ) ? $number_of_details : 10,
+				'numberOfPages'   => ceil( $number_of_details / 10 ),
+				'currentPage'     => 1,
+				'logId'           => $log_id,
+				'pageSize'        => 10,
+			)
+		);
 	}
 
 	/**
 	 * @param Notification[] $notifications
 	 */
 	protected function format_notifications( $notifications ) {
-		$formatted_notifications = [];
+		$formatted_notifications = array();
 
 		foreach ( $notifications as $notification ) {
-			$log = $this->get_log_service()->find( [ 'id' => $notification->getTransactionLogId() ] )[0];
+			$log = $this->get_log_service()->find( array( 'id' => $notification->getTransactionLogId() ) )[0];
 
-			$formatted_notification = [
+			$formatted_notification = array(
 				'logId'          => $notification->getTransactionLogId(),
 				'notificationId' => $notification->getId(),
 				'context'        => __( $notification->getNotificationContext(), 'channelengine-wc' ),
 				'message'        => vsprintf( __( $notification->getMessage(), 'channelengine-wc' ), $notification->getArguments() ),
 				'date'           => $log ? $log->getStartTime()->format( 'd/m/Y' ) : '',
-			];
+			);
 
 			$formatted_notifications[] = $formatted_notification;
 		}
@@ -109,7 +113,7 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 	 * @return TransactionLogService
 	 */
 	protected function get_log_service() {
-		if ( $this->log_service === null ) {
+		if ( null === $this->log_service ) {
 			$this->log_service = ServiceRegister::getService( TransactionLogService::class );
 		}
 
@@ -120,7 +124,7 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 	 * @return NotificationService
 	 */
 	protected function get_notification_service() {
-		if ( $this->notification_service === null ) {
+		if ( null === $this->notification_service ) {
 			$this->notification_service = ServiceRegister::getService( NotificationService::class );
 		}
 
@@ -131,7 +135,7 @@ class Channel_Engine_Notifications_Controller extends Channel_Engine_Frontend_Co
 	 * @return DetailsService
 	 */
 	protected function get_details_service() {
-		if ( $this->details_service === null ) {
+		if ( null === $this->details_service ) {
 			$this->details_service = ServiceRegister::getService( DetailsService::class );
 		}
 

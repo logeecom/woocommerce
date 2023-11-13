@@ -3,6 +3,7 @@
 namespace ChannelEngine\Repositories;
 
 use WC_Product_Attribute;
+use wpdb;
 
 /**
  * Class Meta_Repository
@@ -10,10 +11,24 @@ use WC_Product_Attribute;
  * @package ChannelEngine\Repositories
  */
 class Meta_Repository {
-    /**
-     * Needed for adding compatibility with third-party plugins.
-     */
-    const ADDITIONAL_PRODUCT_FIELDS = ["'_alg_ean'"];
+	/**
+	 * Needed for adding compatibility with third-party plugins.
+	 */
+	const ADDITIONAL_PRODUCT_FIELDS = array( "'_alg_ean'" );
+
+
+	/**
+	 * @var wpdb
+	 */
+	private $db;
+
+	/**
+	 * Meta_Repository constructor
+	 */
+	public function __construct() {
+		global $wpdb;
+		$this->db = $wpdb;
+	}
 
 	/**
 	 * Retrieves product meta attributes.
@@ -23,45 +38,43 @@ class Meta_Repository {
 	 * @return array
 	 */
 	public function get_product_meta( array $ids ) {
-		global $wpdb;
-
 		if ( empty( $ids ) ) {
-			return [];
+			return array();
 		}
 
-        $posts = $wpdb->posts;
-        $post_meta = $wpdb->postmeta;
-        $meta_keys = [
-            "'_product_attributes'",
-            "'_weight'",
-            "'_length'",
-            "'_height'",
-            "'_width'",
-            "'_sku'",
-            "'_ean'",
-            "'_thumbnail_id'",
-        ];
+		$posts     = $this->db->posts;
+		$post_meta = $this->db->postmeta;
+		$meta_keys = array(
+			"'_product_attributes'",
+			"'_weight'",
+			"'_length'",
+			"'_height'",
+			"'_width'",
+			"'_sku'",
+			"'_ean'",
+			"'_thumbnail_id'",
+		);
 
-        $query = $wpdb->prepare(
-            "SELECT $post_meta.*, $posts.post_parent 
+		$query = $this->db->prepare(
+			"SELECT $post_meta.*, $posts.post_parent 
 			FROM $post_meta
 			INNER JOIN $posts ON $posts.id = $post_meta.post_id
-			WHERE $posts.id IN (" . implode(', ', $ids) . ")
+			WHERE $posts.id IN (" . implode( ', ', $ids ) . ")
 			AND (($posts.post_status = 'publish' 
 			AND $posts.post_type IN ('product', 'product_variation')) OR 
              ($posts.post_status = 'inherit' 
 			AND $posts.post_type IN ('attachment')))
-			AND $post_meta.meta_key IN(" . implode(', ', array_merge($meta_keys, self::ADDITIONAL_PRODUCT_FIELDS)) . ")"
-        );
+			AND $post_meta.meta_key IN(" . implode( ', ', array_merge( $meta_keys, self::ADDITIONAL_PRODUCT_FIELDS ) ) . ')'
+		);
 
-		$lookup = [];
+		$lookup = array();
 
-		$meta = $wpdb->get_results( $query, OBJECT );
+		$meta = $this->db->get_results( $query, OBJECT );
 
 		foreach ( $meta as $item ) {
 			$post_id = $item->post_id;
 			if ( ! isset( $lookup[ $post_id ] ) ) {
-				$lookup[ $post_id ] = [];
+				$lookup[ $post_id ] = array();
 			}
 			$lookup[ $post_id ][ $item->meta_key ] = $item->meta_value;
 		}
@@ -75,21 +88,20 @@ class Meta_Repository {
 	 * @return array
 	 */
 	public function get_product_attributes() {
-		global $wpdb;
 		$globalAttributes = wc_get_attribute_taxonomies();
-		$attributes = [];
-        $post_meta = $wpdb->postmeta;
-		foreach ($globalAttributes as $globalAttribute) {
+		$attributes       = array();
+		$post_meta        = $this->db->postmeta;
+		foreach ( $globalAttributes as $globalAttribute ) {
 			$attribute = new WC_Product_Attribute();
-			$attribute->set_name($globalAttribute->attribute_name);
+			$attribute->set_name( $globalAttribute->attribute_name );
 			$attribute->set_position( 0 );
 			$attribute->set_visible( 1 );
 			$attribute->set_variation( 0 );
 			$attribute->set_id( 0 );
-			$attributes[$globalAttribute->attribute_id] = $attribute;
+			$attributes[ $globalAttribute->attribute_id ] = $attribute;
 		}
-		$meta_data = $wpdb->get_results( "SELECT * FROM $post_meta WHERE meta_key = '_product_attributes'", ARRAY_A );
-		foreach ($meta_data as $metaItem) {
+		$meta_data = $this->db->get_results( "SELECT * FROM $post_meta WHERE meta_key = '_product_attributes'", ARRAY_A );
+		foreach ( $meta_data as $metaItem ) {
 			$meta_attributes = maybe_unserialize( $metaItem['meta_value'] );
 			foreach ( $meta_attributes as $meta_attribute_value ) {
 				$meta_value = array_merge(
@@ -115,10 +127,10 @@ class Meta_Repository {
 				}
 
 				if ( array_key_exists( $id, $attributes ) ) {
-					$attributes[$id]->set_position( $meta_value['position'] );
-					$attributes[$id]->set_visible( $meta_value['is_visible'] );
-					$attributes[$id]->set_variation( $meta_value['is_variation'] );
-					$attributes[$id]->set_id( $id );
+					$attributes[ $id ]->set_position( $meta_value['position'] );
+					$attributes[ $id ]->set_visible( $meta_value['is_visible'] );
+					$attributes[ $id ]->set_variation( $meta_value['is_variation'] );
+					$attributes[ $id ]->set_id( $id );
 				} else {
 					$attribute = new WC_Product_Attribute();
 					$attribute->set_position( $meta_value['position'] );
@@ -131,37 +143,36 @@ class Meta_Repository {
 			}
 		}
 
-        return array_merge($attributes, $this->get_third_party_plugin_attributes());
-    }
+		return array_merge( $attributes, $this->get_third_party_plugin_attributes() );
+	}
 
-    /**
-     * Add compatability with EAN plugins for WooCommerce.
-     * Compatible plugins: EAN for WooCommerce.
-     * @return array
-     */
-    private function get_third_party_plugin_attributes()
-    {
-        global $wpdb;
-        $post_meta = $wpdb->postmeta;
-        $existing_attributes = [];
-        $meta_data = $wpdb->get_results(
-            "SELECT distinct meta_key FROM $post_meta WHERE meta_key in (" . implode(
-                ', ',
-                self::ADDITIONAL_PRODUCT_FIELDS
-            ) . ")",
-            ARRAY_A
-        );
+	/**
+	 * Add compatability with EAN plugins for WooCommerce.
+	 * Compatible plugins: EAN for WooCommerce.
+	 *
+	 * @return array
+	 */
+	private function get_third_party_plugin_attributes() {
+		$post_meta           = $this->db->postmeta;
+		$existing_attributes = array();
+		$meta_data           = $this->db->get_results(
+			"SELECT distinct meta_key FROM $post_meta WHERE meta_key in (" . implode(
+				', ',
+				self::ADDITIONAL_PRODUCT_FIELDS
+			) . ')',
+			ARRAY_A
+		);
 
-        foreach ($meta_data as $plugin_attribute) {
-            $attribute = new WC_Product_Attribute();
-            $attribute->set_name( $plugin_attribute['meta_key'] );
-            $attribute->set_position( 0 );
-            $attribute->set_visible( 1 );
-            $attribute->set_variation( 0 );
-            $attribute->set_id( $plugin_attribute['meta_key'] );
-            $existing_attributes[] = $attribute;
-        }
+		foreach ( $meta_data as $plugin_attribute ) {
+			$attribute = new WC_Product_Attribute();
+			$attribute->set_name( $plugin_attribute['meta_key'] );
+			$attribute->set_position( 0 );
+			$attribute->set_visible( 1 );
+			$attribute->set_variation( 0 );
+			$attribute->set_id( $plugin_attribute['meta_key'] );
+			$existing_attributes[] = $attribute;
+		}
 
-        return $existing_attributes;
-    }
+		return $existing_attributes;
+	}
 }

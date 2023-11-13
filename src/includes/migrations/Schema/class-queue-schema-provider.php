@@ -17,7 +17,7 @@ class Queue_Schema_Provider {
 	 */
 	public static function get_schema( $table_name ) {
 
-		return "CREATE TABLE IF NOT EXISTS `" . $table_name . "` (
+		return 'CREATE TABLE IF NOT EXISTS `' . $table_name . '` (
                        `id` INT NOT NULL AUTO_INCREMENT,
                        `type` VARCHAR(191) NOT NULL,
                        `index_1` VARCHAR(191),
@@ -53,6 +53,6 @@ class Queue_Schema_Provider {
                        INDEX `type_index_6_idx` (`type`, `index_6`),
                        INDEX `type_index_7_idx` (`type`, `index_7`),
                        INDEX `type_index_8_idx` (`type`, `index_8`),
-                       INDEX `type_index_9_idx` (`type`, `index_9`))";
+                       INDEX `type_index_9_idx` (`type`, `index_9`))';
 	}
 }

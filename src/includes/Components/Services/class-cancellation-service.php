@@ -25,14 +25,14 @@ class Cancellation_Service implements CancellationService {
 	 * @return CancellationItem[]
 	 */
 	public function getAllItems( $orderId ) {
-        $order = wc_get_order( $orderId );
-        $ce_order_id = $order->get_meta( '_channel_engine_order_id' );
+		$order       = wc_get_order( $orderId );
+		$ce_order_id = $order->get_meta( '_channel_engine_order_id' );
 
 		if ( ! $ce_order_id ) {
-			return [];
+			return array();
 		}
 
-		$items = [];
+		$items = array();
 
 		foreach ( $order->get_items() as $item ) {
 			$items[] = new CancellationItem( $item['product_id'], $item['qty'], $order->get_status() );
@@ -45,7 +45,7 @@ class Cancellation_Service implements CancellationService {
 	 * Rejects cancellation request.
 	 *
 	 * @param CancellationRequest $request
-	 * @param Exception $reason
+	 * @param Exception           $reason
 	 *
 	 * @return RejectResponse
 	 *
