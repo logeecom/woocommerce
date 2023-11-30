@@ -64,11 +64,11 @@ if ( ! $data['order_cancelled'] ) {
 					echo '<option selected="selected" value="">' . __( '--Shipping Method--' ) . '</option>';
 				}
 				foreach ( $data['shipping_methods'] as $method ) {
-					if ( $method->id === $data['chosen_shipping_method'] ) {
-						echo '<option selected="selected" value="' . $method->id . '">' . $method->method_title
+					if ( $method->instance_id === $data['chosen_shipping_method'] ) {
+						echo '<option selected="selected" value="' . $method->instance_id . '">' . $method->title
 						     . '</option>';
 					} else {
-						echo '<option value="' . $method->id . '">' . $method->method_title
+						echo '<option value="' . $method->instance_id . '">' . $method->title
 						     . '</option>';
 					}
 				}
