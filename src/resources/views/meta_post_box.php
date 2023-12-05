@@ -27,6 +27,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php echo $data['channel_name']; ?>
         </label>
         <label class="property-name">
+            <?php echo __( 'Type of fulfillment:', 'channelengine-wc' ); ?>
+        </label>
+        <label>
+            <?php echo $data['type_of_fulfillment']; ?>
+        </label>
+        <label class="property-name">
 			<?php echo __( 'Channel Order No:', 'channelengine-wc' ); ?>
         </label>
         <label>
