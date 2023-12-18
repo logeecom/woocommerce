@@ -227,6 +227,10 @@ class Products_Service implements ProductsService {
 
 	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [], array $extra_data_attributes = [] ) {
 		$attributes = $this->fetch_attributes( $variant, $meta_lookup );
+		//Channel Engine does not support negative values stock, but wc does
+		if ( $attributes['stock'] < 0 ) {
+			$attributes['stock'] = 0;
+		}
 
 		return new Variant(
 			$variant->get_id(),
