@@ -526,6 +526,7 @@ class Products_Service implements ProductsService {
 		$images                = [];
 
 		if ( $image_ids ) {
+            $image_ids = array_values($image_ids);
 			$images = get_posts( [
 				'post_type' => 'attachment',
 				'include'   => $image_ids
