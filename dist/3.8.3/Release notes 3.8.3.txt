@@ -1,0 +1,1 @@
+- Adjust shipping method list in the order details section

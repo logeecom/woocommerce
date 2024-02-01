@@ -13,6 +13,7 @@ use ChannelEngine\Infrastructure\ServiceRegister;
 use ChannelEngine\Utility\Script_Loader;
 use ChannelEngine\Utility\View;
 use WC_Order;
+use WC_Shipping_Zones;
 
 /**
  * Class Channel_Engine_Order_Overview_Controller
@@ -41,19 +42,18 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 
 		$order = wc_get_order( $postId );
 
-		echo wp_kses( View::file( '/meta_post_box.php' )->render(
-			array(
-				'order_id'               => $order->get_meta( '_channel_engine_order_id' ),
-				'channel_name'           => $order->get_meta( '_channel_engine_channel_name' ),
-				'channel_order_no'       => $order->get_meta( '_channel_engine_channel_order_no' ),
-				'payment_method'         => $order->get_meta( '_channel_engine_payment_method' ),
-				'track_and_trace'        => $order->get_meta( '_shipping_ce_track_and_trace' ),
-				'chosen_shipping_method' => $order->get_meta( '_shipping_ce_shipping_method' ),
-				'shipping_methods'       => WC()->shipping() ? WC()->shipping()->load_shipping_methods() : array(),
-				'post_id'                => $postId,
-				'order_cancelled'        => $order->get_status() === 'cancelled',
-			)
-		), View::get_allowed_tags() );
+		echo View::file( '/meta_post_box.php' )->render( [
+            'order_id'               => $order->get_meta( '_channel_engine_order_id' ),
+            'channel_name'           => $order->get_meta( '_channel_engine_channel_name' ),
+            'channel_order_no'       => $order->get_meta( '_channel_engine_channel_order_no' ),
+            'payment_method'         => $order->get_meta( '_channel_engine_payment_method' ),
+            'track_and_trace'        => $order->get_meta( '_shipping_ce_track_and_trace' ),
+            'chosen_shipping_method' => (int) $order->get_meta( '_shipping_ce_shipping_method' ),
+            'type_of_fulfillment'    => $order->get_meta( '_channel_engine_type_of_fulfillment' ),
+            'shipping_methods'       => $this->get_shipping_methods(),
+			'post_id'                => $postId,
+			'order_cancelled'        => $order->get_status() === 'cancelled',
+		] );
 	}
 
 	/**
@@ -113,8 +113,9 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 			return;
 		}
 
-		$shipping_method_title = array_key_exists( $shipping_method, WC()->shipping()->load_shipping_methods() )
-			? WC()->shipping()->load_shipping_methods()[ $shipping_method ]->get_method_title()
+		$shipping_methods       = $this->get_shipping_methods();
+		$shipping_method_title = array_key_exists( $shipping_method, $shipping_methods )
+			? $shipping_methods[ $shipping_method ]->get_title()
 			: $shipping_method;
 
 		$request = new UpdateShipmentRequest(
@@ -134,10 +135,24 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	 * @return OrdersConfigurationService
 	 */
 	protected function get_order_config_service() {
-		if ( null === $this->order_config_service ) {
+		if ( $this->order_config_service === null ) {
 			$this->order_config_service = ServiceRegister::getService( OrdersConfigurationService::class );
 		}
 
 		return $this->order_config_service;
+	}
+
+	/**
+	 * Get all shipping methods
+	 *
+	 * @return array
+	 */
+	private function get_shipping_methods() {
+		$methods = array();
+		foreach ( WC_Shipping_Zones::get_zones() as $zone ) {
+			$methods = $zone['shipping_methods'] + $methods;
+		}
+
+		return $methods;
 	}
 }
