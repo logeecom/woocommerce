@@ -1,0 +1,2 @@
+- Fix error when trying to get additional image URLs
+
