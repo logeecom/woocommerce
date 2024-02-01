@@ -23,28 +23,28 @@ use WC_Product_Variation;
  * @package ChannelEngine\Components\Services
  */
 class Products_Service implements ProductsService {
-	protected static $tax_class_map = [
+	protected static $tax_class_map = array(
 		''             => 'STANDARD',
 		'reduced-rate' => 'REDUCED',
 		'zero-rate'    => 'EXEMPT',
-	];
+	);
 
 	/**
 	 * @var array
 	 */
-	protected $product_attributes = [];
+	protected $product_attributes = array();
 	/**
 	 * List of resolved category trails.
 	 *
 	 * @var array
 	 */
-	protected $category_trails = [];
+	protected $category_trails = array();
 	/**
 	 * List of resolved images.
 	 *
 	 * @var array
 	 */
-	protected $images = [];
+	protected $images = array();
 	/**
 	 * @var Meta_Repository
 	 */
@@ -85,18 +85,18 @@ class Products_Service implements ProductsService {
 	 */
 	public function getProducts( array $ids ) {
 		// Invalidate cache to preserve memory.
-		$this->category_trails = [];
-		$this->images          = [];
+		$this->category_trails = array();
+		$this->images          = array();
 
-		$args = [
+		$args = array(
 			'return'         => 'objects',
 			'posts_per_page' => - 1,
 			'include'        => $ids,
-		];
+		);
 
 		$meta_lookup           = $this->get_meta_repository()->get_product_meta( $ids );
 		$wc_products           = wc_get_products( $args );
-		$ce_products           = [];
+		$ce_products           = array();
 		$is_enabled_stock_sync = $this->get_product_config_service()->get()->isEnabledStockSync();
 		$extra_data_attributes = $this->get_extra_data_attribute_mapping_service()->getExtraDataAttributeMappings()->get_mappings();
 
@@ -108,7 +108,7 @@ class Products_Service implements ProductsService {
 
 			$ce_products[] = $this->transform_product(
 				$wc_product,
-				isset( $meta_lookup[ $wc_product->get_id() ] ) ? $meta_lookup[ $wc_product->get_id() ] : [],
+				isset( $meta_lookup[ $wc_product->get_id() ] ) ? $meta_lookup[ $wc_product->get_id() ] : array(),
 				$is_enabled_stock_sync,
 				$extra_data_attributes
 			);
@@ -123,7 +123,7 @@ class Products_Service implements ProductsService {
 	 * @return WC_Product_Attribute[]
 	 */
 	public function get_standard_product_attributes() {
-		$standard_attributes = [];
+		$standard_attributes = array();
 		foreach ( Standard_Product_Attributes::ATTRIBUTES as $ATTRIBUTE ) {
 			$attribute = new WC_Product_Attribute();
 			$attribute->set_name( Standard_Product_Attributes::PREFIX . '_' . $ATTRIBUTE );
@@ -158,8 +158,8 @@ class Products_Service implements ProductsService {
 	 * @return Product
 	 * @throws QueryFilterInvalidParamException
 	 */
-	protected function transform_product( WC_Product $wc_product, array $meta_lookup, $is_enabled_stock_sync, array $extra_data_attributes = [] ) {
-		$this->product_attributes = [];
+	protected function transform_product( WC_Product $wc_product, array $meta_lookup, $is_enabled_stock_sync, array $extra_data_attributes = array() ) {
+		$this->product_attributes = array();
 		$attributes               = $this->fetch_attributes( $wc_product, $meta_lookup );
 
 		//Channel Engine does not support negative values stock, but wc does
@@ -172,7 +172,7 @@ class Products_Service implements ProductsService {
 			$attributes['price'],
 			$is_enabled_stock_sync ? $attributes['stock'] : 0,
 			$wc_product->get_name(),
-            htmlspecialchars_decode(strip_tags($attributes['description'])),
+			htmlspecialchars_decode(strip_tags($attributes['description'])),
 			$attributes['purchase_price'],
 			$attributes['msrp'],
 			$attributes['vat_rate_type'],
@@ -194,13 +194,13 @@ class Products_Service implements ProductsService {
 
 		if ( $variant_ids ) {
 			$variant_meta_lookup = $this->get_meta_repository()->get_product_meta( $variant_ids );
-			$variants            = wc_get_products( [
+			$variants            = wc_get_products( array(
 				'status' => 'publish',
 				'type'   => 'variation',
 				'parent' => $wc_product->get_id(),
 				'limit'  => - 1,
 				'return' => 'objects',
-			] );
+			) );
 
 			/**
 			 * @var WC_Product_Variation $variant
@@ -215,8 +215,8 @@ class Products_Service implements ProductsService {
 						$variant,
 						$product,
 						isset( $variant_meta_lookup[ $variant->get_id() ] ) ?
-							$variant_meta_lookup[ $variant->get_id() ] : [],
-                        $extra_data_attributes
+							$variant_meta_lookup[ $variant->get_id() ] : array(),
+						$extra_data_attributes
 					)
 				);
 			}
@@ -225,7 +225,7 @@ class Products_Service implements ProductsService {
 		return $product;
 	}
 
-	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = [], array $extra_data_attributes = [] ) {
+	protected function transform_variant( WC_Product $variant, Product $parent, array $meta_lookup = array(), array $extra_data_attributes = array() ) {
 		$attributes = $this->fetch_attributes( $variant, $meta_lookup );
 		//Channel Engine does not support negative values stock, but wc does
 		if ( $attributes['stock'] < 0 ) {
@@ -235,25 +235,25 @@ class Products_Service implements ProductsService {
 		return new Variant(
 			$variant->get_id(),
 			$parent,
-			$attributes['price'] ?: $parent->getPrice(),
-			$attributes['stock'] ?: $parent->getStock(),
+			$attributes['price'] ? $attributes['price'] : $parent->getPrice(),
+			$attributes['stock'] ? $attributes['stock'] : $parent->getStock(),
 			$parent->getName(),
-			$attributes['description'] ?: $parent->getDescription(),
-			$attributes['purchase_price'] ?: $parent->getPurchasePrice(),
-			$attributes['msrp'] ?: $parent->getMsrp(),
-			$attributes['vat_rate_type'] ?: $parent->getVatRateType(),
-			$attributes['shipping_costs'] ?: $parent->getShippingCost(),
-			$attributes['shipping_time'] ?: $parent->getShippingTime(),
-			$attributes['ean'] ?: $parent->getEan(),
-			$attributes['manufacturer_product_number'] ?: $parent->getManufacturerProductNumber(),
-			$attributes['url'] ?: $parent->getUrl(),
-			$attributes['brand'] ?: $parent->getBrand(),
-			substr( $attributes['size'] ?: $parent->getSize(), 0, 64 ),
-			substr( $attributes['color'] ?: $parent->getColor(), 0, 64 ),
-			$attributes['main_image_url'] ?: $parent->getMainImageUrl(),
-			$attributes['additional_image_urls'] ?: $parent->getAdditionalImageUrls(),
-            $this->get_custom_attributes( $variant, $meta_lookup, $extra_data_attributes ),
-			$attributes['category_trail'] ?: $parent->getCategoryTrail()
+			$attributes['description'] ? $attributes['description'] : $parent->getDescription(),
+			$attributes['purchase_price'] ? $attributes['purchase_price'] : $parent->getPurchasePrice(),
+			$attributes['msrp'] ? $attributes['msrp'] : $parent->getMsrp(),
+			$attributes['vat_rate_type'] ? $attributes['vat_rate_type'] : $parent->getVatRateType(),
+			$attributes['shipping_costs'] ? $attributes['shipping_costs'] : $parent->getShippingCost(),
+			$attributes['shipping_time'] ? $attributes['shipping_time'] : $parent->getShippingTime(),
+			$attributes['ean'] ? $attributes['ean'] : $parent->getEan(),
+			$attributes['manufacturer_product_number'] ? $attributes['manufacturer_product_number'] : $parent->getManufacturerProductNumber(),
+			$attributes['url'] ? $attributes['url'] : $parent->getUrl(),
+			$attributes['brand'] ? $attributes['brand'] : $parent->getBrand(),
+			substr( $attributes['size'] ? $attributes['size'] : $parent->getSize(), 0, 64 ),
+			substr( $attributes['color'] ? $attributes['color'] : $parent->getColor(), 0, 64 ),
+			$attributes['main_image_url'] ? $attributes['main_image_url'] : $parent->getMainImageUrl(),
+			$attributes['additional_image_urls'] ? $attributes['additional_image_urls'] : $parent->getAdditionalImageUrls(),
+			$this->get_custom_attributes( $variant, $meta_lookup, $extra_data_attributes ),
+			$attributes['category_trail'] ? $attributes['category_trail'] : $parent->getCategoryTrail()
 		);
 	}
 
@@ -287,7 +287,7 @@ class Products_Service implements ProductsService {
 		$attributes['shipping_costs'] = $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
-			[ 'shipping_cost' ]
+			array( 'shipping_cost' )
 		);
 
 		$attributes['url']                         = $wc_product->get_permalink();
@@ -315,17 +315,17 @@ class Products_Service implements ProductsService {
 	 * @throws QueryFilterInvalidParamException
 	 */
 	protected function set_mapped_attributes( $wc_product, $meta_lookup ) {
-		$attributes        = [];
+		$attributes        = array();
 		$attributesMapping = $this->get_attribute_mapping_service()->getAttributeMappings();
 
 		if ( ! $attributesMapping ) {
-			return [];
+			return array();
 		}
 
 		$attributes['price'] = $attributesMapping->get_price() !== null ? $this->get_attribute(
 			$wc_product,
 			$meta_lookup,
-			[ $attributesMapping->get_price() ]
+			array( $attributesMapping->get_price() )
 		) : '';
 
 
@@ -333,70 +333,70 @@ class Products_Service implements ProductsService {
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_details() ]
+				array( $attributesMapping->get_details() )
 			) : '';
 
 		$attributes['purchase_price'] = $attributesMapping->get_purchase_price() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_purchase_price() ]
+				array( $attributesMapping->get_purchase_price() )
 			) : '';
 
 		$attributes['shipping_time'] = $attributesMapping->get_shipping_time() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_shipping_time() ]
+				array( $attributesMapping->get_shipping_time() )
 			) : '';
 
 		$attributes['msrp'] = $attributesMapping->get_catalogue_price() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_catalogue_price() ]
+				array( $attributesMapping->get_catalogue_price() )
 			) : '';
 
 		$attributes['ean'] = $attributesMapping->get_gtin() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_gtin() ]
+				array( $attributesMapping->get_gtin() )
 			) : null;
 
 		$attributes['brand'] = $attributesMapping->get_brand() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_brand() ]
+				array( $attributesMapping->get_brand() )
 			) : '';
 
 		$attributes['size'] = $attributesMapping->get_size() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_size() ]
+				array( $attributesMapping->get_size() )
 			) : '';
 
 		$attributes['color'] = $attributesMapping->get_color() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_color() ]
+				array( $attributesMapping->get_color() )
 			) : '';
 
 		$attributes['category_trail'] = $attributesMapping->get_category() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_category() ] ) :
+				array( $attributesMapping->get_category() ) ) :
 			'';
 
 		$attributes['manufacturer_product_number'] = $attributesMapping->get_vendor_product_number() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				[ $attributesMapping->get_vendor_product_number() ] ) :
+				array( $attributesMapping->get_vendor_product_number() ) ) :
 			'';
 
 		return $attributes;
@@ -461,11 +461,11 @@ class Products_Service implements ProductsService {
 	 */
 	protected function get_standard_attribute( WC_Product $wc_product, $attribute ) {
 		switch ( $attribute ) {
-			case Standard_Product_Attributes::PREFIX . '_' . 'id':
+			case Standard_Product_Attributes::PREFIX . '_id':
 				return $wc_product->get_id();
-			case Standard_Product_Attributes::PREFIX . '_' . 'name':
+			case Standard_Product_Attributes::PREFIX . '_name':
 				return $wc_product->get_name();
-			case Standard_Product_Attributes::PREFIX . '_' . 'vat':
+			case Standard_Product_Attributes::PREFIX . '_vat':
 				if ( $wc_product->get_tax_class() === 'reduced-rate' ) {
 					return 'Reduced rate';
 				}
@@ -475,39 +475,39 @@ class Products_Service implements ProductsService {
 				}
 
 				return 'Standard rate';
-			case Standard_Product_Attributes::PREFIX . '_' . 'stock':
+			case Standard_Product_Attributes::PREFIX . '_stock':
 				if ( $wc_product->get_stock_quantity() > 0 ) {
 					return $wc_product->get_stock_quantity();
 				}
 
 				return 0;
-			case Standard_Product_Attributes::PREFIX . '_' . 'description':
+			case Standard_Product_Attributes::PREFIX . '_description':
 				return $wc_product->get_description();
-			case Standard_Product_Attributes::PREFIX . '_' . 'short_description':
+			case Standard_Product_Attributes::PREFIX . '_short_description':
 				return $wc_product->get_short_description();
-			case Standard_Product_Attributes::PREFIX . '_' . 'price_incl_tax':
-				return wc_get_price_including_tax( $wc_product, [ 'price' => $wc_product->get_regular_price() ] );
-			case Standard_Product_Attributes::PREFIX . '_' . 'price_excl_tax':
+			case Standard_Product_Attributes::PREFIX . '_price_incl_tax':
+				return wc_get_price_including_tax( $wc_product, array( 'price' => $wc_product->get_regular_price() ) );
+			case Standard_Product_Attributes::PREFIX . '_price_excl_tax':
 				return $wc_product->get_regular_price();
-			case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_incl_tax':
-                return $wc_product->get_sale_price() !== '' ? wc_get_price_including_tax( $wc_product, [ 'price' => $wc_product->get_sale_price() ] ) : $wc_product->get_sale_price();
-            case Standard_Product_Attributes::PREFIX . '_' . 'sale_price_excl_tax':
+			case Standard_Product_Attributes::PREFIX . '_sale_price_incl_tax':
+				return $wc_product->get_sale_price() !== '' ? wc_get_price_including_tax( $wc_product, array( 'price' => $wc_product->get_sale_price() ) ) : $wc_product->get_sale_price();
+			case Standard_Product_Attributes::PREFIX . '_sale_price_excl_tax':
 				return $wc_product->get_sale_price();
-			case Standard_Product_Attributes::PREFIX . '_' . 'sku':
+			case Standard_Product_Attributes::PREFIX . '_sku':
 				return $wc_product->get_sku();
-			case Standard_Product_Attributes::PREFIX . '_' . 'product_url':
+			case Standard_Product_Attributes::PREFIX . '_product_url':
 				return $wc_product->get_permalink();
-			case Standard_Product_Attributes::PREFIX . '_' . 'category':
+			case Standard_Product_Attributes::PREFIX . '_category':
 				return $this->get_product_category_trail( $wc_product->get_id() );
-			case Standard_Product_Attributes::PREFIX . '_' . 'image_url':
+			case Standard_Product_Attributes::PREFIX . '_image_url':
 				return $this->images[ $wc_product->get_image_id() ]->guid;
-			case Standard_Product_Attributes::PREFIX . '_' . 'weight':
+			case Standard_Product_Attributes::PREFIX . '_weight':
 				return $wc_product->get_weight();
-			case Standard_Product_Attributes::PREFIX . '_' . 'length':
+			case Standard_Product_Attributes::PREFIX . '_length':
 				return $wc_product->get_length();
-			case Standard_Product_Attributes::PREFIX . '_' . 'width':
+			case Standard_Product_Attributes::PREFIX . '_width':
 				return $wc_product->get_width();
-			case Standard_Product_Attributes::PREFIX . '_' . 'height':
+			case Standard_Product_Attributes::PREFIX . '_height':
 				return $wc_product->get_height();
 		}
 
@@ -522,22 +522,22 @@ class Products_Service implements ProductsService {
 	 * @return array
 	 */
 	protected function get_additional_image_urls( array $image_ids ) {
-		$additional_image_urls = [];
-		$images                = [];
+		$additional_image_urls = array();
+		$images                = array();
 
 		if ( $image_ids ) {
-            $image_ids = array_values($image_ids);
-			$images = get_posts( [
+			$image_ids = array_values($image_ids);
+			$images = get_posts( array(
 				'post_type' => 'attachment',
 				'include'   => $image_ids
-			] );
+			) );
 		}
 
-        foreach ( $images as $index => $image ) {
-            $additional_image_urls[] = $this->get_image_guid($image_ids[$index], $images);
-        }
+		foreach ( $images as $index => $image ) {
+			$additional_image_urls[] = $this->get_image_guid($image_ids[$index], $images);
+		}
 
-        return $additional_image_urls;
+		return $additional_image_urls;
 	}
 
 	/**
@@ -550,22 +550,22 @@ class Products_Service implements ProductsService {
 	 * @return array
 	 */
 	protected function get_custom_attributes( WC_Product $wc_product, array $meta_lookup, array $extra_data_attributes ) {
-		$custom_attributes = [];
+		$custom_attributes = array();
 
 		foreach ( $extra_data_attributes as $extra_attribute_key => $extra_attribute_value ) {
-            $attr = $this->get_attribute(
-                $wc_product,
-                $meta_lookup,
-                [ $extra_attribute_value ]
-            );
-            if ($attr !== null) {
-                $custom_attributes[] = new CustomAttribute(
-                    $extra_attribute_key,
-                    $attr,
-                    CustomAttribute::TYPE_TEXT,
-                    true
-                );
-            }
+			$attr = $this->get_attribute(
+				$wc_product,
+				$meta_lookup,
+				array( $extra_attribute_value )
+			);
+			if ( null !== $attr ) {
+				$custom_attributes[] = new CustomAttribute(
+					$extra_attribute_key,
+					$attr,
+					CustomAttribute::TYPE_TEXT,
+					true
+				);
+			}
 
 		}
 
@@ -580,7 +580,7 @@ class Products_Service implements ProductsService {
 	 * @return array
 	 */
 	protected function get_custom_variant_attributes( array $attributes ) {
-		$custom_attributes = [];
+		$custom_attributes = array();
 		foreach ( $attributes as $key => $value ) {
 			if ( in_array( $key, $this->product_attributes ) ) {
 				continue;
@@ -656,16 +656,16 @@ class Products_Service implements ProductsService {
 		if ( get_option( 'woocommerce_prices_include_tax' ) === 'yes' ) {
 			$price = $wc_product->get_price();
 			if ( $wc_product->get_date_on_sale_from() >= $now
-			     && $wc_product->get_date_on_sale_to() <= $now ) {
+				 && $wc_product->get_date_on_sale_to() <= $now ) {
 				$price = $wc_product->get_sale_price();
 			}
 		} else {
 			$price = wc_get_price_including_tax( $wc_product );
 			if ( $wc_product->get_date_on_sale_from() >= $now
-			     && $wc_product->get_date_on_sale_to() <= $now ) {
+				 && $wc_product->get_date_on_sale_to() <= $now ) {
 				$price = wc_get_price_including_tax(
 					$wc_product,
-					[ 'price' => $wc_product->get_sale_price() ]
+					array( 'price' => $wc_product->get_sale_price() )
 				);
 			}
 		}
@@ -679,7 +679,7 @@ class Products_Service implements ProductsService {
 	 * @return Meta_Repository
 	 */
 	protected function get_meta_repository() {
-		if ( $this->meta_repository === null ) {
+		if ( null === $this->meta_repository ) {
 			$this->meta_repository = new Meta_Repository();
 		}
 
@@ -692,7 +692,7 @@ class Products_Service implements ProductsService {
 	 * @return ProductsSyncConfigService
 	 */
 	protected function get_product_config_service() {
-		if ( $this->product_config_service === null ) {
+		if ( null === $this->product_config_service ) {
 			$this->product_config_service = ServiceRegister::getService( ProductsSyncConfigService::class );
 		}
 
@@ -705,7 +705,7 @@ class Products_Service implements ProductsService {
 	 * @return Attribute_Mappings_Service
 	 */
 	protected function get_attribute_mapping_service() {
-		if ( $this->attribute_mapping_service === null ) {
+		if ( null === $this->attribute_mapping_service ) {
 			$this->attribute_mapping_service = ServiceRegister::getService( Attribute_Mappings_Service::class );
 		}
 
@@ -718,7 +718,7 @@ class Products_Service implements ProductsService {
 	 * @return Extra_Data_Attribute_Mappings_Service
 	 */
 	protected function get_extra_data_attribute_mapping_service() {
-		if ( $this->extra_data_attribute_mapping_service === null ) {
+		if ( null === $this->extra_data_attribute_mapping_service ) {
 			$this->extra_data_attribute_mapping_service = ServiceRegister::getService( Extra_Data_Attribute_Mappings_Service::class );
 		}
 
@@ -736,20 +736,20 @@ class Products_Service implements ProductsService {
 		return ! empty( static::$tax_class_map[ $product->get_tax_class() ] ) ? static::$tax_class_map[ $product->get_tax_class() ] : 'STANDARD';
 	}
 
-    /**
-     * Retrieves image guid based on image id.
-     *
-     * @param string $image_id
-     * @param array $images
-     * @return string
-     */
-    private function get_image_guid(string $image_id, array $images): string {
-        foreach ($images as $image) {
-            if($image->ID == $image_id) {
-                return $image->guid;
-            }
-        }
+	/**
+	 * Retrieves image guid based on image id.
+	 *
+	 * @param string $image_id
+	 * @param array $images
+	 * @return string
+	 */
+	private function get_image_guid( string $image_id, array $images): string {
+		foreach ($images as $image) {
+			if ($image->ID == $image_id) {
+				return $image->guid;
+			}
+		}
 
-        return '';
-    }
+		return '';
+	}
 }

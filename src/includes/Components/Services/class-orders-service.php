@@ -25,10 +25,10 @@ use WP_Error;
  */
 class Orders_Service extends OrdersService {
 
-    /**
-     * @const string
-     */
-    const MARKETPLACE_TYPE_OF_FULFILLMENT = 'Marketplace';
+	/**
+	 * @const string
+	 */
+	const MARKETPLACE_TYPE_OF_FULFILLMENT = 'Marketplace';
 
 	/**
 	 * Creation of order with taxes requires integer value for the tax rate id. We do not want to introduce new custom tax rate,
@@ -88,9 +88,9 @@ class Orders_Service extends OrdersService {
 			$wc_order->add_meta_data( '_channel_engine_type_of_fulfillment', $order->getTypeOfFulfillment() );
 			$wc_order->add_meta_data( '_channel_engine_payment_method', $order->getPaymentMethod() );
 
-            if ($order->getTypeOfFulfillment() === self::MARKETPLACE_TYPE_OF_FULFILLMENT) {
-                $wc_order->add_meta_data('_ce_order_shipped', true);
-            }
+			if ($order->getTypeOfFulfillment() === self::MARKETPLACE_TYPE_OF_FULFILLMENT) {
+				$wc_order->add_meta_data('_ce_order_shipped', true);
+			}
 
 			$wc_order->save();
 			if ( $this->get_product_sync_config_service()->get()->isEnabledStockSync()
