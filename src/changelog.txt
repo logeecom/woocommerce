@@ -1,0 +1,48 @@
+*** ChannelEngine WooCommerce Integration ***
+
+= 2024-02-05 - version 3.8.6 =
+* Fix: Fix issue with HTML Product description
+
+= 2024-01-16 - version 3.8.5 =
+* Fix: Fix error when trying to get additional image URLs
+
+= 2023-12-18 - version 3.8.4 =
+* Fix: Fix issue with negative stock
+
+= 2023-12-05 - version 3.8.3 =
+* Changed: Adjust shipping method list in the order details section
+
+= 2023-10-24 - version 3.8.2 =
+* Feature: Add channel fulfilled orders identification
+
+= 2023-10-18 - version 3.8.1 =
+* Fix: Fix issues with shipping method title
+
+= 2023-07-25 - version 3.8.0 =
+* Added: Add compatibility with WC High-Performance Order Storage feature
+
+= 2023-07-13 - version 3.7.4 =
+* Fix: Fix problem with empty sales price on product
+
+= 2023-06-06 - version 3.7.3 =
+* Fix:  Fix order sync with product images
+
+= 2023-05-04 - version 3.7.2 =
+* Added: Placeholder explanation under extra data mapping
+* Added: Display the date from which orders FBM are imported
+* Added: Turn on/off product synchronization
+
+= 2023-04-27 - version 3.7.1 =
+* Fix: Fix missing parameter when canceling order.
+
+= 2023-03-28 - version 3.7.0 =
+* Fix: Fix bulk shipment action
+
+= 2023-01-24 - version 3.6.0 =
+* Added: Add compatibility with "EAN for WooCommerce" third-party plugin
+
+= 2022-12-29 - version 3.5.0 =
+* Added: Add User-Agent header to requests made by the plugin
+
+= 2022-11-16 - version 3.4.0 =
+* Fix: Fix VAT rate type
