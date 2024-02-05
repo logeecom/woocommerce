@@ -58,6 +58,10 @@
     color: rgba(0, 0, 0, .75);
 }
 
+.ce-hidden {
+    display: none;
+}
+
 @-webkit-keyframes spin {
     100% {
         -webkit-transform: rotate(360deg);

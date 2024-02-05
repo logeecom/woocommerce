@@ -5,7 +5,7 @@ use ChannelEngine\Utility\Shop_Helper;
 
 ?>
 <div class="ce-page ce-horizontal ce-notifications-page">
-	<img src="<?php esc_attr( Asset_Helper::get_image_url( 'warning.png' ) ); ?>" alt="" class="ce-icon__big">
+	<img src="<?php echo esc_attr( Asset_Helper::get_image_url( 'warning.png' ) ); ?>" alt="" class="ce-icon__big">
 	<div class="ce-notifications">
 		<h2><?php esc_html_e( 'Notifications', 'channelengine-wc' ); ?></h2>
 		<div class="ce-notifications__items">
@@ -15,11 +15,11 @@ use ChannelEngine\Utility\Shop_Helper;
 		</div>
 	</div>
 	<input id="ce-notifications-url" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Notifications', 'get' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Notifications', 'get' ) ); ?>">
 	<input id="ce-details-url" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Notifications', 'show_details' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Notifications', 'show_details' ) ); ?>">
 	<input id="ce-details-get" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Transactions', 'get_details' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Transactions', 'get_details' ) ); ?>">
 	<input id="ce-show-details-text" type="hidden" value="<?php esc_attr_e( 'Show details', 'channelengine-wc' ); ?>">
 	<input id="ce-details-header" type="hidden" value="<?php esc_attr_e( 'Transaction log details', 'channelengine-wc' ); ?>">
 	<input id="ce-modal-button-text" type="hidden" value="<?php esc_attr_e( 'Close', 'channelengine-wc' ); ?>">

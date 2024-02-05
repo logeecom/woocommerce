@@ -8,7 +8,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 <div id="ce-loader" class="ce-overlay">
 	<div class="ce-loader"></div>
 </div>
-<div class="channel-engine" style="display: none;">
+<div class="channel-engine ce-hidden">
 	<?php require plugin_dir_path( __FILE__ ) . 'partials/header.php'; ?>
 	<main>
 		<div class="ce-onboarding">
@@ -36,20 +36,20 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<a id="ceStatusesSave"
 			   class="ce-button ce-button__primary"><?php esc_html_e( 'Save and continue', 'channelengine-wc' ); ?></a>
 			<input id="ceStatusesUrl" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'get' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'get' ) ); ?>">
 			<input id="ceStatusesSaveUrl" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'save' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'save' ) ); ?>">
 			<input id="ceStatusesSaveForSwitchUrl" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'save_values' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'save_values' ) ); ?>">
 			<input id="ceEnabledStockSync" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_enabled_stock_sync' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_enabled_stock_sync' ) ); ?>">
 			<input id="ceSwitchOnboardingPage" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Switch_Page', 'switch_page' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Switch_Page', 'switch_page' ) ); ?>">
 			<input id="ceGetAccountName" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
 			<input id="ce-disconnect-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
-			<div id="ce-modal" style="display: none">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
+			<div id="ce-modal" class="ce-hidden">
 				<?php require plugin_dir_path( __FILE__ ) . 'partials/modal.php'; ?>
 			</div>
 		</div>

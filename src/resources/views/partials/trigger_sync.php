@@ -1,5 +1,7 @@
 <?php
+
 use ChannelEngine\Utility\Asset_Helper;
+
 ?>
 <div class="ce-modal">
 	<div class="ce-modal-dialog ce-modal-xl">

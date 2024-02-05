@@ -251,6 +251,15 @@
 .ce-hidden {
   display: none;
 }
+
+.ce-input-extra-data.last.ce-hidden {
+  display: none;
+}
+
+.ce-display {
+  display: block;
+}
+
 .channel-engine .ce-progress-bar {
   position: relative;
   display: flex;
@@ -853,5 +862,10 @@
 .ce-disabled-span {
   color: #b7b7b7;
 }
+
+#hidden {
+  display: none;
+}
+
 
 /*# sourceMappingURL=main.css.map */

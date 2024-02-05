@@ -56,6 +56,7 @@ class View {
 	public static function get_allowed_tags() {
 		return array(
 			'a'          => array(
+				'id'     => array(),
 				'class'  => array(),
 				'href'   => array(),
 				'rel'    => array(),
@@ -93,12 +94,54 @@ class View {
 			'dl'         => array(),
 			'dt'         => array(),
 			'em'         => array(),
-			'h1'         => array(),
-			'h2'         => array(),
-			'h3'         => array(),
-			'h4'         => array(),
-			'h5'         => array(),
-			'h6'         => array(),
+			'form'       => array(
+				'class'    => array(),
+				'id'       => array(),
+				'onsubmit' => array(),
+			),
+			'footer'     => array(
+				'class' => array(),
+				'id'    => array(),
+			),
+			'h1'         => array(
+				'class' => array(),
+				'id'    => array(),
+				'title' => array(),
+				'style' => array(),
+			),
+			'h2'         => array(
+				'class' => array(),
+				'id'    => array(),
+				'title' => array(),
+				'style' => array(),
+			),
+			'h3'         => array(
+				'class' => array(),
+				'id'    => array(),
+				'title' => array(),
+				'style' => array(),
+			),
+			'h4'         => array(
+				'class' => array(),
+				'id'    => array(),
+				'title' => array(),
+				'style' => array(),
+			),
+			'h5'         => array(
+				'class' => array(),
+				'id'    => array(),
+				'title' => array(),
+				'style' => array(),
+			),
+			'h6'         => array(
+				'class' => array(),
+				'id'    => array(),
+				'title' => array(),
+				'style' => array(),
+			),
+			'header'     => array(
+				'class' => array()
+			),
 			'hr'         => array(
 				'class' => array()
 			),
@@ -113,20 +156,38 @@ class View {
 				'width'  => array(),
 			),
 			'input'      => array(
-				'id'    => array(),
-				'class'  => array(),
-				'name' => array(),
-				'value'    => array(),
-				'type'  => array(),
+				'id'           => array(),
+				'class'        => array(),
+				'name'         => array(),
+				'value'        => array(),
+				'type'         => array(),
+				'autocomplete' => array(),
+				'style'        => array(),
+				'checked'      => array(),
 			),
 			'li'         => array(
 				'class' => array(),
 			),
+			'label'      => array(
+				'class' => array(),
+			),
+			'main'       => array(
+				'class' => array()
+			),
+			'nav'        => array(
+				'class' => array(),
+				'id'    => array(),
+			),
 			'ol'         => array(
 				'class' => array(),
 			),
+			'option'     => array(
+				'value'    => array(),
+				'selected' => array(),
+			),
 			'p'          => array(
 				'class' => array(),
+				'id'    => array(),
 			),
 			'path'       => array(
 				'fill'            => array(),
@@ -142,7 +203,16 @@ class View {
 				'type' => array(),
 				'id'   => array(),
 			),
+			'section'    => array(
+				'id'    => array(),
+				'class' => array(),
+			),
+			'select'     => array(
+				'id'    => array(),
+				'class' => array(),
+			),
 			'span'       => array(
+				'id'          => array(),
 				'class'       => array(),
 				'title'       => array(),
 				'style'       => array(),
@@ -150,7 +220,10 @@ class View {
 				'data-target' => array(),
 			),
 			'strike'     => array(),
-			'strong'     => array(),
+			'strong'     => array(
+				'id'    => array(),
+				'class' => array(),
+			),
 			'svg'        => array(
 				'aria-hidden'     => array(),
 				'focusable'       => array(),
@@ -163,12 +236,15 @@ class View {
 				'data-v-19c3f3ae' => array(),
 			),
 			'table'      => array(
+				'id'    => array(),
 				'class' => array()
 			),
 			'tbody'      => array(
+				'id'    => array(),
 				'class' => array()
 			),
 			'thead'      => array(
+				'id'    => array(),
 				'class' => array()
 			),
 			'tr'         => array(

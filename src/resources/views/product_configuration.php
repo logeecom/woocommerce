@@ -8,7 +8,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 <div id="ce-loader" class="ce-overlay">
 	<div class="ce-loader"></div>
 </div>
-<div class="channel-engine" style="display: none;">
+<div class="channel-engine ce-hidden">
 	<?php require plugin_dir_path( __FILE__ ) . 'partials/header.php'; ?>
 	<main>
 		<div class="ce-onboarding">
@@ -34,12 +34,12 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<a id="ceSave"
 			   class="ce-button ce-button__primary"><?php esc_html_e( 'Save and continue', 'channelengine-wc' ); ?></a>
 			<input id="ceProductSave" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Product_Sync', 'save' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Product_Sync', 'save' ) ); ?>">
 			<input id="ceGetAccountName" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
 			<input id="ce-disconnect-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
-			<div id="ce-modal" style="display: none">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
+			<div id="ce-modal" class="ce-hidden">
 				<?php require plugin_dir_path( __FILE__ ) . 'partials/modal.php'; ?>
 			</div>
 			<input id="ce-extra-data-duplicates-text" type="hidden"
@@ -47,7 +47,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<input id="ce-extra-data-duplicates-header" type="hidden"
 				   value="<?php esc_attr_e( 'Warning', 'channelengine-wc' ); ?>">
 			<input id="ceExportProductsUrl" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ) ); ?>">
 		</div>
 	</main>
 </div>

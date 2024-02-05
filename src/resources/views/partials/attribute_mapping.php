@@ -16,7 +16,7 @@ use ChannelEngine\Utility\Shop_Helper;
 				</span>
 			</span>
 			<select id="ceBrand">
-				<option value=""><?php esc_html_e( 'Not mapped', 'channelengine-wc' ); ?></option>
+				<option value=""><?php echo esc_html_e( 'Not mapped', 'channelengine-wc' ); ?></option>
 			</select>
 		</label>
 	</div>
@@ -151,5 +151,5 @@ use ChannelEngine\Utility\Shop_Helper;
 		</label>
 	</div>
 	<input id="ceProductAttributes" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_product_attributes' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_product_attributes' ) ); ?>">
 </form>

@@ -34,7 +34,6 @@ class Channel_Engine_Dashboard_Controller extends Channel_Engine_Frontend_Contro
 			'/js/DisconnectService.js',
 			'/js/Disconnect.js',
 			'/js/TriggerSyncModal.js',
-			'/js/Transactions.js',
 			'/js/Details.js',
 		);
 

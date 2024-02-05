@@ -54,7 +54,7 @@ if ( ! $data['order_cancelled'] ) {
 			<div class="ce-loader"></div>
 		</div>
 		<div id="ce-track-and-trace-content" class="track-and-trace-box">
-			<div id="ce-shipment-error" class="notice notice-error" style="display: none">
+			<div id="ce-shipment-error" class="notice notice-error ce-hidden">
 				<p id="ce-shipment-error-description">
 				</p>
 			</div>

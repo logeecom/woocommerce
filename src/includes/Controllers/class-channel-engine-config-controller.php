@@ -236,8 +236,9 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			'/js/DisconnectService.js',
 			'/js/Disconnect.js',
 			'/js/TriggerSyncModal.js',
-			'/js/Transactions.js',
-			'/js/Details.js',
+			'/js/TriggerSyncService.js',
+			'/js/ModalService.js',
+			'/js/ExtraDataMapping.js',
 		);
 
 		Script_Loader::load_js( $scripts );

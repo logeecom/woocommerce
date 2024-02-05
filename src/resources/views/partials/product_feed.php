@@ -45,5 +45,5 @@ use ChannelEngine\Utility\Shop_Helper;
 		<?php require plugin_dir_path( __FILE__ ) . 'extra_data_mapping.php'; ?>
 	</div>
 	<input id="ce-stock-url" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_stock_sync_config' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_stock_sync_config' ) ); ?>">
 </form>

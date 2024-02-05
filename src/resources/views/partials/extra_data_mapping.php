@@ -9,7 +9,7 @@ use ChannelEngine\Utility\Shop_Helper;
 		<h3 style="width: 200px"><?php esc_html_e( 'Extra data mapping' ); ?></h3>
 		<a id="ceAddNewAttribute" class="ce-button-extra-data ce-button__primary ce-button-add-mapping">+</a>
 	</div>
-	<div id="hidden" class="ce-input-extra-data last" style="display: none;">
+	<div id="hidden" class="ce-input-extra-data last">
 		<label>
 			<select>
 			</select>
@@ -18,5 +18,5 @@ use ChannelEngine\Utility\Shop_Helper;
 		</label>
 	</div>
 	<input id="ceProductExtraData" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_extra_data_mappings' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_extra_data_mappings' ) ); ?>">
 </form>

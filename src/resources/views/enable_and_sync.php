@@ -9,7 +9,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 <div id="ce-loader" class="ce-overlay">
 	<div class="ce-loader"></div>
 </div>
-<div class="channel-engine" style="display: none;">
+<div class="channel-engine ce-hidden">
 	<?php require plugin_dir_path( __FILE__ ) . 'partials/header.php'; ?>
 	<main>
 		<div class="ce-onboarding">
@@ -48,16 +48,16 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 					<a id="ceStartSync"
 					   class="ce-button ce-button__primary"><?php esc_html_e( 'Enable and start sync', 'channelengine-wc' ); ?></a>
 					<input id="ceInitialSyncUrl" type="hidden"
-						   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Initial_Sync', 'start' ) ); ?>">
+						   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Initial_Sync', 'start' ) ); ?>">
 				</label>
 			</div>
 			<input id="ceGetAccountName" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
 			<input id="ce-disconnect-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
 			<input id="ceSwitchOnboardingPage" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Switch_Page', 'switch_page' ) ); ?>">
-			<div id="ce-modal" style="display: none">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Switch_Page', 'switch_page' ) ); ?>">
+			<div id="ce-modal" class="ce-hidden">
 				<?php require plugin_dir_path( __FILE__ ) . 'partials/modal.php'; ?>
 			</div>
 		</div>

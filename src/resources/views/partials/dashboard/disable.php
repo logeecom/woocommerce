@@ -26,10 +26,10 @@ use ChannelEngine\Utility\Shop_Helper;
 		</div>
 	</div>
 	<input id="ce-trigger-sync-url" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'trigger_sync' ) ); ?>">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'trigger_sync' ) ); ?>">
 	<input id="ce-check-status-url" type="hidden"
-		   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'check_status' ) ); ?>">
-	<div id="ce-trigger-modal" style="display: none">
+		   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'check_status' ) ); ?>">
+	<div id="ce-trigger-modal" class="ce-hidden">
 		<?php require plugin_dir_path( __FILE__ ) . '/../trigger_sync.php'; ?>
 	</div>
 </div>

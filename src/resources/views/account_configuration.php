@@ -9,9 +9,9 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 <div id="ce-loader" class="ce-overlay">
 	<div class="ce-loader"></div>
 </div>
-<div class="channel-engine" style="display: none;">
+<div class="channel-engine ce-hidden">
 	<header>
-		<img src="<?php esc_attr( Asset_Helper::get_image_url( 'logo.svg' ) ); ?>" height="30" alt="ChannelEngine" />
+		<img src="<?php echo  esc_attr( Asset_Helper::get_image_url( 'logo.svg' ) ); ?>" height="30" alt="ChannelEngine" />
 	</header>
 	<main>
 		<div class="ce-onboarding">
@@ -40,7 +40,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<a id="ceAuth"
 			   class="ce-button ce-button__primary"><?php esc_html_e( 'Connect and continue', 'channelengine-wc' ); ?></a>
 			<input type="hidden" id="ceAuthUrl"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Auth', 'auth' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Auth', 'auth' ) ); ?>">
 		</div>
 	</main>
 </div>

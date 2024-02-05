@@ -29,14 +29,14 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 	 * @throws RepositoryNotRegisteredException
 	 */
 	public function get() {
-		$order_statuses = wc_get_order_statuses();
-		$statuses       = $this->format_order_statuses( $order_statuses );
-		$mappings       = $this->get_order_config_service()->getOrderSyncConfig();
+		$order_statuses                 = wc_get_order_statuses();
+		$statuses                       = $this->format_order_statuses( $order_statuses );
+		$mappings                       = $this->get_order_config_service()->getOrderSyncConfig();
 		$order_by_marketplace_time_from = $this->get_order_config_service()->getClosedOrdersSyncTime();
 
 		$this->return_json( array(
-			'order_statuses' => $statuses,
-			'incoming'       => ( $mappings && $mappings->getIncomingOrders() !== null ) ?
+			'order_statuses'                              => $statuses,
+			'incoming'                                    => ( $mappings && $mappings->getIncomingOrders() !== null ) ?
 				array(
 					'value' => $mappings->getIncomingOrders(),
 					'label' => __( $mappings->getIncomingOrders(), 'channelengine-wc' ),
@@ -44,7 +44,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 					'value' => 'wc-processing',
 					'label' => __( 'wc-processing', 'channelengine-wc' ),
 				),
-			'shipped'        => ( $mappings && $mappings->getShippedOrders() !== null ) ?
+			'shipped'                                     => ( $mappings && $mappings->getShippedOrders() !== null ) ?
 				array(
 					'value' => $mappings->getShippedOrders(),
 					'label' => __( $mappings->getShippedOrders(), 'channelengine-wc' ),
@@ -52,7 +52,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 					'value' => 'wc-completed',
 					'label' => __( 'wc-completed', 'channelengine-wc' ),
 				),
-			'fulfilledByMp'  => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
+			'fulfilledByMp'                               => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
 				array(
 					'value' => $mappings->getFulfilledOrders(),
 					'label' => __( $mappings->getFulfilledOrders(), 'channelengine-wc' ),
@@ -60,17 +60,17 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 					'value' => 'wc-completed',
 					'label' => __( 'wc-completed', 'channelengine-wc' ),
 				),
-			'enableShipmentInfoSync' =>
+			'enableShipmentInfoSync'                      =>
 				! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
-			'enableOrderCancellationSync' =>
+			'enableOrderCancellationSync'                 =>
 				! ( $mappings && $mappings->isEnableOrderCancellationSync() !== null ) || $mappings->isEnableOrderCancellationSync(),
-			'enableOrdersByMerchantSync' =>
+			'enableOrdersByMerchantSync'                  =>
 				! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
-			'enableOrdersByMarketplaceSync' =>
+			'enableOrdersByMarketplaceSync'               =>
 				! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
-			'ordersByMarketplaceFromDate' => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp() ?
-				$order_by_marketplace_time_from->format('d.m.Y.') : gmdate('d.m.Y'),
-			'enableReduceStock' =>
+			'ordersByMarketplaceFromDate'                 => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp() ?
+				$order_by_marketplace_time_from->format( 'd.m.Y.' ) : gmdate( 'd.m.Y' ),
+			'enableReduceStock'                           =>
 				! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
 			'displayTheDateFromWhichOrdersFBMAreImported' => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp()
 		) );
@@ -102,17 +102,17 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		}
 
 		$orderSyncConfig = new OrderSyncConfig();
-		$orderSyncConfig->setIncomingOrders($payload['incoming']);
-		$orderSyncConfig->setShippedOrders($payload['shipped']);
-		$orderSyncConfig->setFulfilledOrders($payload['fulfilledByMp']);
-		$orderSyncConfig->setEnableShipmentInfoSync($payload['enableShipmentInfoSync']);
-		$orderSyncConfig->setEnableOrderCancellationSync($payload['enableOrderCancellationSync']);
-		$orderSyncConfig->setEnableOrdersByMerchantSync($payload['enableOrdersByMerchantSync']);
-		$orderSyncConfig->setEnableOrdersByMarketplaceSync($payload['enableOrdersByMarketplaceSync']);
-		$orderSyncConfig->setEnableReduceStock($payload['enableReduceStock']);
+		$orderSyncConfig->setIncomingOrders( $payload['incoming'] );
+		$orderSyncConfig->setShippedOrders( $payload['shipped'] );
+		$orderSyncConfig->setFulfilledOrders( $payload['fulfilledByMp'] );
+		$orderSyncConfig->setEnableShipmentInfoSync( $payload['enableShipmentInfoSync'] );
+		$orderSyncConfig->setEnableOrderCancellationSync( $payload['enableOrderCancellationSync'] );
+		$orderSyncConfig->setEnableOrdersByMerchantSync( $payload['enableOrdersByMerchantSync'] );
+		$orderSyncConfig->setEnableOrdersByMarketplaceSync( $payload['enableOrdersByMarketplaceSync'] );
+		$orderSyncConfig->setEnableReduceStock( $payload['enableReduceStock'] );
 
-		$this->get_order_config_service()->saveOrderSyncConfig($orderSyncConfig);
-		$this->get_order_config_service()->setClosedOrdersSyncTime(new DateTime($payload['startSyncDate']));
+		$this->get_order_config_service()->saveOrderSyncConfig( $orderSyncConfig );
+		$this->get_order_config_service()->setClosedOrdersSyncTime( new DateTime( $payload['startSyncDate'] ) );
 
 		$this->return_json( array( 'success' => true ) );
 	}
@@ -121,7 +121,13 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 	 * Retrieves information for shipment synchronization.
 	 */
 	public function get_sync_shipment_status() {
-		$this->return_json( array( 'enableShipmentInfoSync' => $this->get_order_config_service()->getOrderSyncConfig()->isEnableShipmentInfoSync() ) );
+		$sync_config = $this->get_order_config_service()->getOrderSyncConfig();
+		if ( $sync_config ) {
+			$this->return_json( array( 'enableShipmentInfoSync' => $sync_config->isEnableShipmentInfoSync() ) );
+		} else {
+			$this->return_json( array( 'enableShipmentInfoSync' => array() ) );
+
+		}
 	}
 
 	/**
@@ -133,6 +139,8 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		Script_Loader::load_js( array(
 			'/js/OrderStatuses.js',
 			'/js/ModalService.js',
+			'/js/DisconnectService.js',
+			'/js/Disconnect.js',
 		) );
 	}
 

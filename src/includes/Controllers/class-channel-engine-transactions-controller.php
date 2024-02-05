@@ -6,6 +6,7 @@ use ChannelEngine\BusinessLogic\TransactionLog\Contracts\DetailsService;
 use ChannelEngine\BusinessLogic\TransactionLog\Contracts\TransactionLogService;
 use ChannelEngine\BusinessLogic\TransactionLog\Entities\TransactionLog;
 use ChannelEngine\Infrastructure\ServiceRegister;
+use ChannelEngine\Utility\Script_Loader;
 
 /**
  * Class Channel_Engine_Transactions_Controller
@@ -163,6 +164,19 @@ class Channel_Engine_Transactions_Controller extends Channel_Engine_Frontend_Con
 		}
 
 		return $formatted_logs;
+	}
+
+	protected function load_resources() {
+		parent::load_resources();
+		$scripts         = array(
+			'/js/Transactions.js',
+			'/js/ModalService.js',
+			'/js/Details.js',
+			'/js/DisconnectService.js',
+			'/js/Disconnect.js',
+		);
+
+		Script_Loader::load_js( $scripts );
 	}
 
 	/**

@@ -32,6 +32,7 @@ use ChannelEngine\Utility\Logging_Callable;
 use ChannelEngine\Utility\Shop_Helper;
 use ChannelEngine\Utility\View;
 use Exception;
+use WC_Logger;
 use WC_Order;
 use WC_Shipping_Zones;
 use WP_Post;
@@ -131,7 +132,9 @@ class ChannelEngine {
 		} catch ( BaseException $e ) {
 			// Client has not connected their account yet, so we cannot check if woocommerce currency
 			// is the same as the one on ChannelEngine.
-			Logger::logInfo( 'Client has not connected their account yet.' );
+			if ( class_exists( WC_Logger::class ) ) {
+				Logger::logInfo( 'Client has not connected their account yet.' );
+			}
 		}
 
 		if ( is_multisite() ) {
@@ -309,7 +312,7 @@ class ChannelEngine {
 	 */
 	public function add_channel_engine_overview_box( $page, $post ) {
 		if ( ( 'shop_order' === $page && $post && $post->__isset( '_channel_engine_order_id' ) )
-			 || ( 'woocommerce_page_wc-orders' === $page && $post instanceof WC_Order && $post->get_meta_data( '_channel_engine_order_id' ) ) ) {
+			 || ( 'woocommerce_page_wc-orders' === $page && $post instanceof WC_Order && $post->get_meta( '_channel_engine_order_id' ) ) ) {
 			$controller = new Channel_Engine_Order_Overview_Controller();
 			$screen     = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
 				? wc_get_page_screen_id( 'shop-order' )

@@ -65,7 +65,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 					</span>
 				</span>
 			<input id="enableOrdersByMarketplaceSync" type="checkbox" class="checkbox" checked>
-			<input type="text" id="startSyncDate" class="datepicker" style="width: 100px;" value="<?php esc_attr( gmdate( 'd.m.Y.' ) ); ?>"/>
+			<input type="text" id="startSyncDate" class="datepicker" style="width: 100px;" value="<?php echo esc_attr( gmdate( 'd.m.Y.' ) ); ?>"/>
 		</label>
 	</div>
 	<div id="displayOrderFulfilledDateDiv">

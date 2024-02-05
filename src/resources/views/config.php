@@ -12,15 +12,15 @@ Frontend_Helper::render_view( 'config' );
 <div id="ce-loader" class="ce-overlay explicitHide">
 	<div class="ce-loader"></div>
 </div>
-<div class="channel-engine" style="display: none;">
+<div class="channel-engine ce-hidden">
 	<?php require plugin_dir_path( __FILE__ ) . 'partials/header.php'; ?>
 	<main>
 		<nav class="nav-tab-wrapper">
-			<a href="<?php esc_attr( Frontend_Helper::get_subpage_url( 'dashboard' ) ); ?>"
+			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'dashboard' ) ); ?>"
 			   class="nav-tab"><?php esc_html_e( 'Dashboard', 'channelengine-wc' ); ?></a>
-			<a href="<?php esc_attr( Frontend_Helper::get_subpage_url( 'config' ) ); ?>"
+			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'config' ) ); ?>"
 			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Configuration', 'channelengine-wc' ); ?></a>
-			<a href="<?php esc_attr( Frontend_Helper::get_subpage_url( 'transactions' ) ); ?>"
+			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'transactions' ) ); ?>"
 			   class="nav-tab"><?php esc_html_e( 'Transaction log', 'channelengine-wc' ); ?></a>
 		</nav>
 		<div id="ce-config-page" class="ce-page-with-header-footer">
@@ -37,10 +37,12 @@ Frontend_Helper::render_view( 'config' );
 					<button id="ce-sync-now" class="ce-button ce-button__primary ce-start-sync">
 						<?php esc_html_e( 'Start sync now', 'channelengine-wc' ); ?></button>
 					<button id="ce-sync-in-progress" class="ce-button ce-button__primary ce-loading"
-							style="display: none" disabled><?php esc_html_e( 'In progress', 'channelengine-wc' ); ?></button>
+							style="display: none"
+							disabled><?php esc_html_e( 'In progress', 'channelengine-wc' ); ?></button>
 				</div>
 			</header>
 			<main class="ce-page">
+
 				<section>
 					<?php
 					$pageTitle = __( 'Disconnect your account', 'channelengine-wc' );
@@ -61,28 +63,28 @@ Frontend_Helper::render_view( 'config' );
 						class="ce-button ce-button__primary"><?php esc_html_e( 'Save changes', 'channelengine-wc' ); ?></button>
 			</footer>
 			<input id="ce-account-data-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_data' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_data' ) ); ?>">
 			<input id="ce-disconnect-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
 			<input id="ce-disable-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Enable', 'disable' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Enable', 'disable' ) ); ?>">
 			<input id="ce-trigger-sync-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'trigger_sync' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'trigger_sync' ) ); ?>">
 			<input id="ce-order-statuses-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'get' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'get' ) ); ?>">
 			<input id="ce-save-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'save' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'save' ) ); ?>">
 			<input id="ce-check-status-url" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'check_status' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'check_status' ) ); ?>">
 			<input id="ceGetAccountName" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_name' ) ); ?>">
 			<input id="ceEnabledStockSync" type="hidden"
-				   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_enabled_stock_sync' ) ); ?>">
+				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_enabled_stock_sync' ) ); ?>">
 		</div>
-		<div id="ce-modal" style="display: none">
+		<div id="ce-modal" class="ce-hidden">
 			<?php require plugin_dir_path( __FILE__ ) . 'partials/modal.php'; ?>
 		</div>
-		<div id="ce-trigger-modal" style="display: none">
+		<div id="ce-trigger-modal" class="ce-hidden">
 			<?php require plugin_dir_path( __FILE__ ) . 'partials/trigger_sync.php'; ?>
 		</div>
 		<input id="ce-extra-data-duplicates-text" type="hidden"
@@ -91,7 +93,8 @@ Frontend_Helper::render_view( 'config' );
 			   value="<?php esc_attr_e( 'Warning', 'channelengine-wc' ); ?>">
 		<input id="ce-disconnect-header-text" type="hidden"
 			   value="<?php esc_attr_e( 'Disconnect account', 'channelengine-wc' ); ?>">
-		<input id="ce-disconnect-button-text" type="hidden" value="<?php esc_attr_e( 'Disconnect', 'channelengine-wc' ); ?>">
+		<input id="ce-disconnect-button-text" type="hidden"
+			   value="<?php esc_attr_e( 'Disconnect', 'channelengine-wc' ); ?>">
 		<input id="ce-disable-header-text" type="hidden"
 			   value="<?php esc_attr_e( 'Disable integration', 'channelengine-wc' ); ?>">
 		<input id="ce-disable-button-text" type="hidden" value="<?php esc_attr_e( 'Disable', 'channelengine-wc' ); ?>">
@@ -100,6 +103,6 @@ Frontend_Helper::render_view( 'config' );
 		<input id="ce-disconnect-text" type="hidden"
 			   value="<?php esc_attr_e( 'You are about to disconnect your ChannelEngine account.', 'channelengine-wc' ); ?>">
 		<input id="ceExportProductsUrl" type="hidden"
-			   value="<?php esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ) ); ?>">
-	</main>
-</div>
+			   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ) ); ?>">
+		</main>
+	</div>
