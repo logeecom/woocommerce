@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: ChannelEngine WooCommerce Integration
+Plugin Name: ChannelEngine Integration
 Plugin URI: https://wordpress.org/plugins/channelengine-wc/
 Description: ChannelEngine plugin for WooCommerce
 Version: 3.8.6

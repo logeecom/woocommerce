@@ -1,4 +1,4 @@
-=== ChannelEngine WooCommerce Integration ===
+=== ChannelEngine Integration ===
 Contributors: channelengine
 Donate link:
 Tags: woocommerce, channelengine, marketplaces
