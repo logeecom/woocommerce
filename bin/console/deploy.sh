@@ -19,6 +19,9 @@ cd deploy
 echo "Removing unnecessary files from final release archive..."
 rm -rf channelengine-wc/tests
 rm -rf channelengine-wc/vendor/channelengine/integration-core/tests
+rm -fR channelengine-wc/vendor/channelengine/integration-core/.git
+rm -fR channelengine-wc/vendor/channelengine/integration-core/.gitignore
+rm -fR channelengine-wc/vendor/channelengine/integration-core/run-tests.sh
 
 # Create plugin archive
 echo "Creating new archive..."
