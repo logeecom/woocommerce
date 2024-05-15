@@ -63,7 +63,9 @@ class Resource_Copier {
 	 * @throws RuntimeException If directory can not be created.
 	 */
 	private static function mkdir( $destination ) {
-		if ( ! file_exists( $destination ) && ! mkdir( $destination ) && ! is_dir( $destination ) ) {
+		if ( ! file_exists( $destination )
+            && ! is_dir( $destination )
+            && ! (new \WP_Filesystem_Direct([]))->mkdir($destination) ) {
 			throw new RuntimeException( sprintf( 'Directory "%s" was not created', $destination ) );
 		}
 	}

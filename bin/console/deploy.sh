@@ -22,6 +22,8 @@ rm -rf channelengine-wc/vendor/channelengine/integration-core/tests
 rm -fR channelengine-wc/vendor/channelengine/integration-core/.git
 rm -fR channelengine-wc/vendor/channelengine/integration-core/.gitignore
 rm -fR channelengine-wc/vendor/channelengine/integration-core/run-tests.sh
+rm -fR channelengine-wc/resources/channelengine/.gitkeep
+rm -fR channelengine-wc/resources/fonts/.gitkeep
 
 # Create plugin archive
 echo "Creating new archive..."

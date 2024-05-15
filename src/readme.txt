@@ -4,7 +4,7 @@ Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
 Tested up to: 5.7
-Stable tag: master
+Stable tag: 3.8.6
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 

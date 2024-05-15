@@ -42,7 +42,7 @@ class Channel_Engine_Webhooks_Controller extends Channel_Engine_Base_Controller 
 		} catch ( BaseException $e ) {
 			Logger::logError( $e->getMessage() );
 			$this->return_plain_text(
-				json_encode(
+				wp_json_encode(
 					array(
 						'Error' => $e->getMessage(),
 						400,

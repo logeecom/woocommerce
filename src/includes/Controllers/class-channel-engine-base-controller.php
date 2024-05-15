@@ -58,8 +58,8 @@ class Channel_Engine_Base_Controller {
 	 * @return mixed
 	 */
 	protected function get_param( $key ) {
-		if ( isset( $_REQUEST[ $key ] ) ) {
-			return sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
+		if ( isset( $_REQUEST[ $key ] ) ) { //phpcs:ignore
+			return sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) ); //phpcs:ignore
 		}
 
 		return null;

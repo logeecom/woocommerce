@@ -172,7 +172,7 @@ class Products_Service implements ProductsService {
 			$attributes['price'],
 			$is_enabled_stock_sync ? $attributes['stock'] : 0,
 			$wc_product->get_name(),
-			htmlspecialchars_decode(strip_tags($attributes['description'])),
+			htmlspecialchars_decode(wp_strip_all_tags($attributes['description'])),
 			$attributes['purchase_price'],
 			$attributes['msrp'],
 			$attributes['vat_rate_type'],
