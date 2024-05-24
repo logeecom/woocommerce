@@ -3,10 +3,10 @@ Contributors: channelengine
 Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 6.5
 Stable tag: 3.8.6
-License: MIT
-License URI: https://opensource.org/licenses/MIT
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 With ChannelEngine you will get the means to instantly connect to your favorite marketplaces, comparison engines, affiliate programs and others.
 

@@ -375,7 +375,7 @@ class ChannelEngine {
 			}
 		} else {
 			$this->uninstall_plugin_from_site();
-			delete_option( 'CE_SCHEMA_VERSION' );
+			delete_option( 'CHANNELENGINE_SCHEMA_VERSION' );
 		}
 	}
 
@@ -594,7 +594,7 @@ class ChannelEngine {
 	private function switch_to_site_and_uninstall_plugin( $site_id ) {
 		switch_to_blog( $site_id );
 		$this->uninstall_plugin_from_site();
-		delete_option( 'CE_SCHEMA_VERSION' );
+		delete_option( 'CHANNELENGINE_SCHEMA_VERSION' );
 		restore_current_blog();
 	}
 

@@ -16,7 +16,7 @@ class Plugin_Options_Repository {
 	 * @return string
 	 */
 	public function get_schema_version() {
-		return get_option( 'CE_SCHEMA_VERSION', '0.0.1' );
+		return get_option( 'CHANNELENGINE_SCHEMA_VERSION', '0.0.1' );
 	}
 
 	/**
@@ -25,6 +25,6 @@ class Plugin_Options_Repository {
 	 * @param string $version
 	 */
 	public function set_schema_version( $version ) {
-		update_option( 'CE_SCHEMA_VERSION', $version );
+		update_option( 'CHANNELENGINE_SCHEMA_VERSION', $version );
 	}
 }
