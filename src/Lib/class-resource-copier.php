@@ -64,8 +64,8 @@ class Resource_Copier {
 	 */
 	private static function mkdir( $destination ) {
 		if ( ! file_exists( $destination )
-            && ! is_dir( $destination )
-            && ! (new \WP_Filesystem_Direct([]))->mkdir($destination) ) {
+			&& ! is_dir( $destination )
+			&& ! ( new \WP_Filesystem_Direct(array()) )->mkdir($destination) ) {
 			throw new RuntimeException( sprintf( 'Directory "%s" was not created', $destination ) );
 		}
 	}

@@ -15,31 +15,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="overview-box">
 	<label class="property-name">
-		<?php echo esc_html_e( 'Order ID:', 'channelengine-wc' ); ?>
+		<?php esc_html_e( 'Order ID:', 'channelengine-wc' ); ?>
 	</label>
 	<label>
 		<?php echo esc_html( $data['order_id'] ); ?>
 	</label>
 	<label class="property-name">
-		<?php echo esc_html_e( 'Channel name:', 'channelengine-wc' ); ?>
+		<?php esc_html_e( 'Channel name:', 'channelengine-wc' ); ?>
 	</label>
 	<label>
 		<?php echo esc_html( $data['channel_name'] ); ?>
 	</label>
 	<label class="property-name">
-		<?php echo esc_html_e( 'Type of fulfillment:', 'channelengine-wc' ); ?>
+		<?php esc_html_e( 'Type of fulfillment:', 'channelengine-wc' ); ?>
 	</label>
 	<label>
 		<?php echo esc_html( $data['type_of_fulfillment'] ); ?>
 	</label>
 	<label class="property-name">
-		<?php echo esc_html_e( 'Channel Order No:', 'channelengine-wc' ); ?>
+		<?php esc_html_e( 'Channel Order No:', 'channelengine-wc' ); ?>
 	</label>
 	<label>
 		<?php echo esc_html( $data['channel_order_no'] ); ?>
 	</label>
 	<label class="property-name">
-		<?php echo esc_html_e( 'Payment method:', 'channelengine-wc' ); ?>
+		<?php esc_html_e( 'Payment method:', 'channelengine-wc' ); ?>
 	</label>
 	<label>
 		<?php echo esc_html( $data['payment_method'] ); ?>
@@ -59,10 +59,10 @@ if ( ! $data['order_cancelled'] ) {
 				</p>
 			</div>
 			<label class="property-name">
-				<?php echo esc_html_e( 'Track & trace', 'channelengine-wc' ); ?>
+				<?php esc_html_e( 'Track & trace', 'channelengine-wc' ); ?>
 			</label>
 			<label for="ce-shipping-methods">
-				<?php echo esc_html_e( 'Shipping method:', 'channelengine-wc' ); ?>
+				<?php esc_html_e( 'Shipping method:', 'channelengine-wc' ); ?>
 			</label>
 			<select name="ce-chipping-methods" id="ce-shipping-methods">
 				<?php
@@ -85,12 +85,12 @@ if ( ! $data['order_cancelled'] ) {
 				?>
 			</select>
 			<label>
-				<?php echo esc_html_e( 'Track and trace:', 'channelengine-wc' ); ?>
+				<?php esc_html_e( 'Track and trace:', 'channelengine-wc' ); ?>
 				<input id="ce-track-and-trace" class="ce-track-and-trace-input" type="text"
 					   value="<?php echo esc_attr( $data['track_and_trace'] ); ?>">
 			</label>
 			<button id="ce-update-info" class="ce-update-button page-title-action">
-				<?php echo esc_html_e( 'Update tracking information', 'channelengine-wc' ); ?>
+				<?php esc_html_e( 'Update tracking information', 'channelengine-wc' ); ?>
 			</button>
 			<input type="hidden" id="ce-create-endpoint"
 				   value="<?php echo esc_url( Shop_Helper::get_controller_url( 'Order_Overview', 'save' ) ); ?>">

@@ -6,26 +6,26 @@ use ChannelEngine\Utility\Shop_Helper;
 <input id="ce-standard-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce standard fields', 'channelengine-wc' ); ?>">
 <input id="ce-custom-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce custom fields', 'channelengine-wc' ); ?>">
 <form class="ce-form" onsubmit="return false">
-	<h3><?php echo esc_html_e( 'Attribute mapping' ); ?></h3>
+	<h3><?php esc_html_e( 'Attribute mapping', 'channelengine-wc' ); ?></h3>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php echo esc_html_e( 'Brand' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Brand', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php echo esc_html_e( 'Select a value to map the Brand attribute to.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Select a value to map the Brand attribute to.', 'channelengine-wc' ); ?>
 				</span>
 			</span>
 			<select id="ceBrand">
-				<option value=""><?php echo esc_html_e( 'Not mapped', 'channelengine-wc' ); ?></option>
+				<option value=""><?php esc_html_e( 'Not mapped', 'channelengine-wc' ); ?></option>
 			</select>
 		</label>
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php echo esc_html_e( 'Color' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Color', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php echo esc_html_e( 'Select a value to map the Color attribute to.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Select a value to map the Color attribute to.', 'channelengine-wc' ); ?>
 				</span>
 			</span>
 			<select id="ceColor">
@@ -35,10 +35,10 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php echo esc_html_e( 'Size' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Size', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php echo esc_html_e( 'Select a value to map the Size attribute to.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Select a value to map the Size attribute to.', 'channelengine-wc' ); ?>
 				</span>
 			</span>
 			<select id="ceSize">
@@ -48,10 +48,10 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php echo esc_html_e( 'GTIN' ); ?></span>
+			<span class="label"><?php esc_html_e( 'GTIN', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php echo esc_html_e( 'Select a value to map the GTIN attribute to. I.e.: a valid EAN or UPC.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Select a value to map the GTIN attribute to. I.e.: a valid EAN or UPC.', 'channelengine-wc' ); ?>
 				</span>
 			</span>
 			<select id="ceGtin">
@@ -64,7 +64,7 @@ use ChannelEngine\Utility\Shop_Helper;
 			<span class="label"><?php esc_html_e( 'Catalogue price' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php echo esc_html_e( 'Select a value to map the Catalog price attribute to.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Select a value to map the Catalog price attribute to.', 'channelengine-wc' ); ?>
 				</span>
 			</span>
 			<select id="ceCataloguePrice">
@@ -74,7 +74,7 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php esc_html_e( 'Price' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Price', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
 					<?php esc_html_e( 'Select a value to map the Price attribute to.', 'channelengine-wc' ); ?>
@@ -87,7 +87,7 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php esc_html_e( 'Purchase price' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Purchase price', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
 					<?php esc_html_e( 'Select a value to map the Purchase price attribute to.', 'channelengine-wc' ); ?>
@@ -126,7 +126,7 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php esc_html_e( 'Category' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Category', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
 					<?php esc_html_e( 'Select a value to map the Category attribute to.', 'channelengine-wc' ); ?>
