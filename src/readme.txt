@@ -3,7 +3,7 @@ Contributors: channelengine
 Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
-Tested up to: 6.5
+Tested up to: 6.5.3
 Stable tag: 3.8.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,6 +46,7 @@ Our platform is designed to help grow your ecommerce across marketplaces. Discov
 
 = 3.8.6 =
 * Fix issue with HTML Product description
+* Mark compatibility with WordPress 6.5.3 and WooCommerce 8.9.1
 
 = 3.8.5 =
 * Fix error when trying to get additional image URLs

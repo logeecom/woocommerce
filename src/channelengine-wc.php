@@ -8,6 +8,8 @@ Text Domain: channelengine-wc
 Domain Path: /i18n/languages
 Author: ChannelEngine
 Author URI: http://channelengine.net
+WC requires at least: 3.0.0
+WC tested up to: 8.9.1
 */
 
 use ChannelEngine\ChannelEngine;
