@@ -34,58 +34,48 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		$mappings                       = $this->get_order_config_service()->getOrderSyncConfig();
 		$order_by_marketplace_time_from = $this->get_order_config_service()->getClosedOrdersSyncTime();
 
-		$this->return_json( array(
-			'order_statuses'                              => $statuses,
-			'incoming'                                    => ( $mappings && $mappings->getIncomingOrders() !== null ) ?
-				array(
-					'value' => $mappings->getIncomingOrders(),
-                    'label' => printf(
-                        /* translators: get incoming orders */
-                        esc_html__( '%s', 'channelengine-wc' ),
-						esc_html($mappings->getIncomingOrders())
-					)
-				) : array(
-					'value' => 'wc-processing',
-					'label' => esc_html__( 'wc-processing', 'channelengine-wc' ),
-				),
-			'shipped'                                     => ( $mappings && $mappings->getShippedOrders() !== null ) ?
-				array(
-					'value' => $mappings->getShippedOrders(),
-                    'label' => printf(
-                        /* translators: get shipped orders */
-                        esc_html__( '%s', 'channelengine-wc' ),
-						esc_html( $mappings->getShippedOrders() )
+		$this->return_json(
+			array(
+				'order_statuses'                              => $statuses,
+				'incoming'                                    => ( $mappings && $mappings->getIncomingOrders() !== null ) ?
+					array(
+						'value' => $mappings->getIncomingOrders(),
+						'label' => printf( '%s', esc_html( $mappings->getIncomingOrders() ) ),
+					) : array(
+						'value' => 'wc-processing',
+						'label' => esc_html__( 'wc-processing', 'channelengine-wc' ),
 					),
-				) : array(
-					'value' => 'wc-completed',
-					'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
-				),
-			'fulfilledByMp'                               => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
-				array(
-					'value' => $mappings->getFulfilledOrders(),
-                    'label' => printf(
-                        /* translators: get fulfilled orders */
-                        esc_html__( '%s', 'channelengine-wc' ),
-						esc_html( $mappings->getFulfilledOrders() )
-					),
-				) : array(
-					'value' => 'wc-completed',
-					'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
-				),
-			'enableShipmentInfoSync'                      =>
-				! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
-			'enableOrderCancellationSync'                 =>
-				! ( $mappings && $mappings->isEnableOrderCancellationSync() !== null ) || $mappings->isEnableOrderCancellationSync(),
-			'enableOrdersByMerchantSync'                  =>
-				! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
-			'enableOrdersByMarketplaceSync'               =>
-				! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
-			'ordersByMarketplaceFromDate'                 => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp() ?
-				$order_by_marketplace_time_from->format( 'd.m.Y.' ) : gmdate( 'd.m.Y' ),
-			'enableReduceStock'                           =>
-				! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
-			'displayTheDateFromWhichOrdersFBMAreImported' => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp()
-		) );
+				'shipped'                                     => ( $mappings && $mappings->getShippedOrders() !== null ) ?
+						array(
+							'value' => $mappings->getShippedOrders(),
+							'label' => printf( '%s', esc_html( $mappings->getShippedOrders() ) ),
+						) : array(
+							'value' => 'wc-completed',
+							'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
+						),
+				'fulfilledByMp'                               => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
+						array(
+							'value' => $mappings->getFulfilledOrders(),
+							'label' => printf( '%s', esc_html( $mappings->getFulfilledOrders() ) ),
+						) : array(
+							'value' => 'wc-completed',
+							'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
+						),
+				'enableShipmentInfoSync'                      =>
+						! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
+				'enableOrderCancellationSync'                 =>
+						! ( $mappings && $mappings->isEnableOrderCancellationSync() !== null ) || $mappings->isEnableOrderCancellationSync(),
+				'enableOrdersByMerchantSync'                  =>
+						! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
+				'enableOrdersByMarketplaceSync'               =>
+						! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
+				'ordersByMarketplaceFromDate'                 => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp() ?
+						$order_by_marketplace_time_from->format( 'd.m.Y.' ) : gmdate( 'd.m.Y' ),
+				'enableReduceStock'                           =>
+						! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
+				'displayTheDateFromWhichOrdersFBMAreImported' => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp(),
+			)
+		);
 	}
 
 	/**
@@ -107,10 +97,12 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		$payload = json_decode( $this->get_raw_input(), true );
 
 		if ( ! $this->get_order_config_service()->are_statuses_valid( $payload ) ) {
-			$this->return_json( array(
-				'success' => false,
-				'message' => esc_html__( 'Invalid values.', 'channelengine-wc' ),
-			) );
+			$this->return_json(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Invalid values.', 'channelengine-wc' ),
+				)
+			);
 		}
 
 		$orderSyncConfig = new OrderSyncConfig();
@@ -148,12 +140,14 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 	protected function load_resources() {
 		parent::load_resources();
 
-		Script_Loader::load_js( array(
-			'/js/OrderStatuses.js',
-			'/js/ModalService.js',
-			'/js/DisconnectService.js',
-			'/js/Disconnect.js',
-		) );
+		Script_Loader::load_js(
+			array(
+				'/js/OrderStatuses.js',
+				'/js/ModalService.js',
+				'/js/DisconnectService.js',
+				'/js/Disconnect.js',
+			)
+		);
 	}
 
 	/**
@@ -169,8 +163,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		foreach ( $order_statuses as $key => $value ) {
 			$formatted_statuses[] = array(
 				'value' => $key,
-				/* translators: order status label */
-				'label' => printf( esc_html__( '%s', 'channelengine-wc' ), esc_html( $key ) )
+				'label' => printf( '%s', esc_html( $key ) ),
 			);
 		}
 

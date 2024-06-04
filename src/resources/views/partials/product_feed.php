@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use ChannelEngine\Utility\Shop_Helper;
 ?>
 <h1><?php esc_html_e( 'Product synchronization settings', 'channelengine-wc' ); ?></h1>

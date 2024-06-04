@@ -21,7 +21,7 @@ class Channel_Engine_Switch_Page_Controller extends Channel_Engine_Base_Controll
 	 * Renders appropriate view.
 	 */
 	public function switch_page() {
-		$input = json_decode( $this->get_raw_input(), true );
+		$input = $this->get_raw_input();
 		$page  = $input['page'];
 		if ( State_Service::PRODUCT_CONFIGURATION === $page ) {
 			$this->get_state_service()->set_product_configured( false );

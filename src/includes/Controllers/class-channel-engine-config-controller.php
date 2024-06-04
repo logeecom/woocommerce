@@ -327,7 +327,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 
 			$formatted_attributes['standard'][] = array(
 				'value' => $attribute_name,
-				'label' => __( $attribute_name, 'channelengine-wc' ),
+				'label' => $attribute_name,
 			);
 		}
 
@@ -342,7 +342,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 
 			$formatted_attributes['custom'][] = array(
 				'value' => $attribute_name,
-				'label' => __( $attribute_name, 'channelengine-wc' ),
+				'label' => $attribute_name,
 			);
 		}
 

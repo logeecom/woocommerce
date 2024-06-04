@@ -47,10 +47,8 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 			$this->register_webhooks();
 			$this->get_state_service()->set_account_configured( true );
 			$this->return_json( array( 'success' => true ) );
-		} catch ( CurrencyMismatchException $e ) {
-			$this->return_error( __( $e->getMessage(), 'channelengine-wc' ) );
-		} catch ( Webhook_Creation_Failed_Exception $e ) {
-			$this->return_error( __( $e->getMessage(), 'channelengine-wc' ) );
+		} catch ( CurrencyMismatchException | Webhook_Creation_Failed_Exception $e ) {
+			$this->return_error( printf( '%s', esc_html( $e->getMessage() ) ) );
 		} catch ( Exception $e ) {
 			$this->return_error( __( 'Invalid API key or Account name.', 'channelengine-wc' ) );
 		}

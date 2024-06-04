@@ -88,8 +88,8 @@ class Orders_Service extends OrdersService {
 			$wc_order->add_meta_data( '_channel_engine_type_of_fulfillment', $order->getTypeOfFulfillment() );
 			$wc_order->add_meta_data( '_channel_engine_payment_method', $order->getPaymentMethod() );
 
-			if ($order->getTypeOfFulfillment() === self::MARKETPLACE_TYPE_OF_FULFILLMENT) {
-				$wc_order->add_meta_data('_ce_order_shipped', true);
+			if ( $order->getTypeOfFulfillment() === self::MARKETPLACE_TYPE_OF_FULFILLMENT ) {
+				$wc_order->add_meta_data( '_ce_order_shipped', true );
 			}
 
 			$wc_order->save();

@@ -156,10 +156,13 @@ class ChannelEngine {
 		if ( $config ) {
 			$order_statuses = wc_get_order_statuses();
 			$status         = $order_statuses[ $config->getShippedOrders() ];
-			add_action( 'woocommerce_order_status_' . $status, array(
-				$this,
-				'before_order_shipped_status_transition'
-			) );
+			add_action(
+				'woocommerce_order_status_' . $status,
+				array(
+					$this,
+					'before_order_shipped_status_transition',
+				)
+			);
 		}
 	}
 
@@ -262,7 +265,7 @@ class ChannelEngine {
 			'plugin_action_links_' . plugin_basename( Shop_Helper::get_plugin_name() ),
 			array(
 				$this,
-				'channel_engine_action_links'
+				'channel_engine_action_links',
 			)
 		);
 	}
@@ -397,21 +400,26 @@ class ChannelEngine {
 
 		if ( $notifications ) {
 			$notification = end( $notifications );
-			echo wp_kses( '<div class="notice notice-warning"><p><strong>' .
+			echo wp_kses(
+				'<div class="notice notice-warning"><p><strong>' .
 						  __( 'ChannelEngine', 'channelengine-wc' ) . '</strong> ' .
-						  vsprintf(
-							  printf(__('%s', 'channelengine-wc' ), $notification->getMessage()),
-							  $notification->getArguments()
-						  ) . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
-						  . __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>', View::get_allowed_tags() );
+						vsprintf(
+							printf( '%s', $notification->getMessage() ),
+							$notification->getArguments()
+						) . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
+				. __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>',
+				View::get_allowed_tags()
+			);
 		}
 
 		$handler_notification = get_option( '_channel_engine_order_save_note' );
 
 		if ( $handler_notification ) {
-			echo wp_kses( '<div class="notice notice-error"><p>' .
-				printf(__( '%s', 'channelengine-wc' ), $handler_notification) . '</p></div>',
-				View::get_allowed_tags() );
+			echo wp_kses(
+				'<div class="notice notice-error"><p>' .
+						  printf( '%s', $handler_notification ) . '</p></div>',
+				View::get_allowed_tags()
+			);
 
 			delete_option( '_channel_engine_order_save_note' );
 		}
@@ -419,8 +427,11 @@ class ChannelEngine {
 		$handler_success = get_option( '_channel_engine_order_save_success' );
 
 		if ( $handler_success ) {
-			echo wp_kses( '<div class="notice notice-success"><p>' .
-				printf(__( '%s', 'channelengine-wc' ), $handler_success) . '</p></div>', View::get_allowed_tags() );
+			echo wp_kses(
+				'<div class="notice notice-success"><p>' .
+				printf( '%s', $handler_success ) . '</p></div>',
+				View::get_allowed_tags()
+			);
 
 			delete_option( '_channel_engine_order_save_success' );
 		}

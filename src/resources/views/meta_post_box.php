@@ -67,19 +67,37 @@ if ( ! $data['order_cancelled'] ) {
 			<select name="ce-chipping-methods" id="ce-shipping-methods">
 				<?php
 				if ( ! $data['chosen_shipping_method'] ) {
-					echo wp_kses( '<option selected="selected" value="">' . __( '--Shipping Method--' ) . '</option>', array(
-						'option' => array( 'selected' => array(), 'value' => array() )
-					) );
+					echo wp_kses(
+						'<option selected="selected" value="">' . __( '--Shipping Method--' ) . '</option>',
+						array(
+							'option' => array(
+								'selected' => array(),
+								'value' => array(),
+							),
+						)
+					);
 				}
 				foreach ( $data['shipping_methods'] as $method ) {
 					if ( $method->instance_id === $data['chosen_shipping_method'] ) {
-						echo wp_kses( '<option selected="selected" value="' . $method->instance_id . '">' . $method->title . '</option>', array(
-							'option' => array( 'selected' => array(), 'value' => array() )
-						) );
+						echo wp_kses(
+							'<option selected="selected" value="' . $method->instance_id . '">' . $method->title . '</option>',
+							array(
+								'option' => array(
+									'selected' => array(),
+									'value' => array(),
+								),
+							)
+						);
 					} else {
-						echo wp_kses( '<option value="' . $method->instance_id . '">' . $method->title . '</option>', array(
-							'option' => array( 'selected' => array(), 'value' => array() )
-						) );
+						echo wp_kses(
+							'<option value="' . $method->instance_id . '">' . $method->title . '</option>',
+							array(
+								'option' => array(
+									'selected' => array(),
+									'value' => array(),
+								),
+							)
+						);
 					}
 				}
 				?>

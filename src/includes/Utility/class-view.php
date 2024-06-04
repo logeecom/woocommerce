@@ -61,7 +61,7 @@ class View {
 				'href'   => array(),
 				'rel'    => array(),
 				'title'  => array(),
-				'target' => array()
+				'target' => array(),
 			),
 			'abbr'       => array(
 				'title' => array(),
@@ -140,13 +140,13 @@ class View {
 				'style' => array(),
 			),
 			'header'     => array(
-				'class' => array()
+				'class' => array(),
 			),
 			'hr'         => array(
-				'class' => array()
+				'class' => array(),
 			),
 			'i'          => array(
-				'class' => array()
+				'class' => array(),
 			),
 			'img'        => array(
 				'alt'    => array(),
@@ -172,7 +172,7 @@ class View {
 				'class' => array(),
 			),
 			'main'       => array(
-				'class' => array()
+				'class' => array(),
 			),
 			'nav'        => array(
 				'class' => array(),
@@ -193,7 +193,7 @@ class View {
 				'fill'            => array(),
 				'd'               => array(),
 				'class'           => array(),
-				'data-v-19c3f3ae' => array()
+				'data-v-19c3f3ae' => array(),
 			),
 			'q'          => array(
 				'cite'  => array(),
@@ -237,15 +237,15 @@ class View {
 			),
 			'table'      => array(
 				'id'    => array(),
-				'class' => array()
+				'class' => array(),
 			),
 			'tbody'      => array(
 				'id'    => array(),
-				'class' => array()
+				'class' => array(),
 			),
 			'thead'      => array(
 				'id'    => array(),
-				'class' => array()
+				'class' => array(),
 			),
 			'tr'         => array(
 				'class'     => array(),

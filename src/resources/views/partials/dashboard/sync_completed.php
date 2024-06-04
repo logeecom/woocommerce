@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use ChannelEngine\Utility\Asset_Helper;
 
 ?>

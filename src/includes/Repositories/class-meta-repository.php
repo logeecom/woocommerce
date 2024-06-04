@@ -14,7 +14,7 @@ class Meta_Repository {
 	/**
 	 * Needed for adding compatibility with third-party plugins.
 	 */
-	const ADDITIONAL_PRODUCT_FIELDS = array( "'_alg_ean'" );
+	const ADDITIONAL_PRODUCT_FIELDS = array( '_alg_ean' );
 
 
 	/**
@@ -45,31 +45,32 @@ class Meta_Repository {
 		$posts     = $this->db->posts;
 		$post_meta = $this->db->postmeta;
 		$meta_keys = array(
-			"'_product_attributes'",
-			"'_weight'",
-			"'_length'",
-			"'_height'",
-			"'_width'",
-			"'_sku'",
-			"'_ean'",
-			"'_thumbnail_id'",
+			'_product_attributes',
+			'_weight',
+			'_length',
+			'_height',
+			'_width',
+			'_sku',
+			'_ean',
+			'_thumbnail_id',
 		);
 
-		$query = $this->db->prepare(
-			"SELECT $post_meta.*, $posts.post_parent 
+		$query =
+			"SELECT $post_meta.*, $posts.post_parent
 			FROM $post_meta
 			INNER JOIN $posts ON $posts.id = $post_meta.post_id
-			WHERE $posts.id IN (" . implode( ', ', $ids ) . ")
-			AND (($posts.post_status = 'publish' 
-			AND $posts.post_type IN ('product', 'product_variation')) OR 
-             ($posts.post_status = 'inherit' 
+			WHERE $posts.id IN (" . implode( ', ', array_fill( 0, count( $ids ), '%d' ) ) . ")
+			AND (($posts.post_status = 'publish'
+			AND $posts.post_type IN ('product', 'product_variation')) OR
+             ($posts.post_status = 'inherit'
 			AND $posts.post_type IN ('attachment')))
-			AND $post_meta.meta_key IN(" . implode( ', ', array_merge( $meta_keys, self::ADDITIONAL_PRODUCT_FIELDS ) ) . ')'
-		);
+			AND $post_meta.meta_key IN(" . implode( ', ', array_fill( 0, count( array_merge( $meta_keys, self::ADDITIONAL_PRODUCT_FIELDS ) ), '%s' ) ) . ')';
+
+		$sql = $this->db->prepare( $query, array_merge( $ids, $meta_keys, self::ADDITIONAL_PRODUCT_FIELDS ) );
 
 		$lookup = array();
 
-		$meta = $this->db->get_results( $query, OBJECT );
+		$meta = $this->db->get_results( $sql, OBJECT );
 
 		foreach ( $meta as $item ) {
 			$post_id = $item->post_id;
@@ -152,16 +153,18 @@ class Meta_Repository {
 	 *
 	 * @return array
 	 */
-	private function get_third_party_plugin_attributes() {
+	public function get_third_party_plugin_attributes() {
 		$post_meta           = $this->db->postmeta;
 		$existing_attributes = array();
-		$meta_data           = $this->db->get_results(
+		$query           =
 			"SELECT distinct meta_key FROM $post_meta WHERE meta_key in (" . implode(
 				', ',
-				self::ADDITIONAL_PRODUCT_FIELDS
-			) . ')',
-			ARRAY_A
-		);
+				array_fill( 0, count( self::ADDITIONAL_PRODUCT_FIELDS ) , '%s' )
+			) . ')';
+
+		$sql = $this->db->prepare( $query, self::ADDITIONAL_PRODUCT_FIELDS );
+
+		$meta_data = $this->db->get_results( $sql, ARRAY_A );
 
 		foreach ( $meta_data as $plugin_attribute ) {
 			$attribute = new WC_Product_Attribute();

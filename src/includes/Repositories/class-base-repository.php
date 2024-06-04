@@ -20,7 +20,7 @@ class Base_Repository implements RepositoryInterface {
 	 * Fully qualified name of this class.
 	 */
 	const THIS_CLASS_NAME = __CLASS__;
-	const TABLE_NAME      = 'channel_engine_entity';
+	const TABLE_NAME = 'channel_engine_entity';
 
 	/**
 	 * @var wpdb
@@ -67,12 +67,12 @@ class Base_Repository implements RepositoryInterface {
 		$type   = $entity->getConfig()->getType();
 
 		/** @noinspection SqlNoDataSourceInspection */
-		$query = "SELECT * FROM {$this->table_name} WHERE type = '$type'";
+		$query = "SELECT * FROM {$this->table_name} WHERE type = %s";
 		if ( $filter ) {
 			$query .= $this->apply_query_filter( $filter, IndexHelper::mapFieldsToIndexes( $entity ) );
 		}
-
-		$raw_results = $this->db->get_results( $query, ARRAY_A );
+		$sql         = $this->db->prepare( $query, $type );
+		$raw_results = $this->db->get_results( $sql, ARRAY_A );
 
 		return $this->transform_to_entities( $raw_results );
 	}
@@ -131,12 +131,13 @@ class Base_Repository implements RepositoryInterface {
 
 		/** @noinspection SqlDialectInspection */
 		/** @noinspection SqlNoDataSourceInspection */
-		$query = "DELETE FROM {$this->table_name} WHERE type = '$type' ";
+		$query = "DELETE FROM {$this->table_name} WHERE type = %s ";
 		if ( $filter ) {
 			$query .= $this->get_condition( $filter, IndexHelper::mapFieldsToIndexes( $entity ) );
 		}
 
-		$this->db->query( $query );
+		$sql = $this->db->prepare( $query, array( $type ) );
+		$this->db->query( $sql );
 	}
 
 
@@ -150,12 +151,13 @@ class Base_Repository implements RepositoryInterface {
 
 		/** @noinspection SqlDialectInspection */
 		/** @noinspection SqlNoDataSourceInspection */
-		$query = "SELECT COUNT(*) as `total` FROM {$this->table_name} WHERE type = '$type' ";
+		$query = "SELECT COUNT(*) as `total` FROM {$this->table_name} WHERE type = %s ";
 		if ( $filter ) {
 			$query .= $this->apply_query_filter( $filter, IndexHelper::mapFieldsToIndexes( $entity ) );
 		}
 
-		$result = $this->db->get_results( $query, ARRAY_A );
+		$sql    = $this->db->prepare( $query, array( $type ) );
+		$result = $this->db->get_results( $sql, ARRAY_A );
 
 		return empty( $result ) ? 0 : (int) $result[0]['total'];
 	}
@@ -203,7 +205,7 @@ class Base_Repository implements RepositoryInterface {
 	 * Builds query filter part of the query.
 	 *
 	 * @param QueryFilter $filter Query filter object.
-	 * @param array       $field_index_map Property to index number map.
+	 * @param array $field_index_map Property to index number map.
 	 *
 	 * @return string Query filter addendum.
 	 * @throws QueryFilterInvalidParamException If filter condition is invalid.
@@ -214,12 +216,12 @@ class Base_Repository implements RepositoryInterface {
 		if ( $filter->getOrderByColumn() ) {
 			$this->validate_index_column( $filter->getOrderByColumn(), $field_index_map );
 			$order_index = 'id' === $filter->getOrderByColumn() ? 'id' : 'index_' . $field_index_map[ $filter->getOrderByColumn() ];
-			$query      .= " ORDER BY {$order_index} {$filter->getOrderDirection()}";
+			$query       .= " ORDER BY {$order_index} {$filter->getOrderDirection()}";
 		}
 
 		if ( $filter->getLimit() ) {
 			$offset = (int) $filter->getOffset();
-			$query .= " LIMIT {$offset}, {$filter->getLimit()}";
+			$query  .= " LIMIT {$offset}, {$filter->getLimit()}";
 		}
 
 		return $query;
@@ -279,7 +281,7 @@ class Base_Repository implements RepositoryInterface {
 	 * Validates if column can be filtered or sorted by.
 	 *
 	 * @param string $column Column name.
-	 * @param array  $index_map Index map.
+	 * @param array $index_map Index map.
 	 *
 	 * @throws QueryFilterInvalidParamException If filter condition is invalid.
 	 */
@@ -314,7 +316,7 @@ class Base_Repository implements RepositoryInterface {
 
 	/**
 	 * @param QueryFilter $filter
-	 * @param array       $field_index_map
+	 * @param array $field_index_map
 	 *
 	 * @return string
 	 * @throws QueryFilterInvalidParamException
@@ -324,14 +326,14 @@ class Base_Repository implements RepositoryInterface {
 		$conditions = $filter->getConditions();
 		if ( ! empty( $conditions ) ) {
 			$query .= 'AND (';
-			$first  = true;
+			$first = true;
 			foreach ( $conditions as $condition ) {
 				$this->validate_index_column( $condition->getColumn(), $field_index_map );
 				$chain_op = $first ? '' : $condition->getChainOperator();
 				$first    = false;
 				$column   = 'id' === $condition->getColumn() ? 'id' : 'index_' . $field_index_map[ $condition->getColumn() ];
 				$operator = $condition->getOperator();
-				$query   .= " $chain_op $column $operator " . $this->convert_value( $condition );
+				$query    .= " $chain_op $column $operator " . $this->convert_value( $condition );
 			}
 
 			$query .= ')';

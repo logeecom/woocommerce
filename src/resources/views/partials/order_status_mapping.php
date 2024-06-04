@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use ChannelEngine\Utility\Shop_Helper;
 
 $basePath = Shop_Helper::get_plugin_resources_path( __DIR__ );

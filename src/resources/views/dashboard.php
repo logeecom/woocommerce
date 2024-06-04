@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use ChannelEngine\Utility\Frontend_Helper;
 use ChannelEngine\Utility\Shop_Helper;
 

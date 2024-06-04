@@ -1,3 +1,10 @@
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+?>
 <div class="ce-page">
 	<h1><?php esc_html_e( 'Full synchronization in progress', 'channelengine-wc' ); ?></h1>
 	<section id="ce-product-sync-in-progress" class="ce-sync-progress">

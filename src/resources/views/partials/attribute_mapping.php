@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use ChannelEngine\Utility\Shop_Helper;
 
 ?>
@@ -61,7 +65,7 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group ce-flex">
 		<label>
-			<span class="label"><?php esc_html_e( 'Catalogue price' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Catalogue price', 'channelengine-wc' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
 					<?php esc_html_e( 'Select a value to map the Catalog price attribute to.', 'channelengine-wc' ); ?>

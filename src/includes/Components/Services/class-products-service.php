@@ -172,7 +172,7 @@ class Products_Service implements ProductsService {
 			$attributes['price'],
 			$is_enabled_stock_sync ? $attributes['stock'] : 0,
 			$wc_product->get_name(),
-			htmlspecialchars_decode(wp_strip_all_tags($attributes['description'])),
+			htmlspecialchars_decode( wp_strip_all_tags( $attributes['description'] ) ),
 			$attributes['purchase_price'],
 			$attributes['msrp'],
 			$attributes['vat_rate_type'],
@@ -194,13 +194,15 @@ class Products_Service implements ProductsService {
 
 		if ( $variant_ids ) {
 			$variant_meta_lookup = $this->get_meta_repository()->get_product_meta( $variant_ids );
-			$variants            = wc_get_products( array(
-				'status' => 'publish',
-				'type'   => 'variation',
-				'parent' => $wc_product->get_id(),
-				'limit'  => - 1,
-				'return' => 'objects',
-			) );
+			$variants            = wc_get_products(
+				array(
+					'status' => 'publish',
+					'type'   => 'variation',
+					'parent' => $wc_product->get_id(),
+					'limit'  => - 1,
+					'return' => 'objects',
+				)
+			);
 
 			/**
 			 * @var WC_Product_Variation $variant
@@ -328,7 +330,6 @@ class Products_Service implements ProductsService {
 			array( $attributesMapping->get_price() )
 		) : '';
 
-
 		$attributes['description'] = $attributesMapping->get_details() !== null ?
 			$this->get_attribute(
 				$wc_product,
@@ -389,14 +390,16 @@ class Products_Service implements ProductsService {
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				array( $attributesMapping->get_category() ) ) :
+				array( $attributesMapping->get_category() )
+			) :
 			'';
 
 		$attributes['manufacturer_product_number'] = $attributesMapping->get_vendor_product_number() !== null ?
 			$this->get_attribute(
 				$wc_product,
 				$meta_lookup,
-				array( $attributesMapping->get_vendor_product_number() ) ) :
+				array( $attributesMapping->get_vendor_product_number() )
+			) :
 			'';
 
 		return $attributes;
@@ -416,9 +419,12 @@ class Products_Service implements ProductsService {
 
 		$meta_keys = array_merge(
 			$keys,
-			array_map( static function ( $item ) {
-				return '_' . $item;
-			}, $keys )
+			array_map(
+				static function ( $item ) {
+					return '_' . $item;
+				},
+				$keys
+			)
 		);
 
 		foreach ( $meta_keys as $key ) {
@@ -433,9 +439,12 @@ class Products_Service implements ProductsService {
 
 		$attribute_keys = array_merge(
 			$keys,
-			array_map( static function ( $item ) {
-				return str_replace( '_', '-', $item );
-			}, $keys )
+			array_map(
+				static function ( $item ) {
+					return str_replace( '_', '-', $item );
+				},
+				$keys
+			)
 		);
 
 		foreach ( $attribute_keys as $key ) {
@@ -526,15 +535,17 @@ class Products_Service implements ProductsService {
 		$images                = array();
 
 		if ( $image_ids ) {
-			$image_ids = array_values($image_ids);
-			$images = get_posts( array(
-				'post_type' => 'attachment',
-				'include'   => $image_ids
-			) );
+			$image_ids = array_values( $image_ids );
+			$images = get_posts(
+				array(
+					'post_type' => 'attachment',
+					'include'   => $image_ids,
+				)
+			);
 		}
 
 		foreach ( $images as $index => $image ) {
-			$additional_image_urls[] = $this->get_image_guid($image_ids[$index], $images);
+			$additional_image_urls[] = $this->get_image_guid( $image_ids[ $index ], $images );
 		}
 
 		return $additional_image_urls;
@@ -566,7 +577,6 @@ class Products_Service implements ProductsService {
 					true
 				);
 			}
-
 		}
 
 		return $custom_attributes;
@@ -743,9 +753,9 @@ class Products_Service implements ProductsService {
 	 * @param array $images
 	 * @return string
 	 */
-	private function get_image_guid( string $image_id, array $images): string {
-		foreach ($images as $image) {
-			if ($image->ID == $image_id) {
+	private function get_image_guid( string $image_id, array $images ): string {
+		foreach ( $images as $image ) {
+			if ( $image->ID == $image_id ) {
 				return $image->guid;
 			}
 		}

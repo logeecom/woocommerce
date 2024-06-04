@@ -146,7 +146,7 @@ class Channel_Engine_Check_Status_Controller extends Channel_Engine_Frontend_Con
 	 * @return Orders_Service
 	 */
 	protected function get_orders_service() {
-		if ( null === $this->orders_service) {
+		if ( null === $this->orders_service ) {
 			$this->orders_service = ServiceRegister::getService( OrdersService::class );
 		}
 

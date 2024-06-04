@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use ChannelEngine\Utility\Asset_Helper;
 use ChannelEngine\Utility\Shop_Helper;
 
@@ -11,7 +15,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 </div>
 <div class="channel-engine ce-hidden">
 	<header>
-		<img src="<?php echo  esc_attr( Asset_Helper::get_image_url( 'logo.svg' ) ); ?>" height="30" alt="ChannelEngine" />
+		<img src="<?php echo esc_attr( Asset_Helper::get_image_url( 'logo.svg' ) ); ?>" height="30" alt="ChannelEngine" />
 	</header>
 	<main>
 		<div class="ce-onboarding">

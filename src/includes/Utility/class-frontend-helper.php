@@ -26,7 +26,7 @@ class Frontend_Helper {
 	 * @param string $current_page
 	 */
 	public static function render_view( $current_page ) {
-		$subpage = isset( $_REQUEST['subpage'] ) ? $_REQUEST['subpage'] : ''; //phpcs:ignore
+		$subpage = isset( $_REQUEST['subpage'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['subpage'] ) ) : ''; //phpcs:ignore
 		if ( $subpage && $subpage !== $current_page ) {
 			echo wp_kses( View::file( '/' . $subpage . '.php' )->render(), View::get_allowed_tags() );
 		}
