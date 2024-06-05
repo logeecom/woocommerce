@@ -28,6 +28,7 @@ class Channel_Engine_Support_Controller extends Channel_Engine_Frontend_Controll
 	 */
 	public function modify() {
 		$payload = json_decode( $this->get_raw_input(), true );
+		$payload = array_map('sanitize_text_field', $payload );
 
 		$this->return_json( array( $this->get_support_service()->update( $payload ) ) );
 	}
