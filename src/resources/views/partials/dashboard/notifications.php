@@ -9,7 +9,7 @@ use ChannelEngine\Utility\Shop_Helper;
 
 ?>
 <div class="ce-page ce-horizontal ce-notifications-page">
-	<img src="<?php echo esc_attr( Asset_Helper::get_image_url( 'warning.png' ) ); ?>" alt="" class="ce-icon__big">
+	<img src="<?php echo esc_url_raw( Asset_Helper::get_image_url( 'warning.png' ) ); ?>" alt="" class="ce-icon__big">
 	<div class="ce-notifications">
 		<h2><?php esc_html_e( 'Notifications', 'channelengine-wc' ); ?></h2>
 		<div class="ce-notifications__items">

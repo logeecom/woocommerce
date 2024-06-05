@@ -404,7 +404,7 @@ class ChannelEngine {
 				'<div class="notice notice-warning"><p><strong>' .
 						  __( 'ChannelEngine', 'channelengine-wc' ) . '</strong> ' .
 						vsprintf(
-							printf( '%s', $notification->getMessage() ),
+							sprintf( '%s', $notification->getMessage() ),
 							$notification->getArguments()
 						) . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
 				. __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>',
@@ -417,7 +417,7 @@ class ChannelEngine {
 		if ( $handler_notification ) {
 			echo wp_kses(
 				'<div class="notice notice-error"><p>' .
-						  printf( '%s', $handler_notification ) . '</p></div>',
+				sprintf( '%s', $handler_notification ) . '</p></div>',
 				View::get_allowed_tags()
 			);
 
@@ -429,7 +429,7 @@ class ChannelEngine {
 		if ( $handler_success ) {
 			echo wp_kses(
 				'<div class="notice notice-success"><p>' .
-				printf( '%s', $handler_success ) . '</p></div>',
+				sprintf( '%s', $handler_success ) . '</p></div>',
 				View::get_allowed_tags()
 			);
 

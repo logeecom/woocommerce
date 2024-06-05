@@ -17,8 +17,8 @@ class Trigger_Sync_Service {
 	 * @throws QueueStorageUnavailableException
 	 */
 	public static function trigger( array $sync_details ) {
-		$order_sync   = $sync_details['order_sync'];
-		$product_sync = $sync_details['product_sync'];
+		$order_sync   = rest_sanitize_boolean( $sync_details['order_sync'] );
+		$product_sync = rest_sanitize_boolean( $sync_details['product_sync'] );
 
 		if ( $product_sync ) {
 			static::get_queue_service()->enqueue( 'channel-engine-products', new ProductSync() );

@@ -27,7 +27,7 @@ class Channel_Engine_Enable_Controller extends Channel_Engine_Frontend_Controlle
 
 		try {
 			$post = json_decode( $this->get_raw_input(), true );
-			Trigger_Sync_Service::trigger( $post );
+			Trigger_Sync_Service::trigger( array_map( 'rest_sanitize_boolean', $post ) );
 		} catch ( Exception $e ) {
 			$this->disable();
 			$this->return_error( 'Failed to start sync.' );

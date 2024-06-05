@@ -175,7 +175,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$post = json_decode( $this->get_raw_input(), true );
 
 		try {
-			Trigger_Sync_Service::trigger( $post );
+			Trigger_Sync_Service::trigger( array_map( 'rest_sanitize_boolean', $post ) );
 		} catch ( QueueStorageUnavailableException $e ) {
 			$this->return_json(
 				array(
@@ -201,14 +201,14 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	public function save() {
 		$post = json_decode( $this->get_raw_input(), true );
 		try {
-			$this->save_account_data( $post['apiKey'], $post['accountName'] );
-			$this->save_order_statuses( $post['orderStatuses'], $post['orderSyncConfig'], $post['enableReduceStock'] );
-			if ( 1 === $post['exportProducts'] ) {
+			$this->save_account_data( sanitize_text_field( $post['apiKey'] ), sanitize_text_field( $post['accountName'] ) );
+			$this->save_order_statuses( array_map( 'sanitize_text_field', $post['orderStatuses'] ), array_map( 'rest_sanitize_boolean', $post['orderSyncConfig'] ), rest_sanitize_boolean( $post['enableReduceStock'] ) );
+			if ( 1 === (int) sanitize_text_field( $post['exportProducts'] ) ) {
 				$this->get_export_products_service()->enableProductsExport();
-				$this->save_stock_sync_config( $post['stockQuantity'], $post['enabledStockSync'] );
-				$this->save_product_attribute_mapping( $post['attributeMappings'] );
+				$this->save_stock_sync_config( sanitize_text_field( $post['stockQuantity'] ), rest_sanitize_boolean( $post['enabledStockSync'] ) );
+				$this->save_product_attribute_mapping( array_map( 'sanitize_text_field', $post['attributeMappings'] ) );
 				$this->get_extra_data_attribute_mapping_service()
-					 ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( $post['extraDataMappings'] ) );
+					 ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( array_map( 'sanitize_text_field', $post['extraDataMappings'] ) ) );
 			} else {
 				$this->get_export_products_service()->disableProductsExport();
 			}
@@ -243,6 +243,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 
 		Script_Loader::load_js( $scripts );
 	}
+
 	/**
 	 * Retrieves extra data attribute mapping.
 	 *

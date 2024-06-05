@@ -28,8 +28,8 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 	 */
 	public function auth() {
 		$post         = json_decode( $this->get_raw_input(), true );
-		$api_key      = $post['apiKey'];
-		$account_name = $post['accountName'];
+		$api_key      = sanitize_text_field( $post['apiKey'] );
+		$account_name = sanitize_text_field( $post['accountName'] );
 
 		if ( empty( $api_key ) || empty( $account_name ) ) {
 			$this->return_error( __( 'API key and Account name fields are required.', 'channelengine-wc' ) );
@@ -47,8 +47,8 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 			$this->register_webhooks();
 			$this->get_state_service()->set_account_configured( true );
 			$this->return_json( array( 'success' => true ) );
-		} catch ( CurrencyMismatchException | Webhook_Creation_Failed_Exception $e ) {
-			$this->return_error( printf( '%s', esc_html( $e->getMessage() ) ) );
+		} catch ( CurrencyMismatchException|Webhook_Creation_Failed_Exception $e ) {
+			$this->return_error( sprintf( '%s', esc_html( $e->getMessage() ) ) );
 		} catch ( Exception $e ) {
 			$this->return_error( __( 'Invalid API key or Account name.', 'channelengine-wc' ) );
 		}

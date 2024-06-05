@@ -41,11 +41,11 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 	 */
 	public function save() {
 		$quantityJson     = json_decode( $this->get_raw_input(), true );
-		$quantity         = $quantityJson['quantity'];
-		$enabledStockSync = $quantityJson['enabledStockSync'];
-		$mappings         = $quantityJson['attributeMappings'];
-		$extraDataMapping = $quantityJson['extraDataMappings'];
-		$exportProducts   = $quantityJson['exportProducts'];
+		$quantity         = sanitize_text_field( $quantityJson['quantity'] );
+		$enabledStockSync = rest_sanitize_boolean( $quantityJson['enabledStockSync'] );
+		$mappings         = array_map( 'sanitize_text_field', $quantityJson['attributeMappings'] );
+		$extraDataMapping = array_map( 'sanitize_text_field', $quantityJson['extraDataMappings'] );
+		$exportProducts   = (int) sanitize_text_field( $quantityJson['exportProducts'] );
 
 		if ( 1 !== $exportProducts ) {
 			$this->get_export_products_service()->disableProductsExport();

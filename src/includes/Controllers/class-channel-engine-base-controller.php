@@ -81,24 +81,7 @@ class Channel_Engine_Base_Controller {
 	 * @return array
 	 */
 	protected function get_raw_input() {
-		$raw_input = file_get_contents( 'php://input' );
-
-		$input_data = json_decode( $raw_input, true );
-		if ( json_last_error() === JSON_ERROR_NONE && is_array( $input_data ) ) {
-
-			$sanitized_data = array();
-			foreach ( $input_data as $key => $value ) {
-				if ( is_array( $value ) ) {
-					$sanitized_data[ $key ] = array_map( 'sanitize_text_field', $value );
-				} else {
-					$sanitized_data[ $key ] = sanitize_text_field( $value );
-				}
-			}
-		} else {
-			wp_die( 'Invalid input data.' );
-		}
-
-		return $sanitized_data;
+		return file_get_contents( 'php://input' );
 	}
 
 	/**

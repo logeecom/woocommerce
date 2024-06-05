@@ -65,8 +65,9 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 	 * Saves ChannelEngine track and trace and shipping method data.
 	 */
 	public function save() {
-		$raw = $this->get_raw_input();
-
+		$rawJson = $this->get_raw_input();
+		$raw     = json_decode( $rawJson, true );
+		$raw     = array_map( 'sanitize_text_field', $raw );
 		if ( empty( $raw['postId'] ) ) {
 			$this->redirect404();
 		}
@@ -117,7 +118,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 			return;
 		}
 
-		$shipping_methods       = $this->get_shipping_methods();
+		$shipping_methods      = $this->get_shipping_methods();
 		$shipping_method_title = array_key_exists( $shipping_method, $shipping_methods )
 			? $shipping_methods[ $shipping_method ]->get_title()
 			: $shipping_method;

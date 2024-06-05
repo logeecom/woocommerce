@@ -40,39 +40,39 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 				'incoming'                                    => ( $mappings && $mappings->getIncomingOrders() !== null ) ?
 					array(
 						'value' => $mappings->getIncomingOrders(),
-						'label' => printf( '%s', esc_html( $mappings->getIncomingOrders() ) ),
+						'label' => sprintf( '%s', esc_html( $mappings->getIncomingOrders() ) ),
 					) : array(
 						'value' => 'wc-processing',
 						'label' => esc_html__( 'wc-processing', 'channelengine-wc' ),
 					),
 				'shipped'                                     => ( $mappings && $mappings->getShippedOrders() !== null ) ?
-						array(
-							'value' => $mappings->getShippedOrders(),
-							'label' => printf( '%s', esc_html( $mappings->getShippedOrders() ) ),
-						) : array(
-							'value' => 'wc-completed',
-							'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
-						),
+					array(
+						'value' => $mappings->getShippedOrders(),
+						'label' => sprintf( '%s', esc_html( $mappings->getShippedOrders() ) ),
+					) : array(
+						'value' => 'wc-completed',
+						'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
+					),
 				'fulfilledByMp'                               => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
-						array(
-							'value' => $mappings->getFulfilledOrders(),
-							'label' => printf( '%s', esc_html( $mappings->getFulfilledOrders() ) ),
-						) : array(
-							'value' => 'wc-completed',
-							'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
-						),
+					array(
+						'value' => $mappings->getFulfilledOrders(),
+						'label' => sprintf( '%s', esc_html( $mappings->getFulfilledOrders() ) ),
+					) : array(
+						'value' => 'wc-completed',
+						'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
+					),
 				'enableShipmentInfoSync'                      =>
-						! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
+					! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
 				'enableOrderCancellationSync'                 =>
-						! ( $mappings && $mappings->isEnableOrderCancellationSync() !== null ) || $mappings->isEnableOrderCancellationSync(),
+					! ( $mappings && $mappings->isEnableOrderCancellationSync() !== null ) || $mappings->isEnableOrderCancellationSync(),
 				'enableOrdersByMerchantSync'                  =>
-						! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
+					! ( $mappings && $mappings->isEnableOrdersByMerchantSync() !== null ) || $mappings->isEnableOrdersByMerchantSync(),
 				'enableOrdersByMarketplaceSync'               =>
-						! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
+					! ( $mappings && $mappings->isEnableOrdersByMarketplaceSync() !== null ) || $mappings->isEnableOrdersByMarketplaceSync(),
 				'ordersByMarketplaceFromDate'                 => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp() ?
-						$order_by_marketplace_time_from->format( 'd.m.Y.' ) : gmdate( 'd.m.Y' ),
+					$order_by_marketplace_time_from->format( 'd.m.Y.' ) : gmdate( 'd.m.Y' ),
 				'enableReduceStock'                           =>
-						! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
+					! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
 				'displayTheDateFromWhichOrdersFBMAreImported' => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp(),
 			)
 		);
@@ -106,17 +106,17 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		}
 
 		$orderSyncConfig = new OrderSyncConfig();
-		$orderSyncConfig->setIncomingOrders( $payload['incoming'] );
-		$orderSyncConfig->setShippedOrders( $payload['shipped'] );
-		$orderSyncConfig->setFulfilledOrders( $payload['fulfilledByMp'] );
-		$orderSyncConfig->setEnableShipmentInfoSync( $payload['enableShipmentInfoSync'] );
-		$orderSyncConfig->setEnableOrderCancellationSync( $payload['enableOrderCancellationSync'] );
-		$orderSyncConfig->setEnableOrdersByMerchantSync( $payload['enableOrdersByMerchantSync'] );
-		$orderSyncConfig->setEnableOrdersByMarketplaceSync( $payload['enableOrdersByMarketplaceSync'] );
-		$orderSyncConfig->setEnableReduceStock( $payload['enableReduceStock'] );
+		$orderSyncConfig->setIncomingOrders( sanitize_text_field( $payload['incoming'] ) );
+		$orderSyncConfig->setShippedOrders( sanitize_text_field( $payload['shipped'] ) );
+		$orderSyncConfig->setFulfilledOrders( sanitize_text_field( $payload['fulfilledByMp'] ) );
+		$orderSyncConfig->setEnableShipmentInfoSync( rest_sanitize_boolean( $payload['enableShipmentInfoSync'] ) );
+		$orderSyncConfig->setEnableOrderCancellationSync( rest_sanitize_boolean( $payload['enableOrderCancellationSync'] ) );
+		$orderSyncConfig->setEnableOrdersByMerchantSync( rest_sanitize_boolean( $payload['enableOrdersByMerchantSync'] ) );
+		$orderSyncConfig->setEnableOrdersByMarketplaceSync( rest_sanitize_boolean( $payload['enableOrdersByMarketplaceSync'] ) );
+		$orderSyncConfig->setEnableReduceStock( rest_sanitize_boolean( $payload['enableReduceStock'] ) );
 
 		$this->get_order_config_service()->saveOrderSyncConfig( $orderSyncConfig );
-		$this->get_order_config_service()->setClosedOrdersSyncTime( new DateTime( $payload['startSyncDate'] ) );
+		$this->get_order_config_service()->setClosedOrdersSyncTime( new DateTime( sanitize_text_field( $payload['startSyncDate'] ) ) );
 
 		$this->return_json( array( 'success' => true ) );
 	}
@@ -163,7 +163,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		foreach ( $order_statuses as $key => $value ) {
 			$formatted_statuses[] = array(
 				'value' => $key,
-				'label' => printf( '%s', esc_html( $key ) ),
+				'label' => sprintf( '%s', esc_html( $key ) ),
 			);
 		}
 
