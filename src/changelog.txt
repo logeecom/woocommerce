@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-06-06 - version 3.8.7 =
+* Fix the vulnerability in the plugin access
+
 = 2024-02-05 - version 3.8.6 =
 * Fix: Fix issue with HTML Product description
 

@@ -1,0 +1,1 @@
+- Fix the vulnerability in the plugin access
