@@ -4,7 +4,7 @@ Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
 Tested up to: 6.5.3
-Stable tag: 3.8.7
+Stable tag: 3.8.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +43,9 @@ Our platform is designed to help grow your ecommerce across marketplaces. Discov
 * Expert guidance: Access the expertise of ChannelEngine's marketplace professionals, ready to assist with any integration or marketplace-related queries, ensuring a seamless and reliable selling experience.
 
 == Changelog ==
+
+= 3.8.7 =
+* Fix issue with HTML Product name
 
 = 3.8.7 =
 * Fix the vulnerability in the plugin access
