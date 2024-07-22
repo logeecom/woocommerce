@@ -44,7 +44,10 @@ Our platform is designed to help grow your ecommerce across marketplaces. Discov
 
 == Changelog ==
 
-= 3.8.7 =
+= 3.8.9 =
+* Update core to the latest version
+
+= 3.8.8 =
 * Fix issue with HTML Product name
 
 = 3.8.7 =
