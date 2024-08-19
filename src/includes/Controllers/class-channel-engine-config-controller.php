@@ -208,7 +208,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 				$this->save_stock_sync_config( sanitize_text_field( $post['stockQuantity'] ), rest_sanitize_boolean( $post['enabledStockSync'] ) );
 				$this->save_product_attribute_mapping( array_map( 'sanitize_text_field', $post['attributeMappings'] ) );
 				$this->get_extra_data_attribute_mapping_service()
-					 ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( array_map( 'sanitize_text_field', $post['extraDataMappings'] ) ) );
+				     ->setExtraDataAttributeMappings( new ExtraDataAttributeMappings( array_map( 'sanitize_text_field', $post['extraDataMappings'] ) ) );
 			} else {
 				$this->get_export_products_service()->disableProductsExport();
 			}
@@ -268,7 +268,8 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$selectedMapping      = $this->get_attribute_mapping_service()->getAttributeMappings();
 		$standard_attributes  = $this->get_product_service()->get_standard_product_attributes();
 		$custom_attributes    = $this->get_product_service()->get_custom_product_attributes();
-		$formatted_attributes = $this->get_formatted_product_attributes( $standard_attributes, $custom_attributes );
+		$other_fields         = $this->get_product_service()->get_other_fields();
+		$formatted_attributes = $this->get_formatted_product_attributes( $standard_attributes, $custom_attributes, $other_fields );
 
 		if ( $selectedMapping ) {
 			$this->return_json(
@@ -314,11 +315,13 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 *
 	 * @param WC_Product_Attribute[] $standard_attributes
 	 * @param WC_Product_Attribute[] $custom_attributes
+	 * @param WC_Product_Attribute[] $other_fields
 	 *
 	 * @return array
 	 */
-	protected function get_formatted_product_attributes( array $standard_attributes, array $custom_attributes ) {
+	protected function get_formatted_product_attributes( array $standard_attributes, array $custom_attributes, array $other_fields ) {
 		$formatted_attributes = array(
+			'other'    => array(),
 			'custom'   => array(),
 			'standard' => array(),
 		);
@@ -346,6 +349,16 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 				'label' => $attribute_name,
 			);
 		}
+
+		foreach ( $other_fields as $field ) {
+			$field_name = $field->get_data()['name'];
+
+			$formatted_attributes['other'][] = array(
+				'value' => $field_name,
+				'label' => $field_name,
+			);
+		}
+
 
 		return $formatted_attributes;
 	}
@@ -482,7 +495,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$order_sync   = $this->get_queue_service()->findLatestByType( 'OrderSync' );
 
 		return $product_sync && $order_sync && ( $product_sync->getStatus() !== QueueItem::COMPLETED
-												 || $order_sync->getStatus() !== QueueItem::COMPLETED );
+		                                         || $order_sync->getStatus() !== QueueItem::COMPLETED );
 	}
 
 	/**

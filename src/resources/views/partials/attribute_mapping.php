@@ -9,6 +9,7 @@ use ChannelEngine\Utility\Shop_Helper;
 ?>
 <input id="ce-standard-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce standard fields', 'channelengine-wc' ); ?>">
 <input id="ce-custom-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce custom fields', 'channelengine-wc' ); ?>">
+<input id="ce-other-fields-label" type="hidden" value="<?php esc_attr_e( 'Other fields', 'channelengine-wc' ); ?>">
 <form class="ce-form" onsubmit="return false">
 	<h3><?php esc_html_e( 'Attribute mapping', 'channelengine-wc' ); ?></h3>
 	<div class="ce-input-group ce-flex">

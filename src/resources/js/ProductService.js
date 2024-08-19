@@ -52,31 +52,55 @@ if (!window.ChannelEngine) {
                     vendorProductNumberOptions = document.getElementById('ceVendorProductNumber'),
                     standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
                     customAttributesLabel = document.getElementById('ce-custom-attributes-label').value,
+                    otherFieldsLabel = document.getElementById('ce-other-fields-label').value,
                     standardAttributes = response.product_attributes.standard,
-                    customAttributes = response.product_attributes.custom;
+                    customAttributes = response.product_attributes.custom,
+                    otherFields = response.product_attributes.other;
 
                 addMapping(standardAttributesLabel, standardAttributes, brandOptions, response.brand);
                 addMapping(customAttributesLabel, customAttributes, brandOptions, response.brand);
+                addMapping(otherFieldsLabel, otherFields, brandOptions, response.brand);
+
                 addMapping(standardAttributesLabel, standardAttributes, colorOptions, response.color);
                 addMapping(customAttributesLabel, customAttributes, colorOptions, response.color);
+                addMapping(otherFieldsLabel, otherFields, colorOptions, response.color);
+
                 addMapping(standardAttributesLabel, standardAttributes, sizeOptions, response.size);
                 addMapping(customAttributesLabel, customAttributes, sizeOptions, response.size);
+                addMapping(otherFieldsLabel, otherFields, sizeOptions, response.size);
+
                 addMapping(standardAttributesLabel, standardAttributes, gtinOptions, response.gtin);
                 addMapping(customAttributesLabel, customAttributes, gtinOptions, response.gtin);
+                addMapping(otherFieldsLabel, otherFields, gtinOptions, response.gtin);
+
                 addMapping(standardAttributesLabel, standardAttributes, cataloguePriceOptions, response.catalogue_price);
                 addMapping(customAttributesLabel, customAttributes, cataloguePriceOptions, response.catalogue_price);
+                addMapping(otherFieldsLabel, otherFields, cataloguePriceOptions, response.catalogue_price);
+
                 addMapping(standardAttributesLabel, standardAttributes, priceOptions, response.price);
                 addMapping(customAttributesLabel, customAttributes, priceOptions, response.price);
+                addMapping(otherFieldsLabel, otherFields, priceOptions, response.price);
+
                 addMapping(standardAttributesLabel, standardAttributes, purchasePriceOptions, response.purchase_price);
                 addMapping(customAttributesLabel, customAttributes, purchasePriceOptions, response.purchase_price);
+                addMapping(otherFieldsLabel, otherFields, purchasePriceOptions, response.purchase_price);
+
                 addMapping(standardAttributesLabel, standardAttributes, shippingTimeOptions, response.shipping_time);
                 addMapping(customAttributesLabel, customAttributes, shippingTimeOptions, response.shipping_time);
+                addMapping(otherFieldsLabel, otherFields, shippingTimeOptions, response.shipping_time);
+
                 addMapping(standardAttributesLabel, standardAttributes, detailsOptions, response.details);
                 addMapping(customAttributesLabel, customAttributes, detailsOptions, response.details);
+                addMapping(otherFieldsLabel, otherFields, detailsOptions, response.details);
+
                 addMapping(standardAttributesLabel, standardAttributes, categoryOptions, response.category);
                 addMapping(customAttributesLabel, customAttributes, categoryOptions, response.category);
+                addMapping(otherFieldsLabel, otherFields, categoryOptions, response.category);
+
                 addMapping(standardAttributesLabel, standardAttributes, vendorProductNumberOptions, response.vendor_product_number);
                 addMapping(customAttributesLabel, customAttributes, vendorProductNumberOptions, response.vendor_product_number);
+                addMapping(otherFieldsLabel, otherFields, vendorProductNumberOptions, response.vendor_product_number);
+
             });
         }
 
@@ -103,7 +127,7 @@ if (!window.ChannelEngine) {
             });
         }
 
-        this.getExportProductsEnabled = function(url) {
+        this.getExportProductsEnabled = function (url) {
             const ajaxService = ChannelEngine.ajaxService;
             let enabledExportProducts = document.getElementById('enableExportProducts');
 
@@ -111,14 +135,14 @@ if (!window.ChannelEngine) {
                 enabledExportProducts.checked = response.exportProducts;
                 let productCheckbox = document.getElementById('ce-product-sync-checkbox')
 
-                if(response.exportProducts) {
-                    if(productCheckbox) {
+                if (response.exportProducts) {
+                    if (productCheckbox) {
                         productCheckbox.removeAttribute('disabled');
                     }
 
                     ChannelEngine.productService.enableProductSynchronizationFields();
                 } else {
-                    if(productCheckbox) {
+                    if (productCheckbox) {
                         productCheckbox.setAttribute('disabled', 'true');
                     }
 
@@ -149,7 +173,7 @@ if (!window.ChannelEngine) {
             removeAttributeList.forEach(removeAttribute => {
                 removeAttribute.addEventListener('click', function () {
                     const addNewAttribute = document.getElementById('ceAddNewAttribute');
-                    if(addNewAttribute.getAttribute('disabled')) {
+                    if (addNewAttribute.getAttribute('disabled')) {
                         return;
                     }
 

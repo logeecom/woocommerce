@@ -148,6 +148,15 @@ class Products_Service implements ProductsService {
 	}
 
 	/**
+	 * Retrieves product fields
+	 *
+	 * @return WC_Product_Attribute[]
+	 */
+	public function get_other_fields() {
+		return $this->get_meta_repository()->get_third_party_plugin_attributes();
+	}
+
+	/**
 	 * Transforms WC product to ChannelEngine product.
 	 *
 	 * @param WC_Product $wc_product
