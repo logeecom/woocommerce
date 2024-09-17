@@ -60,8 +60,8 @@ class Shipments_Service implements ShipmentsService {
 	public function rejectCreate( $request, Exception $reason ) {
 		$error = json_decode( $reason->getMessage(), true );
 		throw new Shipment_Rejected_Exception(
-			__( 'Shipment create failed. Reason: ', 'channelengine-wc' ) .
-			$error['message']
+            esc_html__( 'Shipment create failed. Reason: ', 'channelengine-wc' ) .
+            esc_html( $error['message'] )
 		);
 	}
 
@@ -78,8 +78,8 @@ class Shipments_Service implements ShipmentsService {
 	public function rejectUpdate( $request, Exception $reason ) {
 		$error = json_decode( $reason->getMessage(), true );
 		throw new Shipment_Rejected_Exception(
-			__( 'Shipment update failed. Reason: ', 'channelengine-wc' ) .
-			$error['message']
+            esc_html__( 'Shipment update failed. Reason: ', 'channelengine-wc' ) .
+            esc_html( $error['message'] )
 		);
 	}
 }

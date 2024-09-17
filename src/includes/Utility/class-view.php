@@ -29,7 +29,7 @@ class View {
 			return new self( $file );
 		}
 
-		throw new \RuntimeException( "Could not find specified view file: {$view_name}" );
+		throw new \RuntimeException( esc_html( "Could not find specified view file: {$view_name}" ) );
 	}
 
 	/**

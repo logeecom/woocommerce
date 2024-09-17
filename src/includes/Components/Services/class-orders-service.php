@@ -237,7 +237,7 @@ class Orders_Service extends OrdersService {
 			}
 		}
 
-		throw new ProductNotAvailableException( "Product with id $id does not exist." );
+		throw new ProductNotAvailableException( esc_html("Product with id $id does not exist." ) );
 	}
 
 	/**
@@ -367,8 +367,8 @@ class Orders_Service extends OrdersService {
 	private function orderFromChannelEngineAlreadyExists( Order $order ): bool {
 		$wc_orders = wc_get_orders(
 			array(
-				'meta_key'   => '_channel_engine_order_id',
-				'meta_value' => $order->getId(),
+				'meta_key'   => '_channel_engine_order_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Empty.
+				'meta_value' => $order->getId(), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Empty.
 			)
 		);
 

@@ -69,7 +69,7 @@ class Queue_Repository extends Base_Repository implements QueueItemRepository {
 		}
 
 		if ( ( $this->count( $filter ) ) <= 0 ) {
-			throw new QueueItemSaveException( "Can not update queue item with id {$queueItem->getId()}. Item not found." );
+			throw new QueueItemSaveException( esc_html("Can not update queue item with id {$queueItem->getId()}. Item not found." ) );
 		}
 
 		$this->update( $queueItem );

@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-09-17 - version 3.8.11 =
+* Changed: Fix Wordpress issues
+
 = 2024-08-20 - version 3.8.10 =
 * Added: Show all fields from product metadata in product mapping drop-down
 
