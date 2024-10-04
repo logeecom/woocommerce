@@ -402,12 +402,12 @@ class ChannelEngine {
 			$notification = end( $notifications );
 			echo wp_kses(
 				'<div class="notice notice-warning"><p><strong>' .
-						  __( 'ChannelEngine', 'channelengine-wc' ) . '</strong> ' .
+						  __( 'ChannelEngine', 'channelengine-integration' ) . '</strong> ' .
 						vsprintf(
 							sprintf( '%s', $notification->getMessage() ),
 							$notification->getArguments()
 						) . ' <a href="' . Shop_Helper::get_plugin_page_url() . '">'
-				. __( 'Show details.', 'channelengine-wc' ) . '</a></p></div>',
+				. __( 'Show details.', 'channelengine-integration' ) . '</a></p></div>',
 				View::get_allowed_tags()
 			);
 		}

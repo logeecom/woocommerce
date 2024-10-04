@@ -19,26 +19,26 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<div class="ce-onboarding-steps">
 				<div class="ce-step active">
 					<div class="ce-step-number">1</div>
-					<div class="ce-step-title"><?php esc_html_e( 'Account', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Account', 'channelengine-integration' ); ?></div>
 				</div>
 				<div class="ce-step active">
 					<a href="#" id="stepToProductSettings">
 						<div class="ce-step-number">2</div>
 					</a>
-					<div class="ce-step-title"><?php esc_html_e( 'Product synchronization', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Product synchronization', 'channelengine-integration' ); ?></div>
 				</div>
 				<div class="ce-step active">
 					<div class="ce-step-number">3</div>
-					<div class="ce-step-title"><?php esc_html_e( 'Order synchronization', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Order synchronization', 'channelengine-integration' ); ?></div>
 				</div>
 				<div class="ce-step">
 					<div class="ce-step-number">4</div>
-					<div class="ce-step-title"><?php esc_html_e( 'Initial sync', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Initial sync', 'channelengine-integration' ); ?></div>
 				</div>
 			</div>
 			<?php require plugin_dir_path( __FILE__ ) . 'partials/order_status_mapping.php'; ?>
 			<a id="ceStatusesSave"
-			   class="ce-button ce-button__primary"><?php esc_html_e( 'Save and continue', 'channelengine-wc' ); ?></a>
+			   class="ce-button ce-button__primary"><?php esc_html_e( 'Save and continue', 'channelengine-integration' ); ?></a>
 			<input id="ceStatusesUrl" type="hidden"
 				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Order_Status', 'get' ) ); ?>">
 			<input id="ceStatusesSaveUrl" type="hidden"

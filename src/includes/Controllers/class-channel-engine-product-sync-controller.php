@@ -59,7 +59,7 @@ class Channel_Engine_Product_Sync_Controller extends Channel_Engine_Frontend_Con
 			$this->return_json(
 				array(
 					'success' => false,
-					'message' => __( 'Default stock quantity is required field.', 'channelengine-wc' ),
+					'message' => __( 'Default stock quantity is required field.', 'channelengine-integration' ),
 				)
 			);
 		}

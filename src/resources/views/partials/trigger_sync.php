@@ -11,12 +11,12 @@ use ChannelEngine\Utility\Asset_Helper;
 	<div class="ce-modal-dialog ce-modal-xl">
 		<div class="ce-modal-content">
 			<header>
-				<h3><?php esc_html_e( 'Manually trigger synchronization', 'channelengine-wc' ); ?></h3>
+				<h3><?php esc_html_e( 'Manually trigger synchronization', 'channelengine-integration' ); ?></h3>
 				<span class="ce-close-modal ce-close-button">✕</span>
 			</header>
 			<main>
 				<h3>
-					<?php esc_html_e( 'Choose what you would like to synchronize:', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Choose what you would like to synchronize:', 'channelengine-integration' ); ?>
 				</h3>
 				<div>
 					<div class="ce-input-group">

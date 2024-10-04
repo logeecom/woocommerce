@@ -6,15 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use ChannelEngine\Utility\Shop_Helper;
 ?>
-<h1><?php esc_html_e( 'Product synchronization settings', 'channelengine-wc' ); ?></h1>
+<h1><?php esc_html_e( 'Product synchronization settings', 'channelengine-integration' ); ?></h1>
 <p></p>
 <form class="ce-form">
 	<div class="ce-input-group">
 		<label>
-			<span class="label"><?php esc_html_e( 'Enable product synchronization', 'channelengine-wc' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Enable product synchronization', 'channelengine-integration' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php esc_html_e( 'If this field is disabled, the plugin will not synchronize products to ChannelEngine.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'If this field is disabled, the plugin will not synchronize products to ChannelEngine.', 'channelengine-integration' ); ?>
 				</span>
 			</span>
 			<input id="enableExportProducts" type="checkbox" class="checkbox" checked>

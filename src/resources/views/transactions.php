@@ -19,27 +19,27 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 	<main>
 		<nav class="nav-tab-wrapper">
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'dashboard' ) ); ?>"
-			   class="nav-tab"><?php esc_html_e( 'Dashboard', 'channelengine-wc' ); ?></a>
+			   class="nav-tab"><?php esc_html_e( 'Dashboard', 'channelengine-integration' ); ?></a>
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'config' ) ); ?>"
-			   class="nav-tab"><?php esc_html_e( 'Configuration', 'channelengine-wc' ); ?></a>
+			   class="nav-tab"><?php esc_html_e( 'Configuration', 'channelengine-integration' ); ?></a>
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'transactions' ) ); ?>"
-			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Transaction log', 'channelengine-wc' ); ?></a>
+			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Transaction log', 'channelengine-integration' ); ?></a>
 		</nav>
 		<div class="ce-page">
-			<h1><?php esc_html_e( 'Transactions history log', 'channelengine-wc' ); ?></h1>
+			<h1><?php esc_html_e( 'Transactions history log', 'channelengine-integration' ); ?></h1>
 			<ul class="sub-page-nav">
 				<li><a id="ce-product-link" href="#"
-					   class="ce-current"><?php esc_html_e( 'Product sync', 'channelengine-wc' ); ?></a></li>
-				<li><a id="ce-order-link" href="#"><?php esc_html_e( 'Order sync', 'channelengine-wc' ); ?></a></li>
-				<li><a id="ce-errors-link" href="#"><?php esc_html_e( 'Errors', 'channelengine-wc' ); ?></a></li>
+					   class="ce-current"><?php esc_html_e( 'Product sync', 'channelengine-integration' ); ?></a></li>
+				<li><a id="ce-order-link" href="#"><?php esc_html_e( 'Order sync', 'channelengine-integration' ); ?></a></li>
+				<li><a id="ce-errors-link" href="#"><?php esc_html_e( 'Errors', 'channelengine-integration' ); ?></a></li>
 			</ul>
 			<table class="ce-table">
 				<thead>
 				<tr>
-					<th scope="col"><?php esc_html_e( 'Task Type', 'channelengine-wc' ); ?></th>
-					<th scope="col" class="text-center"><?php esc_html_e( 'Status', 'channelengine-wc' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Task Type', 'channelengine-integration' ); ?></th>
+					<th scope="col" class="text-center"><?php esc_html_e( 'Status', 'channelengine-integration' ); ?></th>
 					<th scope="col"
-						class="text-center ce-table-compact-view"><?php esc_html_e( 'Details', 'channelengine-wc' ); ?></th>
+						class="text-center ce-table-compact-view"><?php esc_html_e( 'Details', 'channelengine-integration' ); ?></th>
 					<th scope="col"
 						class="text-center ce-table-full-view"><?php esc_html_e( 'Start Time', 'channelengine-wc' ); ?></th>
 					<th scope="col"

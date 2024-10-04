@@ -8,9 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $pageTitle
  */
 ?>
-<h1><?php esc_html( $pageTitle ) ? esc_html( $pageTitle ) : esc_html_e( 'Connect the shop with your ChannelEngine account', 'channelengine-wc' ); ?></h1>
+<h1><?php esc_html($pageTitle) ?: esc_html_e(
+        'Connect the shop with your ChannelEngine account',
+        'channelengine-integration'
+    ); ?></h1>
 <form class="ce-form">
-	<h3><?php esc_html_e( 'Account data', 'channelengine-wc' ); ?></h3>
+	<h3><?php esc_html_e( 'Account data', 'channelengine-integration' ); ?></h3>
 	<div class="ce-input-group">
 		<label>
 			<span class="label"><?php esc_html_e( 'Account name', 'channelengine-wc' ); ?></span>

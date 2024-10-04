@@ -20,37 +20,37 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<div class="ce-onboarding-steps">
 				<div class="ce-step active">
 					<div class="ce-step-number">1</div>
-					<div class="ce-step-title"><?php esc_html_e( 'Account', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Account', 'channelengine-integration' ); ?></div>
 				</div>
 				<div class="ce-step active">
 					<a href="#" id="stepToProductSettings">
 						<div class="ce-step-number">2</div>
 					</a>
-					<div class="ce-step-title"><?php esc_html_e( 'Product synchronization', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Product synchronization', 'channelengine-integration' ); ?></div>
 				</div>
 				<div class="ce-step active">
 					<a href="#" id="stepToOrderSettings">
 						<div class="ce-step-number">3</div>
 					</a>
-					<div class="ce-step-title"><?php esc_html_e( 'Order synchronization', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Order synchronization', 'channelengine-integration' ); ?></div>
 				</div>
 				<div class="ce-step active">
 					<div class="ce-step-number">4</div>
-					<div class="ce-step-title"><?php esc_html_e( 'Initial sync', 'channelengine-wc' ); ?></div>
+					<div class="ce-step-title"><?php esc_html_e( 'Initial sync', 'channelengine-integration' ); ?></div>
 				</div>
 			</div>
-			<h1><?php esc_html_e( 'You are just one step away', 'channelengine-wc' ); ?></h1>
-			<h2><?php esc_html_e( 'Integration status', 'channelengine-wc' ); ?></h2>
+			<h1><?php esc_html_e( 'You are just one step away', 'channelengine-integration' ); ?></h1>
+			<h2><?php esc_html_e( 'Integration status', 'channelengine-integration' ); ?></h2>
 			<div class="ce-input-group ce-wide-group">
 				<label>
-					<span class="label ce-big-label"><?php esc_html_e( 'Enable the integration and start the initial synchronization', 'channelengine-wc' ); ?></span>
+					<span class="label ce-big-label"><?php esc_html_e( 'Enable the integration and start the initial synchronization', 'channelengine-integration' ); ?></span>
 					<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php esc_html_e( 'When enabled, it triggers the initial synchronization in the background. Products from WooCommerce are transferred to ChannelEngine – and orders from ChannelEngine are imported to WooCommerce.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'When enabled, it triggers the initial synchronization in the background. Products from WooCommerce are transferred to ChannelEngine – and orders from ChannelEngine are imported to WooCommerce.', 'channelengine-integration' ); ?>
 				</span>
 			</span>
 					<a id="ceStartSync"
-					   class="ce-button ce-button__primary"><?php esc_html_e( 'Enable and start sync', 'channelengine-wc' ); ?></a>
+					   class="ce-button ce-button__primary"><?php esc_html_e( 'Enable and start sync', 'channelengine-integration' ); ?></a>
 					<input id="ceInitialSyncUrl" type="hidden"
 						   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Initial_Sync', 'start' ) ); ?>">
 				</label>

@@ -21,23 +21,23 @@ Frontend_Helper::render_view( 'config' );
 	<main>
 		<nav class="nav-tab-wrapper">
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'dashboard' ) ); ?>"
-			   class="nav-tab"><?php esc_html_e( 'Dashboard', 'channelengine-wc' ); ?></a>
+			   class="nav-tab"><?php esc_html_e( 'Dashboard', 'channelengine-integration' ); ?></a>
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'config' ) ); ?>"
-			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Configuration', 'channelengine-wc' ); ?></a>
+			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Configuration', 'channelengine-integration' ); ?></a>
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'transactions' ) ); ?>"
-			   class="nav-tab"><?php esc_html_e( 'Transaction log', 'channelengine-wc' ); ?></a>
+			   class="nav-tab"><?php esc_html_e( 'Transaction log', 'channelengine-integration' ); ?></a>
 		</nav>
 		<div id="ce-config-page" class="ce-page-with-header-footer">
 			<header>
 				<label>
-					<span class="label"><?php esc_html_e( 'Disable integration', 'channelengine-wc' ); ?></span>
+					<span class="label"><?php esc_html_e( 'Disable integration', 'channelengine-integration' ); ?></span>
 					<label class="ce-switch">
 						<input id="ce-disable-switch" type="checkbox" checked="checked">
 						<span class="ce-switch__slider"></span>
 					</label>
 				</label>
 				<div>
-					<span><?php esc_html_e( 'Manually trigger synchronization', 'channelengine-wc' ); ?></span>
+					<span><?php esc_html_e( 'Manually trigger synchronization', 'channelengine-integration' ); ?></span>
 					<button id="ce-sync-now" class="ce-button ce-button__primary ce-start-sync">
 						<?php esc_html_e( 'Start sync now', 'channelengine-wc' ); ?></button>
 					<button id="ce-sync-in-progress" class="ce-button ce-button__primary ce-loading"

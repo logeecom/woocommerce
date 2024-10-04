@@ -32,7 +32,7 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 		$account_name = sanitize_text_field( $post['accountName'] );
 
 		if ( empty( $api_key ) || empty( $account_name ) ) {
-			$this->return_error( __( 'API key and Account name fields are required.', 'channelengine-wc' ) );
+			$this->return_error( __( 'API key and Account name fields are required.', 'channelengine-integration' ) );
 		}
 
 		try {
@@ -50,7 +50,7 @@ class Channel_Engine_Auth_Controller extends Channel_Engine_Frontend_Controller 
 		} catch ( CurrencyMismatchException|Webhook_Creation_Failed_Exception $e ) {
 			$this->return_error( sprintf( '%s', esc_html( $e->getMessage() ) ) );
 		} catch ( Exception $e ) {
-			$this->return_error( __( 'Invalid API key or Account name.', 'channelengine-wc' ) );
+			$this->return_error( __( 'Invalid API key or Account name.', 'channelengine-integration' ) );
 		}
 	}
 

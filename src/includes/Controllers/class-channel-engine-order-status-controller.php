@@ -43,7 +43,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 						'label' => sprintf( '%s', esc_html( $mappings->getIncomingOrders() ) ),
 					) : array(
 						'value' => 'wc-processing',
-						'label' => esc_html__( 'wc-processing', 'channelengine-wc' ),
+						'label' => esc_html__( 'wc-processing', 'channelengine-integration' ),
 					),
 				'shipped'                                     => ( $mappings && $mappings->getShippedOrders() !== null ) ?
 					array(
@@ -51,7 +51,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 						'label' => sprintf( '%s', esc_html( $mappings->getShippedOrders() ) ),
 					) : array(
 						'value' => 'wc-completed',
-						'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
+						'label' => esc_html__( 'wc-completed', 'channelengine-integration' ),
 					),
 				'fulfilledByMp'                               => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
 					array(
@@ -59,7 +59,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 						'label' => sprintf( '%s', esc_html( $mappings->getFulfilledOrders() ) ),
 					) : array(
 						'value' => 'wc-completed',
-						'label' => esc_html__( 'wc-completed', 'channelengine-wc' ),
+						'label' => esc_html__( 'wc-completed', 'channelengine-integration' ),
 					),
 				'enableShipmentInfoSync'                      =>
 					! ( $mappings && $mappings->isEnableShipmentInfoSync() !== null ) || $mappings->isEnableShipmentInfoSync(),
@@ -100,7 +100,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 			$this->return_json(
 				array(
 					'success' => false,
-					'message' => esc_html__( 'Invalid values.', 'channelengine-wc' ),
+					'message' => esc_html__( 'Invalid values.', 'channelengine-integration' ),
 				)
 			);
 		}

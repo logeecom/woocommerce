@@ -25,7 +25,7 @@ if ( 'disabled-integration' !== $data['status'] ) {
 	<main>
 		<nav class="nav-tab-wrapper">
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'dashboard' ) ); ?>"
-			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Dashboard', 'channelengine-wc' ); ?></a>
+			   class="nav-tab nav-tab-active"><?php esc_html_e( 'Dashboard', 'channelengine-integration' ); ?></a>
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'config' ) ); ?>"
 			   class="nav-tab"><?php esc_html_e( 'Configuration', 'channelengine-wc' ); ?></a>
 			<a href="<?php echo esc_attr( Frontend_Helper::get_subpage_url( 'transactions' ) ); ?>"

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use ChannelEngine\Utility\Shop_Helper;
 
 ?>
-<input id="ce-standard-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce standard fields', 'channelengine-wc' ); ?>">
+<input id="ce-standard-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce standard fields', 'channelengine-integration' ); ?>">
 <input id="ce-custom-attributes-label" type="hidden" value="<?php esc_attr_e( 'WooCommerce custom fields', 'channelengine-wc' ); ?>">
 <input id="ce-other-fields-label" type="hidden" value="<?php esc_attr_e( 'Other fields', 'channelengine-wc' ); ?>">
 <form class="ce-form" onsubmit="return false">

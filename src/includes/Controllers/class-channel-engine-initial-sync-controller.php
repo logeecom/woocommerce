@@ -40,7 +40,7 @@ class Channel_Engine_Initial_Sync_Controller extends Channel_Engine_Frontend_Con
 				array(
 					'success' => false,
 					/* translators: %s: search term */
-					'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-wc' ), $e->getMessage() ),
+					'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-integration' ), $e->getMessage() ),
 				)
 			);
 		}

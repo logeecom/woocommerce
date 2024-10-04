@@ -59,7 +59,7 @@ class Cancellation_Service implements CancellationService
         throw new Cancellation_Rejected_Exception(
             esc_html__(
                 'Order cancellation failed. Reason: ',
-                'channelengine-wc'
+                'channelengine-integration'
             ) .
             esc_html( $error['message'] )
         );

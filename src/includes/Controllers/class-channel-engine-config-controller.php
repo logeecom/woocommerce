@@ -181,7 +181,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 				array(
 					'success' => false,
 					/* translators: %s: search term */
-					'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-wc' ), $e->getMessage() ),
+					'message' => sprintf( __( 'Failed to start initial sync because %s', 'channelengine-integration' ), $e->getMessage() ),
 				)
 			);
 		}
@@ -224,7 +224,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$this->return_json(
 			array(
 				'success' => true,
-				'message' => __( 'Configuration saved successfully.' ),
+				'message' => __( 'Configuration saved successfully.', 'channelengine-integration' ),
 			)
 		);
 	}
@@ -428,7 +428,7 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 			);
 			$this->get_auth_service()->setAuthInfo( $auth_info );
 		} catch ( Exception $e ) {
-			throw new BaseException( esc_html__( 'Invalid API key or Account name.', 'channelengine-wc' ) );
+			throw new BaseException( esc_html__( 'Invalid API key or Account name.', 'channelengine-integration' ) );
 		}
 	}
 
@@ -442,11 +442,11 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	protected function save_stock_sync_config( $stock_quantity, $enable_stock_sync ) {
 		if ( '0' !== $stock_quantity && ( ! filter_var( $stock_quantity, FILTER_VALIDATE_INT ) || (int) $stock_quantity < 0 ) ) {
-			throw new Stock_Quantity_Invalid( esc_html__( 'Stock quantity is not valid.', 'channelengine-wc' ) );
+			throw new Stock_Quantity_Invalid( esc_html__( 'Stock quantity is not valid.', 'channelengine-integration' ) );
 		}
 
 		if ( ! is_bool( $enable_stock_sync ) ) {
-			throw new Stock_Sync_Flag_Invalid( esc_html__( 'Stock synchronization flag is not valid.', 'channelengine-wc' ) );
+			throw new Stock_Sync_Flag_Invalid( esc_html__( 'Stock synchronization flag is not valid.', 'channelengine-integration' ) );
 		}
 
 		$config = new SyncConfig();
@@ -468,10 +468,10 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 	 */
 	protected function save_order_statuses( $order_statuses, $order_sync_config, $enable_reduce_stock ) {
 		if ( ! $this->get_order_config_service()->are_statuses_valid( $order_statuses ) ) {
-			throw new Order_Statuses_Invalid( esc_html__( 'Order statuses are not valid.', 'channelengine-wc' ) );
+			throw new Order_Statuses_Invalid( esc_html__( 'Order statuses are not valid.', 'channelengine-integration' ) );
 		}
 		if ( ! $this->get_order_config_service()->is_sync_config_valid( $order_sync_config ) ) {
-			throw new Order_Sync_Config_Invalid( esc_html__( 'Order synchronization config values are not valid.', 'channelengine-wc' ) );
+			throw new Order_Sync_Config_Invalid( esc_html__( 'Order synchronization config values are not valid.', 'channelengine-integration' ) );
 		}
 
 		$orderSyncConfig = new OrderSyncConfig();
