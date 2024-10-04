@@ -40,7 +40,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 				'incoming'                                    => ( $mappings && $mappings->getIncomingOrders() !== null ) ?
 					array(
 						'value' => $mappings->getIncomingOrders(),
-						'label' => sprintf( '%s', esc_html( $mappings->getIncomingOrders() ) ),
+						'label' => esc_html( $mappings->getIncomingOrders() ),
 					) : array(
 						'value' => 'wc-processing',
 						'label' => esc_html__( 'wc-processing', 'channelengine-integration' ),
@@ -48,7 +48,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 				'shipped'                                     => ( $mappings && $mappings->getShippedOrders() !== null ) ?
 					array(
 						'value' => $mappings->getShippedOrders(),
-						'label' => sprintf( '%s', esc_html( $mappings->getShippedOrders() ) ),
+						'label' => esc_html( $mappings->getShippedOrders() ),
 					) : array(
 						'value' => 'wc-completed',
 						'label' => esc_html__( 'wc-completed', 'channelengine-integration' ),
@@ -56,7 +56,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 				'fulfilledByMp'                               => ( $mappings && $mappings->getFulfilledOrders() !== null ) ?
 					array(
 						'value' => $mappings->getFulfilledOrders(),
-						'label' => sprintf( '%s', esc_html( $mappings->getFulfilledOrders() ) ),
+						'label' => esc_html( $mappings->getFulfilledOrders() ),
 					) : array(
 						'value' => 'wc-completed',
 						'label' => esc_html__( 'wc-completed', 'channelengine-integration' ),

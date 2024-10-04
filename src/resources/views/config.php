@@ -39,21 +39,21 @@ Frontend_Helper::render_view( 'config' );
 				<div>
 					<span><?php esc_html_e( 'Manually trigger synchronization', 'channelengine-integration' ); ?></span>
 					<button id="ce-sync-now" class="ce-button ce-button__primary ce-start-sync">
-						<?php esc_html_e( 'Start sync now', 'channelengine-wc' ); ?></button>
+						<?php esc_html_e( 'Start sync now', 'channelengine-integration' ); ?></button>
 					<button id="ce-sync-in-progress" class="ce-button ce-button__primary ce-loading"
 							style="display: none"
-							disabled><?php esc_html_e( 'In progress', 'channelengine-wc' ); ?></button>
+							disabled><?php esc_html_e( 'In progress', 'channelengine-integration' ); ?></button>
 				</div>
 			</header>
 			<main class="ce-page">
 
 				<section>
 					<?php
-					$pageTitle = __( 'Disconnect your account', 'channelengine-wc' );
+					$pageTitle = __( 'Disconnect your account', 'channelengine-integration' );
 					require plugin_dir_path( __FILE__ ) . 'partials/account.php'
 					?>
 					<button id="ce-disconnect-btn"
-							class="ce-button ce-button__primary"><?php esc_html_e( 'Disconnect', 'channelengine-wc' ); ?></button>
+							class="ce-button ce-button__primary"><?php esc_html_e( 'Disconnect', 'channelengine-integration' ); ?></button>
 				</section>
 				<section>
 					<?php require plugin_dir_path( __FILE__ ) . 'partials/product_feed.php'; ?>
@@ -64,7 +64,7 @@ Frontend_Helper::render_view( 'config' );
 			</main>
 			<footer>
 				<button id="ce-save-config"
-						class="ce-button ce-button__primary"><?php esc_html_e( 'Save changes', 'channelengine-wc' ); ?></button>
+						class="ce-button ce-button__primary"><?php esc_html_e( 'Save changes', 'channelengine-integration' ); ?></button>
 			</footer>
 			<input id="ce-account-data-url" type="hidden"
 				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'get_account_data' ) ); ?>">
@@ -92,20 +92,20 @@ Frontend_Helper::render_view( 'config' );
 			<?php require plugin_dir_path( __FILE__ ) . 'partials/trigger_sync.php'; ?>
 		</div>
 		<input id="ce-extra-data-duplicates-text" type="hidden"
-			   value="<?php esc_attr_e( 'Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-integration' ); ?>">
 		<input id="ce-extra-data-duplicates-header" type="hidden"
-			   value="<?php esc_attr_e( 'Warning', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Warning', 'channelengine-integration' ); ?>">
 		<input id="ce-disconnect-header-text" type="hidden"
-			   value="<?php esc_attr_e( 'Disconnect account', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Disconnect account', 'channelengine-integration' ); ?>">
 		<input id="ce-disconnect-button-text" type="hidden"
-			   value="<?php esc_attr_e( 'Disconnect', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Disconnect', 'channelengine-integration' ); ?>">
 		<input id="ce-disable-header-text" type="hidden"
-			   value="<?php esc_attr_e( 'Disable integration', 'channelengine-wc' ); ?>">
-		<input id="ce-disable-button-text" type="hidden" value="<?php esc_attr_e( 'Disable', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Disable integration', 'channelengine-integration' ); ?>">
+		<input id="ce-disable-button-text" type="hidden" value="<?php esc_attr_e( 'Disable', 'channelengine-integration' ); ?>">
 		<input id="ce-disable-text" type="hidden"
-			   value="<?php esc_attr_e( 'If you disable integration, synchronization between WooCommerce and ChannelEngine will be disabled.', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'If you disable integration, synchronization between WooCommerce and ChannelEngine will be disabled.', 'channelengine-integration' ); ?>">
 		<input id="ce-disconnect-text" type="hidden"
-			   value="<?php esc_attr_e( 'You are about to disconnect your ChannelEngine account.', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'You are about to disconnect your ChannelEngine account.', 'channelengine-integration' ); ?>">
 		<input id="ceExportProductsUrl" type="hidden"
 			   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ) ); ?>">
 		</main>

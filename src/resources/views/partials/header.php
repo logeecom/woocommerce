@@ -15,9 +15,9 @@ use ChannelEngine\Utility\Asset_Helper;
 		<div class="ce-account-name">
 			<?php esc_html_e( 'Account name: ', 'channelengine-integration' ); ?>
 			<div id="ceAccountNameHeader" class="ce-account-name-field" style="margin-left: 5px; margin-right: 5px;"></div>
-			<?php esc_html_e( ' (', 'channelengine-wc' ); ?>
-			<a href="#" id="ceDisconnectLink"><?php esc_html_e( 'Disconnect', 'channelengine-wc' ); ?></a>
-			<?php esc_html_e( ')', 'channelengine-wc' ); ?>
+			<?php esc_html_e( ' (', 'channelengine-integration' ); ?>
+			<a href="#" id="ceDisconnectLink"><?php esc_html_e( 'Disconnect', 'channelengine-integration' ); ?></a>
+			<?php esc_html_e( ')', 'channelengine-integration' ); ?>
 		</div>
 	</div>
 </header>

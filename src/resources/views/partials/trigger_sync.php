@@ -21,10 +21,10 @@ use ChannelEngine\Utility\Asset_Helper;
 				<div>
 					<div class="ce-input-group">
 						<label>
-							<span class="label"><?php esc_html_e( 'Synchronize products', 'channelengine-wc' ); ?></span>
+							<span class="label"><?php esc_html_e( 'Synchronize products', 'channelengine-integration' ); ?></span>
 							<span class="ce-help">
 								<span class="ce-help-tooltip">
-									<?php esc_html_e( 'The integration will synchronize all published shop products to ChannelEngine in the background.', 'channelengine-wc' ); ?>
+									<?php esc_html_e( 'The integration will synchronize all published shop products to ChannelEngine in the background.', 'channelengine-integration' ); ?>
 								</span>
 							</span>
 							<input id="ce-product-sync-checkbox" type="checkbox">
@@ -32,10 +32,10 @@ use ChannelEngine\Utility\Asset_Helper;
 					</div>
 					<div class="ce-input-group">
 						<label>
-							<span class="label"><?php esc_html_e( 'Synchronize orders', 'channelengine-wc' ); ?></span>
+							<span class="label"><?php esc_html_e( 'Synchronize orders', 'channelengine-integration' ); ?></span>
 							<span class="ce-help">
 								<span class="ce-help-tooltip">
-									<?php esc_html_e( 'The integration will synchronize new and closed orders (fulfilled by the merchant and fulfilled by the marketplace) from ChannelEngine into the shop.', 'channelengine-wc' ); ?>
+									<?php esc_html_e( 'The integration will synchronize new and closed orders (fulfilled by the merchant and fulfilled by the marketplace) from ChannelEngine into the shop.', 'channelengine-integration' ); ?>
 								</span>
 							</span>
 							<input id="ce-order-sync-checkbox" type="checkbox">
@@ -45,10 +45,10 @@ use ChannelEngine\Utility\Asset_Helper;
 			</main>
 			<footer>
 				<button id="ce-start-sync-btn" class="ce-button ce-button__primary ce-close-modal" disabled>
-					<?php esc_html_e( 'Start sync now', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Start sync now', 'channelengine-integration' ); ?>
 				</button>
 				<button class="ce-button ce-button__secondary ce-close-modal">
-					<?php esc_html_e( 'Skip sync', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Skip sync', 'channelengine-integration' ); ?>
 				</button>
 			</footer>
 		</div>

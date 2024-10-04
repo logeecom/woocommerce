@@ -20,13 +20,13 @@ use ChannelEngine\Utility\Shop_Helper;
 			<input id="enableExportProducts" type="checkbox" class="checkbox" checked>
 		</label>
 	</div>
-	<h3><?php esc_html_e( 'Stock synchronization', 'channelengine-wc' ); ?></h3>
+	<h3><?php esc_html_e( 'Stock synchronization', 'channelengine-integration' ); ?></h3>
 	<div class="ce-input-group">
 		<label>
-			<span class="label"><?php esc_html_e( 'Enable stock synchronization', 'channelengine-wc' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Enable stock synchronization', 'channelengine-integration' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php esc_html_e( 'If checked, stock information is synchronized with ChannelEngine.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'If checked, stock information is synchronized with ChannelEngine.', 'channelengine-integration' ); ?>
 				</span>
 			</span>
 			<input id="enableStockSync" type="checkbox" class="checkbox" checked>
@@ -34,15 +34,15 @@ use ChannelEngine\Utility\Shop_Helper;
 	</div>
 	<div class="ce-input-group">
 		<label>
-			<span class="label"><?php esc_html_e( 'Set default stock quantity', 'channelengine-wc' ); ?></span>
+			<span class="label"><?php esc_html_e( 'Set default stock quantity', 'channelengine-integration' ); ?></span>
 			<span class="ce-help">
 				<span class="ce-help-tooltip">
-					<?php esc_html_e( 'Enter stock quantity to display when stock information is not tracked or missing.', 'channelengine-wc' ); ?>
+					<?php esc_html_e( 'Enter stock quantity to display when stock information is not tracked or missing.', 'channelengine-integration' ); ?>
 				</span>
 			</span>
 			<input id="ceStockQuantity" type="number" class="small-number-input" min="0" max="1000" step="1"
 				   value="0">&nbsp;
-			<span id="psc"><?php esc_html_e( 'psc', 'channelengine-wc' ); ?></span>
+			<span id="psc"><?php esc_html_e( 'psc', 'channelengine-integration' ); ?></span>
 		</label>
 	</div>
 	<div>

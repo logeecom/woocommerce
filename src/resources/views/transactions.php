@@ -41,11 +41,11 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 					<th scope="col"
 						class="text-center ce-table-compact-view"><?php esc_html_e( 'Details', 'channelengine-integration' ); ?></th>
 					<th scope="col"
-						class="text-center ce-table-full-view"><?php esc_html_e( 'Start Time', 'channelengine-wc' ); ?></th>
+						class="text-center ce-table-full-view"><?php esc_html_e( 'Start Time', 'channelengine-integration' ); ?></th>
 					<th scope="col"
-						class="text-center ce-table-full-view"><?php esc_html_e( 'Time Completed', 'channelengine-wc' ); ?></th>
+						class="text-center ce-table-full-view"><?php esc_html_e( 'Time Completed', 'channelengine-integration' ); ?></th>
 					<th scope="col"
-						class="text-center ce-table-full-view"><?php esc_html_e( 'Details', 'channelengine-wc' ); ?></th>
+						class="text-center ce-table-full-view"><?php esc_html_e( 'Details', 'channelengine-integration' ); ?></th>
 				</tr>
 				</thead>
 				<tbody id="ce-table-body">
@@ -56,13 +56,13 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 						<div class="ce-table-pagination">
 							<div class="ce-horizontal">
 								<div class="ce-pagination-status">
-									<?php esc_html_e( 'Displayed', 'channelengine-wc' ); ?>
-									<strong id="ce-logs-from">1</strong> <?php esc_html_e( 'to', 'channelengine-wc' ); ?>
-									<strong id="ce-logs-to">17</strong> <?php esc_html_e( 'of', 'channelengine-wc' ); ?>
+									<?php esc_html_e( 'Displayed', 'channelengine-integration' ); ?>
+									<strong id="ce-logs-from">1</strong> <?php esc_html_e( 'to', 'channelengine-integration' ); ?>
+									<strong id="ce-logs-to">17</strong> <?php esc_html_e( 'of', 'channelengine-integration' ); ?>
 									<strong id="ce-logs-total">17</strong>
 								</div>
 								<div class="ce-page-size">
-									<label><?php esc_html_e( 'Page size:', 'channelengine-wc' ); ?>
+									<label><?php esc_html_e( 'Page size:', 'channelengine-integration' ); ?>
 										<select id="ce-page-size">
 											<option value="10" selected>10</option>
 											<option value="25">25</option>
@@ -74,14 +74,14 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 							</div>
 							<div class="ce-pagination-pages">
 								<button class="ce-button ce-button__prev"
-										title="<?php esc_html_e( 'Go to the previous page', 'channelengine-wc' ); ?>">
+										title="<?php esc_html_e( 'Go to the previous page', 'channelengine-integration' ); ?>">
 									<span class="ce-table-compact-view"><</span>
-									<span class="ce-table-full-view"><?php esc_html_e( 'Previous', 'channelengine-wc' ); ?></span>
+									<span class="ce-table-full-view"><?php esc_html_e( 'Previous', 'channelengine-integration' ); ?></span>
 								</button>
 								<button class="ce-button ce-button__next"
-										title="<?php esc_html_e( 'Go to the next page', 'channelengine-wc' ); ?>">
+										title="<?php esc_html_e( 'Go to the next page', 'channelengine-integration' ); ?>">
 									<span class="ce-table-compact-view">></span>
-									<span class="ce-table-full-view"><?php esc_html_e( 'Next', 'channelengine-wc' ); ?></span>
+									<span class="ce-table-full-view"><?php esc_html_e( 'Next', 'channelengine-integration' ); ?></span>
 								</button>
 							</div>
 						</div>
@@ -99,28 +99,28 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 		<input id="ce-disconnect-url" type="hidden"
 			   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'disconnect' ) ); ?>">
 		<input id="ce-view-details-translation" type="hidden"
-			   value="<?php echo esc_attr_e( 'View details', 'channelengine-wc' ); ?>">
+			   value="<?php echo esc_attr_e( 'View details', 'channelengine-integration' ); ?>">
 		<input id="ce-start-translation" type="hidden"
-			   value="<?php echo esc_attr_e( 'Start time', 'channelengine-wc' ); ?>">
+			   value="<?php echo esc_attr_e( 'Start time', 'channelengine-integration' ); ?>">
 		<input id="ce-completed-translation" type="hidden"
-			   value="<?php echo esc_attr_e( 'Time completed', 'channelengine-wc' ); ?>">
+			   value="<?php echo esc_attr_e( 'Time completed', 'channelengine-integration' ); ?>">
 		<input id="ce-modal-header" type="hidden"
-			   value="<?php esc_attr_e( 'Transaction log details', 'channelengine-wc' ); ?>">
-		<input id="ce-modal-button-text" type="hidden" value="<?php esc_attr_e( 'Close', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Transaction log details', 'channelengine-integration' ); ?>">
+		<input id="ce-modal-button-text" type="hidden" value="<?php esc_attr_e( 'Close', 'channelengine-integration' ); ?>">
 		<input id="ce-details-identifier" type="hidden"
-			   value="<?php esc_attr_e( 'Identifier', 'channelengine-wc' ); ?>">
-		<input id="ce-details-message" type="hidden" value="<?php esc_attr_e( 'Message', 'channelengine-wc' ); ?>">
-		<input id="ce-details-display" type="hidden" value="<?php esc_attr_e( 'Displayed', 'channelengine-wc' ); ?>">
-		<input id="ce-details-to" type="hidden" value="<?php esc_attr_e( 'to', 'channelengine-wc' ); ?>">
-		<input id="ce-details-from" type="hidden" value="<?php esc_attr_e( 'of', 'channelengine-wc' ); ?>">
-		<input id="ce-details-page-size" type="hidden" value="<?php esc_attr_e( 'Page size:', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Identifier', 'channelengine-integration' ); ?>">
+		<input id="ce-details-message" type="hidden" value="<?php esc_attr_e( 'Message', 'channelengine-integration' ); ?>">
+		<input id="ce-details-display" type="hidden" value="<?php esc_attr_e( 'Displayed', 'channelengine-integration' ); ?>">
+		<input id="ce-details-to" type="hidden" value="<?php esc_attr_e( 'to', 'channelengine-integration' ); ?>">
+		<input id="ce-details-from" type="hidden" value="<?php esc_attr_e( 'of', 'channelengine-integration' ); ?>">
+		<input id="ce-details-page-size" type="hidden" value="<?php esc_attr_e( 'Page size:', 'channelengine-integration' ); ?>">
 		<input id="ce-details-go-to-previous" type="hidden"
-			   value="<?php esc_attr_e( 'Go to previous page', 'channelengine-wc' ); ?>">
-		<input id="ce-details-previous" type="hidden" value="<?php esc_attr_e( 'Previous', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Go to previous page', 'channelengine-integration' ); ?>">
+		<input id="ce-details-previous" type="hidden" value="<?php esc_attr_e( 'Previous', 'channelengine-integration' ); ?>">
 		<input id="ce-details-go-to-next" type="hidden"
-			   value="<?php esc_attr_e( 'Go to next page', 'channelengine-wc' ); ?>">
-		<input id="ce-details-next" type="hidden" value="<?php esc_attr_e( 'Next', 'channelengine-wc' ); ?>">
-		<input id="ce-no-results" type="hidden" value="<?php esc_attr_e( 'No results', 'channelengine-wc' ); ?>">
+			   value="<?php esc_attr_e( 'Go to next page', 'channelengine-integration' ); ?>">
+		<input id="ce-details-next" type="hidden" value="<?php esc_attr_e( 'Next', 'channelengine-integration' ); ?>">
+		<input id="ce-no-results" type="hidden" value="<?php esc_attr_e( 'No results', 'channelengine-integration' ); ?>">
 	</main>
 	<div id="ce-modal" class="ce-hidden">
 		<?php require plugin_dir_path( __FILE__ ) . 'partials/modal.php'; ?>

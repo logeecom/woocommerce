@@ -49,7 +49,7 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<input id="ce-extra-data-duplicates-text" type="hidden"
 				   value="<?php esc_attr_e( 'Duplicate or empty keys founded in extra data mapping. Delete them to continue.', 'channelengine-integration' ); ?>">
 			<input id="ce-extra-data-duplicates-header" type="hidden"
-				   value="<?php esc_attr_e( 'Warning', 'channelengine-wc' ); ?>">
+				   value="<?php esc_attr_e( 'Warning', 'channelengine-integration' ); ?>">
 			<input id="ceExportProductsUrl" type="hidden"
 				   value="<?php echo esc_attr( Shop_Helper::get_controller_url( 'Config', 'is_export_products_enabled' ) ); ?>">
 		</div>
