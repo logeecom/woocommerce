@@ -17,7 +17,7 @@ $startOnboardingUrl = Shop_Helper::get_controller_url( 'Welcome', 'start_onboard
 </div>
 <div class="channel-engine ce-hidden">
 	<header>
-		<img src="<?php echo esc_url_raw( Asset_Helper::get_image_url( 'logo.svg' ) ); ?>" height="30" alt="ChannelEngine"/>
+		<img src="<?php echo esc_url( Asset_Helper::get_image_url( 'logo.svg' ) ); ?>" height="30" alt="ChannelEngine"/>
 	</header>
 	<main>
 		<div class="ce-onboarding ce-page ce-page-centered">
@@ -32,7 +32,7 @@ $startOnboardingUrl = Shop_Helper::get_controller_url( 'Welcome', 'start_onboard
 					?>
 				</p>
 			</div>
-			<img src="<?php echo esc_url_raw( Asset_Helper::get_image_url( 'icon.svg' ) ); ?>" alt="ChannelEngine"
+			<img src="<?php echo esc_url( Asset_Helper::get_image_url( 'icon.svg' ) ); ?>" alt="ChannelEngine"
 				 class="ce-icon__big"/>
 			<div class="ce-title"><?php esc_html_e( 'Welcome to ChannelEngine', 'channelengine-integration' ); ?></div>
 			<h2 class="ce-subtitle"><?php esc_html_e( 'It will only take 5 minutes of your time to configure the integration.', 'channelengine-integration' ); ?></h2>
