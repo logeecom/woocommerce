@@ -19,7 +19,8 @@ document.addEventListener(
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             enableReduceStock = document.getElementById('enableReduceStock'),
             startSyncDate = document.getElementById('startSyncDate'),
-            getAccountUrl = document.getElementById('ceGetAccountName');
+            getAccountUrl = document.getElementById('ceGetAccountName'),
+            enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices');
 
         ChannelEngine.disconnectService.getAccountName(getAccountUrl);
 
@@ -36,7 +37,8 @@ document.addEventListener(
                 shipped = document.getElementById('ceShippedOrders'),
                 fulfilledByMp = document.getElementById('ceFulfilledByMp'),
                 enableShipmentInfoSync = document.getElementById('enableShipmentInfoSync'),
-                enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync');
+                enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
+                enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices');
             ChannelEngine.notificationService.removeNotifications();
 
             ChannelEngine.orderService.save(
@@ -50,7 +52,8 @@ document.addEventListener(
                     enableOrdersByMerchantSync: enableOrdersByMerchantSync.checked,
                     enableOrdersByMarketplaceSync: enableOrdersByMarketplaceSync.checked,
                     enableReduceStock: enableReduceStock.checked,
-                    startSyncDate: startSyncDate.value
+                    startSyncDate: startSyncDate.value,
+                    enableVatExcludedPrices: enableVatExcludedPrices.checked,
                 }
             );
         }

@@ -19,12 +19,13 @@ if (!window.ChannelEngine) {
                         enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
                         enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                         enableReduceStock = document.getElementById('enableReduceStock'),
+                        enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices'),
                         marketplaceOrdersFromDate = document.getElementById('startSyncDate'),
                         mappings = response.order_statuses,
                         orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate'),
                         displayDate = document.getElementById('displayDate');
 
-                    if(response.enableOrdersByMarketplaceSync && !document.getElementById('displayOrderFulfilledDateDiv').getAttribute('disabled')) {
+                    if (response.enableOrdersByMarketplaceSync && !document.getElementById('displayOrderFulfilledDateDiv').getAttribute('disabled')) {
                         displayDate.innerHTML = response.ordersByMarketplaceFromDate;
                         displayDate.removeAttribute('hidden');
                         orderFulfilledByMarketplaceDate.removeAttribute('hidden');
@@ -42,16 +43,17 @@ if (!window.ChannelEngine) {
                     enableOrdersByMerchantSync.checked = response.enableOrdersByMerchantSync;
                     enableOrdersByMarketplaceSync.checked = response.enableOrdersByMarketplaceSync;
                     enableReduceStock.checked = response.enableReduceStock;
+                    enableVatExcludedPrices.checked = response.enableVatExcludedPrices;
 
-                    if ( marketplaceOrdersFromDate ) {
+                    if (marketplaceOrdersFromDate) {
                         marketplaceOrdersFromDate.value = response.ordersByMarketplaceFromDate;
 
-                        if ( ! response.enableOrdersByMarketplaceSync ) {
+                        if (!response.enableOrdersByMarketplaceSync) {
                             marketplaceOrdersFromDate.setAttribute('disabled', 'true');
                         }
                     }
 
-                    if ( ! response.enableOrdersByMerchantSync ) {
+                    if (!response.enableOrdersByMerchantSync) {
                         enableShipmentInfoSync.setAttribute('disabled', 'true');
                         enableOrderCancellationSync.setAttribute('disabled', 'true');
                     }
@@ -67,7 +69,7 @@ if (!window.ChannelEngine) {
                 }
             );
 
-            function addMappings (item, parent, mapping) {
+            function addMappings(item, parent, mapping) {
                 const option = document.createElement('OPTION');
 
                 option.innerHTML = item.label;

@@ -25,6 +25,7 @@ document.addEventListener(
             enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
             enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
+            enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices'),
             productAttributesUrl = document.getElementById('ceProductAttributes'),
             brandMapping = document.getElementById('ceBrand'),
             colorMapping = document.getElementById('ceColor'),
@@ -47,7 +48,7 @@ document.addEventListener(
 
         document.getElementById('displayOrderFulfilledDateDiv').removeAttribute('hidden');
 
-        startSyncDate ? startSyncDate.remove(): false;
+        startSyncDate ? startSyncDate.remove() : false;
         ChannelEngine.productService.get(stockUrl.value);
         ChannelEngine.productService.getProductAttributes(productAttributesUrl.value);
         ChannelEngine.productService.getExtraDataMapping(extraDataUrl.value);
@@ -56,7 +57,7 @@ document.addEventListener(
         ChannelEngine.disconnectService.getAccountName(getAccountNameUrl);
         ChannelEngine.productService.getExportProductsEnabled(exportProductsUrl.value);
 
-        if( ! ( enableStockSync.checked || ( enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked ) ) ) {
+        if (!(enableStockSync.checked || (enableOrdersByMerchantSync.checked && enableOrdersByMarketplaceSync.checked))) {
             enableReduceStock.setAttribute('disabled', 'true');
         }
 
@@ -136,7 +137,7 @@ document.addEventListener(
                 isValid = true;
 
             extraDataMapping.forEach(mapping => {
-                if( mapping.id === 'hidden' ) {
+                if (mapping.id === 'hidden') {
                     return;
                 }
 
@@ -146,7 +147,7 @@ document.addEventListener(
                     isValid = false;
                     ChannelEngine.modalService.showModal(duplicatesHeaderText,
                         '<div>' +
-                        '<label>'+duplicatesText+'</label>' +
+                        '<label>' + duplicatesText + '</label>' +
                         '</div>',
                         null,
                         null
@@ -178,7 +179,8 @@ document.addEventListener(
                         enableShipmentInfoSync: enableShipmentInfoSync.checked,
                         enableOrderCancellationSync: enableOrderCancellationSync.checked,
                         enableOrdersByMerchantSync: enableOrdersByMerchantSync.checked,
-                        enableOrdersByMarketplaceSync: enableOrdersByMarketplaceSync.checked
+                        enableOrdersByMarketplaceSync: enableOrdersByMarketplaceSync.checked,
+                        enableVatExcludedPrices: enableVatExcludedPrices.checked,
                     },
                     attributeMappings: {
                         brand: brandMapping.value,
@@ -220,7 +222,7 @@ document.addEventListener(
 
             if (quantity.hasAttribute('disabled')) {
                 quantity.removeAttribute('disabled');
-                if ( enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked ) {
+                if (enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked) {
                     reduceStock.removeAttribute('disabled');
                 }
             } else {
@@ -234,7 +236,7 @@ document.addEventListener(
 
         enableOrdersByMerchantSync.onchange = function () {
             changeReduceStockVisibility();
-            if ( ! enableOrdersByMerchantSync.checked ) {
+            if (!enableOrdersByMerchantSync.checked) {
                 enableShipmentInfoSync.setAttribute('disabled', 'true');
                 enableShipmentInfoSync.checked = false
                 enableOrderCancellationSync.setAttribute('disabled', 'true');
@@ -250,11 +252,11 @@ document.addEventListener(
         }
 
         let changeReduceStockVisibility = function () {
-            if (!(enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked )) {
+            if (!(enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked)) {
                 enableReduceStock.setAttribute('disabled', 'true');
             }
 
-            if ( enableStockSync.checked && (enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked )) {
+            if (enableStockSync.checked && (enableOrdersByMerchantSync.checked || enableOrdersByMarketplaceSync.checked)) {
                 enableReduceStock.removeAttribute('disabled');
             }
         }
@@ -263,7 +265,7 @@ document.addEventListener(
         enabledExportProducts.addEventListener(
             'change',
             function () {
-                if(enabledExportProducts.checked) {
+                if (enabledExportProducts.checked) {
                     ChannelEngine.productService.enableProductSynchronizationFields();
                 } else {
                     ChannelEngine.productService.disableProductSynchronizationFields()

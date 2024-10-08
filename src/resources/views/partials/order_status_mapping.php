@@ -72,6 +72,17 @@ $baseUrl  = Shop_Helper::get_plugin_page_url();
 			<input type="text" id="startSyncDate" class="datepicker" style="width: 100px;" value="<?php echo esc_attr( gmdate( 'd.m.Y.' ) ); ?>"/>
 		</label>
 	</div>
+    <div class="ce-input-group">
+        <label>
+            <span class="label"><?php esc_html_e( 'Import VAT-excluded order prices', 'channelengine-integration' ); ?></span>
+            <span class="ce-help">
+                <span class="ce-help-tooltip">
+                    <?php esc_html_e( 'If checked, prices excluding VAT are imported from ChannelEngine during order synchronization.', 'channelengine-integration' ); ?>
+                </span>
+            </span>
+            <input id="enableVatExcludedPrices" type="checkbox" class="checkbox">
+        </label>
+    </div>
 	<div id="displayOrderFulfilledDateDiv">
 		<span id="displayOrderFulfilledDate" class="label"><?php esc_html_e( 'Orders fulfilled by the marketplace are imported starting from ', 'channelengine-integration' ); ?></span>
 		<span id="displayDate" class="label"></span>
