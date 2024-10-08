@@ -483,8 +483,9 @@ class Channel_Engine_Config_Controller extends Channel_Engine_Frontend_Controlle
 		$orderSyncConfig->setEnableOrdersByMerchantSync( $order_sync_config['enableOrdersByMerchantSync'] );
 		$orderSyncConfig->setEnableOrdersByMarketplaceSync( $order_sync_config['enableOrdersByMarketplaceSync'] );
 		$orderSyncConfig->setEnableReduceStock( $enable_reduce_stock );
+        $orderSyncConfig->setEnableVatExcludedPrices($order_sync_config['enableVatExcludedPrices']);
 
-		$this->get_order_config_service()->saveOrderSyncConfig( $orderSyncConfig );
+        $this->get_order_config_service()->saveOrderSyncConfig( $orderSyncConfig );
 	}
 
 	/**
