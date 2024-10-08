@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-10-08 - version 3.8.12 =
+* Changed: Fix Wordpress issues
+
 = 2024-09-17 - version 3.8.11 =
 * Changed: Fix Wordpress issues
 

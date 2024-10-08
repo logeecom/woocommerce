@@ -16,5 +16,10 @@
     "psr-4": {
       "ChannelEngine\\Console\\Commands\\": "bin/console/commands"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "cweagans/composer-patches": true
+    }
   }
 }
