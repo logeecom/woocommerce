@@ -16,6 +16,7 @@ use WC_Order;
 use WC_Order_Item_Shipping;
 use WC_Order_Item_Tax;
 use WC_Product;
+use WC_Tax;
 use WP_Error;
 
 /**
@@ -80,18 +81,32 @@ class Orders_Service extends OrdersService
                 $wc_order->set_shipping_total($order->getShippingCostsInclVat());
             }
 
-            $wc_order->set_shipping_address($this->format_address_data($order->getShippingAddress(), $order->getEmail(),
-                $order->getPhone()));
-            $wc_order->set_billing_address($this->format_address_data($order->getBillingAddress(), $order->getEmail(),
-                $order->getPhone()));
+            $wc_order->set_shipping_address(
+                $this->format_address_data(
+                    $order->getShippingAddress(),
+                    $order->getEmail(),
+                    $order->getPhone()
+                )
+            );
+            $wc_order->set_billing_address(
+                $this->format_address_data(
+                    $order->getBillingAddress(),
+                    $order->getEmail(),
+                    $order->getPhone()
+                )
+            );
 
             $this->add_items($wc_products, $wc_order);
             $wc_order->add_item($this->get_shipping_item($order));
             if (wc_tax_enabled()) {
-                $wc_order->set_shipping_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
-                $wc_order->set_shipping_tax($order->getShippingCostsVat());
-                $wc_order->set_cart_tax($order->getTotalVat() - $order->getShippingCostsVat());
-                $wc_order->add_item($this->get_tax_subtotal_item($order));
+                if ($this->get_tax_percentage_by_address($wc_order->get_taxable_location())) {
+                    $wc_order->calculate_taxes();
+                } else {
+                    $wc_order->set_shipping_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
+                    $wc_order->set_shipping_tax($order->getShippingCostsVat());
+                    $wc_order->set_cart_tax($order->getTotalVat() - $order->getShippingCostsVat());
+                    $wc_order->add_item($this->get_tax_subtotal_item($order));
+                }
             }
 
             $wc_order->add_meta_data('_channel_engine_order_id', $order->getId());
@@ -116,6 +131,26 @@ class Orders_Service extends OrdersService
         }
 
         return $this->create_response(true, $wc_order->get_id(), 'Successfully created order.');
+    }
+
+    /**
+     * Get tax rate for taxable address.
+     *
+     * @param $address
+     *
+     * @return int
+     */
+    private function get_tax_percentage_by_address($address)
+    {
+        $tax_rates = WC_Tax::find_rates($address);
+
+        $tax_rate = reset($tax_rates);
+
+        if ($tax_rate && isset($tax_rate['rate'])) {
+            return $tax_rate['rate'];
+        }
+
+        return 0;
     }
 
     /**
@@ -225,10 +260,10 @@ class Orders_Service extends OrdersService
                 $product_data['subtotal'] -= $order_line->getUnitVat();
                 $product_data['total'] -= $order_line->getLineVat();
                 $product_data['total_tax'] = $order_line->getLineVat();
-                $product_data['subtotal_tax'] = $order_line->getLineVat();
+                $product_data['subtotal_tax'] = $order_line->getUnitVat();
                 $product_data['taxes'] = array(
                     'total' => array(self::CUSTOM_TAX_RATE_ID => $order_line->getLineVat()),
-                    'subtotal' => array(self::CUSTOM_TAX_RATE_ID => $order_line->getLineVat()),
+                    'subtotal' => array(self::CUSTOM_TAX_RATE_ID => $order_line->getUnitVat()),
                 );
             }
 
@@ -312,7 +347,8 @@ class Orders_Service extends OrdersService
 
         if (wc_tax_enabled()) {
             $shipping_item->set_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
-            $shipping_item->set_taxes(array('total' => array(self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat())));
+            $shipping_item->set_taxes(array('total' => array(self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat()))
+            );
         }
 
         return $shipping_item;
