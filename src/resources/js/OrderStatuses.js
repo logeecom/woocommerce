@@ -19,8 +19,7 @@ document.addEventListener(
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             enableReduceStock = document.getElementById('enableReduceStock'),
             startSyncDate = document.getElementById('startSyncDate'),
-            getAccountUrl = document.getElementById('ceGetAccountName'),
-            enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices');
+            getAccountUrl = document.getElementById('ceGetAccountName');
 
         ChannelEngine.disconnectService.getAccountName(getAccountUrl);
 
