@@ -230,7 +230,7 @@ class ChannelEngine {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return;
 		}
-		load_plugin_textdomain( 'channelengine-wc', false, basename( dirname( $this->channelengine_plugin_file ) ) . '/i18n/languages/' );
+		load_plugin_textdomain( 'channelengine-integration', false, basename( dirname( $this->channelengine_plugin_file ) ) . '/i18n/languages/' );
 	}
 
 	/**
@@ -489,7 +489,7 @@ class ChannelEngine {
 			$order->save();
 			update_option(
 				'_channel_engine_order_save_success',
-				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine-wc' )
+				__( 'Cancellation request successfully sent to ChannelEngine.', 'channelengine-integration' )
 			);
 		} catch ( Cancellation_Rejected_Exception $exception ) {
 			update_option( '_channel_engine_order_save_note', $exception->getMessage() );
@@ -540,7 +540,7 @@ class ChannelEngine {
 			$order->save();
 			update_option(
 				'_channel_engine_order_save_success',
-				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine-wc' )
+				__( 'Shipment request successfully sent to ChannelEngine.', 'channelengine-integration' )
 			);
 		} catch ( Shipment_Rejected_Exception $exception ) {
 			update_option( '_channel_engine_order_save_note', $exception->getMessage() );

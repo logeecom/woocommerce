@@ -257,7 +257,7 @@ msgid "http://channelengine.net"
 msgstr ""
 
 #. URI of the plugin
-msgid "https://wordpress.org/plugins/channelengine-wc/"
+msgid "https://wordpress.org/plugins/channelengine-integration/"
 msgstr ""
 
 #: resources/views/transactions.php:108

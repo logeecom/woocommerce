@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-10-23 - version 3.8.13 =
+* Changed: Update plugin slug. Release to the marketplace.
+
 = 2024-10-08 - version 3.8.12 =
 * Changed: Fix Wordpress issues
 

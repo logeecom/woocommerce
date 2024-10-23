@@ -23,9 +23,9 @@ msgstr ""
 msgid ")"
 msgstr ""
 
-#: resources/views/order_status_mapping.php:18 
-#: resources/views/enable_and_sync.php:20 
-#: resources/views/account_configuration.php:21 
+#: resources/views/order_status_mapping.php:18
+#: resources/views/enable_and_sync.php:20
+#: resources/views/account_configuration.php:21
 #: resources/views/product_configuration.php:18
 msgid "Account"
 msgstr "Account"
@@ -117,12 +117,12 @@ msgstr ""
 msgid "Choose what you would like to synchronize:"
 msgstr "Choose what you would like to synchronize:"
 
-#: resources/views/transactions.php:107 
+#: resources/views/transactions.php:107
 #: resources/views/partials/dashboard/notifications.php:28
 msgid "Close"
 msgstr ""
 
-#: resources/views/transactions.php:24 resources/views/dashboard.php:26 
+#: resources/views/transactions.php:24 resources/views/dashboard.php:26
 #: resources/views/config.php:26
 msgid "Configuration"
 msgstr "Configuration"
@@ -139,7 +139,7 @@ msgstr "Connect and continue"
 msgid "Connect the shop with your ChannelEngine account"
 msgstr "Connect the shop with your ChannelEngine account"
 
-#: resources/views/transactions.php:22 resources/views/dashboard.php:24 
+#: resources/views/transactions.php:22 resources/views/dashboard.php:24
 #: resources/views/config.php:24
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -164,7 +164,7 @@ msgstr "Disable"
 msgid "Disable integration"
 msgstr "Disable integration"
 
-#: resources/views/config.php:52 resources/views/config.php:96 
+#: resources/views/config.php:52 resources/views/config.php:96
 #: resources/views/partials/header.php:15
 msgid "Disconnect"
 msgstr "Disconnect"
@@ -177,7 +177,7 @@ msgstr "Disconnect account"
 msgid "Disconnect your account"
 msgstr ""
 
-#: resources/views/transactions.php:59 resources/views/transactions.php:110 
+#: resources/views/transactions.php:59 resources/views/transactions.php:110
 #: resources/views/partials/dashboard/notifications.php:31
 msgid "Displayed"
 msgstr "Displayed"
@@ -242,7 +242,7 @@ msgstr ""
 msgid "Errors"
 msgstr "Errors"
 
-#: includes/Controllers/class-channel-engine-config-controller.php:169 
+#: includes/Controllers/class-channel-engine-config-controller.php:169
 #: includes/Controllers/class-channel-engine-initial-sync-controller.php:41
 msgid "Failed to start initial sync because %s"
 msgstr "Failed to start initial sync because %s"
@@ -251,12 +251,12 @@ msgstr "Failed to start initial sync because %s"
 msgid "Full synchronization in progress"
 msgstr "Full synchronization in progress"
 
-#: resources/views/transactions.php:117 
+#: resources/views/transactions.php:117
 #: resources/views/partials/dashboard/notifications.php:38
 msgid "Go to next page"
 msgstr ""
 
-#: resources/views/transactions.php:115 
+#: resources/views/transactions.php:115
 #: resources/views/partials/dashboard/notifications.php:36
 msgid "Go to previous page"
 msgstr ""
@@ -274,10 +274,10 @@ msgid "http://channelengine.net"
 msgstr ""
 
 #. URI of the plugin
-msgid "https://wordpress.org/plugins/channelengine-wc/"
+msgid "https://wordpress.org/plugins/channelengine-integration/"
 msgstr ""
 
-#: resources/views/transactions.php:108 
+#: resources/views/transactions.php:108
 #: resources/views/partials/dashboard/notifications.php:29
 msgid "Identifier"
 msgstr "Identifier"
@@ -336,9 +336,9 @@ msgstr ""
 msgid "In progress"
 msgstr "In progress"
 
-#: resources/views/order_status_mapping.php:32 
-#: resources/views/enable_and_sync.php:36 
-#: resources/views/account_configuration.php:33 
+#: resources/views/order_status_mapping.php:32
+#: resources/views/enable_and_sync.php:36
+#: resources/views/account_configuration.php:33
 #: resources/views/product_configuration.php:30
 msgid "Initial sync"
 msgstr "Initial sync"
@@ -351,12 +351,12 @@ msgstr ""
 "Integration between WooCommerce and ChannelEngine is disabled. "
 "Synchronization is not performed in the background."
 
-#: resources/views/enable_and_sync.php:40 
+#: resources/views/enable_and_sync.php:40
 #: resources/views/partials/dashboard/disable.php:9
 msgid "Integration status"
 msgstr "Integration status"
 
-#: includes/Controllers/class-channel-engine-config-controller.php:372 
+#: includes/Controllers/class-channel-engine-config-controller.php:372
 #: includes/Controllers/class-channel-engine-auth-controller.php:50
 msgid "Invalid API key or Account name."
 msgstr ""
@@ -384,12 +384,12 @@ msgid ""
 "Map WooCommerce shop order statuses to the ChannelEngine order statuses."
 msgstr "Map shop order statuses to the ChannelEngine order statuses."
 
-#: resources/views/transactions.php:109 
+#: resources/views/transactions.php:109
 #: resources/views/partials/dashboard/notifications.php:30
 msgid "Message"
 msgstr "Message"
 
-#: resources/views/transactions.php:84 resources/views/transactions.php:118 
+#: resources/views/transactions.php:84 resources/views/transactions.php:118
 #: resources/views/partials/dashboard/notifications.php:39
 msgid "Next"
 msgstr "Next"
@@ -398,16 +398,16 @@ msgstr "Next"
 msgid "No results"
 msgstr "No results"
 
-#: resources/views/partials/attribute_mapping.php:19 
-#: resources/views/partials/attribute_mapping.php:32 
-#: resources/views/partials/attribute_mapping.php:45 
-#: resources/views/partials/attribute_mapping.php:58 
-#: resources/views/partials/attribute_mapping.php:71 
-#: resources/views/partials/attribute_mapping.php:84 
-#: resources/views/partials/attribute_mapping.php:97 
-#: resources/views/partials/attribute_mapping.php:110 
-#: resources/views/partials/attribute_mapping.php:123 
-#: resources/views/partials/attribute_mapping.php:136 
+#: resources/views/partials/attribute_mapping.php:19
+#: resources/views/partials/attribute_mapping.php:32
+#: resources/views/partials/attribute_mapping.php:45
+#: resources/views/partials/attribute_mapping.php:58
+#: resources/views/partials/attribute_mapping.php:71
+#: resources/views/partials/attribute_mapping.php:84
+#: resources/views/partials/attribute_mapping.php:97
+#: resources/views/partials/attribute_mapping.php:110
+#: resources/views/partials/attribute_mapping.php:123
+#: resources/views/partials/attribute_mapping.php:136
 #: resources/views/partials/attribute_mapping.php:149
 msgid "Not mapped"
 msgstr "Not mapped"
@@ -416,9 +416,9 @@ msgstr "Not mapped"
 msgid "Notifications"
 msgstr "Notifications"
 
-#: resources/views/transactions.php:61 resources/views/transactions.php:112 
-#: resources/views/partials/dashboard/notifications.php:33 
-#: resources/views/partials/dashboard/sync_progress.php:11 
+#: resources/views/transactions.php:61 resources/views/transactions.php:112
+#: resources/views/partials/dashboard/notifications.php:33
+#: resources/views/partials/dashboard/sync_progress.php:11
 #: resources/views/partials/dashboard/sync_progress.php:23
 msgid "of"
 msgstr "of"
@@ -439,10 +439,10 @@ msgstr ""
 msgid "Order sync"
 msgstr "Order sync"
 
-#: resources/views/order_status_mapping.php:28 
-#: resources/views/enable_and_sync.php:32 
-#: resources/views/account_configuration.php:29 
-#: resources/views/product_configuration.php:26 
+#: resources/views/order_status_mapping.php:28
+#: resources/views/enable_and_sync.php:32
+#: resources/views/account_configuration.php:29
+#: resources/views/product_configuration.php:26
 #: resources/views/partials/order_status_mapping.php:24
 msgid "Order synchronization"
 msgstr ""
@@ -467,7 +467,7 @@ msgstr ""
 msgid "Orders fulfilled by the merchant"
 msgstr ""
 
-#: resources/views/transactions.php:65 resources/views/transactions.php:113 
+#: resources/views/transactions.php:65 resources/views/transactions.php:113
 #: resources/views/partials/dashboard/notifications.php:34
 msgid "Page size:"
 msgstr "Page size:"
@@ -476,7 +476,7 @@ msgstr "Page size:"
 msgid "Payment method:"
 msgstr ""
 
-#: resources/views/transactions.php:79 resources/views/transactions.php:116 
+#: resources/views/transactions.php:79 resources/views/transactions.php:116
 #: resources/views/partials/dashboard/notifications.php:37
 msgid "Previous"
 msgstr "Previous"
@@ -485,9 +485,9 @@ msgstr "Previous"
 msgid "Product sync"
 msgstr "Product sync"
 
-#: resources/views/order_status_mapping.php:24 
-#: resources/views/enable_and_sync.php:26 
-#: resources/views/account_configuration.php:25 
+#: resources/views/order_status_mapping.php:24
+#: resources/views/enable_and_sync.php:26
+#: resources/views/account_configuration.php:25
 #: resources/views/product_configuration.php:22
 msgid "Product synchronization"
 msgstr "Product synchronization"
@@ -512,7 +512,7 @@ msgstr "psc"
 msgid "Reduce stock?"
 msgstr ""
 
-#: resources/views/order_status_mapping.php:37 
+#: resources/views/order_status_mapping.php:37
 #: resources/views/product_configuration.php:35
 msgid "Save and continue"
 msgstr "Save and continue"
@@ -705,7 +705,7 @@ msgstr "Time Completed"
 msgid "Time completed"
 msgstr ""
 
-#: resources/views/transactions.php:60 resources/views/transactions.php:111 
+#: resources/views/transactions.php:60 resources/views/transactions.php:111
 #: resources/views/partials/dashboard/notifications.php:32
 msgid "to"
 msgstr "to"
@@ -718,12 +718,12 @@ msgstr ""
 msgid "Track and trace:"
 msgstr ""
 
-#: resources/views/transactions.php:26 resources/views/dashboard.php:28 
+#: resources/views/transactions.php:26 resources/views/dashboard.php:28
 #: resources/views/config.php:28
 msgid "Transaction log"
 msgstr "Transaction log"
 
-#: resources/views/transactions.php:106 
+#: resources/views/transactions.php:106
 #: resources/views/partials/dashboard/notifications.php:27
 msgid "Transaction log details"
 msgstr ""
@@ -750,7 +750,7 @@ msgstr "View details"
 msgid "Warning"
 msgstr "Warning"
 
-#: includes/Controllers/class-channel-engine-order-status-controller.php:53 
+#: includes/Controllers/class-channel-engine-order-status-controller.php:53
 #: includes/Controllers/class-channel-engine-order-status-controller.php:61
 msgid "wc-completed"
 msgstr "Completed"

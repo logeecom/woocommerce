@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: ChannelEngine Integration
-Plugin URI: https://wordpress.org/plugins/channelengine-wc/
+Plugin URI: https://wordpress.org/plugins/channelengine-integration/
 Description: ChannelEngine plugin for WooCommerce
-Version: 3.8.12
+Version: 3.8.13
 Text Domain: channelengine-integration
 Domain Path: /i18n/languages
 Author: ChannelEngine
