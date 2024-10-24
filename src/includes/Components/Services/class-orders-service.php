@@ -98,7 +98,7 @@ class Orders_Service extends OrdersService
 
             $this->add_items($wc_products, $wc_order);
             $wc_order->add_item($this->get_shipping_item($order));
-            if (wc_tax_enabled()) {
+            if (wc_tax_enabled() && !$config->isEnableVatExcludedPrices()) {
                 if ($this->get_tax_percentage_by_address($wc_order->get_taxable_location())) {
                     $wc_order->calculate_taxes();
                 } else {
@@ -241,11 +241,11 @@ class Orders_Service extends OrdersService
                 'name' => $product->get_name(),
                 'sku' => $product->get_sku(),
                 'variation_id' => $product->is_type('variation') ? $order_line->getMerchantProductNo() : 0,
-                'subtotal' => $config->isEnableVatExcludedPrices()
+                'subtotal' => $config && $config->isEnableVatExcludedPrices()
                     ? $order_line->getUnitPriceExclVat()
                     : $order_line->getUnitPriceInclVat(),
                 'quantity' => $order_line->getQuantity(),
-                'total' => $config->isEnableVatExcludedPrices()
+                'total' => $config && $config->isEnableVatExcludedPrices()
                     ? $order_line->getLineTotalExclVat()
                     : $order_line->getLineTotalInclVat(),
                 'total_tax' => 0,
@@ -256,7 +256,7 @@ class Orders_Service extends OrdersService
                 ),
             );
 
-            if (wc_tax_enabled()) {
+            if (wc_tax_enabled() && !$config->isEnableVatExcludedPrices()) {
                 $product_data['subtotal'] -= $order_line->getUnitVat();
                 $product_data['total'] -= $order_line->getLineVat();
                 $product_data['total_tax'] = $order_line->getLineVat();
@@ -341,11 +341,15 @@ class Orders_Service extends OrdersService
      */
     protected function get_shipping_item(Order $order)
     {
+        $config = $this->get_order_config_service()->getOrderSyncConfig();
+
         $shipping_item = new WC_Order_Item_Shipping();
         $shipping_item->set_name('Shipping');
-        $shipping_item->set_total($order->getShippingCostsInclVat());
+        $shipping_item->set_total($config && $config->isEnableVatExcludedPrices()
+            ? $order->getShippingCostsExclVat()
+            : $order->getShippingCostsInclVat());
 
-        if (wc_tax_enabled()) {
+        if (wc_tax_enabled() && !$config->isEnableVatExcludedPrices()) {
             $shipping_item->set_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
             $shipping_item->set_taxes(array('total' => array(self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat()))
             );
