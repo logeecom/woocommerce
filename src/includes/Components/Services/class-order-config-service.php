@@ -39,7 +39,8 @@ class Order_Config_Service extends OrdersConfigurationService {
 			$sync_config['enableOrderCancellationSync'],
 			$sync_config['enableOrdersByMerchantSync'],
 			$sync_config['enableOrdersByMarketplaceSync'],
-            $sync_config['enableVatExcludedPrices']
+            $sync_config['enableVatExcludedPrices'],
+            $sync_config['enableWCTaxCalculation']
         );
 	}
 }

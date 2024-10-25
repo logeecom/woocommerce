@@ -20,6 +20,8 @@ if (!window.ChannelEngine) {
                         enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                         enableReduceStock = document.getElementById('enableReduceStock'),
                         enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices'),
+                        enableWCTaxCalculation = document.getElementById('enableWCTaxCalculation'),
+                        vatExcludedPricesMessage = document.getElementById('vatExcludedPricesMessage'),
                         marketplaceOrdersFromDate = document.getElementById('startSyncDate'),
                         mappings = response.order_statuses,
                         orderFulfilledByMarketplaceDate = document.getElementById('displayOrderFulfilledDate'),
@@ -44,6 +46,7 @@ if (!window.ChannelEngine) {
                     enableOrdersByMarketplaceSync.checked = response.enableOrdersByMarketplaceSync;
                     enableReduceStock.checked = response.enableReduceStock;
                     enableVatExcludedPrices.checked = response.enableVatExcludedPrices;
+                    enableWCTaxCalculation.checked = response.enableWCTaxCalculation;
 
                     if (marketplaceOrdersFromDate) {
                         marketplaceOrdersFromDate.value = response.ordersByMarketplaceFromDate;
@@ -51,6 +54,11 @@ if (!window.ChannelEngine) {
                         if (!response.enableOrdersByMarketplaceSync) {
                             marketplaceOrdersFromDate.setAttribute('disabled', 'true');
                         }
+                    }
+
+                    if (enableVatExcludedPrices.checked) {
+                        vatExcludedPricesMessage.classList.remove('ce-hidden');
+                        enableWCTaxCalculation.setAttribute('disabled', 'true');
                     }
 
                     if (!response.enableOrdersByMerchantSync) {

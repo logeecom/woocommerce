@@ -26,6 +26,8 @@ document.addEventListener(
             enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices'),
+            enableWCTaxCalculation = document.getElementById('enableWCTaxCalculation'),
+            vatExcludedPricesMessage = document.getElementById('vatExcludedPricesMessage'),
             productAttributesUrl = document.getElementById('ceProductAttributes'),
             brandMapping = document.getElementById('ceBrand'),
             colorMapping = document.getElementById('ceColor'),
@@ -181,6 +183,7 @@ document.addEventListener(
                         enableOrdersByMerchantSync: enableOrdersByMerchantSync.checked,
                         enableOrdersByMarketplaceSync: enableOrdersByMarketplaceSync.checked,
                         enableVatExcludedPrices: enableVatExcludedPrices.checked,
+                        enableWCTaxCalculation: enableWCTaxCalculation.checked,
                     },
                     attributeMappings: {
                         brand: brandMapping.value,
@@ -249,6 +252,16 @@ document.addEventListener(
 
         enableOrdersByMarketplaceSync.onchange = function () {
             changeReduceStockVisibility();
+        }
+
+        enableVatExcludedPrices.onchange = () => {
+            if(enableVatExcludedPrices.checked) {
+                vatExcludedPricesMessage.classList.remove('ce-hidden');
+                enableWCTaxCalculation.setAttribute('disabled', 'true');
+            } else {
+                vatExcludedPricesMessage.classList.add('ce-hidden');
+                enableWCTaxCalculation.removeAttribute('disabled',);
+            }
         }
 
         let changeReduceStockVisibility = function () {

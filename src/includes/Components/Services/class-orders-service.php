@@ -99,7 +99,7 @@ class Orders_Service extends OrdersService
             $this->add_items($wc_products, $wc_order);
             $wc_order->add_item($this->get_shipping_item($order));
             if (wc_tax_enabled() && !$config->isEnableVatExcludedPrices()) {
-                if ($this->get_tax_percentage_by_address($wc_order->get_taxable_location())) {
+                if ($config->isEnableWCTaxCalculation() && $this->get_tax_percentage_by_address($wc_order->get_taxable_location())) {
                     $wc_order->calculate_taxes();
                 } else {
                     $wc_order->set_shipping_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());

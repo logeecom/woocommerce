@@ -75,6 +75,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 					! ( $mappings && $mappings->isEnableReduceStock() !== null ) || $mappings->isEnableReduceStock(),
 				'displayTheDateFromWhichOrdersFBMAreImported' => null != $order_by_marketplace_time_from && 0 !== $order_by_marketplace_time_from->getTimestamp(),
                 'enableVatExcludedPrices' => $mappings ? $mappings->isEnableVatExcludedPrices() : false,
+                'enableWCTaxCalculation' => $mappings ? $mappings->isEnableWCTaxCalculation() : false,
             )
 		);
 	}
@@ -116,6 +117,7 @@ class Channel_Engine_Order_Status_Controller extends Channel_Engine_Frontend_Con
 		$orderSyncConfig->setEnableOrdersByMarketplaceSync( rest_sanitize_boolean( $payload['enableOrdersByMarketplaceSync'] ) );
 		$orderSyncConfig->setEnableReduceStock( rest_sanitize_boolean( $payload['enableReduceStock'] ) );
         $orderSyncConfig->setEnableVatExcludedPrices(rest_sanitize_boolean($payload['enableVatExcludedPrices']));
+        $orderSyncConfig->setEnableWCTaxCalculation(rest_sanitize_boolean($payload['enableWCTaxCalculation']));
 
         $this->get_order_config_service()->saveOrderSyncConfig( $orderSyncConfig );
 		$this->get_order_config_service()->setClosedOrdersSyncTime( new DateTime( sanitize_text_field( $payload['startSyncDate'] ) ) );

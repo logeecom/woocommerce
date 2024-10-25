@@ -19,9 +19,12 @@ document.addEventListener(
             enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
             enableReduceStock = document.getElementById('enableReduceStock'),
             startSyncDate = document.getElementById('startSyncDate'),
-            getAccountUrl = document.getElementById('ceGetAccountName');
+            getAccountUrl = document.getElementById('ceGetAccountName'),
+            enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices'),
+            enableWCTaxCalculation = document.getElementById('enableWCTaxCalculation'),
+            vatExcludedPricesMessage = document.getElementById('vatExcludedPricesMessage');
 
-        ChannelEngine.disconnectService.getAccountName(getAccountUrl);
+            ChannelEngine.disconnectService.getAccountName(getAccountUrl);
 
         enableReduceStock.checked = true;
         ChannelEngine.ajaxService.get(checkEnableStockSync.value, function (response) {
@@ -36,8 +39,7 @@ document.addEventListener(
                 shipped = document.getElementById('ceShippedOrders'),
                 fulfilledByMp = document.getElementById('ceFulfilledByMp'),
                 enableShipmentInfoSync = document.getElementById('enableShipmentInfoSync'),
-                enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync'),
-                enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices');
+                enableOrderCancellationSync = document.getElementById('enableOrderCancellationSync');
             ChannelEngine.notificationService.removeNotifications();
 
             ChannelEngine.orderService.save(
@@ -53,6 +55,7 @@ document.addEventListener(
                     enableReduceStock: enableReduceStock.checked,
                     startSyncDate: startSyncDate.value,
                     enableVatExcludedPrices: enableVatExcludedPrices.checked,
+                    enableWCTaxCalculation: enableWCTaxCalculation.checked,
                 }
             );
         }
@@ -95,6 +98,16 @@ document.addEventListener(
             }
         }
 
+        enableVatExcludedPrices.onchange = () => {
+            if(enableVatExcludedPrices.checked) {
+                vatExcludedPricesMessage.classList.remove('ce-hidden');
+                enableWCTaxCalculation.setAttribute('disabled', 'true');
+            } else {
+                vatExcludedPricesMessage.classList.add('ce-hidden');
+                enableWCTaxCalculation.removeAttribute('disabled',);
+            }
+        }
+
         document.getElementById('displayOrderFulfilledDateDiv').setAttribute('hidden', 'true');
         ChannelEngine.orderService.get(getUrl.value);
     }
@@ -122,7 +135,9 @@ document.getElementById('stepToProductSettings').addEventListener(
                         enableOrdersByMerchantSync = document.getElementById('enableOrdersByMerchantSync'),
                         enableOrdersByMarketplaceSync = document.getElementById('enableOrdersByMarketplaceSync'),
                         enableReduceStock = document.getElementById('enableReduceStock'),
-                        startSyncDate = document.getElementById('startSyncDate');
+                        startSyncDate = document.getElementById('startSyncDate'),
+                        enableVatExcludedPrices = document.getElementById('enableVatExcludedPrices'),
+                        enableWCTaxCalculation = document.getElementById('enableWCTaxCalculation');
                     ChannelEngine.notificationService.removeNotifications();
 
                     ChannelEngine.orderService.save(
@@ -135,6 +150,8 @@ document.getElementById('stepToProductSettings').addEventListener(
                             enableOrderCancellationSync: enableOrderCancellationSync.checked,
                             enableOrdersByMerchantSync: enableOrdersByMerchantSync.checked,
                             enableOrdersByMarketplaceSync: enableOrdersByMarketplaceSync.checked,
+                            enableVatExcludedPrices: enableVatExcludedPrices.checked,
+                            enableWCTaxCalculation: enableWCTaxCalculation.checked,
                             enableReduceStock: enableReduceStock.checked,
                             startSyncDate: startSyncDate.value
                         }
