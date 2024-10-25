@@ -257,8 +257,6 @@ class Orders_Service extends OrdersService
             );
 
             if (wc_tax_enabled() && !$config->isEnableVatExcludedPrices()) {
-                $product_data['subtotal'] -= $order_line->getUnitVat();
-                $product_data['total'] -= $order_line->getLineVat();
                 $product_data['total_tax'] = $order_line->getLineVat();
                 $product_data['subtotal_tax'] = $order_line->getUnitVat();
                 $product_data['taxes'] = array(
@@ -350,9 +348,7 @@ class Orders_Service extends OrdersService
             : $order->getShippingCostsInclVat());
 
         if (wc_tax_enabled() && !$config->isEnableVatExcludedPrices()) {
-            $shipping_item->set_total($order->getShippingCostsInclVat() - $order->getShippingCostsVat());
-            $shipping_item->set_taxes(array('total' => array(self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat()))
-            );
+            $shipping_item->set_taxes(array('total' => array(self::CUSTOM_TAX_RATE_ID => $order->getShippingCostsVat())));
         }
 
         return $shipping_item;
