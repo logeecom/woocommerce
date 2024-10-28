@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5220e453969a0946fdcc294837e2d48",
+    "content-hash": "d629bcd6197d1b0f7115366f8ee4643d",
     "packages": [
         {
             "name": "channelengine/integration-core",
-            "version": "dev-wc2",
+            "version": "dev-woocommerce",
             "source": {
                 "type": "git",
                 "url": "git@github.com:channelengine/logeecom-core.git",
-                "reference": "e5eb7d1021961620656493e67f195efdd05b095d"
+                "reference": "e24d15d979f5bf86d39bf27b73136c35faf384a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/e5eb7d1021961620656493e67f195efdd05b095d",
-                "reference": "e5eb7d1021961620656493e67f195efdd05b095d",
+                "url": "https://api.github.com/repos/channelengine/logeecom-core/zipball/e24d15d979f5bf86d39bf27b73136c35faf384a1",
+                "reference": "e24d15d979f5bf86d39bf27b73136c35faf384a1",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "proprietary"
             ],
             "description": "ChannelEngine integrations core library",
-            "time": "2024-10-25T09:11:40+00:00"
+            "time": "2024-10-28T13:19:14+00:00"
         }
     ],
     "packages-dev": [

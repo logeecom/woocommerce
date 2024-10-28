@@ -3,7 +3,7 @@
   "description": "ChannelEngine WooCommerce Integration",
   "type": "library",
   "require": {
-    "channelengine/integration-core": "dev-wc2",
+    "channelengine/integration-core": "dev-woocommerce",
     "php": ">=5.6",
     "ext-json": "*"
   },
