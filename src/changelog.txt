@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-11-18 - version 3.8.15 =
+* Changed: Update tax label to appropriate format
+
 = 2024-10-28 - version 3.8.14 =
 * Added: Add option to synchronize orders with prices that exclude VAT
 * Added: Add option to enable recalculation of taxes using WooCommerce settings during order synchronization
