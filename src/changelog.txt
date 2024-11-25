@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-11-22 - version 3.8.16 =
+* Fixed: Resolved pricing display issue by ensuring accurate subtotal and total calculations for prices with and without VAT.
+
 = 2024-11-18 - version 3.8.15 =
 * Changed: Update tax label to appropriate format
 
