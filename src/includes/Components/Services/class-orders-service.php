@@ -241,13 +241,9 @@ class Orders_Service extends OrdersService
                 'name' => $product->get_name(),
                 'sku' => $product->get_sku(),
                 'variation_id' => $product->is_type('variation') ? $order_line->getMerchantProductNo() : 0,
-                'subtotal' => $config && $config->isEnableVatExcludedPrices()
-                    ? $order_line->getUnitPriceExclVat()
-                    : $order_line->getUnitPriceInclVat(),
+                'subtotal' => $order_line->getUnitPriceExclVat(),
                 'quantity' => $order_line->getQuantity(),
-                'total' => $config && $config->isEnableVatExcludedPrices()
-                    ? $order_line->getLineTotalExclVat()
-                    : $order_line->getLineTotalInclVat(),
+                'total' => $order_line->getLineTotalExclVat(),
                 'total_tax' => 0,
                 'subtotal_tax' => 0,
                 'taxes' => array(
