@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-12-10 - version 3.8.17 =
+* Added: Synchronize VAT number from ChannelEngine and show it on order details page.
+
 = 2024-11-22 - version 3.8.16 =
 * Fixed: Resolved pricing display issue by ensuring accurate subtotal and total calculations for prices with and without VAT.
 

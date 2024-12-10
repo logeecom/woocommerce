@@ -48,6 +48,7 @@ class Channel_Engine_Order_Overview_Controller extends Channel_Engine_Base_Contr
 					'order_id'               => $order->get_meta( '_channel_engine_order_id' ),
 					'channel_name'           => $order->get_meta( '_channel_engine_channel_name' ),
 					'channel_order_no'       => $order->get_meta( '_channel_engine_channel_order_no' ),
+					'vat_number'             => $order->get_meta( '_channel_engine_vat_number' ),
 					'payment_method'         => $order->get_meta( '_channel_engine_payment_method' ),
 					'track_and_trace'        => $order->get_meta( '_shipping_ce_track_and_trace' ),
 					'chosen_shipping_method' => (int) $order->get_meta( '_shipping_ce_shipping_method' ),

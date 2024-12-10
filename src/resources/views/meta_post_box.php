@@ -38,6 +38,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<label>
 		<?php echo esc_html( $data['channel_order_no'] ); ?>
 	</label>
+    <?php if ($data['vat_number'] !== '') { ?>
+        <label class="property-name">
+            <?php esc_html_e( 'VAT number:', 'channelengine-integration' ); ?>
+        </label>
+        <label>
+            <?php echo esc_html( $data['vat_number'] ); ?>
+        </label>
+    <?php } ?>
 	<label class="property-name">
 		<?php esc_html_e( 'Payment method:', 'channelengine-integration' ); ?>
 	</label>
