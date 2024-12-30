@@ -3,7 +3,7 @@ Contributors: channelengine
 Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
-Tested up to: 6.6.2
+Tested up to: 6.7.1
 Stable tag: 3.8.17
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -41,6 +41,13 @@ Our platform is designed to help grow your ecommerce across marketplaces. Discov
 * Enhanced visibility: Elevate your brand exposure by presenting your products on popular marketplaces, increasing the chances of sales and enhancing brand recognition.
 * Time and cost efficiency: Manage all your marketplace sales directly from your WooCommerce environment, eliminating the need for manual listing and constant inventory updates.
 * Expert guidance: Access the expertise of ChannelEngine's marketplace professionals, ready to assist with any integration or marketplace-related queries, ensuring a seamless and reliable selling experience.
+
+== Screenshots ==
+1. Pricing and promotion | ChannelEngine
+2. Inventory management | ChannelEngine
+3. Order management | ChannelEngine
+4. Product information and syndication | ChannelEngine
+5. Reporting and analytics | ChannelEngine
 
 == Changelog ==
 
