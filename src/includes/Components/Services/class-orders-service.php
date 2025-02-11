@@ -363,9 +363,12 @@ class Orders_Service extends OrdersService
         $tax_subtotal = new WC_Order_Item_Tax();
         $tax_subtotal->set_rate_id(self::CUSTOM_TAX_RATE_ID);
         $tax_subtotal->set_label('VAT (' . $order->getLines()[0]->getVatRate() . '%)');
-        $tax_subtotal->set_rate_percent(
-            (100 * $order->getTotalVat()) / ($order->getTotalInclVat() - $order->getTotalVat())
-        );
+        $total_vat = $order->getTotalVat();
+        $total_excluded_vat = $order->getTotalInclVat() - $total_vat;
+        if($total_excluded_vat > 0){
+            $tax_subtotal->set_rate_percent((100 * $total_vat) / $total_excluded_vat);
+        }
+
         $tax_subtotal->set_tax_total($order->getTotalVat() - $order->getShippingCostsVat());
         $tax_subtotal->set_shipping_tax_total($order->getShippingCostsVat());
 
