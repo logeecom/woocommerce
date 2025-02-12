@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2024-02-12 - version 3.8.18 =
+* Fixed: Empty order created when total price is 0.
+
 = 2024-12-10 - version 3.8.17 =
 * Added: Synchronize VAT number from ChannelEngine and show it on order details page.
 
