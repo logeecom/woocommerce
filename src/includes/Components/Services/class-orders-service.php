@@ -63,8 +63,8 @@ class Orders_Service extends OrdersService
             }
 
             $wc_products = $this->fetch_products($order);
-            $order_data = $this->format_order_data($order);
-            $wc_order = wc_create_order($order_data);
+            $wc_order = wc_create_order(['customer_id' => null]);
+            $wc_order->set_status($this->format_status($order));
 
             if ($wc_order instanceof WP_Error) {
                 return $this->create_response(false, '', 'Failed to create a new order.');
@@ -120,6 +120,7 @@ class Orders_Service extends OrdersService
                 $wc_order->add_meta_data('_ce_order_shipped', true);
             }
 
+            $wc_order->set_new_order_email_sent(false);
             $wc_order->save();
             if ($this->get_product_sync_config_service()->get()->isEnabledStockSync()
                 && $this->get_order_config_service()->getOrderSyncConfig()->isEnableReduceStock()) {
@@ -155,13 +156,13 @@ class Orders_Service extends OrdersService
     }
 
     /**
-     * Formats order data for WooCommerce order creation.
+     * Formats status for WooCommerce order creation.
      *
      * @param Order $order
      *
-     * @return array
+     * @return string
      */
-    protected function format_order_data(Order $order)
+    protected function format_status(Order $order)
     {
         $config = $this->get_order_config_service()->getOrderSyncConfig();
 
@@ -177,10 +178,7 @@ class Orders_Service extends OrdersService
                 $status = $order->getStatus();
         }
 
-        return array(
-            'status' => $status,
-            'customer_id' => null,
-        );
+        return $status;
     }
 
     /**
