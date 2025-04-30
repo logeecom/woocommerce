@@ -497,10 +497,11 @@
   border-radius: 5px;
   margin-top: 10px;
 }
-.channel-engine .ce-table thead tr th {
+.channel-engine .ce-table thead tr td {
   padding: 0.5rem;
   text-align: left;
   border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+  font-weight: bold;
 }
 .channel-engine .ce-table tbody tr:hover td {
   background-color: #f8f9fa;
