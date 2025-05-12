@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2025-05-12 - version 3.8.20 =
+* Fixed: Fix missing information in order confirmation mail
+
 = 2025-04-30 - version 3.8.19 =
 * Fixed: Text layout on Transaction logs page
 
