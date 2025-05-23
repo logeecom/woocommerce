@@ -291,8 +291,11 @@ class Products_Service implements ProductsService {
 	protected function fetch_attributes( WC_Product $wc_product, array $meta_lookup ) {
 		$attributes = $this->set_mapped_attributes( $wc_product, $meta_lookup );
 
-		$attributes['stock'] = $wc_product->get_manage_stock() ?
-			$wc_product->get_stock_quantity() : $this->get_product_config_service()->get()->getDefaultStock();
+        if ($wc_product->get_manage_stock()) {
+            $attributes['stock'] = $wc_product->get_stock_quantity();
+        } else {
+            $attributes['stock'] = $wc_product->get_stock_status() === 'outofstock' ? 0 : $this->get_product_config_service()->get()->getDefaultStock();
+        }
 
 		$attributes['vat_rate_type']  = $this->get_product_tax_rate( $wc_product );
 		$attributes['shipping_costs'] = $this->get_attribute(

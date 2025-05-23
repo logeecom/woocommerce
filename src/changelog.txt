@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2025-05-26 - version 3.8.21 =
+* Fixed: Fix stock synchronization when product is set to Out of Stock on WooCommerce
+
 = 2025-05-12 - version 3.8.20 =
 * Fixed: Fix missing information in order confirmation mail
 
