@@ -511,7 +511,7 @@ class Products_Service implements ProductsService {
 			case Standard_Product_Attributes::PREFIX . '_price_excl_tax':
 				return $wc_product->get_regular_price();
 			case Standard_Product_Attributes::PREFIX . '_sale_price_incl_tax':
-				return $wc_product->get_sale_price() !== '' ? wc_get_price_including_tax( $wc_product, array( 'price' => $wc_product->get_sale_price() ) ) : $wc_product->get_sale_price();
+                return $wc_product->get_sale_price() !== '' ? wc_get_price_including_tax( $wc_product, array( 'price' => $wc_product->get_sale_price() ) )  : wc_get_price_including_tax( $wc_product, array( 'price' => $wc_product->get_regular_price() ) );
 			case Standard_Product_Attributes::PREFIX . '_sale_price_excl_tax':
 				return $wc_product->get_sale_price();
 			case Standard_Product_Attributes::PREFIX . '_sku':
