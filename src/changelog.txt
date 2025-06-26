@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2025-06-26 - version 3.8.23 =
+* Fixed: Use regular price including tax when sale price is not set
+
 = 2025-06-11 - version 3.8.22 =
 * Fixed: Update Chrome version in User-Agent to 138
 

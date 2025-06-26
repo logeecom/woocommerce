@@ -4,7 +4,7 @@ Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
 Tested up to: 6.7.1
-Stable tag: 3.8.22
+Stable tag: 3.8.23
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,9 @@ Our platform is designed to help grow your ecommerce across marketplaces. Discov
 5. Reporting and analytics | ChannelEngine
 
 == Changelog ==
+
+= 3.8.23 =
+* Fixed: Use regular price including tax when sale price is not set
 
 = 3.8.22 =
 * Fixed: Update Chrome version in User-Agent to 138
