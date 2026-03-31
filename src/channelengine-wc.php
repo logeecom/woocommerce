@@ -10,7 +10,7 @@ Author: ChannelEngine
 Author URI: http://channelengine.net
 License: GPLv2
 WC requires at least: 3.0.0
-WC tested up to: 10.5.2
+WC tested up to: 10.6.1
 */
 
 use ChannelEngine\ChannelEngine;
