@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2026-07-01 - version 3.8.24 =
+* Fixed: Fix order sync progress reporting timing
+
 = 2025-06-26 - version 3.8.23 =
 * Fixed: Use regular price including tax when sale price is not set
 
