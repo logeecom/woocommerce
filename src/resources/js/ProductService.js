@@ -107,11 +107,13 @@ if (!window.ChannelEngine) {
         this.getExtraDataMappingOptions = function (url, element, selected) {
             const ajaxService = ChannelEngine.ajaxService,
                 standardAttributesLabel = document.getElementById('ce-standard-attributes-label').value,
-                customAttributesLabel = document.getElementById('ce-custom-attributes-label').value;
+                customAttributesLabel = document.getElementById('ce-custom-attributes-label').value,
+                otherFieldsLabel = document.getElementById('ce-other-fields-label').value;
 
             ajaxService.get(url, function (response) {
                 addMapping(standardAttributesLabel, response.product_attributes.standard, element, selected);
                 addMapping(customAttributesLabel, response.product_attributes.custom, element, selected);
+                addMapping(otherFieldsLabel, response.product_attributes.other, element, selected);
             });
         }
 
