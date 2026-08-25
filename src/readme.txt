@@ -4,7 +4,7 @@ Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
 Tested up to: 7.0.3
-Stable tag: 3.8.24
+Stable tag: 3.8.25
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,9 @@ Our platform is designed to help grow your ecommerce across marketplaces. Discov
 5. Reporting and analytics | ChannelEngine
 
 == Changelog ==
+
+= 3.8.25 =
+* Fixed: Add other fields to the extra data mapping dropdown
 
 = 3.8.24 =
 * Fixed: Fix order sync progress reporting timing
