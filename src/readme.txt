@@ -4,7 +4,7 @@ Donate link:
 Tags: woocommerce, channelengine, marketplaces
 Requires at least: 4.9
 Tested up to: 7.1
-Stable tag: 3.8.26
+Stable tag: 3.8.25
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
