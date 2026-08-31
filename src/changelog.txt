@@ -1,5 +1,8 @@
 *** ChannelEngine WooCommerce Integration ***
 
+= 2026-08-31 - version 3.8.26 =
+* Changed: Mark compatibility with WordPress 7.1
+
 = 2026-08-25 - version 3.8.25 =
 * Fixed: Add other fields to the extra data mapping dropdown
 
